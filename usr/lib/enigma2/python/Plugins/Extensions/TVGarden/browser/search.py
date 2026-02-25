@@ -91,7 +91,8 @@ class SearchBrowser(BaseBrowser):
 
         self.search_timer = eTimer()
         try:
-            self.search_timer_conn = self.search_timer.timeout.connect(self.perform_search)
+            self.search_timer_conn = self.search_timer.timeout.connect(
+                self.perform_search)
         except AttributeError:
             self.search_timer.callback.append(self.perform_search)
 
@@ -106,22 +107,27 @@ class SearchBrowser(BaseBrowser):
             # Get cache configuration
             config = get_config()
             # cache_enabled = config.get("cache_enabled", True)
-            force_refresh_browsing = config.get("force_refresh_browsing", False)
+            force_refresh_browsing = config.get(
+                "force_refresh_browsing", False)
 
             # 1. FIRST try using all-channels.json
             log.debug("Trying all-channels.json...", module="Search")
-            all_channels_data = self.cache.get_category_channels("all-channels", force_refresh=force_refresh_browsing)
+            all_channels_data = self.cache.get_category_channels(
+                "all-channels", force_refresh=force_refresh_browsing)
 
             if all_channels_data:
                 self.all_channels = all_channels_data
-                log.info("Loaded %d from all-channels.json" % len(self.all_channels), module="Search")
+                log.info("Loaded %d from all-channels.json" %
+                         len(self.all_channels), module="Search")
             else:
                 # 2. FALLBACK: use dynamic categories
                 log.debug("Using dynamic categories...", module="Search")
 
                 # Get available categories
                 categories = self.cache.get_available_categories()
-                log.debug("Found %d available categories" % len(categories), module="Search")
+                log.debug(
+                    "Found %d available categories" %
+                    len(categories), module="Search")
 
                 for category in categories:
                     cat_id = category['id']
@@ -129,20 +135,26 @@ class SearchBrowser(BaseBrowser):
                         continue
 
                     try:
-                        channels = self.cache.get_category_channels(cat_id, force_refresh=force_refresh_browsing)
+                        channels = self.cache.get_category_channels(
+                            cat_id, force_refresh=force_refresh_browsing)
                         if channels:
                             for channel in channels:
                                 channel['category'] = category['name']
                                 self.all_channels.append(channel)
-                            log.debug("Added %d from %s" % (len(channels), cat_id), module="Search")
+                            log.debug(
+                                "Added %d from %s" %
+                                (len(channels), cat_id), module="Search")
                     except Exception as e:
-                        log.warning("Skipped %s: %s" % (cat_id, str(e)[:50]), module="Search")
+                        log.warning("Skipped %s: %s" %
+                                    (cat_id, str(e)[:50]), module="Search")
                         continue
 
             # Final status
             total = len(self.all_channels)
             if total > 0:
-                self["status"].setText(_("Press GREEN for keyboard... Ready - %d channels") % total)
+                self["status"].setText(
+                    _("Press GREEN for keyboard... Ready - %d channels") %
+                    total)
                 log.info("TOTAL: %d channels ready" % total, module="Search")
             else:
                 self["status"].setText(_("No channels loaded"))
@@ -199,11 +211,15 @@ class SearchBrowser(BaseBrowser):
 
     def perform_search(self):
         query = self.search_query.lower()
-        log.debug("Searching '%s' in %d channels" % (query, len(self.all_channels)), module="Search")
+        log.debug("Searching '%s' in %d channels" %
+                  (query, len(self.all_channels)), module="Search")
 
         if len(self.all_channels) < 100:
-            log.warning("Very few channels (%d)!" % len(self.all_channels), module="Search")
-            log.warning("This might explain limited search results", module="Search")
+            log.warning("Very few channels (%d)!" %
+                        len(self.all_channels), module="Search")
+            log.warning(
+                "This might explain limited search results",
+                module="Search")
 
         self.search_results = []
         self.menu_channels = []
@@ -219,13 +235,16 @@ class SearchBrowser(BaseBrowser):
 
     def display_search_results(self):
         """Display search results in menu"""
-        log.info("Found %d results" % len(self.search_results), module="Search")
+        log.info("Found %d results" %
+                 len(self.search_results), module="Search")
 
         # Get configurable limit
         config = get_config()
         max_channels = config.get("search_max_results", 500)
 
-        log.debug("Using max_channels limit: %d" % max_channels, module="Search")
+        log.debug(
+            "Using max_channels limit: %d" %
+            max_channels, module="Search")
 
         menu_items = []
         self.menu_channels = []
@@ -238,7 +257,9 @@ class SearchBrowser(BaseBrowser):
             # Apply configurable limit (0 = all channels)
             if max_channels > 0:
                 if idx >= max_channels:
-                    log.debug("Stopped at %d results (limit: %d)" % (idx, max_channels), module="Search")
+                    log.debug(
+                        "Stopped at %d results (limit: %d)" %
+                        (idx, max_channels), module="Search")
                     skipped_by_limit = len(self.search_results) - idx
                     break
 
@@ -248,7 +269,8 @@ class SearchBrowser(BaseBrowser):
             is_youtube = False
 
             # 1. Check iptv_urls
-            if 'iptv_urls' in channel and isinstance(channel['iptv_urls'], list):
+            if 'iptv_urls' in channel and isinstance(
+                    channel['iptv_urls'], list):
                 for url in channel['iptv_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -256,7 +278,8 @@ class SearchBrowser(BaseBrowser):
                         break
 
             # 2. Check youtube_urls (skip)
-            if not stream_url and 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
+            if not stream_url and 'youtube_urls' in channel and isinstance(
+                    channel['youtube_urls'], list):
                 for url in channel['youtube_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -342,7 +365,8 @@ class SearchBrowser(BaseBrowser):
             status_text += " " + _("(skipped %d YouTube)") % youtube_count
 
         if problematic_count > 0:
-            status_text += " " + _("(filtered %d problematic)") % problematic_count
+            status_text += " " + \
+                _("(filtered %d problematic)") % problematic_count
 
         if skipped_by_limit > 0:
             status_text += " " + _("(limited to first %d)") % max_channels
@@ -353,10 +377,13 @@ class SearchBrowser(BaseBrowser):
             if self.menu_channels:
                 self.current_channel = self.menu_channels[0]
         else:
-            self["status"].setText(_("No channels found for: %s") % self.search_query)
+            self["status"].setText(
+                _("No channels found for: %s") %
+                self.search_query)
 
-        log.info("Final: %d playable, %d YouTube skipped, %d problematic filtered, %d limited by config" %
-                 (valid_count, youtube_count, problematic_count, skipped_by_limit), module="Search")
+        log.info(
+            "Final: %d playable, %d YouTube skipped, %d problematic filtered, %d limited by config" %
+            (valid_count, youtube_count, problematic_count, skipped_by_limit), module="Search")
 
     def extract_stream_url(self, channel):
         """Extract stream URL from channel"""
@@ -367,7 +394,8 @@ class SearchBrowser(BaseBrowser):
                     return url.strip()
 
         # Check youtube_urls (skip)
-        if 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
+        if 'youtube_urls' in channel and isinstance(
+                channel['youtube_urls'], list):
             for url in channel['youtube_urls']:
                 if isinstance(url, str) and url.strip():
                     return None  # Skip YouTube
@@ -410,16 +438,24 @@ class SearchBrowser(BaseBrowser):
         try:
             url_encoded = stream_url.replace(":", "%3a")
             name_encoded = channel['name'].replace(":", "%3a")
-            ref_str = "4097:0:0:0:0:0:0:0:0:0:%s:%s" % (url_encoded, name_encoded)
+            ref_str = "4097:0:0:0:0:0:0:0:0:0:%s:%s" % (
+                url_encoded, name_encoded)
 
             service_ref = eServiceReference(ref_str)
             service_ref.setName(channel['name'])
 
-            self.session.open(TVGardenPlayer, service_ref, self.menu_channels, idx)
+            self.session.open(
+                TVGardenPlayer,
+                service_ref,
+                self.menu_channels,
+                idx)
 
         except Exception as e:
             log.error("Play error: %s" % e, module="Search")
-            self.session.open(MessageBox, _("Error opening player"), MessageBox.TYPE_ERROR)
+            self.session.open(
+                MessageBox,
+                _("Error opening player"),
+                MessageBox.TYPE_ERROR)
 
     def toggle_favorite(self):
         """Add/remove channel from favorites"""

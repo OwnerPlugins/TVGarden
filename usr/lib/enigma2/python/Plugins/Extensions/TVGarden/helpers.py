@@ -37,7 +37,7 @@ def load_skin_file(skin_name):
             finally:
                 if f:
                     f.close()
-        except:
+        except BaseException:
             pass
 
     return None
@@ -250,7 +250,14 @@ def is_valid_stream_url(url):
     if not any(url.startswith(prefix) for prefix in valid_prefixes):
         return False
 
-    supported_patterns = ('.m3u8', '.mp4', '.ts', '.avi', '.mkv', '.flv', 'mpegts')
+    supported_patterns = (
+        '.m3u8',
+        '.mp4',
+        '.ts',
+        '.avi',
+        '.mkv',
+        '.flv',
+        'mpegts')
 
     url_lower = url.lower()
     for pattern in supported_patterns:
@@ -271,7 +278,7 @@ LOG_PATH = join(LOG_PATH_DIR, "tvgarden.log")
 if not exists(LOG_PATH_DIR):
     try:
         makedirs(LOG_PATH_DIR, mode=0o755)
-    except:
+    except BaseException:
         pass
 
 
@@ -319,8 +326,14 @@ class TVGardenLog:
     @classmethod
     def _should_log(cls, level):
         """Check if message should be logged based on level"""
-        level_priority = [cls.DEBUG, cls.INFO, cls.WARNING, cls.ERROR, cls.CRITICAL]
-        return level_priority.index(level) >= level_priority.index(cls._min_level)
+        level_priority = [
+            cls.DEBUG,
+            cls.INFO,
+            cls.WARNING,
+            cls.ERROR,
+            cls.CRITICAL]
+        return level_priority.index(
+            level) >= level_priority.index(cls._min_level)
 
     @classmethod
     def log(cls, message, level=INFO, module=""):
@@ -335,7 +348,8 @@ class TVGardenLog:
 
         # Format message
         module_prefix = "[%s] " % module if module else ""
-        full_message = "[%s] [%s] %s%s" % (timestamp, level, module_prefix, message)
+        full_message = "[%s] [%s] %s%s" % (
+            timestamp, level, module_prefix, message)
 
         # Console output (with colors if supported)
         if cls._log_to_console:
@@ -382,7 +396,12 @@ class TVGardenLog:
     @classmethod
     def set_level(cls, level):
         """Set minimum log level"""
-        valid_levels = [cls.DEBUG, cls.INFO, cls.WARNING, cls.ERROR, cls.CRITICAL]
+        valid_levels = [
+            cls.DEBUG,
+            cls.INFO,
+            cls.WARNING,
+            cls.ERROR,
+            cls.CRITICAL]
         if level in valid_levels:
             cls._min_level = level
             cls.info("Log level changed to %s" % level, "System")

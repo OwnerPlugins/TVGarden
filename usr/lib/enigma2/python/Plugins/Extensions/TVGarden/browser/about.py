@@ -76,8 +76,9 @@ class TVGardenAbout(Screen):
             countries_count = "Loading..."
             try:
                 metadata = cache.get_countries_metadata()
-                countries_count = str(len([c for c in metadata.values() if c.get('hasChannels', False)]))
-            except:
+                countries_count = str(
+                    len([c for c in metadata.values() if c.get('hasChannels', False)]))
+            except BaseException:
                 countries_count = "150+"
 
             # Get cache info
@@ -104,7 +105,8 @@ class TVGardenAbout(Screen):
                     if total_size < 1024 * 1024:  # Less than 1MB
                         cache_size_str = "%d KB" % (total_size // 1024)
                     else:
-                        cache_size_str = "%.1f MB" % (total_size / (1024 * 1024))
+                        cache_size_str = "%.1f MB" % (
+                            total_size / (1024 * 1024))
                     cache_info = "%d files, %s" % (cache_files, cache_size_str)
                 else:
                     cache_info = "Empty"
@@ -131,7 +133,8 @@ class TVGardenAbout(Screen):
             # Auto-scroll after 5 seconds
             self.scroll_timer = eTimer()
             try:
-                self.scroll_timer_conn = self.scroll_timer.timeout.connect(self.auto_scroll)
+                self.scroll_timer_conn = self.scroll_timer.timeout.connect(
+                    self.auto_scroll)
             except AttributeError:
                 self.scroll_timer.callback.append(self.auto_scroll)
             self.scroll_timer.start(5000, False)

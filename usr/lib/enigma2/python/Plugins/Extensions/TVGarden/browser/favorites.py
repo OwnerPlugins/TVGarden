@@ -85,7 +85,9 @@ class FavoritesBrowser(BaseBrowser):
         """Load favorites from file"""
         try:
             favorites = self.fav_manager.get_all()
-            log.info("Loaded %d favorites" % len(favorites), module="Favorites")
+            log.info(
+                "Loaded %d favorites" %
+                len(favorites), module="Favorites")
 
             menu_items = []
             self.menu_channels = []
@@ -129,7 +131,9 @@ class FavoritesBrowser(BaseBrowser):
             self["menu"].setList(menu_items)
 
             if menu_items:
-                self["status"].setText(_("%d favorite channels") % len(menu_items))
+                self["status"].setText(
+                    _("%d favorite channels") %
+                    len(menu_items))
                 # Select first item
                 if self.menu_channels:
                     self.current_channel = self.menu_channels[0]
@@ -208,16 +212,14 @@ class FavoritesBrowser(BaseBrowser):
                 self._execute_export_all_database,
                 MessageBox,
                 _("Export ALL channels from TV Garden database?\nThis may take some time."),
-                MessageBox.TYPE_YESNO
-            )
+                MessageBox.TYPE_YESNO)
 
         elif option_id == "export_all_hierarchical":
             self.session.openWithCallback(
                 lambda r: self._execute_export_all_hierarchical(r),
                 MessageBox,
                 _("Export ALL channels with multi-file structure?\nThis will create smaller bouquet files for better performance."),
-                MessageBox.TYPE_YESNO
-            )
+                MessageBox.TYPE_YESNO)
 
         elif option_id == "info":
             self._show_channel_info(channel)
@@ -345,14 +347,19 @@ class FavoritesBrowser(BaseBrowser):
             # Create service reference
             url_encoded = stream_url.replace(":", "%3a")
             name_encoded = channel['name'].replace(":", "%3a")
-            ref_str = "4097:0:0:0:0:0:0:0:0:0:%s:%s" % (url_encoded, name_encoded)
+            ref_str = "4097:0:0:0:0:0:0:0:0:0:%s:%s" % (
+                url_encoded, name_encoded)
 
             service_ref = eServiceReference(ref_str)
             service_ref.setName(channel['name'])
 
             # Open player with favorites list
             log.info("Playing: %s" % channel['name'], module="Favorites")
-            self.session.open(TVGardenPlayer, service_ref, self.menu_channels, channel_idx)
+            self.session.open(
+                TVGardenPlayer,
+                service_ref,
+                self.menu_channels,
+                channel_idx)
 
         except Exception as e:
             log.error("Player error: %s" % e, module="Favorites")
@@ -374,14 +381,15 @@ class FavoritesBrowser(BaseBrowser):
         self.session.openWithCallback(
             self._export_all_confirmation,
             MessageBox,
-            _("Export ALL %d favorites to Enigma2 bouquet?") % len(self.menu_channels),
-            MessageBox.TYPE_YESNO
-        )
+            _("Export ALL %d favorites to Enigma2 bouquet?") % len(
+                self.menu_channels),
+            MessageBox.TYPE_YESNO)
 
     def _export_all_confirmation(self, result):
         """Handle export confirmation"""
         if result:
-            success, message = self.fav_manager.export_to_bouquet(self.menu_channels)
+            success, message = self.fav_manager.export_to_bouquet(
+                self.menu_channels)
             self["status"].setText(message)
             self.session.open(
                 MessageBox,
@@ -414,7 +422,8 @@ class FavoritesBrowser(BaseBrowser):
             if stream_url:
                 info_text += "\nStream URL:\n"
                 if len(stream_url) > 150:
-                    info_text += "%s...\n...%s" % (stream_url[:100], stream_url[-50:])
+                    info_text += "%s...\n...%s" % (
+                        stream_url[:100], stream_url[-50:])
                 else:
                     info_text += stream_url
 

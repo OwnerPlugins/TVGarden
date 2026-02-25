@@ -105,7 +105,9 @@ class CountriesBrowser(BaseBrowser):
                 self.timer.callback = []
                 self.timer.stop()
             except Exception as e:
-                log.debug("Error stopping timer: {}".format(e), module="Countries")
+                log.debug(
+                    "Error stopping timer: {}".format(e),
+                    module="Countries")
             finally:
                 self.timer = None
 
@@ -114,7 +116,9 @@ class CountriesBrowser(BaseBrowser):
                 self.flag_timer.callback = []
                 self.flag_timer.stop()
             except Exception as e:
-                log.debug("Error stopping flag_timer: {}".format(e), module="Countries")
+                log.debug(
+                    "Error stopping flag_timer: {}".format(e),
+                    module="Countries")
             finally:
                 self.flag_timer = None
 
@@ -124,7 +128,9 @@ class CountriesBrowser(BaseBrowser):
                 try:
                     unlink(self.current_flag_path)
                 except Exception as e:
-                    log.debug("Error deleting temp file: {}".format(e), module="Countries")
+                    log.debug(
+                        "Error deleting temp file: {}".format(e),
+                        module="Countries")
             self.current_flag_path = None
 
         # Remove picload callback
@@ -150,7 +156,7 @@ class CountriesBrowser(BaseBrowser):
         if hasattr(self, 'picload') and self.picload:
             try:
                 pass
-            except:
+            except BaseException:
                 pass
             finally:
                 self.picload = None
@@ -159,7 +165,7 @@ class CountriesBrowser(BaseBrowser):
         try:
             if hasattr(self["menu"], 'onSelectionChanged'):
                 self["menu"].onSelectionChanged = []
-        except:
+        except BaseException:
             pass
 
     def load_countries(self):
@@ -168,12 +174,14 @@ class CountriesBrowser(BaseBrowser):
             # Get cache configuration
             config = get_config()
             cache_enabled = config.get("cache_enabled", True)
-            force_refresh_browsing = config.get("force_refresh_browsing", False)
+            force_refresh_browsing = config.get(
+                "force_refresh_browsing", False)
 
             # Load metadata with cache config
             if hasattr(self.cache, 'get_countries_metadata'):
                 try:
-                    metadata = self.cache.get_countries_metadata(force_refresh=force_refresh_browsing)
+                    metadata = self.cache.get_countries_metadata(
+                        force_refresh=force_refresh_browsing)
                 except TypeError:
                     # If the method does not support force_refresh
                     metadata = self.cache.get_countries_metadata()
@@ -181,7 +189,9 @@ class CountriesBrowser(BaseBrowser):
                 # Fallback
                 metadata = {}
 
-            log.debug("Metadata received: %d countries" % len(metadata), module="Countries")
+            log.debug(
+                "Metadata received: %d countries" %
+                len(metadata), module="Countries")
 
             self.countries = []
             for code, info in metadata.items():
@@ -216,7 +226,8 @@ class CountriesBrowser(BaseBrowser):
                 # Load initial flag with delay
                 self.timer = eTimer()
                 try:
-                    self.timer_conn = self.timer.timeout.connect(self.load_initial_flag)
+                    self.timer_conn = self.timer.timeout.connect(
+                        self.load_initial_flag)
                 except AttributeError:
                     self.timer.callback.append(self.load_initial_flag)
                 self.timer.start(100, True)
@@ -234,7 +245,8 @@ class CountriesBrowser(BaseBrowser):
         self["status"].setText(_("Refreshing..."))
         try:
             config = get_config()
-            refresh_method = config.get("refresh_method", "clear_cache")  # "clear_cache" o "force_refresh"
+            # "clear_cache" o "force_refresh"
+            refresh_method = config.get("refresh_method", "clear_cache")
 
             if refresh_method == "clear_cache":
                 # Clean all cache
@@ -277,9 +289,15 @@ class CountriesBrowser(BaseBrowser):
 
             # DEBUG: mostra info
             log.debug("=" * 50, module="Countries")
-            log.debug("SELECTED COUNTRY: %s (%s)" %
-                      (self.selected_country['name'], flag_code), module="Countries")
-            log.debug("Channels: %d" % self.selected_country['channels'], module="Countries")
+            log.debug(
+                "SELECTED COUNTRY: %s (%s)" %
+                (self.selected_country['name'],
+                 flag_code),
+                module="Countries")
+            log.debug(
+                "Channels: %d" %
+                self.selected_country['channels'],
+                module="Countries")
 
             flag_url = "https://flagcdn.com/w80/%s.png" % flag_code
             log.debug("Flag URL: %s" % flag_url, module="Countries")
@@ -305,9 +323,11 @@ class CountriesBrowser(BaseBrowser):
         try:
             # Hide first
             self["flag"].hide()
-            
-            log.debug("Loading flag for: %s" % country_code, module="Countries")
-            
+
+            log.debug(
+                "Loading flag for: %s" %
+                country_code, module="Countries")
+
             # Download flag
             req = Request(url, headers={'User-Agent': 'TVGarden-Enigma2/1.0'})
             response = None
@@ -316,26 +336,32 @@ class CountriesBrowser(BaseBrowser):
                 response = urlopen(req, timeout=5)
                 if response.getcode() == 200:
                     flag_data = response.read()
-                    log.debug("Downloaded %d bytes" % len(flag_data), module="Countries")
+                    log.debug(
+                        "Downloaded %d bytes" %
+                        len(flag_data), module="Countries")
                 else:
-                    log.warning("HTTP %d for flag %s" % (response.getcode(), country_code), module="Countries")
+                    log.warning(
+                        "HTTP %d for flag %s" %
+                        (response.getcode(), country_code), module="Countries")
                     return
             finally:
                 if response:
                     response.close()
 
             if not flag_data:
-                log.warning("No data for flag %s" % country_code, module="Countries")
+                log.warning(
+                    "No data for flag %s" %
+                    country_code, module="Countries")
                 return
 
             # Save temporarily
             import os
             temp_fd, temp_path = tempfile.mkstemp(suffix='.png')
             os.close(temp_fd)
-            
+
             with open(temp_path, 'wb') as f:
                 f.write(flag_data)
-            
+
             log.debug("Saved to temp file: %s" % temp_path, module="Countries")
 
             # 1. Check if file exists
@@ -344,28 +370,34 @@ class CountriesBrowser(BaseBrowser):
             # 4. Set pixmap
             # 5. Set scale
             # 6. Show
-            
+
             if exists(temp_path):
                 # Handle Python 2/3 encoding
                 if exists('/var/lib/dpkg/info'):
                     png_path = temp_path.encode('utf-8')
                 else:
                     png_path = temp_path
-                
+
                 try:
                     pixmap = loadPNG(png_path)
-                    
+
                     if pixmap:
                         # Set to widget - CORRECT pattern
                         self["flag"].instance.setPixmap(pixmap)
                         self["flag"].instance.setScale(1)
                         self["flag"].instance.show()
-                        log.info("✓ Flag displayed for %s" % country_code, module="Countries")
+                        log.info(
+                            "✓ Flag displayed for %s" %
+                            country_code, module="Countries")
                     else:
-                        log.warning("loadPNG returned None for %s" % country_code, module="Countries")
-                        
+                        log.warning(
+                            "loadPNG returned None for %s" %
+                            country_code, module="Countries")
+
                 except ImportError as e:
-                    log.error("loadPNG not available: %s" % e, module="Countries")
+                    log.error(
+                        "loadPNG not available: %s" %
+                        e, module="Countries")
                 except Exception as e:
                     log.error("loadPNG error: %s" % e, module="Countries")
                     import traceback
@@ -374,127 +406,129 @@ class CountriesBrowser(BaseBrowser):
             # Cleanup
             try:
                 os.unlink(temp_path)
-            except:
+            except BaseException:
                 pass
-                
+
         except Exception as e:
-            log.error("Flag error %s: %s" % (country_code, e), module="Countries")
+            log.error(
+                "Flag error %s: %s" %
+                (country_code, e), module="Countries")
             import traceback
             traceback.print_exc()
-        
+
         # Hide if all failed
         self["flag"].hide()
 
     # def download_flag_safe(self, url, country_code):
         # """Load flag using loadPNG (ACTIVE VERSION)"""
         # try:
-            # self["flag"].hide()
+        # self["flag"].hide()
 
-            # log.debug("Loading flag for: %s" % country_code, module="Countries")
+        # log.debug("Loading flag for: %s" % country_code, module="Countries")
 
-            # # Download flag
-            # req = Request(url, headers={'User-Agent': 'TVGarden-Enigma2/1.0'})
-            # response = None
-            # flag_data = None
-            # try:
-                # response = urlopen(req, timeout=5)
-                # if response.getcode() == 200:
-                    # flag_data = response.read()
-                    # log.debug("Downloaded %d bytes" % len(flag_data), module="Countries")
-                # else:
-                    # log.warning("HTTP %d for %s" % (response.getcode(), country_code), module="Countries")
-                    # return
-            # finally:
-                # if response:
-                    # response.close()
+        # # Download flag
+        # req = Request(url, headers={'User-Agent': 'TVGarden-Enigma2/1.0'})
+        # response = None
+        # flag_data = None
+        # try:
+        # response = urlopen(req, timeout=5)
+        # if response.getcode() == 200:
+        # flag_data = response.read()
+        # log.debug("Downloaded %d bytes" % len(flag_data), module="Countries")
+        # else:
+        # log.warning("HTTP %d for %s" % (response.getcode(), country_code), module="Countries")
+        # return
+        # finally:
+        # if response:
+        # response.close()
 
-            # if not flag_data:
-                # log.warning("No data for flag %s" % country_code, module="Countries")
-                # return
+        # if not flag_data:
+        # log.warning("No data for flag %s" % country_code, module="Countries")
+        # return
 
-            # # Save to temp file
-            # from os import close
-            # temp_fd, temp_path = tempfile.mkstemp(suffix='.png')
-            # close(temp_fd)
+        # # Save to temp file
+        # from os import close
+        # temp_fd, temp_path = tempfile.mkstemp(suffix='.png')
+        # close(temp_fd)
 
-            # with open(temp_path, 'wb') as f:
-                # f.write(flag_data)
+        # with open(temp_path, 'wb') as f:
+        # f.write(flag_data)
 
-            # log.debug("Saved to: %s" % temp_path, module="Countries")
+        # log.debug("Saved to: %s" % temp_path, module="Countries")
 
-            # try:
-                # log.debug("Attempting loadPNG...", module="Countries")
+        # try:
+        # log.debug("Attempting loadPNG...", module="Countries")
 
-                # ptr = loadPNG(temp_path)
+        # ptr = loadPNG(temp_path)
 
-                # if ptr:
-                    # log.debug("loadPNG SUCCESS for %s" % country_code, module="Countries")
+        # if ptr:
+        # log.debug("loadPNG SUCCESS for %s" % country_code, module="Countries")
 
-                    # # Scala a dimensioni ragionevoli
-                    # try:
-                        # # Dimensione dal widget
-                        # flag_widget = self["flag"]
-                        # widget_size = flag_widget.instance.size()
+        # # Scala a dimensioni ragionevoli
+        # try:
+        # # Dimensione dal widget
+        # flag_widget = self["flag"]
+        # widget_size = flag_widget.instance.size()
 
-                        # # Usa dimensioni dello skin o default
-                        # if widget_size.width() > 0 and widget_size.height() > 0:
-                            # width = widget_size.width()
-                            # height = widget_size.height()
-                        # else:
-                            # # Default per HD skin
-                            # width, height = 190, 120
+        # # Usa dimensioni dello skin o default
+        # if widget_size.width() > 0 and widget_size.height() > 0:
+        # width = widget_size.width()
+        # height = widget_size.height()
+        # else:
+        # # Default per HD skin
+        # width, height = 190, 120
 
-                        # # Scala se possibile
-                        # if hasattr(ptr, 'scale'):
-                            # try:
-                                # ptr.scale(width, height)
-                                # log.debug("Scaled to %dx%d" % (width, height), module="Countries")
-                            # except:
-                                # pass
+        # # Scala se possibile
+        # if hasattr(ptr, 'scale'):
+        # try:
+        # ptr.scale(width, height)
+        # log.debug("Scaled to %dx%d" % (width, height), module="Countries")
+        # except:
+        # pass
 
-                    # except Exception as size_error:
-                        # log.debug("Size error: %s" % size_error, module="Countries")
-                        # # Continua comunque
+        # except Exception as size_error:
+        # log.debug("Size error: %s" % size_error, module="Countries")
+        # # Continua comunque
 
-                    # # Mostra la bandiera
-                    # self["flag"].instance.setPixmap(ptr)
-                    # self["flag"].show()
+        # # Mostra la bandiera
+        # self["flag"].instance.setPixmap(ptr)
+        # self["flag"].show()
 
-                    # log.info("✓ Flag displayed for %s" % country_code, module="Countries")
-                    # return True
+        # log.info("✓ Flag displayed for %s" % country_code, module="Countries")
+        # return True
 
-                # else:
-                    # log.warning("loadPNG returned None for %s" % country_code, module="Countries")
+        # else:
+        # log.warning("loadPNG returned None for %s" % country_code, module="Countries")
 
-            # except ImportError as e:
-                # log.error("loadPNG not available: %s" % e, module="Countries")
-            # except Exception as e:
-                # log.error("loadPNG error: %s" % e, module="Countries")
+        # except ImportError as e:
+        # log.error("loadPNG not available: %s" % e, module="Countries")
+        # except Exception as e:
+        # log.error("loadPNG error: %s" % e, module="Countries")
 
-            # # Se loadPNG fallisce, prova loadJPG
-            # try:
-                # from enigma import loadJPG
-                # log.debug("Trying loadJPG as fallback...", module="Countries")
+        # # Se loadPNG fallisce, prova loadJPG
+        # try:
+        # from enigma import loadJPG
+        # log.debug("Trying loadJPG as fallback...", module="Countries")
 
-                # ptr = loadJPG(temp_path)
-                # if ptr:
-                    # self["flag"].instance.setPixmap(ptr)
-                    # self["flag"].show()
-                    # log.info("✓ Flag via loadJPG for %s" % country_code, module="Countries")
-                    # return True
-            # except:
-                # pass
+        # ptr = loadJPG(temp_path)
+        # if ptr:
+        # self["flag"].instance.setPixmap(ptr)
+        # self["flag"].show()
+        # log.info("✓ Flag via loadJPG for %s" % country_code, module="Countries")
+        # return True
+        # except:
+        # pass
 
-            # # Pulizia
-            # try:
-                # unlink(temp_path)
-            # except:
-                # pass
+        # # Pulizia
+        # try:
+        # unlink(temp_path)
+        # except:
+        # pass
 
         # except Exception as e:
-            # log.error("Flag error %s: %s" % (country_code, e), module="Countries")
-            # import traceback
-            # traceback.print_exc()
+        # log.error("Flag error %s: %s" % (country_code, e), module="Countries")
+        # import traceback
+        # traceback.print_exc()
 
         # # Se tutto fallisce, nascondi
         # self["flag"].hide()
@@ -504,7 +538,7 @@ class CountriesBrowser(BaseBrowser):
         """Load a default/placeholder flag"""
         try:
             self["flag"].hide()
-        except:
+        except BaseException:
             pass
 
     def update_flag(self, picInfo=None):
@@ -512,7 +546,9 @@ class CountriesBrowser(BaseBrowser):
         # This is called when picload finishes async decode
         # We're using sync decode mainly, but keep this for compatibility
         if picInfo:
-            log.debug("Async decode finished: %s" % picInfo, module="Countries")
+            log.debug(
+                "Async decode finished: %s" %
+                picInfo, module="Countries")
 
     def select_country(self):
         """Select a country and show its channels"""
@@ -520,20 +556,23 @@ class CountriesBrowser(BaseBrowser):
             self["status"].setText(_("No country selected"))
             return
 
-        log.info("Opening channels for: {}".format(self.selected_country['code']), module="Countries")
+        log.info(
+            "Opening channels for: {}".format(
+                self.selected_country['code']),
+            module="Countries")
 
         # Cleanup before opening new screen
         if self.current_flag_path and exists(self.current_flag_path):
             try:
                 unlink(self.current_flag_path)
-            except:
+            except BaseException:
                 pass
 
         # Additional minor cleanup
         if hasattr(self, 'flag_timer') and self.flag_timer:
             try:
                 self.flag_timer.stop()
-            except:
+            except BaseException:
                 pass
 
         self.session.open(

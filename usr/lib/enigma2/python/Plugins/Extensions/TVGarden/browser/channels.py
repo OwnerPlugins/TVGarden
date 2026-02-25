@@ -39,7 +39,8 @@ except ImportError as e:
             return False
         url = url.strip()
         valid_prefixes = ('http://', 'https://', 'rtmp://', 'rtsp://')
-        return any(url.startswith(prefix) for prefix in valid_prefixes) or '.m3u8' in url.lower()
+        return any(url.startswith(prefix)
+                   for prefix in valid_prefixes) or '.m3u8' in url.lower()
 
 
 from .base import BaseBrowser
@@ -134,7 +135,8 @@ class ChannelsBrowser(BaseBrowser):
 
         if exists('/var/lib/dpkg/info'):
             # DreamOS
-            self.picload_conn = self.picload.PictureData.connect(self.update_logo)
+            self.picload_conn = self.picload.PictureData.connect(
+                self.update_logo)
         else:
             self.picload_conn = self.picload.PictureData.get().append(self.update_logo)
 
@@ -181,11 +183,14 @@ class ChannelsBrowser(BaseBrowser):
 
             # Cache settings
             cache_enabled = config.get("cache_enabled", True)
-            force_refresh_browsing = config.get("force_refresh_browsing", False)
+            force_refresh_browsing = config.get(
+                "force_refresh_browsing", False)
 
             channels = []
             if self.country_code:
-                log.debug("Loading country channels: %s" % self.country_code, module="Channels")
+                log.debug(
+                    "Loading country channels: %s" %
+                    self.country_code, module="Channels")
                 # Use cache with config
                 if hasattr(self.cache, 'get_country_channels'):
                     try:
@@ -195,12 +200,15 @@ class ChannelsBrowser(BaseBrowser):
                         )
                     except TypeError:
                         # Method doesn't support force_refresh parameter
-                        channels = self.cache.get_country_channels(self.country_code)
+                        channels = self.cache.get_country_channels(
+                            self.country_code)
                 else:
                     channels = []
 
             elif self.category_id:
-                log.debug("Loading category channels: %s" % self.category_id, module="Channels")
+                log.debug(
+                    "Loading category channels: %s" %
+                    self.category_id, module="Channels")
                 # Use cache with config
                 if hasattr(self.cache, 'get_category_channels'):
                     try:
@@ -210,16 +218,24 @@ class ChannelsBrowser(BaseBrowser):
                         )
                     except TypeError:
                         # Method doesn't support force_refresh parameter
-                        channels = self.cache.get_category_channels(self.category_id)
+                        channels = self.cache.get_category_channels(
+                            self.category_id)
                 else:
                     channels = []
             else:
-                log.error("ERROR: No country_code or category_id!", module="Channels")
+                log.error(
+                    "ERROR: No country_code or category_id!",
+                    module="Channels")
                 return
 
-            log.debug("Total channels received: %d" % len(channels), module="Channels")
-            log.debug("Max channels limit: %d (0=all)" % max_channels, module="Channels")
-            log.debug("Cache enabled: %s, Force refresh: %s" % (cache_enabled, force_refresh_browsing), module="Channels")
+            log.debug(
+                "Total channels received: %d" %
+                len(channels), module="Channels")
+            log.debug(
+                "Max channels limit: %d (0=all)" %
+                max_channels, module="Channels")
+            log.debug("Cache enabled: %s, Force refresh: %s" %
+                      (cache_enabled, force_refresh_browsing), module="Channels")
 
             # Save the ORIGINAL channels
             self.channels = channels
@@ -236,7 +252,9 @@ class ChannelsBrowser(BaseBrowser):
             for idx, channel in enumerate(channels):
                 # Apply configurable limit (0 = all channels)
                 if max_channels > 0 and idx >= max_channels:
-                    log.debug("Stopped at %d channels (limit: %d)" % (idx, max_channels), module="Channels")
+                    log.debug(
+                        "Stopped at %d channels (limit: %d)" %
+                        (idx, max_channels), module="Channels")
                     skipped_count = len(channels) - idx
                     break
 
@@ -283,12 +301,16 @@ class ChannelsBrowser(BaseBrowser):
 
                 # 4. Basic URL validation
                 if not stream_url:
-                    log.warning("✗ No stream URL: %s" % name, module="Channels")
+                    log.warning(
+                        "✗ No stream URL: %s" %
+                        name, module="Channels")
                     continue
 
                 # 5. Advanced validation: playable URL
                 if not is_valid_stream_url(stream_url):
-                    log.warning("✗ Invalid URL format: %s" % name, module="Channels")
+                    log.warning(
+                        "✗ Invalid URL format: %s" %
+                        name, module="Channels")
                     continue
 
                 # 6. CRITICAL FILTER: skip known problematic hosts/protocols
@@ -312,7 +334,8 @@ class ChannelsBrowser(BaseBrowser):
                 is_problematic = False
                 for pattern in problematic_patterns:
                     if pattern in stream_lower:
-                        log.warning("⚠️ Skipping problematic pattern '%s': %s..." % (pattern, name[:30]), module="Channels")
+                        log.warning("⚠️ Skipping problematic pattern '%s': %s..." % (
+                            pattern, name[:30]), module="Channels")
                         problematic_count += 1
                         is_problematic = True
                         break
@@ -327,21 +350,42 @@ class ChannelsBrowser(BaseBrowser):
                 if stream_url.startswith("http://"):
                     log.debug("   HTTP URL (good)", module="Channels")
                 elif stream_url.startswith("https://"):
-                    log.debug("   HTTPS URL (may have issues)", module="Channels")
+                    log.debug(
+                        "   HTTPS URL (may have issues)",
+                        module="Channels")
                 elif stream_url.startswith("rtmp://") or stream_url.startswith("rtsp://"):
-                    log.debug("   RTMP/RTSP URL (needs gstreamer)", module="Channels")
+                    log.debug(
+                        "   RTMP/RTSP URL (needs gstreamer)",
+                        module="Channels")
 
                 # 8. Build channel object
                 channel_data = {
-                    "name": str(name or ""),
+                    "name": str(
+                        name or ""),
                     "url": stream_url_to_use,
                     "stream_url": stream_url_to_use,
                     "logo": channel.get("logo") or channel.get("icon") or channel.get("image"),
-                    "id": str(channel.get("nanoid", "ch_%d" % idx)),
-                    "description": str(channel.get("description", "")),
-                    "group": str(channel.get("group", "")),
-                    "language": str(channel.get("language", "")),
-                    "country": str(channel.get("country", "")),
+                    "id": str(
+                        channel.get(
+                            "nanoid",
+                            "ch_%d" %
+                            idx)),
+                    "description": str(
+                        channel.get(
+                            "description",
+                            "")),
+                    "group": str(
+                        channel.get(
+                            "group",
+                            "")),
+                    "language": str(
+                        channel.get(
+                            "language",
+                            "")),
+                    "country": str(
+                        channel.get(
+                            "country",
+                            "")),
                     "found_in": str(found_in),
                     "original_index": idx,
                     "is_youtube": False,
@@ -364,7 +408,10 @@ class ChannelsBrowser(BaseBrowser):
                 selected_idx = menu_items[0][1]
                 if 0 <= selected_idx < len(self.menu_channels):
                     self.current_channel = self.menu_channels[selected_idx]
-                    log.debug("First channel: %s" % self.current_channel['name'], module="Channels")
+                    log.debug(
+                        "First channel: %s" %
+                        self.current_channel['name'],
+                        module="Channels")
                     self.update_channel_selection(0)
 
             # Build status message with cache info
@@ -390,18 +437,20 @@ class ChannelsBrowser(BaseBrowser):
                 status_text += " " + _("(skipped %d YouTube)") % youtube_count
 
             if problematic_count > 0:
-                status_text += " " + _("(filtered %d problematic)") % problematic_count
+                status_text += " " + \
+                    _("(filtered %d problematic)") % problematic_count
 
             if skipped_count > 0 and max_channels > 0:
                 status_text += " " + _("(limited to first %d)") % max_channels
 
             self["status"].setText(status_text)
 
-            log.info("Playable: %d, Skipped YouTube: %d, Filtered problematic: %d, Config limit: %d, Skipped by limit: %d" %
-                     (valid_count, youtube_count, problematic_count, max_channels, skipped_count),
-                     module="Channels")
+            log.info(
+                "Playable: %d, Skipped YouTube: %d, Filtered problematic: %d, Config limit: %d, Skipped by limit: %d" %
+                (valid_count, youtube_count, problematic_count, max_channels, skipped_count), module="Channels")
 
-            log.info("Cache status: enabled=%s, force_refresh=%s" % (cache_enabled, force_refresh_browsing), module="Channels")
+            log.info("Cache status: enabled=%s, force_refresh=%s" %
+                     (cache_enabled, force_refresh_browsing), module="Channels")
 
         except Exception as e:
             log.error("load_channels failed: %s" % e, module="Channels")
@@ -411,21 +460,33 @@ class ChannelsBrowser(BaseBrowser):
 
     def update_channel_selection(self, index):
         """Update selection and load logo"""
-        log.debug("update_channel_selection called with index: %d" % index, module="Channels")
+        log.debug(
+            "update_channel_selection called with index: %d" %
+            index, module="Channels")
         if 0 <= index < len(self.menu_channels):
             self.current_channel = self.menu_channels[index]
-            log.debug("Selected channel: %s" % self.current_channel['name'], module="Channels")
-            log.debug("Stream URL: %s" % self.current_channel.get('stream_url', 'NONE'), module="Channels")
+            log.debug(
+                "Selected channel: %s" %
+                self.current_channel['name'],
+                module="Channels")
+            log.debug(
+                "Stream URL: %s" %
+                self.current_channel.get(
+                    'stream_url',
+                    'NONE'),
+                module="Channels")
 
             logo_url = self.current_channel.get('logo')
             if logo_url:
-                log.debug("Loading logo: %s..." % logo_url[:50], module="Channels")
+                log.debug("Loading logo: %s..." %
+                          logo_url[:50], module="Channels")
                 self.download_logo(logo_url)
             else:
                 log.debug("No logo available", module="Channels")
                 self["logo"].hide()
         else:
-            log.error("ERROR: Index %d out of range (0-%d)" % (index, len(self.menu_channels) - 1), module="Channels")
+            log.error("ERROR: Index %d out of range (0-%d)" %
+                      (index, len(self.menu_channels) - 1), module="Channels")
 
     def update_logo(self, picInfo=None):
         """Update logo pixmap"""
@@ -465,7 +526,9 @@ class ChannelsBrowser(BaseBrowser):
                     if f:
                         f.close()
             except Exception as e:
-                log.error("Error creating temp file: %s" % e, module="Channels")
+                log.error(
+                    "Error creating temp file: %s" %
+                    e, module="Channels")
                 self["logo"].hide()
                 return
 
@@ -481,9 +544,8 @@ class ChannelsBrowser(BaseBrowser):
 
             try:
                 unlink(temp_path)
-            except:
+            except BaseException:
                 pass
-
 
         except Exception as e:
             log.error("Error downloading logo: %s" % e, module="Channels")
@@ -503,18 +565,24 @@ class ChannelsBrowser(BaseBrowser):
 
             # Create bouquet name: prefix_countrycode
             bouquet_name = "%s_%s" % (prefix.lower(), country_code.lower())
-            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (tag, bouquet_name)
+            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (
+                tag, bouquet_name)
 
             valid_count = 0
             with open(userbouquet_file, "w") as f:
                 # Use prefix in display name
                 f.write("#NAME %s - %s\n" % (prefix, country_code.upper()))
-                f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | %s %s | ---\n" % (prefix, country_code.upper()))
-                f.write("#DESCRIPTION --- | %s %s | ---\n" % (prefix, country_code.upper()))
+                f.write(
+                    "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | %s %s | ---\n" %
+                    (prefix, country_code.upper()))
+                f.write(
+                    "#DESCRIPTION --- | %s %s | ---\n" %
+                    (prefix, country_code.upper()))
 
                 for channel in channels:
                     name = channel.get('name', '')
-                    stream_url = channel.get('stream_url') or channel.get('url', '')
+                    stream_url = channel.get(
+                        'stream_url') or channel.get('url', '')
 
                     if not stream_url:
                         continue
@@ -522,7 +590,9 @@ class ChannelsBrowser(BaseBrowser):
                     url_encoded = stream_url.replace(":", "%3a")
                     name_encoded = name.replace(":", "%3a")
 
-                    f.write("#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" % (url_encoded, name_encoded))
+                    f.write(
+                        "#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" %
+                        (url_encoded, name_encoded))
                     f.write("#DESCRIPTION %s\n" % name)
 
                     valid_count += 1
@@ -533,7 +603,8 @@ class ChannelsBrowser(BaseBrowser):
             self._add_to_bouquets_tv(tag, bouquet_name)
             self._reload_bouquets()
 
-            return True, "Exported %d channels for %s" % (valid_count, country_code.upper())
+            return True, "Exported %d channels for %s" % (
+                valid_count, country_code.upper())
 
         except Exception as e:
             return False, "Error: %s" % str(e)
@@ -552,7 +623,8 @@ class ChannelsBrowser(BaseBrowser):
                 channels = cache.get_country_channels(country_code)
 
                 if channels:
-                    success, message = self.generate_country_bouquet(country_code, channels)
+                    success, message = self.generate_country_bouquet(
+                        country_code, channels)
                     results.append((country_code, success, message))
 
             # Also create a bouquet containing all countries
@@ -562,7 +634,8 @@ class ChannelsBrowser(BaseBrowser):
                     if success:
                         channels = cache.get_country_channels(country_code)
                         if channels:
-                            all_channels.extend(channels[:10])  # Limit to 10 for country
+                            # Limit to 10 for country
+                            all_channels.extend(channels[:10])
 
                 if all_channels:
                     self.export_to_bouquet(all_channels, "all_countries")
@@ -576,13 +649,17 @@ class ChannelsBrowser(BaseBrowser):
         """Load ONLY the export settings actually used in channels browser"""
         try:
             config = get_config()
-            self.max_channels_for_bouquet = config.get("max_channels_for_bouquet", 100)
-            self.bouquet_name_prefix = config.get("bouquet_name_prefix", "TVGarden")
+            self.max_channels_for_bouquet = config.get(
+                "max_channels_for_bouquet", 100)
+            self.bouquet_name_prefix = config.get(
+                "bouquet_name_prefix", "TVGarden")
             log.debug("Local export settings loaded", module="Channels")
         except Exception as e:
             self.max_channels_for_bouquet = 100
             self.bouquet_name_prefix = "TVGarden"
-            log.error("Error loading export settings: %s" % e, module="Channels")
+            log.error(
+                "Error loading export settings: %s" %
+                e, module="Channels")
 
     def export_current_view(self):
         """Export CURRENTLY VISIBLE channels to bouquet"""
@@ -601,9 +678,11 @@ class ChannelsBrowser(BaseBrowser):
             display_name = self.country_name
             safe_name = self.country_code.lower() if self.country_code else "country"
         elif self.category_name:
-            base_name = self.category_name.split(' (')[0] if ' (' in self.category_name else self.category_name
+            base_name = self.category_name.split(
+                ' (')[0] if ' (' in self.category_name else self.category_name
             display_name = base_name
-            safe_name = ''.join(c for c in base_name.lower() if c.isalnum() or c == '_')[:30]
+            safe_name = ''.join(c for c in base_name.lower()
+                                if c.isalnum() or c == '_')[:30]
         else:
             display_name = _("Channels")
             safe_name = "channels"
@@ -616,11 +695,12 @@ class ChannelsBrowser(BaseBrowser):
         )
 
         self.session.openWithCallback(
-            lambda r: self.execute_export(bouquet_name, display_name) if r else None,
+            lambda r: self.execute_export(
+                bouquet_name,
+                display_name) if r else None,
             MessageBox,
             msg,
-            MessageBox.TYPE_YESNO
-        )
+            MessageBox.TYPE_YESNO)
 
     def execute_export(self, bouquet_name, display_name):
         """Perform actual export"""
@@ -652,13 +732,15 @@ class ChannelsBrowser(BaseBrowser):
         menu_idx = self["menu"].getSelectedIndex()
         log.debug("Menu index: %d" % menu_idx, module="Channels")
 
-        if menu_idx is None or menu_idx < 0 or menu_idx >= len(self.menu_channels):
+        if menu_idx is None or menu_idx < 0 or menu_idx >= len(
+                self.menu_channels):
             log.error("ERROR: Invalid index %d" % menu_idx, module="Channels")
             return
 
         # 2. Get the selected channel by index
         selected_channel = self.menu_channels[menu_idx]
-        stream_url = selected_channel.get("stream_url") or selected_channel.get("url")
+        stream_url = selected_channel.get(
+            "stream_url") or selected_channel.get("url")
 
         if not stream_url:
             self["status"].setText(_("No stream URL"))
@@ -666,7 +748,10 @@ class ChannelsBrowser(BaseBrowser):
 
         # 3. Critical debug info
         log.debug("===== PASSING TO PLAYER =====", module="Channels")
-        log.debug("Channel: %s" % selected_channel.get('name'), module="Channels")
+        log.debug(
+            "Channel: %s" %
+            selected_channel.get('name'),
+            module="Channels")
         log.debug("Index: %d" % menu_idx, module="Channels")
         log.debug("Total: %d" % len(self.menu_channels), module="Channels")
         log.debug("URL: %s..." % stream_url[:80], module="Channels")
