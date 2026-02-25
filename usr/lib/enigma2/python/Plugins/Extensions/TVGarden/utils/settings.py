@@ -715,51 +715,6 @@ class TVGardenSettings(ConfigListScreen, Screen):
         
         self.updateStatus()
 
-    # def keyUp(self):
-        # """Up arrow - navigate skipping separators."""
-        # # Save current position
-        # # current_index = self["config"].getCurrentIndex()
-
-        # # Navigate up
-        # ConfigListScreen.keyUp(self)
-
-        # # Check if we are on a separator
-        # current = self["config"].getCurrent()
-        # if current:
-            # display_name = current[0]
-            # config_item = current[1]
-
-            # # If it's a separator, skip another item up
-            # if "===" in display_name or isinstance(config_item, ConfigNothing):
-                # # If not already at the top, move up one more
-                # if self["config"].getCurrentIndex() > 0:
-                    # self["config"].instance.moveSelection(self["config"].instance.moveUp)
-
-        # self.updateStatus()
-
-    # def keyDown(self):
-        # """Down arrow - navigate skipping separators."""
-        # # Save current position
-        # # current_index = self["config"].getCurrentIndex()
-        # list_length = len(self["config"].list)
-
-        # # Navigate down
-        # ConfigListScreen.keyDown(self)
-
-        # # Check if we are on a separator
-        # current = self["config"].getCurrent()
-        # if current:
-            # display_name = current[0]
-            # config_item = current[1]
-
-            # # If it's a separator, skip another item down
-            # if "===" in display_name or isinstance(config_item, ConfigNothing):
-                # # If not already at the bottom, move down one more
-                # if self["config"].getCurrentIndex() < list_length - 1:
-                    # self["config"].instance.moveSelection(self["config"].instance.moveDown)
-
-        # self.updateStatus()
-
     def keyLeft(self):
         """Left arrow - navigation only."""
         # ConfigListScreen.keyLeft(self)

@@ -1,13 +1,13 @@
 <screen name="CategoriesBrowser" position="center,center" size="2560,1440" title="TV Garden" backgroundColor="#1a1a2e" flags="wfNoBorder">
-	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/redbutton.png" position="63,1384" size="280,8" transparent="1" alphatest="blend"/>
-	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/greenbutton.png" position="348,1384" size="280,8" transparent="1" alphatest="blend"/>
-	<ePixmap name="" position="0,0" size="2560,1440" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/wqhd/background.png" scale="1" alphatest="blend"/>
-	<ePixmap name="" position="2165,1058" size="340,130" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" alphatest="blend"/>
-	<widget source="key_red" render="Label" position="66,1303" zPosition="1" size="300,80" font="Regular;43" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend"/>
-	<widget source="key_green" render="Label" position="363,1303" zPosition="1" size="300,80" font="Regular;43" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend"/>
-	<widget name="menu" position="64,214" size="1360,982" font="Regular;43" itemHeight="67" scrollbarMode="showOnDemand" backgroundColor="#16213e"/>
-	<widget name="status" position="1273,1293" size="1252,91" font="Regular; 43" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend"/>
-	<eLabel backgroundColor="#001a2336" cornerRadius="30" position="11,1279" size="2540,120" zPosition="-80"/>
-	<eLabel name="" position="48,203" size="1388,1004" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c"/>
-	<widget source="session.VideoPicture" render="Pig" position="1479,280" zPosition="19" size="1040,616" backgroundColor="transparent" transparent="0" cornerRadius="14"/>
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/redbutton.png" position="63,1384" size="280,8" alphatest="blend" transparent="1" />
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/greenbutton.png" position="348,1384" size="280,8" alphatest="blend" transparent="1" />
+	<ePixmap name="" position="0,0" size="2560,1440" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
+	<ePixmap name="" position="2235,1083" size="267,107" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" />
+	<widget source="key_red" render="Label" position="67,1294" zPosition="1" size="280,80" font="Regular;43" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
+	<widget source="key_green" render="Label" position="347,1294" zPosition="1" size="280,80" font="Regular;43" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
+	<widget name="menu" position="64,214" size="1360,1000" font="Regular;43" itemHeight="67" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
+	<widget name="status" position="1228,1302" size="1302,82" font="Regular; 43" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
+	<eLabel backgroundColor="#001a2336" cornerRadius="30" position="11,1279" size="2540,120" zPosition="-80" />
+	<eLabel name="" position="48,203" size="1387,1023" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
+	<widget source="session.VideoPicture" render="Pig" position="1479,280" zPosition="19" size="1040,616" backgroundColor="transparent" transparent="0" cornerRadius="14" />
 </screen>
