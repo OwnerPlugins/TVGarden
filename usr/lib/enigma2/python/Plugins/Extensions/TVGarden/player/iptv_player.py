@@ -143,7 +143,8 @@ class TvInfoBarShowHide():
     def get_current_channel_info(self):
         """Method to be overridden by the child class (TVGardenPlayer)"""
         if hasattr(self, 'channel_list') and hasattr(self, 'current_index'):
-            if self.channel_list and 0 <= self.current_index < len(self.channel_list):
+            if self.channel_list and 0 <= self.current_index < len(
+                    self.channel_list):
                 channel = self.channel_list[self.current_index]
                 name = channel.get('name', 'N/A')
                 index = self.current_index + 1
@@ -165,7 +166,8 @@ class TvInfoBarShowHide():
         """Show both overlays with controls and channel info."""
         try:
             # Controls text
-            controls = _("CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla")
+            controls = _(
+                "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla")
 
             # Get channel info
             channel_info = self.get_current_channel_info()
@@ -287,7 +289,13 @@ class TvInfoBarShowHide():
             self.startHideTimer()
 
 
-class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications, TvInfoBarShowHide, Screen):
+class TVGardenPlayer(
+        InfoBarBase,
+        InfoBarSeek,
+        InfoBarAudioSelection,
+        InfoBarNotifications,
+        TvInfoBarShowHide,
+        Screen):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
@@ -314,11 +322,18 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
         InfoBarNotifications.__init__(self)
         TvInfoBarShowHide.__init__(self)
 
-        log.debug("INIT: Got %d channels, starting at index %d" % (self.itemscount, self.current_index), module="Player")
+        log.debug("INIT: Got %d channels, starting at index %d" %
+                  (self.itemscount, self.current_index), module="Player")
         if self.channel_list:
             current_ch = self.channel_list[self.current_index]
-            log.debug("Current channel: %s" % current_ch.get('name'), module="Player")
-            log.debug("Current URL: %s" % (current_ch.get('stream_url') or current_ch.get('url')), module="Player")
+            log.debug(
+                "Current channel: %s" %
+                current_ch.get('name'),
+                module="Player")
+            log.debug(
+                "Current URL: %s" %
+                (current_ch.get('stream_url') or current_ch.get('url')),
+                module="Player")
 
         self['actions'] = ActionMap(
             [
@@ -376,7 +391,8 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
 
     def get_current_channel_info(self):
         """Override for TvInfoBarShowHide"""
-        if self.channel_list and 0 <= self.current_index < len(self.channel_list):
+        if self.channel_list and 0 <= self.current_index < len(
+                self.channel_list):
             channel = self.channel_list[self.current_index]
             name = channel.get('name', 'N/A')
             index = self.current_index + 1
@@ -398,8 +414,7 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
             player_type = self.config.get("player", "auto")
 
             return "{} [{}/{}]{} | {} | {}KB | {}".format(
-                name, index, total, extra_str, hw_accel, buffer_size, player_type
-            )
+                name, index, total, extra_str, hw_accel, buffer_size, player_type)
         return "TV Garden Player"
 
     def should_use_hardware_acceleration(self, stream_url):
@@ -468,7 +483,8 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
         if player == "exteplayer3" and buffer_size_kb > 0:
             buffer_size_bytes = buffer_size_kb * 1024
             ref_str += "?buffersize=%d" % buffer_size_bytes
-            log.debug("Added buffer size: %sKB (%s bytes)" % (buffer_size_kb, buffer_size_bytes), module="Player")
+            log.debug("Added buffer size: %sKB (%s bytes)" %
+                      (buffer_size_kb, buffer_size_bytes), module="Player")
         return ref_str
 
     def is_problematic_stream(self, url):
@@ -496,8 +512,7 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
         message = (
             "Warning: %s\n\n"
             "This stream might use encryption or DRM that is not supported by your receiver.\n\n"
-            "Try another channel."
-        ) % channel_name
+            "Try another channel.") % channel_name
         self.session.open(MessageBox, message, MessageBox.TYPE_WARNING)
 
     def start_stream(self):
@@ -507,14 +522,21 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
             return
 
         current_channel = self.channel_list[self.current_index]
-        stream_url = current_channel.get('stream_url') or current_channel.get('url')
+        stream_url = current_channel.get(
+            'stream_url') or current_channel.get('url')
         channel_name = current_channel.get('name', 'TV Garden')
 
         if not stream_url:
-            log.error("No stream URL for channel %d" % self.current_index, module="Player")
+            log.error(
+                "No stream URL for channel %d" %
+                self.current_index, module="Player")
             return
 
-        log.info("Playing channel %d: %s" % (self.current_index, channel_name), module="Player")
+        log.info(
+            "Playing channel %d: %s" %
+            (self.current_index,
+             channel_name),
+            module="Player")
         log.debug("URL: %s..." % stream_url[:80], module="Player")
 
         use_hw_accel = self.config.get("use_hardware_acceleration", True)
@@ -523,20 +545,31 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
 
         log.info("=== PERFORMANCE SETTINGS ===", module="Player")
         log.info("Player: %s" % player_type, module="Player")
-        log.info("Hardware Acceleration: %s" % ("ENABLED" if use_hw_accel else "DISABLED"), module="Player")
+        log.info(
+            "Hardware Acceleration: %s" %
+            ("ENABLED" if use_hw_accel else "DISABLED"),
+            module="Player")
         log.info("Buffer Size: %s KB" % buffer_size, module="Player")
 
         # Decisione HW acceleration
         if self.should_use_hardware_acceleration(stream_url):
-            log.info("HW Acceleration decision: WILL USE for this stream", module="Player")
+            log.info(
+                "HW Acceleration decision: WILL USE for this stream",
+                module="Player")
         else:
-            log.info("HW Acceleration decision: WILL NOT USE for this stream", module="Player")
+            log.info(
+                "HW Acceleration decision: WILL NOT USE for this stream",
+                module="Player")
 
         # Buffer size application
         if player_type == "exteplayer3" and buffer_size > 0:
-            log.info("Buffer size will be applied: %s bytes" % (buffer_size * 1024), module="Player")
+            log.info(
+                "Buffer size will be applied: %s bytes" %
+                (buffer_size * 1024), module="Player")
         else:
-            log.info("Buffer size setting may not apply to player: %s" % player_type, module="Player")
+            log.info(
+                "Buffer size setting may not apply to player: %s" %
+                player_type, module="Player")
 
         # Check if the URL may be problematic
         if self.is_problematic_stream(stream_url):
@@ -559,17 +592,20 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
             # Build service reference string with additional parameters
             if self.should_use_hardware_acceleration(stream_url):
 
-                ref_str = self.build_service_ref_with_hw_accel(url_encoded, name_encoded)
+                ref_str = self.build_service_ref_with_hw_accel(
+                    url_encoded, name_encoded)
                 log.debug("Using hardware acceleration", module="Player")
             else:
                 # Use standard format
-                ref_str = self.build_standard_service_ref(url_encoded, name_encoded)
+                ref_str = self.build_standard_service_ref(
+                    url_encoded, name_encoded)
                 log.debug("Using standard playback", module="Player")
 
             # Add buffer size if supported
             ref_str = self.add_buffer_size_param(ref_str, buffer_size)
 
-            log.debug("ServiceRef string: " + ref_str[:100] + "...", module="Player")
+            log.debug("ServiceRef string: " +
+                      ref_str[:100] + "...", module="Player")
 
             sref = eServiceReference(ref_str)
             sref.setName(channel_name)
@@ -600,7 +636,9 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
                 info = service.info()
                 if info:
                     # If we can retrieve info, the stream is likely working
-                    log.info("Stream appears to be playing correctly", module="Player")
+                    log.info(
+                        "Stream appears to be playing correctly",
+                        module="Player")
                     return
         except Exception:
             pass
@@ -613,7 +651,7 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
             self.stream_running = False
             try:
                 self.session.nav.stopService()
-            except:
+            except BaseException:
                 pass
 
     def restartAfterEOF(self):
@@ -661,7 +699,9 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
                     log.debug("Audio tracks: %d" % num_tracks, module="Player")
                     if num_tracks > 0:
                         audio.selectTrack(0)
-                        log.debug("Audio tracks reset successfully", module="Player")
+                        log.debug(
+                            "Audio tracks reset successfully",
+                            module="Player")
                     else:
                         log.debug("No audio tracks available", module="Player")
         except Exception as e:
@@ -669,10 +709,12 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
 
     def show_channel_info(self):
         """Display information for the current channel."""
-        if self.channel_list and 0 <= self.current_index < len(self.channel_list):
+        if self.channel_list and 0 <= self.current_index < len(
+                self.channel_list):
             channel = self.channel_list[self.current_index]
             info = "Channel: %s\n" % channel.get('name', 'N/A')
-            info += "Index: %d/%d\n" % (self.current_index + 1, self.itemscount)
+            info += "Index: %d/%d\n" % (self.current_index +
+                                        1, self.itemscount)
             # Add performance settings info
             use_hw_accel = self.config.get("use_hardware_acceleration", True)
             buffer_size = self.config.get("buffer_size", 2048)
@@ -717,7 +759,8 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
 
         if self.eof_count <= 3:
             delay = 2 + (self.eof_count * 2)  # 2, 4, 6 seconds
-            log.info("Restarting in %d seconds (attempt %d/3)" % (delay, self.eof_count), module="Player")
+            log.info("Restarting in %d seconds (attempt %d/3)" %
+                     (delay, self.eof_count), module="Player")
             self.eof_recovery_timer.start(delay * 1000, True)
         else:
             log.warning("Too many EOFs, stopping", module="Player")
@@ -741,7 +784,7 @@ class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNot
         if self.srefInit:
             try:
                 self.session.nav.playService(self.srefInit)
-            except:
+            except BaseException:
                 pass
 
     def leave_player(self):

@@ -24,35 +24,35 @@ class TVGardenAbout(Screen):
         <screen name="TVGardenAbout" position="center,center" size="1920,1080" title="TV Garden" backgroundColor="#1a1a2e" flags="wfNoBorder">
             <!-- Button pixmaps (solo rosso) -->
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/redbutton.png" position="47,1038" size="210,6" alphatest="blend" transparent="1" />
-            
+
             <!-- Donation icons (doppie per About) -->
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
-            
+
             <!-- Background -->
             <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
-            
+
             <!-- Logo -->
             <ePixmap name="" position="1676,812" size="200,80" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" />
-            
+
             <!-- Button text (solo rosso) -->
             <widget source="key_red" render="Label" position="50,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
-            
+
             <!-- Scrolltext (testo About) -->
             <widget name="scrolltext" position="48,160" size="1020,711" font="Regular;28" halign="left" valign="top" foregroundColor="#e0e0e0" transparent="1" zPosition="2" />
-            
+
             <!-- Title -->
             <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
-            
+
             <!-- Version -->
             <widget name="version" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" render="Label" />
-            
+
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
-            
+
             <!-- Text background -->
             <eLabel name="" position="36,152" size="1040,767" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            
+
             <!-- Video Picture -->
             <widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="transparent" transparent="0" cornerRadius="14" />
         </screen>
@@ -63,7 +63,9 @@ class TVGardenAbout(Screen):
         dynamic_skin = self.config.load_skin("TVGardenAbout", self.skin)
         self.skin = dynamic_skin
         Screen.__init__(self, session)
-        self['title'] = StaticText("TV Garden %s | by Lululla" % PLUGIN_VERSION)
+        self['title'] = StaticText(
+            "TV Garden %s | by Lululla" %
+            PLUGIN_VERSION)
         self["scrolltext"] = ScrollLabel()
         self["version"] = StaticText("")
         self["key_red"] = StaticText(_("Close"))
@@ -94,8 +96,9 @@ class TVGardenAbout(Screen):
             countries_count = "Loading..."
             try:
                 metadata = cache.get_countries_metadata()
-                countries_count = str(len([c for c in metadata.values() if c.get('hasChannels', False)]))
-            except:
+                countries_count = str(
+                    len([c for c in metadata.values() if c.get('hasChannels', False)]))
+            except BaseException:
                 countries_count = "150+"
 
             # Get cache info
@@ -122,7 +125,8 @@ class TVGardenAbout(Screen):
                     if total_size < 1024 * 1024:  # Less than 1MB
                         cache_size_str = "%d KB" % (total_size // 1024)
                     else:
-                        cache_size_str = "%.1f MB" % (total_size / (1024 * 1024))
+                        cache_size_str = "%.1f MB" % (
+                            total_size / (1024 * 1024))
                     cache_info = "%d files, %s" % (cache_files, cache_size_str)
                 else:
                     cache_info = "Empty"
@@ -149,7 +153,8 @@ class TVGardenAbout(Screen):
             # Auto-scroll after 5 seconds
             self.scroll_timer = eTimer()
             try:
-                self.scroll_timer_conn = self.scroll_timer.timeout.connect(self.auto_scroll)
+                self.scroll_timer_conn = self.scroll_timer.timeout.connect(
+                    self.auto_scroll)
             except AttributeError:
                 self.scroll_timer.callback.append(self.auto_scroll)
             self.scroll_timer.start(5000, False)

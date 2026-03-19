@@ -40,42 +40,42 @@ class CountriesBrowser(BaseBrowser):
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/greenbutton.png" position="261,1038" size="210,6" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/yellowbutton.png" position="474,1038" size="210,6" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/bluebutton.png" position="688,1038" size="210,6" alphatest="blend" transparent="1" />
-            
-            <!-- 
+
+            <!--
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
             -->
-            
+
             <!-- Background -->
             <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
-            
+
             <!-- Logo -->
             <ePixmap name="" position="1676,812" size="200,80" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" />
-            
+
             <!-- Button texts -->
             <widget source="key_red" render="Label" position="50,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
             <widget source="key_green" render="Label" position="260,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
             <widget source="key_yellow" render="Label" position="470,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
             <widget source="key_blue" render="Label" position="680,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
-            
+
             <!-- Menu -->
             <widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
-            
+
             <!-- Title -->
             <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
-            
+
             <!-- Status -->
             <widget name="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
-            
+
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
-            
+
             <!-- Menu background -->
             <eLabel name="" position="36,152" size="1040,767" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            
+
             <!-- Video Picture -->
             <widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="transparent" transparent="0" cornerRadius="14" />
-            
+
             <!-- Flag (specifico per CountriesBrowser) -->
             <widget name="flag" position="1149,719" size="285,180" alphatest="blend" scale="1" zPosition="4" />
         </screen>
@@ -97,7 +97,9 @@ class CountriesBrowser(BaseBrowser):
         log.info("Flags enabled using loadPNG method", module="Countries")
         self["menu"] = MenuList([], enableWrapAround=True)
         self["menu"].onSelectionChanged.append(self.onSelectionChanged)
-        self['title'] = StaticText("TV Garden %s | by Lululla" % PLUGIN_VERSION)
+        self['title'] = StaticText(
+            "TV Garden %s | by Lululla" %
+            PLUGIN_VERSION)
         self["status"] = StaticText(_("Loading countries..."))
         self["flag"] = Pixmap()
         self["key_red"] = StaticText(_("Back"))
@@ -132,7 +134,9 @@ class CountriesBrowser(BaseBrowser):
                 self.timer.callback = []
                 self.timer.stop()
             except Exception as e:
-                log.debug("Error stopping timer: {}".format(e), module="Countries")
+                log.debug(
+                    "Error stopping timer: {}".format(e),
+                    module="Countries")
             finally:
                 self.timer = None
 
@@ -141,7 +145,9 @@ class CountriesBrowser(BaseBrowser):
                 self.flag_timer.callback = []
                 self.flag_timer.stop()
             except Exception as e:
-                log.debug("Error stopping flag_timer: {}".format(e), module="Countries")
+                log.debug(
+                    "Error stopping flag_timer: {}".format(e),
+                    module="Countries")
             finally:
                 self.flag_timer = None
 
@@ -151,7 +157,9 @@ class CountriesBrowser(BaseBrowser):
                 try:
                     unlink(self.current_flag_path)
                 except Exception as e:
-                    log.debug("Error deleting temp file: {}".format(e), module="Countries")
+                    log.debug(
+                        "Error deleting temp file: {}".format(e),
+                        module="Countries")
             self.current_flag_path = None
 
         # Remove picload callback
@@ -177,7 +185,7 @@ class CountriesBrowser(BaseBrowser):
         if hasattr(self, 'picload') and self.picload:
             try:
                 pass
-            except:
+            except BaseException:
                 pass
             finally:
                 self.picload = None
@@ -186,7 +194,7 @@ class CountriesBrowser(BaseBrowser):
         try:
             if hasattr(self["menu"], 'onSelectionChanged'):
                 self["menu"].onSelectionChanged = []
-        except:
+        except BaseException:
             pass
 
     def load_countries(self):
@@ -195,12 +203,14 @@ class CountriesBrowser(BaseBrowser):
             # Get cache configuration
             config = get_config()
             cache_enabled = config.get("cache_enabled", True)
-            force_refresh_browsing = config.get("force_refresh_browsing", False)
+            force_refresh_browsing = config.get(
+                "force_refresh_browsing", False)
 
             # Load metadata with cache config
             if hasattr(self.cache, 'get_countries_metadata'):
                 try:
-                    metadata = self.cache.get_countries_metadata(force_refresh=force_refresh_browsing)
+                    metadata = self.cache.get_countries_metadata(
+                        force_refresh=force_refresh_browsing)
                 except TypeError:
                     # If the method does not support force_refresh
                     metadata = self.cache.get_countries_metadata()
@@ -208,7 +218,9 @@ class CountriesBrowser(BaseBrowser):
                 # Fallback
                 metadata = {}
 
-            log.debug("Metadata received: %d countries" % len(metadata), module="Countries")
+            log.debug(
+                "Metadata received: %d countries" %
+                len(metadata), module="Countries")
 
             self.countries = []
             for code, info in metadata.items():
@@ -243,7 +255,8 @@ class CountriesBrowser(BaseBrowser):
                 # Load initial flag with delay
                 self.timer = eTimer()
                 try:
-                    self.timer_conn = self.timer.timeout.connect(self.load_initial_flag)
+                    self.timer_conn = self.timer.timeout.connect(
+                        self.load_initial_flag)
                 except AttributeError:
                     self.timer.callback.append(self.load_initial_flag)
                 self.timer.start(100, True)
@@ -261,7 +274,8 @@ class CountriesBrowser(BaseBrowser):
         self["status"].setText(_("Refreshing..."))
         try:
             config = get_config()
-            refresh_method = config.get("refresh_method", "clear_cache")  # "clear_cache" o "force_refresh"
+            # "clear_cache" o "force_refresh"
+            refresh_method = config.get("refresh_method", "clear_cache")
 
             if refresh_method == "clear_cache":
                 # Clean all cache
@@ -304,9 +318,15 @@ class CountriesBrowser(BaseBrowser):
 
             # DEBUG: mostra info
             log.debug("=" * 50, module="Countries")
-            log.debug("SELECTED COUNTRY: %s (%s)" %
-                      (self.selected_country['name'], flag_code), module="Countries")
-            log.debug("Channels: %d" % self.selected_country['channels'], module="Countries")
+            log.debug(
+                "SELECTED COUNTRY: %s (%s)" %
+                (self.selected_country['name'],
+                 flag_code),
+                module="Countries")
+            log.debug(
+                "Channels: %d" %
+                self.selected_country['channels'],
+                module="Countries")
 
             flag_url = "https://flagcdn.com/w80/%s.png" % flag_code
             log.debug("Flag URL: %s" % flag_url, module="Countries")
@@ -333,7 +353,9 @@ class CountriesBrowser(BaseBrowser):
             # Hide first
             self["flag"].hide()
 
-            log.debug("Loading flag for: %s" % country_code, module="Countries")
+            log.debug(
+                "Loading flag for: %s" %
+                country_code, module="Countries")
 
             # Download flag
             req = Request(url, headers={'User-Agent': 'TVGarden-Enigma2/1.0'})
@@ -343,16 +365,22 @@ class CountriesBrowser(BaseBrowser):
                 response = urlopen(req, timeout=5)
                 if response.getcode() == 200:
                     flag_data = response.read()
-                    log.debug("Downloaded %d bytes" % len(flag_data), module="Countries")
+                    log.debug(
+                        "Downloaded %d bytes" %
+                        len(flag_data), module="Countries")
                 else:
-                    log.warning("HTTP %d for flag %s" % (response.getcode(), country_code), module="Countries")
+                    log.warning(
+                        "HTTP %d for flag %s" %
+                        (response.getcode(), country_code), module="Countries")
                     return
             finally:
                 if response:
                     response.close()
 
             if not flag_data:
-                log.warning("No data for flag %s" % country_code, module="Countries")
+                log.warning(
+                    "No data for flag %s" %
+                    country_code, module="Countries")
                 return
 
             # Save temporarily
@@ -387,12 +415,18 @@ class CountriesBrowser(BaseBrowser):
                         self["flag"].instance.setScale(1)
                         self["flag"].instance.invalidate()
                         self["flag"].instance.show()
-                        log.info("✓ Flag displayed for %s" % country_code, module="Countries")
+                        log.info(
+                            "✓ Flag displayed for %s" %
+                            country_code, module="Countries")
                     else:
-                        log.warning("loadPNG returned None for %s" % country_code, module="Countries")
+                        log.warning(
+                            "loadPNG returned None for %s" %
+                            country_code, module="Countries")
 
                 except ImportError as e:
-                    log.error("loadPNG not available: %s" % e, module="Countries")
+                    log.error(
+                        "loadPNG not available: %s" %
+                        e, module="Countries")
                 except Exception as e:
                     log.error("loadPNG error: %s" % e, module="Countries")
                     import traceback
@@ -401,11 +435,13 @@ class CountriesBrowser(BaseBrowser):
             # Cleanup
             try:
                 os.unlink(temp_path)
-            except:
+            except BaseException:
                 pass
 
         except Exception as e:
-            log.error("Flag error %s: %s" % (country_code, e), module="Countries")
+            log.error(
+                "Flag error %s: %s" %
+                (country_code, e), module="Countries")
             import traceback
             traceback.print_exc()
             # Hide if all failed
@@ -415,7 +451,7 @@ class CountriesBrowser(BaseBrowser):
         """Load a default/placeholder flag"""
         try:
             self["flag"].hide()
-        except:
+        except BaseException:
             pass
 
     def update_flag(self, picInfo=None):
@@ -423,7 +459,9 @@ class CountriesBrowser(BaseBrowser):
         # This is called when picload finishes async decode
         # We're using sync decode mainly, but keep this for compatibility
         if picInfo:
-            log.debug("Async decode finished: %s" % picInfo, module="Countries")
+            log.debug(
+                "Async decode finished: %s" %
+                picInfo, module="Countries")
 
     def select_country(self):
         """Select a country and show its channels"""
@@ -431,20 +469,23 @@ class CountriesBrowser(BaseBrowser):
             self["status"].setText(_("No country selected"))
             return
 
-        log.info("Opening channels for: {}".format(self.selected_country['code']), module="Countries")
+        log.info(
+            "Opening channels for: {}".format(
+                self.selected_country['code']),
+            module="Countries")
 
         # Cleanup before opening new screen
         if self.current_flag_path and exists(self.current_flag_path):
             try:
                 unlink(self.current_flag_path)
-            except:
+            except BaseException:
                 pass
 
         # Additional minor cleanup
         if hasattr(self, 'flag_timer') and self.flag_timer:
             try:
                 self.flag_timer.stop()
-            except:
+            except BaseException:
                 pass
 
         self.session.open(

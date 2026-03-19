@@ -172,7 +172,7 @@ class TVGardenMain(Screen):
         <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/yellowbutton.png" position="474,1038" size="210,6" alphatest="blend" transparent="1" />
         <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/bluebutton.png" position="688,1038" size="210,6" alphatest="blend" transparent="1" />
         <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />		
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
         <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
         <ePixmap name="" position="1676,812" size="200,80" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" />
         <widget source="key_red" render="Label" position="50,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
@@ -193,7 +193,7 @@ class TVGardenMain(Screen):
         self.config = PluginConfig()
         dynamic_skin = self.config.load_skin("TVGardenMain", self.skin)
         self.skin = dynamic_skin
-        
+
         print('Skin is:\n', self.skin)
 
         Screen.__init__(self, session)
@@ -228,11 +228,14 @@ class TVGardenMain(Screen):
         test_url = get_metadata_url()
         try:
             data = self.cache.fetch_url(test_url, force_refresh=False)
-            log.info("✓ Cache test OK: %s, %d items" % (type(data), len(data) if data else 0), module="Test")
+            log.info("✓ Cache test OK: %s, %d items" %
+                     (type(data), len(data) if data else 0), module="Test")
             self.update_cache_status()
         except Exception as e:
             log.error("✗ Cache test failed: %s" % str(e), module="Test")
-            self["status"].setText("TV Garden v.%s | Cache error" % PLUGIN_VERSION)
+            self["status"].setText(
+                "TV Garden v.%s | Cache error" %
+                PLUGIN_VERSION)
 
     def select_item(self):
         """Handle menu item selection"""
@@ -275,8 +278,7 @@ class TVGardenMain(Screen):
 
                 if cache_count > 0:
                     new_status = "TV Garden v.%s | Cache: %d files (%.1fKB)" % (
-                        PLUGIN_VERSION, cache_count, cache_size_kb
-                    )
+                        PLUGIN_VERSION, cache_count, cache_size_kb)
                 else:
                     new_status = "TV Garden v.%s | Cache: empty" % PLUGIN_VERSION
             else:
@@ -286,8 +288,12 @@ class TVGardenMain(Screen):
             log.debug("Cache status updated: %s" % new_status, module="Main")
 
         except Exception as e:
-            log.error("Error updating cache status: %s" % str(e), module="Main")
-            self["status"].setText("TV Garden v.%s | Status error" % PLUGIN_VERSION)
+            log.error(
+                "Error updating cache status: %s" %
+                str(e), module="Main")
+            self["status"].setText(
+                "TV Garden v.%s | Status error" %
+                PLUGIN_VERSION)
 
     def refresh_data(self):
         """Refresh cache and metadata"""
@@ -298,7 +304,8 @@ class TVGardenMain(Screen):
             self.cache.clear_all()
 
             # Force refresh countries metadata
-            countries_data = self.cache.get_countries_metadata(force_refresh=True)
+            countries_data = self.cache.get_countries_metadata(
+                force_refresh=True)
 
             # Update status using the same method
             self.update_cache_status()
@@ -306,9 +313,9 @@ class TVGardenMain(Screen):
             # Show completion message
             self.session.open(
                 MessageBox,
-                _("Refresh completed!\nLoaded %d countries") % len(countries_data),
-                MessageBox.TYPE_INFO
-            )
+                _("Refresh completed!\nLoaded %d countries") %
+                len(countries_data),
+                MessageBox.TYPE_INFO)
 
         except Exception as e:
             error_msg = _("Refresh failed: %s") % str(e)
@@ -324,7 +331,9 @@ class TVGardenMain(Screen):
             log.debug("PluginUpdater created successfully", module="Main")
 
             latest = updater.get_latest_version()
-            log.debug("Direct test - Latest version: %s" % latest, module="Main")
+            log.debug(
+                "Direct test - Latest version: %s" %
+                latest, module="Main")
 
             # UpdateManager
             UpdateManager.check_for_updates(self.session, self["status"])
@@ -408,7 +417,7 @@ def main(session, **kwargs):
                 f.write(str(e) + "\n")
                 f.write(traceback.format_exc())
                 f.write("\n" + "=" * 50 + "\n")
-        except:
+        except BaseException:
             pass
 
         return None

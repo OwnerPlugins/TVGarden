@@ -33,38 +33,38 @@ class FavoritesBrowser(BaseBrowser):
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/greenbutton.png" position="261,1038" size="210,6" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/yellowbutton.png" position="474,1038" size="210,6" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/bluebutton.png" position="688,1038" size="210,6" alphatest="blend" transparent="1" />
-            
+
             <!-- Donation icons -->
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
-            
+
             <!-- Background -->
             <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
-            
+
             <!-- Logo -->
             <ePixmap name="" position="1676,812" size="200,80" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" />
-            
+
             <!-- Button texts -->
             <widget source="key_red" render="Label" position="50,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
             <widget source="key_green" render="Label" position="260,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
             <widget source="key_yellow" render="Label" position="470,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
             <widget source="key_blue" render="Label" position="680,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
-            
+
             <!-- Menu -->
             <widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
-            
+
             <!-- Title -->
             <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
-            
+
             <!-- Status -->
             <widget name="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
-            
+
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
-            
+
             <!-- Menu background -->
             <eLabel name="" position="36,152" size="1040,767" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            
+
             <!-- Video Picture -->
             <widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="transparent" transparent="0" cornerRadius="14" />
         </screen>
@@ -83,7 +83,9 @@ class FavoritesBrowser(BaseBrowser):
         self.menu_channels = []
         self.current_channel = None
         self["menu"] = MenuList([])
-        self['title'] = StaticText("TV Garden %s | by Lululla" % PLUGIN_VERSION)
+        self['title'] = StaticText(
+            "TV Garden %s | by Lululla" %
+            PLUGIN_VERSION)
         self["status"] = StaticText(_("Loading favorites..."))
         self["key_red"] = StaticText(_("Back"))
         self["key_green"] = StaticText(_("Play"))
@@ -107,7 +109,9 @@ class FavoritesBrowser(BaseBrowser):
         """Load favorites from file"""
         try:
             favorites = self.fav_manager.get_all()
-            log.info("Loaded %d favorites" % len(favorites), module="Favorites")
+            log.info(
+                "Loaded %d favorites" %
+                len(favorites), module="Favorites")
 
             menu_items = []
             self.menu_channels = []
@@ -151,7 +155,9 @@ class FavoritesBrowser(BaseBrowser):
             self["menu"].setList(menu_items)
 
             if menu_items:
-                self["status"].setText(_("%d favorite channels") % len(menu_items))
+                self["status"].setText(
+                    _("%d favorite channels") %
+                    len(menu_items))
                 # Select first item
                 if self.menu_channels:
                     self.current_channel = self.menu_channels[0]
@@ -230,16 +236,14 @@ class FavoritesBrowser(BaseBrowser):
                 self._execute_export_all_database,
                 MessageBox,
                 _("Export ALL channels from TV Garden database?\nThis may take some time."),
-                MessageBox.TYPE_YESNO
-            )
+                MessageBox.TYPE_YESNO)
 
         elif option_id == "export_all_hierarchical":
             self.session.openWithCallback(
                 lambda r: self._execute_export_all_hierarchical(r),
                 MessageBox,
                 _("Export ALL channels with multi-file structure?\nThis will create smaller bouquet files for better performance."),
-                MessageBox.TYPE_YESNO
-            )
+                MessageBox.TYPE_YESNO)
 
         elif option_id == "info":
             self._show_channel_info(channel)
@@ -367,14 +371,19 @@ class FavoritesBrowser(BaseBrowser):
             # Create service reference
             url_encoded = stream_url.replace(":", "%3a")
             name_encoded = channel['name'].replace(":", "%3a")
-            ref_str = "4097:0:0:0:0:0:0:0:0:0:%s:%s" % (url_encoded, name_encoded)
+            ref_str = "4097:0:0:0:0:0:0:0:0:0:%s:%s" % (
+                url_encoded, name_encoded)
 
             service_ref = eServiceReference(ref_str)
             service_ref.setName(channel['name'])
 
             # Open player with favorites list
             log.info("Playing: %s" % channel['name'], module="Favorites")
-            self.session.open(TVGardenPlayer, service_ref, self.menu_channels, channel_idx)
+            self.session.open(
+                TVGardenPlayer,
+                service_ref,
+                self.menu_channels,
+                channel_idx)
 
         except Exception as e:
             log.error("Player error: %s" % e, module="Favorites")
@@ -396,14 +405,15 @@ class FavoritesBrowser(BaseBrowser):
         self.session.openWithCallback(
             self._export_all_confirmation,
             MessageBox,
-            _("Export ALL %d favorites to Enigma2 bouquet?") % len(self.menu_channels),
-            MessageBox.TYPE_YESNO
-        )
+            _("Export ALL %d favorites to Enigma2 bouquet?") % len(
+                self.menu_channels),
+            MessageBox.TYPE_YESNO)
 
     def _export_all_confirmation(self, result):
         """Handle export confirmation"""
         if result:
-            success, message = self.fav_manager.export_to_bouquet(self.menu_channels)
+            success, message = self.fav_manager.export_to_bouquet(
+                self.menu_channels)
             self["status"].setText(message)
             self.session.open(
                 MessageBox,
@@ -436,7 +446,8 @@ class FavoritesBrowser(BaseBrowser):
             if stream_url:
                 info_text += "\nStream URL:\n"
                 if len(stream_url) > 150:
-                    info_text += "%s...\n...%s" % (stream_url[:100], stream_url[-50:])
+                    info_text += "%s...\n...%s" % (
+                        stream_url[:100], stream_url[-50:])
                 else:
                     info_text += stream_url
 

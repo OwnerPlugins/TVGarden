@@ -32,29 +32,29 @@ class LogViewerScreen(TextBox):
         <screen name="LogViewerScreen" position="center,center" size="1920,1080" title="TV Garden Logs" backgroundColor="#1a1a2e" flags="wfNoBorder">
             <!-- Button pixmaps (solo rosso) -->
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/redbutton.png" position="47,1038" size="210,6" alphatest="blend" transparent="1" />
-            
+
             <!-- Donation icons -->
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
-            
+
             <!-- Background -->
             <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
-            
+
             <!-- Logo -->
             <ePixmap name="" position="1676,812" size="200,80" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" />
-            
+
             <!-- Button text (solo rosso) -->
             <widget source="key_red" render="Label" position="50,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
-            
+
             <!-- Log text area -->
             <widget name="text" position="48,120" size="1830,850" font="Console;28" itemHeight="40" backgroundColor="#16213e" transparent="0" zPosition="2" />
-            
+
             <!-- Title -->
             <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
-            
+
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
-            
+
             <!-- Text background -->
             <eLabel name="" position="36,110" size="1845,870" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
         </screen>
@@ -71,8 +71,14 @@ class LogViewerScreen(TextBox):
             log_contents = _("Log file is empty or not found")
 
         # Initialize TextBox with log contents
-        TextBox.__init__(self, session, text=log_contents, title=_("TV Garden Logs"))
-        self['title'] = StaticText("TV Garden %s | by Lululla" % PLUGIN_VERSION)
+        TextBox.__init__(
+            self,
+            session,
+            text=log_contents,
+            title=_("TV Garden Logs"))
+        self['title'] = StaticText(
+            "TV Garden %s | by Lululla" %
+            PLUGIN_VERSION)
         self["key_red"] = StaticText(_("Close"))
         self["actions"] = ActionMap(
             [
@@ -148,10 +154,16 @@ class TVGardenSettings(ConfigListScreen, Screen):
         self.onChangedEntry = []
         self.setup_title = (_("TV Garden Settings"))
         self.list = []
-        ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
+        ConfigListScreen.__init__(
+            self,
+            self.list,
+            session=session,
+            on_change=self.changedEntry)
         self["key_red"] = StaticText(_("Back"))
         self["key_green"] = StaticText(_("Save"))
-        self['title'] = StaticText("TV Garden %s | by Lululla" % PLUGIN_VERSION)
+        self['title'] = StaticText(
+            "TV Garden %s | by Lululla" %
+            PLUGIN_VERSION)
         self["status"] = StaticText(_("Set options"))
         self["actions"] = ActionMap(
             ["SetupActions", "ColorActions", "DirectionActions"],
@@ -208,16 +220,22 @@ class TVGardenSettings(ConfigListScreen, Screen):
             x()
 
         try:
-            if isinstance(self["config"].getCurrent()[1], ConfigYesNo) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
+            if isinstance(
+                    self["config"].getCurrent()[1],
+                    ConfigYesNo) or isinstance(
+                    self["config"].getCurrent()[1],
+                    ConfigSelection):
                 self.createSetup()
-        except:
+        except BaseException:
             pass
 
     def getCurrentEntry(self):
-        return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
+        return self["config"].getCurrent() and self["config"].getCurrent()[
+            0] or ""
 
     def getCurrentValue(self):
-        return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
+        return self["config"].getCurrent() and str(
+            self["config"].getCurrent()[1].getText()) or ""
 
     def apply_logging_settings(self):
         """Apply logging settings immediately"""
@@ -226,9 +244,13 @@ class TVGardenSettings(ConfigListScreen, Screen):
             log.set_level(log_level)
             log_to_file = self.config.get("log_to_file", True)
             log.enable_file_logging(log_to_file)
-            log.info("Logging settings applied: level=%s, file=%s" % (log_level, log_to_file), "Settings")
+            log.info(
+                "Logging settings applied: level=%s, file=%s" %
+                (log_level, log_to_file), "Settings")
         except Exception as e:
-            log.error("Failed to apply logging settings: %s" % e, module="Settings")
+            log.error(
+                "Failed to apply logging settings: %s" %
+                e, module="Settings")
 
     def _reset_action_selections(self):
         """Reset action selections to default"""
@@ -236,7 +258,10 @@ class TVGardenSettings(ConfigListScreen, Screen):
             display_name = entry[0]
             config_item = entry[1]
 
-            if display_name in [_("View Log File"), _("Clear Log Files Now"), _("Check for Updates")]:
+            if display_name in [
+                    _("View Log File"),
+                    _("Clear Log Files Now"),
+                    _("Check for Updates")]:
                 if hasattr(config_item, 'value'):
                     config_item.value = config_item.choices[0][0] if config_item.choices else ""
 
@@ -520,10 +545,22 @@ class TVGardenSettings(ConfigListScreen, Screen):
         # ============ DISPLAY SETTINGS ============
         section = _('=== Browser Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("Default View"), self.cfg_default_view))
-        self.list.append(getConfigListEntry(_("Max channels for country"), self.cfg_max_channels))
-        self.list.append(getConfigListEntry(_("Show Flags"), self.cfg_show_flags))
-        self.list.append(getConfigListEntry(_("Show Logos"), self.cfg_show_logos))
+        self.list.append(
+            getConfigListEntry(
+                _("Default View"),
+                self.cfg_default_view))
+        self.list.append(
+            getConfigListEntry(
+                _("Max channels for country"),
+                self.cfg_max_channels))
+        self.list.append(
+            getConfigListEntry(
+                _("Show Flags"),
+                self.cfg_show_flags))
+        self.list.append(
+            getConfigListEntry(
+                _("Show Logos"),
+                self.cfg_show_logos))
 
         # ============ PLAYER SETTINGS ============
         section = _('=== Player Settings ===')
@@ -533,57 +570,123 @@ class TVGardenSettings(ConfigListScreen, Screen):
         # ============ EXPORT SETTINGS ============
         section = _('=== Export Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("Enable Export"), self.cfg_export_enabled))
+        self.list.append(
+            getConfigListEntry(
+                _("Enable Export"),
+                self.cfg_export_enabled))
         if self.cfg_export_enabled.value:
-            self.list.append(getConfigListEntry(_("List Position"), self.cfg_list_position))
-            self.list.append(getConfigListEntry(_("Bouquet Name Prefix"), self.cfg_bouquet_name_prefix))
-            self.list.append(getConfigListEntry(_("Max Channels for Bouquet"), self.cfg_max_channels_for_bouquet))
-            self.list.append(getConfigListEntry(_("Max Channels for Sub-Bouquet"), self.cfg_max_channels_for_sub_bouquet))
+            self.list.append(
+                getConfigListEntry(
+                    _("List Position"),
+                    self.cfg_list_position))
+            self.list.append(
+                getConfigListEntry(
+                    _("Bouquet Name Prefix"),
+                    self.cfg_bouquet_name_prefix))
+            self.list.append(
+                getConfigListEntry(
+                    _("Max Channels for Bouquet"),
+                    self.cfg_max_channels_for_bouquet))
+            self.list.append(
+                getConfigListEntry(
+                    _("Max Channels for Sub-Bouquet"),
+                    self.cfg_max_channels_for_sub_bouquet))
 
         # ============ PERFORMANCE SETTINGS ============
         section = _('=== Performance Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("Memory Optimization"), self.cfg_memory_optimization))
-        self.list.append(getConfigListEntry(_("Use Hardware Acceleration"), self.cfg_use_hardware_acceleration))
-        self.list.append(getConfigListEntry(_("Buffer Size"), self.cfg_buffer_size))
+        self.list.append(
+            getConfigListEntry(
+                _("Memory Optimization"),
+                self.cfg_memory_optimization))
+        self.list.append(
+            getConfigListEntry(
+                _("Use Hardware Acceleration"),
+                self.cfg_use_hardware_acceleration))
+        self.list.append(
+            getConfigListEntry(
+                _("Buffer Size"),
+                self.cfg_buffer_size))
 
         # ============ NETWORK SETTINGS ============
         section = _('=== Network Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("User Agent"), self.cfg_user_agent))
-        self.list.append(getConfigListEntry(_("Connection Timeout"), self.cfg_connection_timeout))
+        self.list.append(
+            getConfigListEntry(
+                _("User Agent"),
+                self.cfg_user_agent))
+        self.list.append(
+            getConfigListEntry(
+                _("Connection Timeout"),
+                self.cfg_connection_timeout))
 
         # ============ CACHE SETTINGS ============
         section = _('=== Cache Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("Enable Cache"), self.cfg_cache_enabled))
+        self.list.append(
+            getConfigListEntry(
+                _("Enable Cache"),
+                self.cfg_cache_enabled))
 
         if self.cfg_cache_enabled.value:
-            self.list.append(getConfigListEntry(_("Cache Size"), self.cfg_cache_size))
-            self.list.append(getConfigListEntry(_("Refresh Method"), self.cfg_refresh_method))
-            self.list.append(getConfigListEntry(_("Force Refresh on Browsing"), self.cfg_force_refresh_browsing))
-            self.list.append(getConfigListEntry(_("Force Refresh on Export"), self.cfg_force_refresh_export))
+            self.list.append(
+                getConfigListEntry(
+                    _("Cache Size"),
+                    self.cfg_cache_size))
+            self.list.append(
+                getConfigListEntry(
+                    _("Refresh Method"),
+                    self.cfg_refresh_method))
+            self.list.append(
+                getConfigListEntry(
+                    _("Force Refresh on Browsing"),
+                    self.cfg_force_refresh_browsing))
+            self.list.append(
+                getConfigListEntry(
+                    _("Force Refresh on Export"),
+                    self.cfg_force_refresh_export))
 
         # ============ SEARCH SETTINGS ============
         section = _('=== Search Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("Max Search Results"), self.cfg_search_max_results))
+        self.list.append(
+            getConfigListEntry(
+                _("Max Search Results"),
+                self.cfg_search_max_results))
 
         # ============ LOGGING SETTINGS ============
         section = _('=== Logging Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("Log Level"), self.cfg_log_level))
-        self.list.append(getConfigListEntry(_("Log to File"), self.cfg_log_to_file))
+        self.list.append(
+            getConfigListEntry(
+                _("Log Level"),
+                self.cfg_log_level))
+        self.list.append(
+            getConfigListEntry(
+                _("Log to File"),
+                self.cfg_log_to_file))
         if self.cfg_log_to_file.value:
             section = _('=== Log Maintenance ===')
-            self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-            self.list.append(getConfigListEntry(_("View Log File"), self.cfg_view_log_file))
-            self.list.append(getConfigListEntry(_("Clear Log Files Now"), self.cfg_clear_logs_now))
+            self.list.append(
+                getConfigListEntry(
+                    section, NoSave(
+                        ConfigNothing())))
+            self.list.append(
+                getConfigListEntry(
+                    _("View Log File"),
+                    self.cfg_view_log_file))
+            self.list.append(
+                getConfigListEntry(
+                    _("Clear Log Files Now"),
+                    self.cfg_clear_logs_now))
 
         # ============ UPDATE SETTINGS ============
         section = _('=== Update Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(getConfigListEntry(_("Check for Updates"), self.cfg_check_for_updates))
+        self.list.append(
+            getConfigListEntry(
+                _("Check for Updates"),
+                self.cfg_check_for_updates))
 
         # ===== FINISH =====
         self["config"].list = self.list
@@ -614,7 +717,7 @@ class TVGardenSettings(ConfigListScreen, Screen):
                     config_data["max_channels"] = int(max_channels_val[0])
                 else:
                     config_data["max_channels"] = int(max_channels_val)
-            except:
+            except BaseException:
                 config_data["max_channels"] = 500
 
         if hasattr(self, 'cfg_default_view'):
@@ -644,10 +747,12 @@ class TVGardenSettings(ConfigListScreen, Screen):
                 try:
                     max_bouquet_val = self.cfg_max_channels_for_bouquet.value
                     if isinstance(max_bouquet_val, tuple):
-                        config_data["max_channels_for_bouquet"] = int(max_bouquet_val[0])
+                        config_data["max_channels_for_bouquet"] = int(
+                            max_bouquet_val[0])
                     else:
-                        config_data["max_channels_for_bouquet"] = int(max_bouquet_val)
-                except:
+                        config_data["max_channels_for_bouquet"] = int(
+                            max_bouquet_val)
+                except BaseException:
                     config_data["max_channels_for_bouquet"] = 500
 
             if hasattr(self, 'cfg_bouquet_name_prefix'):
@@ -719,7 +824,8 @@ class TVGardenSettings(ConfigListScreen, Screen):
             if "===" in display_name or isinstance(config_item, ConfigNothing):
                 # If not already at the bottom, move down one more
                 if self["config"].getCurrentIndex() < list_length - 1:
-                    self["config"].instance.moveSelection(self["config"].instance.moveDown)
+                    self["config"].instance.moveSelection(
+                        self["config"].instance.moveDown)
 
         self.updateStatus()
 
@@ -740,7 +846,8 @@ class TVGardenSettings(ConfigListScreen, Screen):
             if "===" in display_name or isinstance(config_item, ConfigNothing):
                 # If not already at the bottom, move down one more
                 if self["config"].getCurrentIndex() < list_length - 1:
-                    self["config"].instance.moveSelection(self["config"].instance.moveUp)
+                    self["config"].instance.moveSelection(
+                        self["config"].instance.moveUp)
 
         self.updateStatus()
 

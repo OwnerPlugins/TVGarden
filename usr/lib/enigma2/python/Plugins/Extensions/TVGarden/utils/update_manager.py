@@ -33,9 +33,10 @@ class UpdateManager:
                 if result is None:
                     if status_label:
                         status_label.setText(_("Update check failed"))
-                    session.open(MessageBox,
-                                 _("Could not check for updates. Check internet connection."),
-                                 MessageBox.TYPE_ERROR)
+                    session.open(
+                        MessageBox,
+                        _("Could not check for updates. Check internet connection."),
+                        MessageBox.TYPE_ERROR)
 
                 elif result:
                     if status_label:
@@ -67,13 +68,16 @@ class UpdateManager:
             updater = PluginUpdater()
 
         def update_confirmed(result):
-            log.debug("User update confirmation: %s" % result, module="UpdateManager")
+            log.debug(
+                "User update confirmation: %s" %
+                result, module="UpdateManager")
             if result:
                 UpdateManager.perform_update(session, status_label, updater)
             elif status_label:
                 status_label.setText(_("Update cancelled"))
 
-        message = _("A new version is available!\n\nUpdate now?\n\n(Recommended to backup first)")
+        message = _(
+            "A new version is available!\n\nUpdate now?\n\n(Recommended to backup first)")
         session.openWithCallback(update_confirmed,
                                  MessageBox,
                                  message,
@@ -86,12 +90,14 @@ class UpdateManager:
             updater = PluginUpdater()
 
         def update_progress(success, message):
-            log.debug("Update progress: success=%s, message=%s" % (success, message), module="UpdateManager")
+            log.debug("Update progress: success=%s, message=%s" %
+                      (success, message), module="UpdateManager")
             if success:
                 if status_label:
                     status_label.setText(_("Update successful!"))
 
-                restart_msg = _("%s\n\nRestart Enigma2 now for changes to take effect.") % message
+                restart_msg = _(
+                    "%s\n\nRestart Enigma2 now for changes to take effect.") % message
                 session.openWithCallback(
                     lambda result: UpdateManager.restart_enigma2(session, result),
                     MessageBox,
@@ -114,14 +120,18 @@ class UpdateManager:
     @staticmethod
     def restart_enigma2(session, result):
         """Restart Enigma2 if user confirms"""
-        log.debug("Restart Enigma2 confirmation: %s" % result, module="UpdateManager")
+        log.debug(
+            "Restart Enigma2 confirmation: %s" %
+            result, module="UpdateManager")
         if result:
             try:
                 from enigma import quitMainloop
                 quitMainloop(3)  # 3 = Restart Enigma2
                 log.debug("Enigma2 restart initiated", module="UpdateManager")
             except Exception as e:
-                log.error("Failed to restart Enigma2: %s" % e, module="UpdateManager")
+                log.error(
+                    "Failed to restart Enigma2: %s" %
+                    e, module="UpdateManager")
                 session.open(MessageBox,
                              _("Please restart Enigma2 manually."),
                              MessageBox.TYPE_INFO)

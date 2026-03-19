@@ -51,7 +51,9 @@ class PluginUpdater:
         try:
             installer_url = "https://raw.githubusercontent.com/Belfagor2005/TVGarden/main/installer.sh"
 
-            log.debug("Checking version from: %s" % installer_url, module="Updater")
+            log.debug(
+                "Checking version from: %s" %
+                installer_url, module="Updater")
 
             headers = {'User-Agent': self.user_agent}
             req = Request(installer_url, headers=headers)
@@ -65,7 +67,8 @@ class PluginUpdater:
                     response.close()
 
             patterns = [
-                r"version\s*=\s*['\"](\d+\.\d+)['\"]",  # version='1.1' o version="1.1"
+                # version='1.1' o version="1.1"
+                r"version\s*=\s*['\"](\d+\.\d+)['\"]",
                 r"version\s*:\s*['\"](\d+\.\d+)['\"]",  # version: '1.1'
                 r"Version\s*=\s*['\"](\d+\.\d+)['\"]",  # Version='1.1'
             ]
@@ -74,14 +77,20 @@ class PluginUpdater:
                 match = search(pattern, content)
                 if match:
                     version = match.group(1)
-                    log.info("Found version %s using pattern: %s" % (version, pattern), module="Updater")
+                    log.info(
+                        "Found version %s using pattern: %s" %
+                        (version, pattern), module="Updater")
                     return version
 
-            log.warning("No version pattern found in installer.sh", module="Updater")
+            log.warning(
+                "No version pattern found in installer.sh",
+                module="Updater")
             fallback = search(r'(\d+\.\d+)', content)
             if fallback:
                 version = fallback.group(1)
-                log.info("Fallback found version: %s" % version, module="Updater")
+                log.info(
+                    "Fallback found version: %s" %
+                    version, module="Updater")
                 return version
 
             return None
@@ -121,8 +130,13 @@ class PluginUpdater:
 
         try:
             latest = self.get_latest_version()
-            log.debug("get_latest_version returned: %s" % latest, module="Updater")
-            log.debug("Current version: %s" % self.current_version, module="Updater")
+            log.debug(
+                "get_latest_version returned: %s" %
+                latest, module="Updater")
+            log.debug(
+                "Current version: %s" %
+                self.current_version,
+                module="Updater")
 
             if latest is None:
                 log.warning("Could not get latest version", module="Updater")
@@ -132,10 +146,14 @@ class PluginUpdater:
 
             # Compare versions
             is_newer = self.compare_versions(latest, self.current_version) > 0
-            log.debug("Version comparison: is_newer = %s" % is_newer, module="Updater")
+            log.debug(
+                "Version comparison: is_newer = %s" %
+                is_newer, module="Updater")
 
             if callback:
-                log.debug("Calling callback with: %s" % is_newer, module="Updater")
+                log.debug(
+                    "Calling callback with: %s" %
+                    is_newer, module="Updater")
                 callback(is_newer)
 
         except Exception as e:
@@ -166,14 +184,15 @@ class PluginUpdater:
                 if self.restore_backup():
                     message = _("Update failed. Restored from backup.")
                 else:
-                    message = _("Update failed and backup restore also failed!")
+                    message = _(
+                        "Update failed and backup restore also failed!")
 
         except Exception as e:
             log.error("Update process error: %s" % e, module="Updater")
             # Try to restore backup
             try:
                 self.restore_backup()
-            except:
+            except BaseException:
                 pass
             message = _("Update error: %s") % str(e)
 
@@ -192,7 +211,9 @@ class PluginUpdater:
                 log.info("Installer completed successfully", module="Updater")
                 return True
             else:
-                log.error("Installer failed with exit code: %d" % result, module="Updater")
+                log.error(
+                    "Installer failed with exit code: %d" %
+                    result, module="Updater")
                 return False
 
         except Exception as e:
@@ -207,12 +228,16 @@ class PluginUpdater:
             self.backup_path = join(self.BACKUP_DIR, backup_name)
 
             if exists(PLUGIN_PATH):
-                log.info("Creating backup to: %s" % self.backup_path, module="Updater")
+                log.info(
+                    "Creating backup to: %s" %
+                    self.backup_path, module="Updater")
                 shutil.copytree(PLUGIN_PATH, self.backup_path)
                 log.info("Backup created successfully", module="Updater")
                 return True
             else:
-                log.error("Plugin path not found: %s" % PLUGIN_PATH, module="Updater")
+                log.error(
+                    "Plugin path not found: %s" %
+                    PLUGIN_PATH, module="Updater")
                 return False
         except Exception as e:
             log.error("Backup failed: %s" % e, module="Updater")
@@ -222,7 +247,9 @@ class PluginUpdater:
         """Restore from backup"""
         try:
             if self.backup_path and exists(self.backup_path):
-                log.info("Restoring from backup: %s" % self.backup_path, module="Updater")
+                log.info(
+                    "Restoring from backup: %s" %
+                    self.backup_path, module="Updater")
 
                 # Remove current plugin
                 if exists(PLUGIN_PATH):
@@ -233,7 +260,9 @@ class PluginUpdater:
                 log.info("Restored successfully", module="Updater")
                 return True
             else:
-                log.error("Backup not found: %s" % self.backup_path, module="Updater")
+                log.error(
+                    "Backup not found: %s" %
+                    self.backup_path, module="Updater")
                 return False
         except Exception as e:
             log.error("Restore failed: %s" % e, module="Updater")
