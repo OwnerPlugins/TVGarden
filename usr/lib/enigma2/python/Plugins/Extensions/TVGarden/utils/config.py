@@ -30,19 +30,14 @@ class PluginConfig:
         if not exists(self.config_dir):
             try:
                 makedirs(self.config_dir)
-                log.info(
-                    "Created config directory: %s" %
-                    self.config_dir, module="Config")
+                log.info("Created config directory: %s" % self.config_dir, module="Config")
             except Exception as e:
-                log.error(
-                    "Error creating config directory: %s" %
-                    e, module="Config")
+                log.error("Error creating config directory: %s" % e, module="Config")
 
         # ============ DEFAULT CONFIGURATION ============
         self.defaults = {
             # ============ PLAYER SETTINGS ============
-            # "auto", "exteplayer3", "gstplayer" - CHANGED TO AUTO
-            "player": "auto",
+            "player": "auto",                       # "auto", "exteplayer3", "gstplayer" - CHANGED TO AUTO
 
             # ============ DISPLAY SETTINGS ============
             # "skin": "auto",                       # "auto", "hd", "fhd", "wqhd", "sd"
@@ -143,9 +138,7 @@ class PluginConfig:
                 # Validate and fix values
                 config = self.validate_config(config)
 
-                log.info(
-                    "Configuration loaded successfully from %s" %
-                    self.config_file, module="Config")
+                log.info("Configuration loaded successfully from %s" % self.config_file, module="Config")
                 return config
             except Exception as e:
                 log.error("Error loading config: %s" % e, module="Config")
@@ -162,13 +155,9 @@ class PluginConfig:
             if fileExists(self.config_file):
                 try:
                     copy2(self.config_file, self.backup_file)
-                    log.debug(
-                        "Created backup: %s" %
-                        self.backup_file, module="Config")
+                    log.debug("Created backup: %s" % self.backup_file, module="Config")
                 except Exception as e:
-                    log.warning(
-                        "Could not create backup: %s" %
-                        e, module="Config")
+                    log.warning("Could not create backup: %s" % e, module="Config")
 
             # Validate before saving
             self.config = self.validate_config(self.config)
@@ -180,9 +169,7 @@ class PluginConfig:
             # Set proper permissions
             chmod(self.config_file, 0o644)
 
-            log.info(
-                "Configuration saved to %s" %
-                self.config_file, module="Config")
+            log.info("Configuration saved to %s" % self.config_file, module="Config")
             return True
         except Exception as e:
             log.error("Error saving config: %s" % e, module="Config")
@@ -274,8 +261,7 @@ class PluginConfig:
 
         # Ensure refresh_method is valid
         if 'refresh_method' in validated_config:
-            if validated_config['refresh_method'] not in [
-                    'clear_cache', 'force_refresh']:
+            if validated_config['refresh_method'] not in ['clear_cache', 'force_refresh']:
                 validated_config['refresh_method'] = 'clear_cache'
 
         # Ensure boolean values are actually boolean
@@ -305,7 +291,7 @@ class PluginConfig:
                 value = validated_config[key]
                 try:
                     validated_config[key] = str(value)
-                except BaseException:
+                except:
                     validated_config[key] = ''
 
         numeric_keys = [
@@ -339,7 +325,7 @@ class PluginConfig:
             'favorites_added', 'cache_hits', 'cache_misses', 'stats_enabled',
             'first_run', 'accepted_eula', 'telemetry'
         ]
-
+        
         for key in old_keys_to_remove:
             if key in config:
                 del config[key]
@@ -382,9 +368,7 @@ class PluginConfig:
                 # Validate restored config
                 validated_config = self.validate_config(backup_config)
 
-                log.info(
-                    "Configuration restored from backup: %s" %
-                    self.backup_file, module="Config")
+                log.info("Configuration restored from backup: %s" % self.backup_file, module="Config")
                 return validated_config
             except Exception as e:
                 log.error("Error restoring backup: %s" % e, module="Config")
@@ -432,9 +416,7 @@ class PluginConfig:
             with open(filepath, 'w') as f:
                 dump(self.config, f, indent=4)
 
-            log.info(
-                "Configuration exported to: %s" %
-                filepath, module="Config")
+            log.info("Configuration exported to: %s" % filepath, module="Config")
             return True
         except Exception as e:
             log.error("Error exporting config: %s" % e, module="Config")
@@ -450,14 +432,11 @@ class PluginConfig:
                 # Validate imported config
                 validated_imported = self.validate_config(imported)
 
-                # Merge with current config (keep current values for missing
-                # keys)
+                # Merge with current config (keep current values for missing keys)
                 for key, value in validated_imported.items():
                     self.config[key] = value
 
-                log.info(
-                    "Configuration imported from: %s" %
-                    filepath, module="Config")
+                log.info("Configuration imported from: %s" % filepath, module="Config")
                 return self.save_config()
             except Exception as e:
                 log.error("Error importing config: %s" % e, module="Config")
@@ -522,9 +501,7 @@ class PluginConfig:
                 else:
                     return "sd"
             except Exception as e:
-                log.error(
-                    "Error detecting resolution: %s" %
-                    e, module="Config")
+                log.error("Error detecting resolution: %s" % e, module="Config")
                 return 'hd'  # Default fallback
 
         return skin_setting
@@ -534,19 +511,12 @@ class PluginConfig:
         Load skin from file or use default from class
         """
         if exists('/var/lib/dpkg/status'):
-            log.info(
-                "Python2 image detected, using class skin for %s" %
-                screen_name, module="Config")
+            log.info("Python2 image detected, using class skin for %s" % screen_name, module="Config")
             return default_skin
-
+        
         resolution = self.get_skin_resolution()
-        skin_file = join(
-            PLUGIN_PATH,
-            "skins",
-            resolution,
-            "%s.xml" %
-            screen_name)
-
+        skin_file = join(PLUGIN_PATH, "skins", resolution, "%s.xml" % screen_name)
+        
         if fileExists(skin_file):
             try:
                 with open(skin_file, 'r') as f:
@@ -557,9 +527,7 @@ class PluginConfig:
                 log.error("Error loading XML skin: %s" % e, module="Config")
                 return default_skin
         else:
-            log.warning(
-                "XML skin not found for %s, using class skin" %
-                screen_name, module="Config")
+            log.warning("XML skin not found for %s, using class skin" % screen_name, module="Config")
             return default_skin
 
     def get_skin_path(self):
@@ -570,9 +538,7 @@ class PluginConfig:
                 from ..helpers import get_resolution_type
                 return get_resolution_type()
             except Exception as e:
-                log.error(
-                    "Error getting resolution type: %s" %
-                    e, module="Config")
+                log.error("Error getting resolution type: %s" % e, module="Config")
                 return 'hd'  # Default fallback
         return skin_setting
 
@@ -581,17 +547,14 @@ class PluginConfig:
         if self.get('stats_enabled', True):
             current = self.get('watch_time', 0)
             self.set('watch_time', current + seconds)
-            log.debug("Added %d seconds to watch time, total: %d" %
-                      (seconds, current + seconds), module="Config")
+            log.debug("Added %d seconds to watch time, total: %d" % (seconds, current + seconds), module="Config")
 
     def increment_channels_watched(self):
         """Increment channels watched counter"""
         if self.get('stats_enabled', True):
             current = self.get('channels_watched', 0)
             self.set('channels_watched', current + 1)
-            log.debug(
-                "Incremented channels watched to: %d" %
-                (current + 1), module="Config")
+            log.debug("Incremented channels watched to: %d" % (current + 1), module="Config")
 
     def get_connection_timeout(self):
         """Get connection timeout in seconds"""

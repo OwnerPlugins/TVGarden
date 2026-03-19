@@ -15,1119 +15,779 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: browser/about.py:44
-msgid "TV Garden Plugin"
-msgstr "TV Garden -lisäosa"
-
-#: browser/about.py:47 utils/settings.py:56
-msgid "Close"
-msgstr "Sulje"
-
-#: browser/about.py:62
-msgid "About TV Garden"
-msgstr "Tietoja TV Garden:sta"
-
-#: browser/about.py:137
-msgid "Error loading information"
-msgstr "Virhe ladattaessa tietoja"
-
-#: browser/base.py:103
-msgid "No items"
-msgstr "Ei kohteita"
-
-#: browser/base.py:107
-#, python-brace-format
-msgid "Item {} of {}"
-msgstr "Kohde {} / {}"
-
-#: browser/categories.py:28
-msgid "Animation"
-msgstr "Animaatio"
-
-#: browser/categories.py:29 utils/settings.py:288
-msgid "Auto"
-msgstr "Auto"
-
-#: browser/categories.py:30
-msgid "Business"
-msgstr "Liiketoiminta"
-
-#: browser/categories.py:31
-msgid "Classic"
-msgstr "Klassinen"
-
-#: browser/categories.py:32
-msgid "Comedy"
-msgstr "Komedia"
-
-#: browser/categories.py:33
-msgid "Cooking"
-msgstr "Ruoanlaitto"
-
-#: browser/categories.py:34
-msgid "Culture"
-msgstr "Kulttuuri"
-
-#: browser/categories.py:35
-msgid "Documentary"
-msgstr "Dokumentti"
-
-#: browser/categories.py:36
-msgid "Education"
-msgstr "Koulutus"
-
-#: browser/categories.py:37
-msgid "Entertainment"
-msgstr "Viihde"
-
-#: browser/categories.py:38
-msgid "Family"
-msgstr "Perhe"
-
-#: browser/categories.py:39
-msgid "General"
-msgstr "Yleinen"
-
-#: browser/categories.py:40
-msgid "History"
-msgstr "Historia"
-
-#: browser/categories.py:41
-msgid "Hobby"
-msgstr "Harrastus"
-
-#: browser/categories.py:42
-msgid "Kids"
-msgstr "Lapset"
-
-#: browser/categories.py:43
-msgid "Legislative"
-msgstr "Lainsäädäntö"
-
-#: browser/categories.py:44
-msgid "Lifestyle"
-msgstr "Elämäntapa"
-
-#: browser/categories.py:45
-msgid "Local"
-msgstr "Paikallinen"
-
-#: browser/categories.py:46
-msgid "Movies"
-msgstr "Elokuvat"
-
-#: browser/categories.py:47
-msgid "Music"
-msgstr "Musiikki"
-
-#: browser/categories.py:48
-msgid "News"
-msgstr "Uutiset"
-
-#: browser/categories.py:49
-msgid "Politics"
-msgstr "Politiikka"
-
-#: browser/categories.py:50
-msgid "Religious"
-msgstr "Uskonnollinen"
-
-#: browser/categories.py:51
-msgid "Series"
-msgstr "Sarjat"
-
-#: browser/categories.py:52
-msgid "Science"
-msgstr "Tiede"
-
-#: browser/categories.py:53
-msgid "Shop"
-msgstr "Ostokset"
-
-#: browser/categories.py:54
-msgid "Sports"
-msgstr "Urheilu"
-
-#: browser/categories.py:55
-msgid "Travel"
-msgstr "Matkustaminen"
-
-#: browser/categories.py:56
-msgid "Weather"
-msgstr "Sää"
-
-#: browser/categories.py:93
-msgid "Loading categories..."
-msgstr "Ladataan kategorioita..."
-
-#: browser/categories.py:95 browser/channels.py:111 browser/countries.py:73
-#: browser/favorites.py:63 browser/search.py:71 utils/settings.py:118
-msgid "Back"
-msgstr "Takaisin"
-
-#: browser/categories.py:96 browser/countries.py:74 plugin.py:214
-msgid "Select"
-msgstr "Valitse"
-
-#: browser/categories.py:115
-msgid "Select a category"
-msgstr "Valitse kategoria"
-
-#: browser/categories.py:178
-msgid "No channels in this category"
-msgstr "Ei kanavia tässä kateroriassa"
-
-#: browser/categories.py:182
-msgid "Error loading category"
-msgstr "Virhe ladattaessa kategoriaa"
-
-#: browser/categories.py:189 browser/countries.py:225
-msgid "Refreshing..."
-msgstr "Virkistetään..."
-
-#: browser/categories.py:196 browser/countries.py:234
-msgid "Cache cleared"
-msgstr "Välimuisti tyhjennetty"
-
-#: browser/categories.py:201
-msgid "Next load will use fresh data"
-msgstr "Seuraava lataus käyttää uutta dataa"
-
-#: browser/categories.py:205 browser/countries.py:246
-msgid "Refresh failed"
-msgstr "Virkistys epäonnistui"
-
-#: browser/channels.py:107
-msgid "Loading channels..."
-msgstr "Ladataan kanavia..."
-
-#: browser/channels.py:112 browser/favorites.py:64
-msgid "Play"
-msgstr "Toista"
-
-#: browser/channels.py:113 browser/search.py:73
-msgid "Favorite"
-msgstr "Suosikki"
-
-#: browser/channels.py:144
-msgid "Play Channel"
-msgstr "Toista kanava"
-
-#: browser/channels.py:145
-msgid "Add to Favorites"
-msgstr "Lisää suosikkeihin"
-
-#: browser/channels.py:146 browser/favorites.py:421
-msgid "Channel Information"
-msgstr "Kanavan tiedot"
-
-#: browser/channels.py:150
-msgid "Export Current View"
-msgstr "Vie nykyinen näkymä"
-
-#: browser/channels.py:153
-msgid "Channel Menu"
-msgstr "Kanavan valikko"
-
-#: browser/channels.py:353 browser/favorites.py:66
-msgid "Export"
-msgstr "Vie"
-
-#: browser/channels.py:368 browser/countries.py:201
-msgid " [Fresh data]"
-msgstr " [Tuoretta dataa]"
-
-#: browser/channels.py:370 browser/countries.py:203
-msgid " [Cache disabled]"
-msgstr " [Välimuisti pois käytöstä]"
-
-#: browser/channels.py:373
-#, python-brace-format
-msgid "Showing {shown} of {total} channels"
-msgstr "Näytetään {shown}/{total} kanavaa"
-
-#: browser/channels.py:379
-#, python-format
-msgid "Found %d playable channels"
-msgstr "Löytyi %d toistettavaa kanavaa"
-
-#: browser/channels.py:385 browser/search.py:339
-#, python-format
-msgid "(skipped %d YouTube)"
-msgstr "(YouTube: ohitettu %d)"
-
-#: browser/channels.py:388 browser/search.py:342
-#, python-format
-msgid "(filtered %d problematic)"
-msgstr "(suodatettu %d ongelmallista)"
-
-#: browser/channels.py:391 browser/search.py:345
-#, python-format
-msgid "(limited to first %d)"
-msgstr "(rajoitettu ensimmäiseen %d)"
-
-#: browser/channels.py:405 browser/search.py:150
-msgid "Error loading channels"
-msgstr "Virhe ladattaessa kanavia"
-
-#: browser/channels.py:582 browser/channels.py:588 utils/favorites.py:205
-#: utils/favorites.py:299 utils/favorites.py:906
-msgid "No channels to export"
-msgstr "Ei vietäviä kanavia"
-
-#: browser/channels.py:600
-msgid "Channels"
-msgstr "Kanavat"
-
-#: browser/channels.py:605
-#, python-brace-format
-msgid "Export {count} channels to bouquet '{name}'?"
-msgstr "Vie {count} kanavaa suosikkilistaan '{name}'?"
-
-#: browser/channels.py:636
-#, python-format
-msgid "Export failed: %s"
-msgstr "Vienti epäonnistui: %s"
-
-#: browser/channels.py:656 browser/search.py:404 utils/favorites.py:776
-msgid "No stream URL"
-msgstr "Ei striimin URL-osoitetta"
-
-#: browser/channels.py:683 browser/favorites.py:252
-msgid "Unknown"
-msgstr "Tuntematon"
-
-#: browser/channels.py:689 browser/favorites.py:257
-#, python-format
-msgid "Remove '%s' from favorites?"
-msgstr "Poista '%s' suosikeista?"
-
-#: browser/channels.py:723
-#, python-format
-msgid "Stream: %s..."
-msgstr "Striimi: %s..."
-
-#: browser/channels.py:725
-#, python-format
-msgid "Stream: %s"
-msgstr "Striimi: %s"
-
-#: browser/countries.py:71
-msgid "Loading countries..."
-msgstr "Ladataan maita..."
-
-#: browser/countries.py:75 plugin.py:215
-msgid "Refresh"
-msgstr "Virkistä"
-
-#: browser/countries.py:205
-msgid "Select a country"
-msgstr "Valise maa"
-
-#: browser/countries.py:215
-msgid "No countries with channels found"
-msgstr "Yhtään maata, joilla on kanavia, ei löytynyt"
-
-#: browser/countries.py:218
-msgid "Error loading countries"
-msgstr "Virhe ladattaessa maita"
-
-#: browser/countries.py:241
-msgid "Will load fresh data next time"
-msgstr "Ladataan tuoreet tiedot seuraavalla kerralla"
-
-#: browser/countries.py:401
-msgid "No country selected"
-msgstr "Maata ei valittu"
-
-#: browser/favorites.py:62
-msgid "Loading favorites..."
-msgstr "Ladataan suosikkeja..."
-
-#: browser/favorites.py:65
-msgid "Options"
-msgstr "Optiot"
-
-#: browser/favorites.py:129
-#, python-format
 msgid "%d favorite channels"
 msgstr "Suosikkikanavat %d"
 
-#: browser/favorites.py:134
-msgid "No favorite channels"
-msgstr "Ei suosikkikanavia"
-
-#: browser/favorites.py:139
-msgid "Error loading favorites"
-msgstr "Virhe ladattaessa suosikkeja"
-
-#: browser/favorites.py:145 browser/favorites.py:333
-msgid "No channel selected"
-msgstr "Kanavaa ei valittu"
-
-#: browser/favorites.py:149
-msgid "View Channel Info"
-msgstr "Näytä kanavan tiedot"
-
-#: browser/favorites.py:150
-msgid "Remove from Favorites"
-msgstr "Poista suosikeista"
-
-#: browser/favorites.py:151
-msgid "Clear All Favorites"
-msgstr "Tyhjennä kaikki suosikit"
-
-#: browser/favorites.py:152
-msgid "Export to Enigma2 Bouquet"
-msgstr "Vie Enigma2 suosikkilistaan"
-
-#: browser/favorites.py:153
-msgid "Export ALL Database (Single File)"
-msgstr "Vie KOKO tietokanta (yksittäinen tiedosto)"
-
-#: browser/favorites.py:154
-msgid "Export ALL Database (Multi-File)"
-msgstr "Vie KOKO tietokanta (monitiedostoinen)"
-
-#: browser/favorites.py:155
-msgid "Remove Bouquet from Enigma2"
-msgstr "Poista suosikkilista Enigma2:sta"
-
-#: browser/favorites.py:161
-#, python-format
-msgid "Options for: %s"
-msgstr "%s: optiot"
-
-#: browser/favorites.py:183
-#, python-format
-msgid "Export '%s' to Enigma2 bouquet?"
-msgstr "Vie '%s' suosikkilistaan?"
-
-#: browser/favorites.py:191
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Poista TV Garden -suosikkilista Enigma2:sta?"
-
-#: browser/favorites.py:199
-msgid "Clear ALL favorites?"
-msgstr "Tyhjennä KAIKKI suosikit?"
-
-#: browser/favorites.py:207
-msgid ""
-"Export ALL channels from TV Garden database?\n"
-"This may take some time."
-msgstr ""
-"Vie KAIKKI kanavat TV Gardenin tietokannasta?\n"
-"Tämä vie jonkin aikaa."
-
-#: browser/favorites.py:215
-msgid ""
-"Export ALL channels with multi-file structure?\n"
-"This will create smaller bouquet files for better performance."
-msgstr ""
-"Vie KAIKKI kanavat monitiedostorakenteella?\n"
-"Tämä luo pienempiä suosikkilistatiedostoja paremman suorituskyvyn "
-"saavuttamiseksi."
-
-#: browser/favorites.py:270
-#, python-format
 msgid "%d favorites"
 msgstr "%d suosikkia"
 
-#: browser/favorites.py:284
-msgid "Loading all channels..."
-msgstr "Ladataan kaikki kanavat..."
+msgid "(filtered %d problematic)"
+msgstr "(suodatettu %d ongelmallista)"
 
-#: browser/favorites.py:296
-msgid "Database exported successfully"
-msgstr "Tietokannan vienti onnistui"
+msgid "(limited to first %d)"
+msgstr "(rajoitettu ensimmäiseen %d)"
 
-#: browser/favorites.py:298 browser/favorites.py:319
-msgid "Export failed"
-msgstr "Vienti epäonnistui"
+msgid "(skipped %d YouTube)"
+msgstr "(YouTube: ohitettu %d)"
 
-#: browser/favorites.py:305
-msgid "Creating hierarchical structure..."
-msgstr "Luodaan hierarkkista rakennetta..."
-
-#: browser/favorites.py:317
-msgid "Hierarchical export completed"
-msgstr "Hierarkkinen vienti valmis"
-
-#: browser/favorites.py:338
-msgid "No stream URL available"
-msgstr "Striimin URL-osoitetta ei ole saatavilla"
-
-#: browser/favorites.py:357 browser/search.py:419
-msgid "Error opening player"
-msgstr "Virhe avattaessa soitinta"
-
-#: browser/favorites.py:365
-msgid "No favorites to export"
-msgstr "Ei vietäviä suosikkeja"
-
-#: browser/favorites.py:374
-#, python-format
-msgid "Export ALL %d favorites to Enigma2 bouquet?"
-msgstr "Vie KAIKKI %d suosikkia suosikkilistaan?"
-
-#: browser/search.py:67
-msgid "Search:"
-msgstr "Etsi:"
-
-#: browser/search.py:70 browser/search.py:176
-msgid "Press GREEN for keyboard..."
-msgstr "Paina VIHREÄÄ näppäimistöä varten..."
-
-#: browser/search.py:72
-msgid "Keyboard"
-msgstr "Näppäimistö"
-
-#: browser/search.py:74
-msgid "Clear"
-msgstr "Tyhjennä"
-
-#: browser/search.py:142
-#, python-format
-msgid "Press GREEN for keyboard... Ready - %d channels"
-msgstr "Näppäimistö painamalla VIHREÄÄ...Valmiina - %d kanavaa"
-
-#: browser/search.py:145
-msgid "No channels loaded"
-msgstr "Ei ladattuja kanavia"
-
-#: browser/search.py:157
-msgid "Search Channels"
-msgstr "Etsi kanavia"
-
-#: browser/search.py:166
-msgid "Searching..."
-msgstr "Etsitään..."
-
-#: browser/search.py:330
-#, python-brace-format
-msgid "Showing {shown} of {total} results"
-msgstr "Näytetään {shown}/{total} tulosta"
-
-#: browser/search.py:336
-#, python-format
-msgid "Found %d channels"
-msgstr "Löytyi %d kanavaa"
-
-#: browser/search.py:353
-#, python-format
-msgid "No channels found for: %s"
-msgstr "%s: kanavia ei löytynyt"
-
-#: browser/search.py:427
-msgid "Removed from favorites"
-msgstr "Poistettu suosikeista"
-
-#: browser/search.py:430
-msgid "Added to favorites"
-msgstr "Lisätty suosikkeihin"
-
-#: plugin.py:203
-msgid "Browse by Country"
-msgstr "Selaa maittain"
-
-#: plugin.py:203
-msgid "Browse channels by country"
-msgstr "Selaa kanavia maittain"
-
-#: plugin.py:204
-msgid "Browse by Category"
-msgstr "Selaa kategorioittain"
-
-#: plugin.py:204
-msgid "Browse channels by category"
-msgstr "Selaa kanavia kategorioittain"
-
-#: plugin.py:205 utils/settings.py:342
-msgid "Favorites"
-msgstr "Suosikit"
-
-#: plugin.py:205
-msgid "Your favorite channels"
-msgstr "Suosikkikanavasi"
-
-#: plugin.py:206
-msgid "Search"
-msgstr "Etsi"
-
-#: plugin.py:206
-msgid "Search channels by name"
-msgstr "Hae kanavia nimellä"
-
-#: plugin.py:207 utils/settings.py:204 utils/settings.py:232
-#: utils/settings.py:551
-msgid "Check for Updates"
-msgstr "Tarkista päivitykset"
-
-#: plugin.py:207
-msgid "Check for plugin updates"
-msgstr "Tarkista lisäosan päivitykset"
-
-#: plugin.py:208 plugin.py:216
-msgid "Settings"
-msgstr "Asetukset"
-
-#: plugin.py:208
-msgid "Plugin settings and configuration"
-msgstr "Lisäosan asetukset ja konfiguraatio"
-
-#: plugin.py:209
-msgid "About"
-msgstr "Tietoja"
-
-#: plugin.py:209
-msgid "About TV Garden plugin"
-msgstr "Tietoja TV Garden -lisäosasta"
-
-#: plugin.py:213
-msgid "Exit"
-msgstr "Poistu"
-
-#: plugin.py:293
-msgid "Refreshing data..."
-msgstr "Virkistetään dataa..."
-
-#: plugin.py:308
-#, python-format
-msgid ""
-"Refresh completed!\n"
-"Loaded %d countries"
-msgstr ""
-"Virkistys valmis!\n"
-"Ladattiin %d maata"
-
-#: plugin.py:313
-#, python-format
-msgid "Refresh failed: %s"
-msgstr "Virkistys epäonnistui: %s"
-
-#: plugin.py:334 utils/update_manager.py:57
-msgid "Update check error"
-msgstr "Päivitysvirhe"
-
-#: plugin.py:336 utils/favorites.py:290 utils/favorites.py:386
-#: utils/favorites.py:757 utils/favorites.py:805 utils/favorites.py:945
-#: utils/settings.py:256
-#, python-format
-msgid "Error: %s"
-msgstr "Virhe: %s"
-
-#: plugin.py:383
-msgid "TV Garden"
-msgstr "TV Garden"
-
-#: plugin.py:436
-msgid "Access free IPTV channels from around the world"
-msgstr "Käytä ilmaisia ​​IPTV-kanavia ympäri maailmaa"
-
-#: utils/favorites.py:89
-msgid "Already in favorites"
-msgstr "On jo suosikeissa"
-
-#: utils/favorites.py:101
-#, python-format
-msgid "Added to favorites: %s"
-msgstr "Lisättiin suosikkeihin: %s"
-
-#: utils/favorites.py:104 utils/favorites.py:119
-msgid "Error saving favorites"
-msgstr "Virhe tallennettaessa suosikkeja"
-
-#: utils/favorites.py:116
-#, python-format
-msgid "Removed from favorites: %s"
-msgstr "Poistettiin suosikeista: %s"
-
-#: utils/favorites.py:121
-msgid "Channel not found in favorites"
-msgstr "Kanavaa ei löytynyt suosikeista"
-
-#: utils/favorites.py:277 utils/favorites.py:373
-#, python-format
-msgid "Error writing file: %s"
-msgstr "Virhe tiedoston kirjoituksessa: %s"
-
-#: utils/favorites.py:280 utils/favorites.py:376 utils/favorites.py:601
-msgid "No valid stream URLs found"
-msgstr "Kelvollisia striimin URL-osoitteita ei löytynyt"
-
-#: utils/favorites.py:286 utils/favorites.py:382
-#, python-format
-msgid "Exported %d channels to bouquet"
-msgstr "Vietiin %d kanavaa suosikkilistaan"
-
-#: utils/favorites.py:409 utils/favorites.py:826
-msgid "Empty database"
-msgstr "Tyhjä tietokanta"
-
-#: utils/favorites.py:429 utils/favorites.py:830
-msgid "Failed to load database"
-msgstr "Tietokannan lataus epäonnistui"
-
-#: utils/favorites.py:521 utils/favorites.py:867
-msgid "No valid channels found in database"
-msgstr "Tietokannasta ei löytynyt kelvollisia kanavia"
-
-#: utils/favorites.py:608
-msgid "Exported"
-msgstr "Viety"
-
-#: utils/favorites.py:610
-msgid "channels from"
-msgstr "kanavaa"
-
-#: utils/favorites.py:612
-msgid "countries"
-msgstr "maat"
-
-#: utils/favorites.py:621 utils/settings.py:456
-msgid "Error"
-msgstr "Virhe"
-
-#: utils/favorites.py:747
-msgid "Removed"
-msgstr "Poistettu"
-
-#: utils/favorites.py:749
-msgid "files and"
-msgstr "tiedostot ja"
-
-#: utils/favorites.py:751
-msgid "bouquet references"
-msgstr "suosikkilistan viittaukset"
-
-#: utils/favorites.py:801
-msgid "Channel added to bouquet"
-msgstr "Kanava lisätty suosikkilistaan"
-
-#: utils/favorites.py:930
-msgid "Hierarchical export completed!"
-msgstr "Hierarkkinen vienti valmis!"
-
-#: utils/favorites.py:931
-msgid "Statistics:"
-msgstr "Tilastot:"
-
-#: utils/favorites.py:932
-msgid "Total channels:"
-msgstr "Kanavia yhteensä:"
-
-#: utils/favorites.py:933
-msgid "Countries exported:"
-msgstr "Maita viety:"
-
-#: utils/favorites.py:934
-msgid "Files created:"
-msgstr "Tiedostoja luotu:"
-
-#: utils/favorites.py:936
-msgid "Structure created:"
-msgstr "Rakenne luotu:"
-
-#: utils/favorites.py:938
-msgid "Main bouquet:"
-msgstr "Pääsuosikkilista:"
-
-#: utils/favorites.py:1104
-#, python-format
-msgid "Cleared %d favorites"
-msgstr "Tyhjennetty %d suosikkia"
-
-#: utils/favorites.py:1107
-msgid "Error clearing favorites"
-msgstr "Virhe tyhjennettäessä suosikkeja"
-
-#: utils/settings.py:51
-msgid "Log file is empty or not found"
-msgstr "Lokitiedosto on tyhjä tai sitä ei löydy"
-
-#: utils/settings.py:54
-msgid "TV Garden Logs"
-msgstr "TV Garden -lokit"
-
-#: utils/settings.py:115
-msgid "TV Garden Settings"
-msgstr "TV Garden -asetukset"
-
-#: utils/settings.py:119
-msgid "Save"
-msgstr "Tallenna"
-
-#: utils/settings.py:120 utils/settings.py:164 utils/settings.py:168
-msgid "Set options"
-msgstr "Aseta asetukset"
-
-#: utils/settings.py:166
-#, python-format
-msgid "Editing: %s"
-msgstr "Muokkaa: %s"
-
-#: utils/settings.py:204 utils/settings.py:224 utils/settings.py:545
-msgid "View Log File"
-msgstr "Näytä lokitiedosto"
-
-#: utils/settings.py:204 utils/settings.py:228 utils/settings.py:546
-msgid "Clear Log Files Now"
-msgstr "Tyhjennä lokitiedostot nyt"
-
-#: utils/settings.py:252
-msgid "Are you sure you want to clear all log files?"
-msgstr "Haluatko varmasti tyhjentää kaikki lokitiedostot?"
-
-#: utils/settings.py:263
-msgid "Logs cleared"
-msgstr "Lokit tyhjennetty"
-
-#: utils/settings.py:266
-msgid "Log files cleared successfully"
-msgstr "Lokitiedostot tyhjennetty onnistuneesti"
-
-#: utils/settings.py:273
-#, python-format
-msgid "Error clearing logs: %s"
-msgstr "Virhe tyhjennettäessä lokeja: %s"
-
-#: utils/settings.py:289
-msgid "ExtePlayer3"
-msgstr "ExtePlayer3"
-
-#: utils/settings.py:290
-msgid "GStreamer"
-msgstr "GStreamer"
-
-#: utils/settings.py:317 utils/settings.py:328 utils/settings.py:371
-msgid "100 channels"
-msgstr "100 kanavaa"
-
-#: utils/settings.py:318 utils/settings.py:329 utils/settings.py:372
-msgid "250 channels"
-msgstr "250 kanavaa"
-
-#: utils/settings.py:319 utils/settings.py:330 utils/settings.py:373
-msgid "500 channels"
-msgstr "500 kanavaa"
-
-#: utils/settings.py:320 utils/settings.py:331 utils/settings.py:374
-msgid "1000 channels"
-msgstr "1000 kanavaa"
-
-#: utils/settings.py:321 utils/settings.py:375
-msgid "All channels"
-msgstr "Kaikki kanavat"
-
-#: utils/settings.py:332
-msgid "2000 channels"
-msgstr "2000 kanavaa"
-
-#: utils/settings.py:333
-msgid "5000 channels"
-msgstr "5000 kanavaa"
-
-#: utils/settings.py:340
-msgid "Countries"
-msgstr "Maat"
-
-#: utils/settings.py:341
-msgid "Categories"
-msgstr "Kategoriat"
-
-#: utils/settings.py:370
-msgid "50 channels"
-msgstr "50 kanavaa"
-
-#: utils/settings.py:387
-msgid "Top"
-msgstr "Ylimpänä"
-
-#: utils/settings.py:388
-msgid "Bottom"
-msgstr "Alinpana"
-
-#: utils/settings.py:400
-msgid "512 KB"
-msgstr "512 KB"
-
-#: utils/settings.py:401
 msgid "1 MB"
 msgstr "1 MB"
 
-#: utils/settings.py:402
+msgid "100 channels"
+msgstr "100 kanavaa"
+
+msgid "1000 channels"
+msgstr "1000 kanavaa"
+
 msgid "2 MB"
 msgstr "2 MB"
 
-#: utils/settings.py:403
+msgid "2000 channels"
+msgstr "2000 kanavaa"
+
+msgid "250 channels"
+msgstr "250 kanavaa"
+
 msgid "4 MB"
 msgstr "4 MB"
 
-#: utils/settings.py:404
+msgid "50 channels"
+msgstr "50 kanavaa"
+
+msgid "500 channels"
+msgstr "500 kanavaa"
+
+msgid "5000 channels"
+msgstr "5000 kanavaa"
+
+msgid "512 KB"
+msgstr "512 KB"
+
 msgid "8 MB"
 msgstr "8 MB"
 
-#: utils/settings.py:444
-msgid "Clear Cache"
-msgstr "Tyhjennä välimuisti"
-
-#: utils/settings.py:445
-msgid "Force Refresh"
-msgstr "Pakota virkistys"
-
-#: utils/settings.py:453
-msgid "Debug"
-msgstr "Debug"
-
-#: utils/settings.py:454
-msgid "Info"
-msgstr "Info"
-
-#: utils/settings.py:455
-msgid "Warning"
-msgstr "Varoitus"
-
-#: utils/settings.py:457
-msgid "Critical"
-msgstr "Kriittinen"
-
-#: utils/settings.py:467
-msgid "Press OK to check for updates"
-msgstr "Paina OK tarkistaaksesi päivitykset"
-
-#: utils/settings.py:472
-msgid "Press OK to view logs"
-msgstr "Paina OK nähdäksesi lokit"
-
-#: utils/settings.py:477
-msgid "Press OK to clear logs"
-msgstr "Tyhjennä lokit painamalla OK"
-
-#: utils/settings.py:486
 msgid "=== Browser Settings ==="
 msgstr "=== Selaimen asetukset ==="
 
-#: utils/settings.py:488
-msgid "Default View"
-msgstr "Oletusnäkymä"
-
-#: utils/settings.py:489
-msgid "Max channels for country"
-msgstr "Max kanavat maalle"
-
-#: utils/settings.py:490
-msgid "Show Flags"
-msgstr "Näytä liput"
-
-#: utils/settings.py:491
-msgid "Show Logos"
-msgstr "Näytö logot"
-
-#: utils/settings.py:494
-msgid "=== Player Settings ==="
-msgstr "=== Soittimen asetukset ==="
-
-#: utils/settings.py:496
-msgid "Player"
-msgstr "Soitin"
-
-#: utils/settings.py:499
-msgid "=== Export Settings ==="
-msgstr "=== Viennin asetukset ==="
-
-#: utils/settings.py:501
-msgid "Enable Export"
-msgstr "Salli vienti"
-
-#: utils/settings.py:503
-msgid "List Position"
-msgstr "Suosikkilistan paikka"
-
-#: utils/settings.py:504
-msgid "Bouquet Name Prefix"
-msgstr "Suosikkilistan nimen etuliite"
-
-#: utils/settings.py:505
-msgid "Max Channels for Bouquet"
-msgstr "Max kanavat suosikkilistalle"
-
-#: utils/settings.py:506
-msgid "Max Channels for Sub-Bouquet"
-msgstr "Max kanavat ali-suosikkilistalle"
-
-#: utils/settings.py:509
-msgid "=== Performance Settings ==="
-msgstr "=== Suorituskykyasetukset ==="
-
-#: utils/settings.py:511
-msgid "Memory Optimization"
-msgstr "Muistin optimointi"
-
-#: utils/settings.py:512
-msgid "Use Hardware Acceleration"
-msgstr "Käytä laitteistokiihdytystä"
-
-#: utils/settings.py:513
-msgid "Buffer Size"
-msgstr "Puskurin koko"
-
-#: utils/settings.py:516
-msgid "=== Network Settings ==="
-msgstr "=== Verkon asetukset ==="
-
-#: utils/settings.py:518
-msgid "User Agent"
-msgstr "Käyttäjäagentti"
-
-#: utils/settings.py:519
-msgid "Connection Timeout"
-msgstr "Yhteyden aikakatkaisu"
-
-#: utils/settings.py:522
 msgid "=== Cache Settings ==="
 msgstr "=== Välimuistin asetukset ==="
 
-#: utils/settings.py:524
-msgid "Enable Cache"
-msgstr "Välimuisti käytössä"
+msgid "=== Export Settings ==="
+msgstr "=== Viennin asetukset ==="
 
-#: utils/settings.py:527
-msgid "Cache Size"
-msgstr "Välimuistin koko"
-
-#: utils/settings.py:528
-msgid "Refresh Method"
-msgstr "Virkistysmenetelmä"
-
-#: utils/settings.py:529
-msgid "Force Refresh on Browsing"
-msgstr "Pakota virkistys selattaessa"
-
-#: utils/settings.py:530
-msgid "Force Refresh on Export"
-msgstr "Pakota virkistys vietäessä"
-
-#: utils/settings.py:533
-msgid "=== Search Settings ==="
-msgstr "===Etsinnän asetukset ==="
-
-#: utils/settings.py:535
-msgid "Max Search Results"
-msgstr "Max hakutulokset"
-
-#: utils/settings.py:538
-msgid "=== Logging Settings ==="
-msgstr "=== Lokin asetukset ==="
-
-#: utils/settings.py:540
-msgid "Log Level"
-msgstr "Lokitaso"
-
-#: utils/settings.py:541
-msgid "Log to File"
-msgstr "Loki tiedostoon"
-
-#: utils/settings.py:543
 msgid "=== Log Maintenance ==="
 msgstr "=== Lokien ylläpito ==="
 
-#: utils/settings.py:549
+msgid "=== Logging Settings ==="
+msgstr "=== Lokin asetukset ==="
+
+msgid "=== Network Settings ==="
+msgstr "=== Verkon asetukset ==="
+
+msgid "=== Performance Settings ==="
+msgstr "=== Suorituskykyasetukset ==="
+
+msgid "=== Player Settings ==="
+msgstr "=== Soittimen asetukset ==="
+
+msgid "=== Search Settings ==="
+msgstr "===Etsinnän asetukset ==="
+
 msgid "=== Update Settings ==="
 msgstr "=== Päivityksen asetukset ==="
 
-#: utils/update_manager.py:23
+msgid "About"
+msgstr "Tietoja"
+
+msgid "About TV Garden"
+msgstr "Tietoja TV Garden:sta"
+
+msgid "About TV Garden plugin"
+msgstr "Tietoja TV Garden -lisäosasta"
+
+msgid "Access free IPTV channels from around the world"
+msgstr "Käytä ilmaisia ​​IPTV-kanavia ympäri maailmaa"
+
+msgid "Add to Favorites"
+msgstr "Lisää suosikkeihin"
+
+msgid "Added to favorites"
+msgstr "Lisätty suosikkeihin"
+
+msgid "Added to favorites: %s"
+msgstr "Lisättiin suosikkeihin: %s"
+
+msgid "All channels"
+msgstr "Kaikki kanavat"
+
+msgid "Already in favorites"
+msgstr "On jo suosikeissa"
+
+msgid "Animation"
+msgstr "Animaatio"
+
+msgid "Are you sure you want to clear all log files?"
+msgstr "Haluatko varmasti tyhjentää kaikki lokitiedostot?"
+
+msgid "Auto"
+msgstr "Auto"
+
+msgid "Back"
+msgstr "Takaisin"
+
+msgid "Bottom"
+msgstr "Alinpana"
+
+msgid "Bouquet Name Prefix"
+msgstr "Suosikkilistan nimen etuliite"
+
+msgid "Browse by Category"
+msgstr "Selaa kategorioittain"
+
+msgid "Browse by Country"
+msgstr "Selaa maittain"
+
+msgid "Browse channels by category"
+msgstr "Selaa kanavia kategorioittain"
+
+msgid "Browse channels by country"
+msgstr "Selaa kanavia maittain"
+
+msgid "Buffer Size"
+msgstr "Puskurin koko"
+
+msgid "Business"
+msgstr "Liiketoiminta"
+
+msgid "Cache Size"
+msgstr "Välimuistin koko"
+
+msgid "Cache cleared"
+msgstr "Välimuisti tyhjennetty"
+
+msgid "Categories"
+msgstr "Kategoriat"
+
+msgid "Channel Information"
+msgstr "Kanavan tiedot"
+
+msgid "Channel Menu"
+msgstr "Kanavan valikko"
+
+msgid "Channel added to bouquet"
+msgstr "Kanava lisätty suosikkilistaan"
+
+msgid "Channel not found in favorites"
+msgstr "Kanavaa ei löytynyt suosikeista"
+
+msgid "Channels"
+msgstr "Kanavat"
+
+msgid "Check for Updates"
+msgstr "Tarkista päivitykset"
+
+msgid "Check for plugin updates"
+msgstr "Tarkista lisäosan päivitykset"
+
 msgid "Checking for updates..."
 msgstr "Tarkistetaan päivityksiä..."
 
-#: utils/update_manager.py:34
-msgid "Update check failed"
-msgstr "Päivitysvirhe"
+msgid "Classic"
+msgstr "Klassinen"
 
-#: utils/update_manager.py:36
+msgid "Clear"
+msgstr "Tyhjennä"
+
+msgid "Clear ALL favorites?"
+msgstr "Tyhjennä KAIKKI suosikit?"
+
+msgid "Clear All Favorites"
+msgstr "Tyhjennä kaikki suosikit"
+
+msgid "Clear Cache"
+msgstr "Tyhjennä välimuisti"
+
+msgid "Clear Log Files Now"
+msgstr "Tyhjennä lokitiedostot nyt"
+
+msgid "Cleared %d favorites"
+msgstr "Tyhjennetty %d suosikkia"
+
+msgid "Close"
+msgstr "Sulje"
+
+msgid "Comedy"
+msgstr "Komedia"
+
+msgid "Connection Timeout"
+msgstr "Yhteyden aikakatkaisu"
+
+msgid "Cooking"
+msgstr "Ruoanlaitto"
+
 msgid "Could not check for updates. Check internet connection."
 msgstr "Päivityksiä ei voitu tarkistaa. Tarkista internetyhteytesi."
 
-#: utils/update_manager.py:41
-msgid "Update available!"
-msgstr "Päivitys saatavilla!"
-
-#: utils/update_manager.py:46
-msgid "Plugin is up to date"
-msgstr "Lisäosa on ajan tasalla"
-
-#: utils/update_manager.py:48
-msgid "You have the latest version of TV Garden."
-msgstr "Sinulla on viimeisin versio TV Garden:sta."
-
-#: utils/update_manager.py:59
-#, python-format
 msgid "Could not check for updates: %s"
 msgstr "Päivityksiä ei voitu tarkistaa: %s"
 
-#: utils/update_manager.py:73
-msgid "Update cancelled"
-msgstr "Päivitys peruttu"
+msgid "Countries"
+msgstr "Maat"
 
-#: utils/update_manager.py:75
-msgid ""
-"A new version is available!\n"
-"\n"
-"Update now?\n"
-"\n"
-"(Recommended to backup first)"
-msgstr ""
-"Uusi versio saatavilla!\n"
-"\n"
-"Päivitä nyt?\n"
-"(Suositeltavaa tehdä varmuuskopio ensin)"
+msgid "Countries exported:"
+msgstr "Maita viety:"
 
-#: utils/update_manager.py:91
-msgid "Update successful!"
-msgstr "Päivitys onnistui!"
+msgid "Creating hierarchical structure..."
+msgstr "Luodaan hierarkkista rakennetta..."
 
-#: utils/update_manager.py:93
-#, python-format
-msgid ""
-"%s\n"
-"\n"
-"Restart Enigma2 now for changes to take effect."
-msgstr ""
-"%s\n"
-"\n"
-"Käynnistä Enigma2 uudelleen, jotta muutokset tulevat voimaan."
+msgid "Critical"
+msgstr "Kriittinen"
 
-#: utils/update_manager.py:102
-msgid "Update failed"
-msgstr "Päivitys epäonnistui"
+msgid "Culture"
+msgstr "Kulttuuri"
 
-#: utils/update_manager.py:108
-msgid "Updating plugin... Please wait"
-msgstr "Lisäosaa päivitetään... Odota"
+msgid "Database exported successfully"
+msgstr "Tietokannan vienti onnistui"
 
-#: utils/update_manager.py:125
-msgid "Please restart Enigma2 manually."
-msgstr "Käynnistä Enigma2 uudelleen manuaalisesti."
+msgid "Debug"
+msgstr "Debug"
 
-#: utils/updater.py:155
+msgid "Default View"
+msgstr "Oletusnäkymä"
+
+msgid "Documentary"
+msgstr "Dokumentti"
+
+msgid "Editing: %s"
+msgstr "Muokkaa: %s"
+
+msgid "Education"
+msgstr "Koulutus"
+
+msgid "Empty database"
+msgstr "Tyhjä tietokanta"
+
+msgid "Enable Cache"
+msgstr "Välimuisti käytössä"
+
+msgid "Enable Export"
+msgstr "Salli vienti"
+
+msgid "Entertainment"
+msgstr "Viihde"
+
+msgid "Error"
+msgstr "Virhe"
+
+msgid "Error clearing favorites"
+msgstr "Virhe tyhjennettäessä suosikkeja"
+
+msgid "Error clearing logs: %s"
+msgstr "Virhe tyhjennettäessä lokeja: %s"
+
+msgid "Error loading category"
+msgstr "Virhe ladattaessa kategoriaa"
+
+msgid "Error loading channels"
+msgstr "Virhe ladattaessa kanavia"
+
+msgid "Error loading countries"
+msgstr "Virhe ladattaessa maita"
+
+msgid "Error loading favorites"
+msgstr "Virhe ladattaessa suosikkeja"
+
+msgid "Error loading information"
+msgstr "Virhe ladattaessa tietoja"
+
+msgid "Error opening player"
+msgstr "Virhe avattaessa soitinta"
+
+msgid "Error saving favorites"
+msgstr "Virhe tallennettaessa suosikkeja"
+
+msgid "Error writing file: %s"
+msgstr "Virhe tiedoston kirjoituksessa: %s"
+
+msgid "Error: %s"
+msgstr "Virhe: %s"
+
+msgid "Exit"
+msgstr "Poistu"
+
+msgid "Export"
+msgstr "Vie"
+
+msgid "Export '%s' to Enigma2 bouquet?"
+msgstr "Vie '%s' suosikkilistaan?"
+
+msgid "Export ALL %d favorites to Enigma2 bouquet?"
+msgstr "Vie KAIKKI %d suosikkia suosikkilistaan?"
+
+msgid "Export ALL Database (Multi-File)"
+msgstr "Vie KOKO tietokanta (monitiedostoinen)"
+
+msgid "Export ALL Database (Single File)"
+msgstr "Vie KOKO tietokanta (yksittäinen tiedosto)"
+
+msgid "Export Current View"
+msgstr "Vie nykyinen näkymä"
+
+msgid "Export failed"
+msgstr "Vienti epäonnistui"
+
+msgid "Export failed: %s"
+msgstr "Vienti epäonnistui: %s"
+
+msgid "Export to Enigma2 Bouquet"
+msgstr "Vie Enigma2 suosikkilistaan"
+
+msgid "Export {count} channels to bouquet '{name}'?"
+msgstr "Vie {count} kanavaa suosikkilistaan '{name}'?"
+
+msgid "Exported"
+msgstr "Viety"
+
+msgid "Exported %d channels to bouquet"
+msgstr "Vietiin %d kanavaa suosikkilistaan"
+
+msgid "ExtePlayer3"
+msgstr "ExtePlayer3"
+
 msgid "Failed to create backup. Update cancelled."
 msgstr "Varmuuskopion luonti epäonnistui. Päivitys peruttiin."
 
-#: utils/updater.py:163
+msgid "Failed to load database"
+msgstr "Tietokannan lataus epäonnistui"
+
+msgid "Family"
+msgstr "Perhe"
+
+msgid "Favorite"
+msgstr "Suosikki"
+
+msgid "Favorites"
+msgstr "Suosikit"
+
+msgid "Files created:"
+msgstr "Tiedostoja luotu:"
+
+msgid "Force Refresh"
+msgstr "Pakota virkistys"
+
+msgid "Force Refresh on Browsing"
+msgstr "Pakota virkistys selattaessa"
+
+msgid "Force Refresh on Export"
+msgstr "Pakota virkistys vietäessä"
+
+msgid "Found %d channels"
+msgstr "Löytyi %d kanavaa"
+
+msgid "Found %d playable channels"
+msgstr "Löytyi %d toistettavaa kanavaa"
+
+msgid "GStreamer"
+msgstr "GStreamer"
+
+msgid "General"
+msgstr "Yleinen"
+
+msgid "Hierarchical export completed"
+msgstr "Hierarkkinen vienti valmis"
+
+msgid "Hierarchical export completed!"
+msgstr "Hierarkkinen vienti valmis!"
+
+msgid "History"
+msgstr "Historia"
+
+msgid "Hobby"
+msgstr "Harrastus"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Item {} of {}"
+msgstr "Kohde {} / {}"
+
+msgid "Keyboard"
+msgstr "Näppäimistö"
+
+msgid "Kids"
+msgstr "Lapset"
+
+msgid "Legislative"
+msgstr "Lainsäädäntö"
+
+msgid "Lifestyle"
+msgstr "Elämäntapa"
+
+msgid "List Position"
+msgstr "Suosikkilistan paikka"
+
+msgid "Loading all channels..."
+msgstr "Ladataan kaikki kanavat..."
+
+msgid "Loading categories..."
+msgstr "Ladataan kategorioita..."
+
+msgid "Loading channels..."
+msgstr "Ladataan kanavia..."
+
+msgid "Loading countries..."
+msgstr "Ladataan maita..."
+
+msgid "Loading favorites..."
+msgstr "Ladataan suosikkeja..."
+
+msgid "Local"
+msgstr "Paikallinen"
+
+msgid "Log Level"
+msgstr "Lokitaso"
+
+msgid "Log file is empty or not found"
+msgstr "Lokitiedosto on tyhjä tai sitä ei löydy"
+
+msgid "Log files cleared successfully"
+msgstr "Lokitiedostot tyhjennetty onnistuneesti"
+
+msgid "Log to File"
+msgstr "Loki tiedostoon"
+
+msgid "Logs cleared"
+msgstr "Lokit tyhjennetty"
+
+msgid "Main bouquet:"
+msgstr "Pääsuosikkilista:"
+
+msgid "Max Channels for Bouquet"
+msgstr "Max kanavat suosikkilistalle"
+
+msgid "Max Channels for Sub-Bouquet"
+msgstr "Max kanavat ali-suosikkilistalle"
+
+msgid "Max Search Results"
+msgstr "Max hakutulokset"
+
+msgid "Max channels for country"
+msgstr "Max kanavat maalle"
+
+msgid "Memory Optimization"
+msgstr "Muistin optimointi"
+
+msgid "Movies"
+msgstr "Elokuvat"
+
+msgid "Music"
+msgstr "Musiikki"
+
+msgid "News"
+msgstr "Uutiset"
+
+msgid "Next load will use fresh data"
+msgstr "Seuraava lataus käyttää uutta dataa"
+
+msgid "No channel selected"
+msgstr "Kanavaa ei valittu"
+
+msgid "No channels found for: %s"
+msgstr "%s: kanavia ei löytynyt"
+
+msgid "No channels in this category"
+msgstr "Ei kanavia tässä kateroriassa"
+
+msgid "No channels loaded"
+msgstr "Ei ladattuja kanavia"
+
+msgid "No channels to export"
+msgstr "Ei vietäviä kanavia"
+
+msgid "No countries with channels found"
+msgstr "Yhtään maata, joilla on kanavia, ei löytynyt"
+
+msgid "No country selected"
+msgstr "Maata ei valittu"
+
+msgid "No favorite channels"
+msgstr "Ei suosikkikanavia"
+
+msgid "No favorites to export"
+msgstr "Ei vietäviä suosikkeja"
+
+msgid "No items"
+msgstr "Ei kohteita"
+
+msgid "No stream URL"
+msgstr "Ei striimin URL-osoitetta"
+
+msgid "No stream URL available"
+msgstr "Striimin URL-osoitetta ei ole saatavilla"
+
+msgid "No valid channels found in database"
+msgstr "Tietokannasta ei löytynyt kelvollisia kanavia"
+
+msgid "No valid stream URLs found"
+msgstr "Kelvollisia striimin URL-osoitteita ei löytynyt"
+
+msgid "Options"
+msgstr "Optiot"
+
+msgid "Options for: %s"
+msgstr "%s: optiot"
+
+msgid "Play"
+msgstr "Toista"
+
+msgid "Play Channel"
+msgstr "Toista kanava"
+
+msgid "Player"
+msgstr "Soitin"
+
+msgid "Please restart Enigma2 manually."
+msgstr "Käynnistä Enigma2 uudelleen manuaalisesti."
+
+msgid "Plugin is up to date"
+msgstr "Lisäosa on ajan tasalla"
+
+msgid "Plugin settings and configuration"
+msgstr "Lisäosan asetukset ja konfiguraatio"
+
+msgid "Politics"
+msgstr "Politiikka"
+
+msgid "Press GREEN for keyboard..."
+msgstr "Paina VIHREÄÄ näppäimistöä varten..."
+
+msgid "Press GREEN for keyboard... Ready - %d channels"
+msgstr "Näppäimistö painamalla VIHREÄÄ...Valmiina - %d kanavaa"
+
+msgid "Press OK to check for updates"
+msgstr "Paina OK tarkistaaksesi päivitykset"
+
+msgid "Press OK to clear logs"
+msgstr "Tyhjennä lokit painamalla OK"
+
+msgid "Press OK to view logs"
+msgstr "Paina OK nähdäksesi lokit"
+
+msgid "Refresh"
+msgstr "Virkistä"
+
+msgid "Refresh Method"
+msgstr "Virkistysmenetelmä"
+
+msgid "Refresh failed"
+msgstr "Virkistys epäonnistui"
+
+msgid "Refresh failed: %s"
+msgstr "Virkistys epäonnistui: %s"
+
+msgid "Refreshing data..."
+msgstr "Virkistetään dataa..."
+
+msgid "Refreshing..."
+msgstr "Virkistetään..."
+
+msgid "Religious"
+msgstr "Uskonnollinen"
+
+msgid "Remove '%s' from favorites?"
+msgstr "Poista '%s' suosikeista?"
+
+msgid "Remove Bouquet from Enigma2"
+msgstr "Poista suosikkilista Enigma2:sta"
+
+msgid "Remove TV Garden bouquet from Enigma2?"
+msgstr "Poista TV Garden -suosikkilista Enigma2:sta?"
+
+msgid "Remove from Favorites"
+msgstr "Poista suosikeista"
+
+msgid "Removed"
+msgstr "Poistettu"
+
+msgid "Removed from favorites"
+msgstr "Poistettu suosikeista"
+
+msgid "Removed from favorites: %s"
+msgstr "Poistettiin suosikeista: %s"
+
+msgid "Save"
+msgstr "Tallenna"
+
+msgid "Science"
+msgstr "Tiede"
+
+msgid "Search"
+msgstr "Etsi"
+
+msgid "Search Channels"
+msgstr "Etsi kanavia"
+
+msgid "Search channels by name"
+msgstr "Hae kanavia nimellä"
+
+msgid "Search:"
+msgstr "Etsi:"
+
+msgid "Searching..."
+msgstr "Etsitään..."
+
+msgid "Select"
+msgstr "Valitse"
+
+msgid "Select a category"
+msgstr "Valitse kategoria"
+
+msgid "Select a country"
+msgstr "Valise maa"
+
+msgid "Series"
+msgstr "Sarjat"
+
+msgid "Set options"
+msgstr "Aseta asetukset"
+
+msgid "Settings"
+msgstr "Asetukset"
+
+msgid "Shop"
+msgstr "Ostokset"
+
+msgid "Show Flags"
+msgstr "Näytä liput"
+
+msgid "Show Logos"
+msgstr "Näytö logot"
+
+msgid "Showing {shown} of {total} channels"
+msgstr "Näytetään {shown}/{total} kanavaa"
+
+msgid "Showing {shown} of {total} results"
+msgstr "Näytetään {shown}/{total} tulosta"
+
+msgid "Sports"
+msgstr "Urheilu"
+
+msgid "Statistics:"
+msgstr "Tilastot:"
+
+msgid "Stream: %s"
+msgstr "Striimi: %s"
+
+msgid "Stream: %s..."
+msgstr "Striimi: %s..."
+
+msgid "Structure created:"
+msgstr "Rakenne luotu:"
+
+msgid "TV Garden"
+msgstr "TV Garden"
+
+msgid "TV Garden Logs"
+msgstr "TV Garden -lokit"
+
+msgid "TV Garden Settings"
+msgstr "TV Garden -asetukset"
+
+msgid "Top"
+msgstr "Ylimpänä"
+
+msgid "Total channels:"
+msgstr "Kanavia yhteensä:"
+
+msgid "Travel"
+msgstr "Matkustaminen"
+
+msgid "Unknown"
+msgstr "Tuntematon"
+
+msgid "Update available!"
+msgstr "Päivitys saatavilla!"
+
+msgid "Update cancelled"
+msgstr "Päivitys peruttu"
+
+msgid "Update check error"
+msgstr "Päivitysvirhe"
+
+msgid "Update check failed"
+msgstr "Päivitysvirhe"
+
 msgid "Update completed successfully!"
 msgstr "Päivitys onnistui!"
 
-#: utils/updater.py:167
-msgid "Update failed. Restored from backup."
-msgstr "Päivitys epäonnistui. Palautettu varmuuskopiosta."
+msgid "Update error: %s"
+msgstr "Päivitysvirhe: %s"
 
-#: utils/updater.py:169
+msgid "Update failed"
+msgstr "Päivitys epäonnistui"
+
 msgid "Update failed and backup restore also failed!"
 msgstr "Päivitys ja varmuuskopion palautus epäonnistuivat!"
 
-#: utils/updater.py:178
-#, python-format
-msgid "Update error: %s"
-msgstr "Päivitysvirhe: %s"
+msgid "Update failed. Restored from backup."
+msgstr "Päivitys epäonnistui. Palautettu varmuuskopiosta."
+
+msgid "Update successful!"
+msgstr "Päivitys onnistui!"
+
+msgid "Updating plugin... Please wait"
+msgstr "Lisäosaa päivitetään... Odota"
+
+msgid "Use Hardware Acceleration"
+msgstr "Käytä laitteistokiihdytystä"
+
+msgid "User Agent"
+msgstr "Käyttäjäagentti"
+
+msgid "View Channel Info"
+msgstr "Näytä kanavan tiedot"
+
+msgid "View Log File"
+msgstr "Näytä lokitiedosto"
+
+msgid "Warning"
+msgstr "Varoitus"
+
+msgid "Weather"
+msgstr "Sää"
+
+msgid "Will load fresh data next time"
+msgstr "Ladataan tuoreet tiedot seuraavalla kerralla"
+
+#, fuzzy
+msgid "You have the latest version of TVGarden."
+msgstr "Sinulla on viimeisin versio TV Garden:sta."
+
+msgid "Your favorite channels"
+msgstr "Suosikkikanavasi"
+
+#, fuzzy
+msgid "[Cache disabled]"
+msgstr " [Välimuisti pois käytöstä]"
+
+#, fuzzy
+msgid "[Fresh data]"
+msgstr " [Tuoretta dataa]"
+
+msgid "bouquet references"
+msgstr "suosikkilistan viittaukset"
+
+msgid "channels from"
+msgstr "kanavaa"
+
+msgid "countries"
+msgstr "maat"
+
+msgid "files and"
+msgstr "tiedostot ja"
+
+#~ msgid "TV Garden Plugin"
+#~ msgstr "TV Garden -lisäosa"
 
 #~ msgid "Export Settings"
 #~ msgstr "Vie asetukset"
@@ -1245,9 +905,7 @@ msgstr "Päivitysvirhe: %s"
 
 #, python-format
 #~ msgid "Bouquet removed. %d files deleted. Order preserved."
-#~ msgstr ""
-#~ "Suosikkilista poistettiin. %d tiedostoa poistettiin. Järjestys "
-#~ "säilytettiin."
+#~ msgstr "Suosikkilista poistettiin. %d tiedostoa poistettiin. Järjestys säilytettiin."
 
 #~ msgid "--- Log Maintenance ---"
 #~ msgstr "--- Lokien ylläpito ---"

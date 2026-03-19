@@ -9,12 +9,13 @@ from __future__ import print_function
 from enigma import (
     eServiceReference,
     iPlayableService,
-    eTimer
+    eTimer,
+    getDesktop
 )
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.ActionMap import ActionMap
 from Components.Label import Label
-from Components.config import config
+# from Components.config import config
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.InfoBarGenerics import (
@@ -22,9 +23,54 @@ from Screens.InfoBarGenerics import (
     InfoBarAudioSelection,
     InfoBarNotifications,
 )
-
+import time
 from ..helpers import log
 from ..utils.config import get_config
+from .. import _
+
+
+# ============ DETECT SCREEN RESOLUTION ============
+def get_screen_resolution():
+    """Get current screen resolution"""
+    desktop = getDesktop(0)
+    return desktop.size().width(), desktop.size().height()
+
+
+screen_width, screen_height = get_screen_resolution()
+
+# Set overlay dimensions based on screen resolution
+if screen_width >= 2560:  # WQHD
+    OVERLAY_WIDTH = 2560
+    OVERLAY_HEIGHT_TOP = 70
+    OVERLAY_HEIGHT_INFO = 80
+    FONT_SIZE_TOP = 42
+    FONT_SIZE_INFO = 36
+    OVERLAY_Y_INFO = screen_height - 100  # 1340
+    OVERLAY_Y_TOP = 10
+    IMAGES_PATH = "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/wqhd"
+    SKIN_PATH = "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/skins/wqhd"
+
+elif screen_width >= 1920:  # FHD
+    OVERLAY_WIDTH = 1920
+    OVERLAY_HEIGHT_TOP = 60
+    OVERLAY_HEIGHT_INFO = 70
+    FONT_SIZE_TOP = 36
+    FONT_SIZE_INFO = 32
+    OVERLAY_Y_INFO = screen_height - 80  # 1000
+    OVERLAY_Y_TOP = 5
+    IMAGES_PATH = "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd"
+    SKIN_PATH = "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/skins/fhd"
+
+else:  # HD (1280x720)
+    OVERLAY_WIDTH = 1280
+    OVERLAY_HEIGHT_TOP = 50
+    OVERLAY_HEIGHT_INFO = 60
+    FONT_SIZE_TOP = 28
+    FONT_SIZE_INFO = 24
+    OVERLAY_Y_INFO = screen_height - 70  # 650
+    OVERLAY_Y_TOP = 0
+    IMAGES_PATH = "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/hd"
+    SKIN_PATH = "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/skins/hd"
 
 
 class TvInfoBarShowHide():
@@ -54,30 +100,94 @@ class TvInfoBarShowHide():
 
         self.helpOverlay = Label("")
         self.helpOverlay.skinAttributes = [
-            ("position", "0,0"),
-            ("size", "1280,50"),
-            ("font", "Regular;28"),
+            ("position", "0,{}".format(OVERLAY_Y_TOP)),
+            ("size", "{},{}".format(OVERLAY_WIDTH, OVERLAY_HEIGHT_TOP)),
+            ("font", "Regular;{}".format(FONT_SIZE_TOP)),
             ("halign", "center"),
             ("valign", "center"),
-            ("foregroundColor", "#FFFFFF"),
-            ("backgroundColor", "#666666"),
+            ("foregroundColor", "#00ffffff"),
+            ("backgroundColor", "#80000000"),
             ("transparent", "0"),
-            ("zPosition", "100")
+            ("zPosition", "99")
         ]
 
         self["helpOverlay"] = self.helpOverlay
         self["helpOverlay"].hide()
 
+        # Bottom overlay (channel info)
+        self.infoOverlay = Label("")
+        self.infoOverlay.skinAttributes = [
+            ("position", "0,{}".format(OVERLAY_Y_INFO)),
+            ("size", "{},{}".format(OVERLAY_WIDTH, OVERLAY_HEIGHT_INFO)),
+            ("font", "Regular;{}".format(FONT_SIZE_INFO)),
+            ("halign", "center"),
+            ("valign", "center"),
+            ("foregroundColor", "#00ffffff"),
+            ("backgroundColor", "#80000000"),
+            ("transparent", "0"),
+            ("zPosition", "99")
+        ]
+        self["infoOverlay"] = self.infoOverlay
+        self["infoOverlay"].hide()
+
+        # Timer to hide the overlay after a while
         self.hideTimer = eTimer()
         try:
-            self.hideTimer_conn = self.hideTimer.timeout.connect(
-                self.doTimerHide)
+            self.hideTimer.timeout.connect(self.doTimerHide)
         except BaseException:
             self.hideTimer.callback.append(self.doTimerHide)
-        self.hideTimer.start(5000, True)
 
         self.onShow.append(self.__onShow)
         self.onHide.append(self.__onHide)
+
+    def get_current_channel_info(self):
+        """Method to be overridden by the child class (TVGardenPlayer)"""
+        if hasattr(self, 'channel_list') and hasattr(self, 'current_index'):
+            if self.channel_list and 0 <= self.current_index < len(self.channel_list):
+                channel = self.channel_list[self.current_index]
+                name = channel.get('name', 'N/A')
+                index = self.current_index + 1
+                total = len(self.channel_list)
+
+                # Add country/language if available
+                extra = []
+                if channel.get('country'):
+                    extra.append(channel.get('country'))
+                if channel.get('language'):
+                    extra.append(channel.get('language'))
+
+                extra_str = " [{}]".format(', '.join(extra)) if extra else ""
+
+                return "{} [{}/{}]{}".format(name, index, total, extra_str)
+        return "TV Garden Player"
+
+    def show_overlays(self):
+        """Show both overlays with controls and channel info."""
+        try:
+            # Controls text
+            controls = _("CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla")
+
+            # Get channel info
+            channel_info = self.get_current_channel_info()
+
+            self["helpOverlay"].setText(controls)
+            self["helpOverlay"].show()
+
+            self["infoOverlay"].setText(channel_info)
+            self["infoOverlay"].show()
+
+            # Start hide timer (5 seconds)
+            self.hideTimer.start(5000, True)
+
+        except Exception as e:
+            print("[TvInfoBar] Error showing overlays: {}".format(e))
+
+    def hide_overlays(self):
+        """Hide both overlays."""
+        if self["helpOverlay"].visible:
+            self.hideTimer.stop()
+            self["helpOverlay"].hide()
+            self["infoOverlay"].hide()
 
     def show_help_overlay(self):
         help_text = (
@@ -101,13 +211,11 @@ class TvInfoBarShowHide():
             self["helpOverlay"].hide()
 
     def OkPressed(self):
-        if self.__state == self.STATE_SHOWN:
-            if self["helpOverlay"].visible:
-                self.help_timer.stop()
-                self.hide_help_overlay()
-            else:
-                self.show_help_overlay()
-
+        """Toggle overlays on OK press."""
+        if self["helpOverlay"].visible:
+            self.hide_overlays()
+        else:
+            self.show_overlays()
         self.toggleShow()
 
     def __onShow(self):
@@ -123,16 +231,14 @@ class TvInfoBarShowHide():
         self.startHideTimer()
 
     def doHide(self):
-        self.hideTimer.stop()
         self.hide()
         if self["helpOverlay"].visible:
-            self.help_timer.stop()
-            self.hide_help_overlay()
-        self.startHideTimer()
+            self.hide_overlays()
 
     def serviceStarted(self):
-        if self.execing and config.usage.show_infobar_on_zap.value:
+        if self.execing:
             self.doShow()
+            self.show_overlays()
 
     def startHideTimer(self):
         if self.__state == self.STATE_SHOWN and not self.__locked:
@@ -143,12 +249,9 @@ class TvInfoBarShowHide():
         self.skipToggleShow = False
 
     def doTimerHide(self):
-        self.hideTimer.stop()
-        if self.__state == self.STATE_SHOWN:
-            self.hide()
-            if self["helpOverlay"].visible:
-                self.help_timer.stop()
-                self.hide_help_overlay()
+        if self["helpOverlay"].visible:
+            self.hide_overlays()
+            self.toggleShow()
 
     def toggleShow(self):
         if not self.skipToggleShow:
@@ -184,13 +287,7 @@ class TvInfoBarShowHide():
             self.startHideTimer()
 
 
-class TVGardenPlayer(
-        InfoBarBase,
-        InfoBarSeek,
-        InfoBarAudioSelection,
-        InfoBarNotifications,
-        TvInfoBarShowHide,
-        Screen):
+class TVGardenPlayer(InfoBarBase, InfoBarSeek, InfoBarAudioSelection, InfoBarNotifications, TvInfoBarShowHide, Screen):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
@@ -203,6 +300,13 @@ class TVGardenPlayer(
         self.skinName = 'MoviePlayer'
 
         self.config = get_config()
+        self.channel_list = channel_list if channel_list else []
+        self.current_index = current_index
+        self.itemscount = len(self.channel_list)
+        self.stream_running = False
+        self.eof_count = 0
+        self.last_eof_time = 0
+        self.current_service = None
 
         InfoBarBase.__init__(self)
         InfoBarSeek.__init__(self)
@@ -210,22 +314,11 @@ class TVGardenPlayer(
         InfoBarNotifications.__init__(self)
         TvInfoBarShowHide.__init__(self)
 
-        self.channel_list = channel_list if channel_list else []
-        self.current_index = current_index
-        self.itemscount = len(self.channel_list)
-
-        log.debug("INIT: Got %d channels, starting at index %d" %
-                  (self.itemscount, self.current_index), module="Player")
+        log.debug("INIT: Got %d channels, starting at index %d" % (self.itemscount, self.current_index), module="Player")
         if self.channel_list:
             current_ch = self.channel_list[self.current_index]
-            log.debug(
-                "Current channel: %s" %
-                current_ch.get('name'),
-                module="Player")
-            log.debug(
-                "Current URL: %s" %
-                (current_ch.get('stream_url') or current_ch.get('url')),
-                module="Player")
+            log.debug("Current channel: %s" % current_ch.get('name'), module="Player")
+            log.debug("Current URL: %s" % (current_ch.get('stream_url') or current_ch.get('url')), module="Player")
 
         self['actions'] = ActionMap(
             [
@@ -261,106 +354,53 @@ class TVGardenPlayer(
             }
         )
         self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
+        self.eof_recovery_timer = eTimer()
+        try:
+            self.eof_recovery_timer.timeout.connect(self.restartAfterEOF)
+        except BaseException:
+            self.eof_recovery_timer.callback.append(self.restartAfterEOF)
+
+        self.stream_check_timer = eTimer()
+        try:
+            self.stream_check_timer.timeout.connect(self.check_stream_status)
+        except BaseException:
+            self.stream_check_timer.callback.append(self.check_stream_status)
+
+        self.audio_reset_timer = eTimer()
+        try:
+            self.audio_reset_timer.timeout.connect(self.reset_audio_tracks)
+        except BaseException:
+            self.audio_reset_timer.callback.append(self.reset_audio_tracks)
         self.onFirstExecBegin.append(self.start_stream)
         self.onClose.append(self.cleanup)
 
-    def start_stream(self):
-        """Start playing the current channel with error handling"""
-        if not self.channel_list:
-            log.error("No channel list!", module="Player")
-            return
+    def get_current_channel_info(self):
+        """Override for TvInfoBarShowHide"""
+        if self.channel_list and 0 <= self.current_index < len(self.channel_list):
+            channel = self.channel_list[self.current_index]
+            name = channel.get('name', 'N/A')
+            index = self.current_index + 1
+            total = self.itemscount
 
-        current_channel = self.channel_list[self.current_index]
-        stream_url = current_channel.get(
-            'stream_url') or current_channel.get('url')
-        channel_name = current_channel.get('name', 'TV Garden')
+            # Add country/language if available
+            extra = []
+            if channel.get('country'):
+                extra.append(channel.get('country'))
+            if channel.get('language'):
+                extra.append(channel.get('language'))
 
-        if not stream_url:
-            log.error(
-                "No stream URL for channel %d" %
-                self.current_index, module="Player")
-            return
+            extra_str = " [{}]".format(', '.join(extra)) if extra else ""
 
-        log.info(
-            "Playing channel %d: %s" %
-            (self.current_index,
-             channel_name),
-            module="Player")
-        log.debug("URL: %s..." % stream_url[:80], module="Player")
+            # Add performance info
+            use_hw_accel = self.config.get("use_hardware_acceleration", True)
+            hw_accel = "HW" if use_hw_accel else "SW"
+            buffer_size = self.config.get("buffer_size", 2048)
+            player_type = self.config.get("player", "auto")
 
-        use_hw_accel = self.config.get("use_hardware_acceleration", True)
-        buffer_size = self.config.get("buffer_size", 2048)
-        player_type = self.config.get("player", "auto")
-
-        log.info("=== PERFORMANCE SETTINGS ===", module="Player")
-        log.info("Player: %s" % player_type, module="Player")
-        log.info(
-            "Hardware Acceleration: %s" %
-            ("ENABLED" if use_hw_accel else "DISABLED"),
-            module="Player")
-        log.info("Buffer Size: %s KB" % buffer_size, module="Player")
-
-        # Decisione HW acceleration
-        if self.should_use_hardware_acceleration(stream_url):
-            log.info(
-                "HW Acceleration decision: WILL USE for this stream",
-                module="Player")
-        else:
-            log.info(
-                "HW Acceleration decision: WILL NOT USE for this stream",
-                module="Player")
-
-        # Buffer size application
-        if player_type == "exteplayer3" and buffer_size > 0:
-            log.info(
-                "Buffer size will be applied: %s bytes" %
-                (buffer_size * 1024), module="Player")
-        else:
-            log.info(
-                "Buffer size setting may not apply to player: %s" %
-                player_type, module="Player")
-
-        # Check if the URL may be problematic
-        if self.is_problematic_stream(stream_url):
-            log.warning("Stream might be problematic", module="Player")
-            self.show_stream_warning(channel_name)
-
-        try:
-            # Create service reference with performance parameters
-            url_encoded = stream_url.replace(":", "%3a")
-            name_encoded = channel_name.replace(":", "%3a")
-
-            # Build service reference string with additional parameters
-            if self.should_use_hardware_acceleration(stream_url):
-                # Add parameters for hardware acceleration
-                ref_str = self.build_service_ref_with_hw_accel(
-                    url_encoded, name_encoded)
-                log.debug("Using hardware acceleration", module="Player")
-            else:
-                # Use standard format
-                ref_str = self.build_standard_service_ref(
-                    url_encoded, name_encoded)
-                log.debug("Using standard playback", module="Player")
-
-            # Add buffer size if supported
-            ref_str = self.add_buffer_size_param(ref_str, buffer_size)
-
-            log.debug("ServiceRef string: " +
-                      ref_str[:100] + "...", module="Player")
-
-            sref = eServiceReference(ref_str)
-            sref.setName(channel_name)
-
-            # Start service with timeout
-            self.session.nav.playService(sref)
-            self.current_service = sref
-
-            # Start a timer to check whether the stream plays correctly
-            self.start_stream_check_timer()
-
-        except Exception as error:
-            log.error("ERROR starting stream: " + str(error), module="Player")
-            self.show_error_message("Cannot play: " + channel_name)
+            return "{} [{}/{}]{} | {} | {}KB | {}".format(
+                name, index, total, extra_str, hw_accel, buffer_size, player_type
+            )
+        return "TV Garden Player"
 
     def should_use_hardware_acceleration(self, stream_url):
         """Decide whether to use hardware acceleration for this stream"""
@@ -424,19 +464,11 @@ class TVGardenPlayer(
 
     def add_buffer_size_param(self, ref_str, buffer_size_kb):
         """Add buffer size parameter if supported"""
-        # For some players, we can add parameters to the service reference
-        # This depends on the specific player implementation
-
-        # For exteplayer3: use buffersize parameter
         player = self.config.get("player", "auto")
-
         if player == "exteplayer3" and buffer_size_kb > 0:
-            # Add buffersize parameter (in bytes)
             buffer_size_bytes = buffer_size_kb * 1024
             ref_str += "?buffersize=%d" % buffer_size_bytes
-            log.debug("Added buffer size: %sKB (%s bytes)" %
-                      (buffer_size_kb, buffer_size_bytes), module="Player")
-
+            log.debug("Added buffer size: %sKB (%s bytes)" % (buffer_size_kb, buffer_size_bytes), module="Player")
         return ref_str
 
     def is_problematic_stream(self, url):
@@ -464,17 +496,100 @@ class TVGardenPlayer(
         message = (
             "Warning: %s\n\n"
             "This stream might use encryption or DRM that is not supported by your receiver.\n\n"
-            "Try another channel.") % channel_name
+            "Try another channel."
+        ) % channel_name
         self.session.open(MessageBox, message, MessageBox.TYPE_WARNING)
+
+    def start_stream(self):
+        """Start playing the current channel with error handling"""
+        if not self.channel_list:
+            log.error("No channel list!", module="Player")
+            return
+
+        current_channel = self.channel_list[self.current_index]
+        stream_url = current_channel.get('stream_url') or current_channel.get('url')
+        channel_name = current_channel.get('name', 'TV Garden')
+
+        if not stream_url:
+            log.error("No stream URL for channel %d" % self.current_index, module="Player")
+            return
+
+        log.info("Playing channel %d: %s" % (self.current_index, channel_name), module="Player")
+        log.debug("URL: %s..." % stream_url[:80], module="Player")
+
+        use_hw_accel = self.config.get("use_hardware_acceleration", True)
+        buffer_size = self.config.get("buffer_size", 2048)
+        player_type = self.config.get("player", "auto")
+
+        log.info("=== PERFORMANCE SETTINGS ===", module="Player")
+        log.info("Player: %s" % player_type, module="Player")
+        log.info("Hardware Acceleration: %s" % ("ENABLED" if use_hw_accel else "DISABLED"), module="Player")
+        log.info("Buffer Size: %s KB" % buffer_size, module="Player")
+
+        # Decisione HW acceleration
+        if self.should_use_hardware_acceleration(stream_url):
+            log.info("HW Acceleration decision: WILL USE for this stream", module="Player")
+        else:
+            log.info("HW Acceleration decision: WILL NOT USE for this stream", module="Player")
+
+        # Buffer size application
+        if player_type == "exteplayer3" and buffer_size > 0:
+            log.info("Buffer size will be applied: %s bytes" % (buffer_size * 1024), module="Player")
+        else:
+            log.info("Buffer size setting may not apply to player: %s" % player_type, module="Player")
+
+        # Check if the URL may be problematic
+        if self.is_problematic_stream(stream_url):
+            log.warning("Stream might be problematic", module="Player")
+            self.show_stream_warning(channel_name)
+
+        self.stream_running = True
+        self.eof_count = 0
+
+        try:
+            # Create service reference with performance parameters
+            url_encoded = stream_url.replace(":", "%3a")
+            name_encoded = channel_name.replace(":", "%3a")
+
+            # Add User-Agent if needed
+            if "#User-Agent=" not in stream_url:
+                stream_url_with_ua = stream_url + "#User-Agent=TVGarden/1.0"
+                url_encoded = stream_url_with_ua.replace(":", "%3a")
+
+            # Build service reference string with additional parameters
+            if self.should_use_hardware_acceleration(stream_url):
+
+                ref_str = self.build_service_ref_with_hw_accel(url_encoded, name_encoded)
+                log.debug("Using hardware acceleration", module="Player")
+            else:
+                # Use standard format
+                ref_str = self.build_standard_service_ref(url_encoded, name_encoded)
+                log.debug("Using standard playback", module="Player")
+
+            # Add buffer size if supported
+            ref_str = self.add_buffer_size_param(ref_str, buffer_size)
+
+            log.debug("ServiceRef string: " + ref_str[:100] + "...", module="Player")
+
+            sref = eServiceReference(ref_str)
+            sref.setName(channel_name)
+
+            # Start service with timeout
+            self.session.nav.playService(sref)
+            self.current_service = sref
+
+            # Show overlays briefly
+            self.show_overlays()
+            # Start a timer to check whether the stream plays correctly
+            self.start_stream_check_timer()
+
+        except Exception as error:
+            log.error("ERROR starting stream: " + str(error), module="Player")
+            self.stream_running = False
+            self.show_error_message("Cannot play: " + channel_name)
 
     def start_stream_check_timer(self):
         """Start timer to check if stream is actually playing"""
-        self.stream_check_timer = eTimer()
-        try:
-            self.stream_check_timer_conn = self.stream_check_timer.timeout.connect(
-                self.check_stream_status)
-        except AttributeError:
-            self.stream_check_timer.callback.append(self.check_stream_status)
         self.stream_check_timer.start(3000, True)
 
     def check_stream_status(self):
@@ -485,69 +600,41 @@ class TVGardenPlayer(
                 info = service.info()
                 if info:
                     # If we can retrieve info, the stream is likely working
-                    log.info(
-                        "Stream appears to be playing correctly",
-                        module="Player")
+                    log.info("Stream appears to be playing correctly", module="Player")
                     return
         except Exception:
             pass
 
         log.warning("Stream might have failed to start", module="Player")
 
+    def stop_stream(self):
+        """Stop the current stream"""
+        if self.stream_running:
+            self.stream_running = False
+            try:
+                self.session.nav.stopService()
+            except:
+                pass
+
+    def restartAfterEOF(self):
+        """Restart stream after EOF"""
+        try:
+            log.info("Restarting stream after EOF", module="Player")
+            self.stop_stream()
+            time.sleep(0.5)
+            self.start_stream()
+        except Exception as e:
+            log.error("Error restarting after EOF: %s" % e, module="Player")
+
     def next_channel(self):
         """Switch to the next channel with audio fix"""
         if self.itemscount <= 1:
             return
 
-        # Calculate the new index
-        new_index = (self.current_index + 1) % self.itemscount
-        log.debug("Next channel: %d -> %d" %
-                  (self.current_index, new_index), module="Player")
-
-        # Get new channel info
-        new_channel = self.channel_list[new_index]
-        stream_url = new_channel.get('stream_url') or new_channel.get('url')
-        channel_name = new_channel.get('name', 'TV Garden')
-
-        if not stream_url:
-            log.error(
-                "No stream URL for channel %d" %
-                new_index, module="Player")
-            return
-
-        # Create new service reference
-        url_encoded = stream_url.replace(":", "%3a")
-        name_encoded = channel_name.replace(":", "%3a")
-
-        # Use same performance settings
-        buffer_size = self.config.get("buffer_size", 2048)
-
-        if self.should_use_hardware_acceleration(stream_url):
-            ref_str = self.build_service_ref_with_hw_accel(
-                url_encoded, name_encoded)
-        else:
-            ref_str = self.build_standard_service_ref(
-                url_encoded, name_encoded)
-
-        ref_str = self.add_buffer_size_param(ref_str, buffer_size)
-
-        log.info("Switching to: %s" % channel_name, module="Player")
-
-        # Play new service
-        sref = eServiceReference(ref_str)
-        sref.setName(channel_name)
-        self.session.nav.playService(sref)
-
-        # Update current index
-        self.current_index = new_index
-
+        self.stop_stream()
+        self.current_index = (self.current_index + 1) % self.itemscount
+        self.start_stream()
         # Reset audio tracks after 1 second
-        self.audio_reset_timer = eTimer()
-        try:
-            self.audio_reset_timer_conn = self.audio_reset_timer.timeout.connect(
-                self.reset_audio_tracks)
-        except AttributeError:
-            self.audio_reset_timer.callback.append(self.reset_audio_tracks)
         self.audio_reset_timer.start(1000, True)
 
     def previous_channel(self):
@@ -555,55 +642,10 @@ class TVGardenPlayer(
         if self.itemscount <= 1:
             return
 
-        # Calculate new index
-        new_index = (self.current_index - 1) % self.itemscount
-        log.debug("Previous channel: %d -> %d" %
-                  (self.current_index, new_index), module="Player")
-
-        # Get new channel info
-        new_channel = self.channel_list[new_index]
-        stream_url = new_channel.get('stream_url') or new_channel.get('url')
-        channel_name = new_channel.get('name', 'TV Garden')
-
-        if not stream_url:
-            log.error(
-                "No stream URL for channel %d" %
-                new_index, module="Player")
-            return
-
-        # Create new service reference
-        url_encoded = stream_url.replace(":", "%3a")
-        name_encoded = channel_name.replace(":", "%3a")
-
-        # Use same performance settings
-        buffer_size = self.config.get("buffer_size", 2048)
-
-        if self.should_use_hardware_acceleration(stream_url):
-            ref_str = self.build_service_ref_with_hw_accel(
-                url_encoded, name_encoded)
-        else:
-            ref_str = self.build_standard_service_ref(
-                url_encoded, name_encoded)
-
-        ref_str = self.add_buffer_size_param(ref_str, buffer_size)
-
-        log.info("Switching to: %s" % channel_name, module="Player")
-
-        # Play new service
-        sref = eServiceReference(ref_str)
-        sref.setName(channel_name)
-        self.session.nav.playService(sref)
-
-        # Update current index
-        self.current_index = new_index
-
+        self.stop_stream()
+        self.current_index = (self.current_index - 1) % self.itemscount
+        self.start_stream()
         # Reset audio tracks after 1 second
-        self.audio_reset_timer = eTimer()
-        try:
-            self.audio_reset_timer_conn = self.audio_reset_timer.timeout.connect(
-                self.reset_audio_tracks)
-        except AttributeError:
-            self.audio_reset_timer.callback.append(self.reset_audio_tracks)
         self.audio_reset_timer.start(1000, True)
 
     def reset_audio_tracks(self):
@@ -615,33 +657,11 @@ class TVGardenPlayer(
             if service:
                 audio = service.audioTracks()
                 if audio:
-                    # Get current track info
-                    current_track = audio.getCurrentTrack()
                     num_tracks = audio.getNumberOfTracks()
-
-                    log.debug(
-                        "Audio tracks: %d, current: %d" %
-                        (num_tracks, current_track), module="Player")
-
+                    log.debug("Audio tracks: %d" % num_tracks, module="Player")
                     if num_tracks > 0:
-                        # Force reset to track 0
                         audio.selectTrack(0)
-
-                        # Get track info for debugging
-                        track_info = audio.getTrackInfo(0)
-                        if track_info:
-                            description = track_info.getDescription()
-                            language = track_info.getLanguage()
-                            log.debug(
-                                "Selected track 0: %s (%s)" %
-                                (description, language), module="Player")
-
-                        # Force update audio settings
-                        # self.audioSelection()
-
-                        log.debug(
-                            "Audio tracks reset successfully",
-                            module="Player")
+                        log.debug("Audio tracks reset successfully", module="Player")
                     else:
                         log.debug("No audio tracks available", module="Player")
         except Exception as e:
@@ -649,16 +669,15 @@ class TVGardenPlayer(
 
     def show_channel_info(self):
         """Display information for the current channel."""
-        if self.channel_list and 0 <= self.current_index < len(
-                self.channel_list):
+        if self.channel_list and 0 <= self.current_index < len(self.channel_list):
             channel = self.channel_list[self.current_index]
             info = "Channel: %s\n" % channel.get('name', 'N/A')
-            info += "Index: %d/%d\n" % (self.current_index +
-                                        1, self.itemscount)
-
+            info += "Index: %d/%d\n" % (self.current_index + 1, self.itemscount)
             # Add performance settings info
             use_hw_accel = self.config.get("use_hardware_acceleration", True)
             buffer_size = self.config.get("buffer_size", 2048)
+            player_type = self.config.get("player", "auto")
+            info += "Player: %s\n" % player_type
             info += "HW Accel: %s\n" % ("On" if use_hw_accel else "Off")
             info += "Buffer: %sKB\n" % buffer_size
 
@@ -679,30 +698,53 @@ class TVGardenPlayer(
         """Show error message"""
         self.session.open(MessageBox, message, MessageBox.TYPE_ERROR)
 
-    def cleanup(self):
-        """Clean up resources."""
-        if hasattr(self, 'refreshTimer'):
-            self.refreshTimer.stop()
-
-        # Restore initial service
-        if self.srefInit:
-            self.session.nav.stopService()
-            self.session.nav.playService(self.srefInit)
-
-    def leave_player(self):
-        """Exit the player."""
-        self.cleanup()
-        self.close()
-
     def __serviceStarted(self):
         """Service started playing"""
         log.debug("Playback started successfully", module="Player")
         self.state = self.STATE_PLAYING
 
     def __evEOF(self):
-        log.info("Playback completed", module="Player")
-        self.close()
+        """End of file reached"""
+        log.info("End of stream (EOF)", module="Player")
+
+        current_time = time.time()
+        if current_time - self.last_eof_time < 10:
+            self.eof_count += 1
+        else:
+            self.eof_count = 1
+
+        self.last_eof_time = current_time
+
+        if self.eof_count <= 3:
+            delay = 2 + (self.eof_count * 2)  # 2, 4, 6 seconds
+            log.info("Restarting in %d seconds (attempt %d/3)" % (delay, self.eof_count), module="Player")
+            self.eof_recovery_timer.start(delay * 1000, True)
+        else:
+            log.warning("Too many EOFs, stopping", module="Player")
+            self.leave_player()
 
     def __evStopped(self):
+        """Service stopped"""
         log.info("Playback stopped", module="Player")
+        self.stream_running = False
+        self.close()
+
+    def cleanup(self):
+        """Clean up resources"""
+        # Stop all timers
+        self.eof_recovery_timer.stop()
+        self.stream_check_timer.stop()
+        self.audio_reset_timer.stop()
+        self.stop_stream()
+
+        # Restore initial service
+        if self.srefInit:
+            try:
+                self.session.nav.playService(self.srefInit)
+            except:
+                pass
+
+    def leave_player(self):
+        """Exit the player"""
+        self.cleanup()
         self.close()

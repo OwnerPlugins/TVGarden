@@ -1,19 +1,32 @@
 <screen name="SearchBrowser" position="center,center" size="1920,1080" title="TV Garden" backgroundColor="#1a1a2e" flags="wfNoBorder">
+	<!-- Button pixmaps -->
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/redbutton.png" position="47,1038" size="210,6" alphatest="blend" transparent="1" />
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/greenbutton.png" position="261,1038" size="210,6" alphatest="blend" transparent="1" />
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/yellowbutton.png" position="474,1038" size="210,6" alphatest="blend" transparent="1" />
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/bluebutton.png" position="688,1038" size="210,6" alphatest="blend" transparent="1" />
+	<!-- Donation icons -->
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
+	<!-- Background -->
 	<ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
+	<!-- Logo -->
 	<ePixmap name="" position="1676,812" size="200,80" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" />
+	<!-- Button texts -->
 	<widget source="key_red" render="Label" position="50,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
 	<widget source="key_green" render="Label" position="260,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
 	<widget source="key_yellow" render="Label" position="470,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
 	<widget source="key_blue" render="Label" position="680,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
-	<widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
-	<widget name="status" position="921,976" size="976,61" font="Regular; 32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
-	<widget name="search_label" position="48,30" size="610,90" zPosition="1" font="Regular; 34" halign="right" valign="center" foregroundColor="#ffffff" />
-	<widget name="search_text" position="671,30" size="1220,90" zPosition="1" font="Regular; 34" halign="left" valign="center" backgroundColor="#2d3047" foregroundColor="#ffffff" />
+	<!-- Menu (risultati ricerca) -->
+	<widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" zPosition="5" />
+	<!-- Title -->
+	<widget source="title" render="Label" position="44,0" size="1770,80" font="Regular;54" halign="left" valign="center" foregroundColor="#3333ff" zPosition="5" alphatest="blend" transparent="1" />
+	<widget source="status" render="Label" position="921,976" size="976,61" font="Regular;32" halign="center" valign="center" foregroundColor="#3333ff" zPosition="5" alphatest="blend" transparent="1" />
+
+	<widget source="search_label" render="Label" position="48,85" size="610,60" zPosition="10" font="Regular;34" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#2d2d3a" alphatest="blend" transparent="1" />
+	<widget source="search_text" render="Label" position="674,83" size="1220,60" zPosition="10" font="Regular;34" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#1e1e2a" alphatest="blend" />	<!-- Bottom bar -->
 	<eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
-	<eLabel name="" position="36,152" size="1040,767" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-	<widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="transparent" transparent="0" cornerRadius="14" />
+	<!-- Menu background -->
+	<eLabel name="" position="36,152" size="1040,767" zPosition="0" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
+	<!-- Video Picture -->
+	<widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="#ff000000" transparent="0" cornerRadius="14" />
 </screen>

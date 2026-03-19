@@ -15,1044 +15,701 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: browser/about.py:44
-msgid "TV Garden Plugin"
-msgstr "TV Garden plugin"
-
-#: browser/about.py:47 utils/settings.py:56
-msgid "Close"
-msgstr "Bezár"
-
-#: browser/about.py:62
-msgid "About TV Garden"
-msgstr "A TV Garden"
-
-#: browser/about.py:137
-msgid "Error loading information"
-msgstr "Hiba az információ betöltésekor"
-
-#: browser/base.py:103
-msgid "No items"
-msgstr ""
-
-#: browser/base.py:107
-#, python-brace-format
-msgid "Item {} of {}"
-msgstr ""
-
-#: browser/categories.py:28
-msgid "Animation"
-msgstr "Animáció"
-
-#: browser/categories.py:29 utils/settings.py:288
-msgid "Auto"
-msgstr "Automatikus"
-
-#: browser/categories.py:30
-msgid "Business"
-msgstr "Üzleti"
-
-#: browser/categories.py:31
-msgid "Classic"
-msgstr "Klasszikus"
-
-#: browser/categories.py:32
-msgid "Comedy"
-msgstr "Humor"
-
-#: browser/categories.py:33
-msgid "Cooking"
-msgstr "Főzés"
-
-#: browser/categories.py:34
-msgid "Culture"
-msgstr "Kultúra"
-
-#: browser/categories.py:35
-msgid "Documentary"
-msgstr "Dokumentumfilm"
-
-#: browser/categories.py:36
-msgid "Education"
-msgstr "Oktatás"
-
-#: browser/categories.py:37
-msgid "Entertainment"
-msgstr "Szórakoztatóipar"
-
-#: browser/categories.py:38
-msgid "Family"
-msgstr "Család"
-
-#: browser/categories.py:39
-msgid "General"
-msgstr "Általános"
-
-#: browser/categories.py:40
-msgid "History"
-msgstr "Előzmények"
-
-#: browser/categories.py:41
-msgid "Hobby"
-msgstr "Hobbi"
-
-#: browser/categories.py:42
-msgid "Kids"
-msgstr "Gyerek"
-
-#: browser/categories.py:43
-msgid "Legislative"
-msgstr "Jogalkotási"
-
-#: browser/categories.py:44
-msgid "Lifestyle"
-msgstr "Életmód"
-
-#: browser/categories.py:45
-msgid "Local"
-msgstr "Helyi"
-
-#: browser/categories.py:46
-msgid "Movies"
-msgstr "Filmek"
-
-#: browser/categories.py:47
-msgid "Music"
-msgstr "Zene"
-
-#: browser/categories.py:48
-msgid "News"
-msgstr "Hírek"
-
-#: browser/categories.py:49
-msgid "Politics"
-msgstr "Politika"
-
-#: browser/categories.py:50
-msgid "Religious"
-msgstr "Vallásos"
-
-#: browser/categories.py:51
-msgid "Series"
-msgstr "Sorozatok"
-
-#: browser/categories.py:52
-msgid "Science"
-msgstr "Tudomány"
-
-#: browser/categories.py:53
-msgid "Shop"
-msgstr "Webáruház"
-
-#: browser/categories.py:54
-msgid "Sports"
-msgstr "Sportok"
-
-#: browser/categories.py:55
-msgid "Travel"
-msgstr "Utazás"
-
-#: browser/categories.py:56
-msgid "Weather"
-msgstr "Időjárás"
-
-#: browser/categories.py:93
-msgid "Loading categories..."
-msgstr "A kategóriák betöltése..."
-
-#: browser/categories.py:95 browser/channels.py:111 browser/countries.py:73
-#: browser/favorites.py:63 browser/search.py:71 utils/settings.py:118
-msgid "Back"
-msgstr "Vissza"
-
-#: browser/categories.py:96 browser/countries.py:74 plugin.py:217
-msgid "Select"
-msgstr "Kiválasztás"
-
-#: browser/categories.py:115
-msgid "Select a category"
-msgstr "Válasszon egy kategóriát"
-
-#: browser/categories.py:178
-msgid "No channels in this category"
-msgstr "Nincs csatorna ebben a kategóriában"
-
-#: browser/categories.py:182
-msgid "Error loading category"
-msgstr "Hiba a kategória betöltésekor"
-
-#: browser/categories.py:189 browser/countries.py:225
-msgid "Refreshing..."
-msgstr "Üdítő..."
-
-#: browser/categories.py:196 browser/countries.py:234
-msgid "Cache cleared"
-msgstr "Gyorsítótár üres"
-
-#: browser/categories.py:201
-msgid "Next load will use fresh data"
-msgstr ""
-
-#: browser/categories.py:205 browser/countries.py:246
-msgid "Refresh failed"
-msgstr "A frissítés sikertelen"
-
-#: browser/channels.py:107
-msgid "Loading channels..."
-msgstr "Csatornák betöltése..."
-
-#: browser/channels.py:112 browser/favorites.py:64
-msgid "Play"
-msgstr "Lejátszás"
-
-#: browser/channels.py:113 browser/search.py:73
-msgid "Favorite"
-msgstr "Kedvenc"
-
-#: browser/channels.py:144
-msgid "Play Channel"
-msgstr "Lejátszási csatorna"
-
-#: browser/channels.py:145
-msgid "Add to Favorites"
-msgstr "Hozzáadás kedvencekhez"
-
-#: browser/channels.py:146 browser/favorites.py:421
-msgid "Channel Information"
-msgstr "Csatorna információk"
-
-#: browser/channels.py:150
-msgid "Export Current View"
-msgstr "Aktuális nézet exportálása"
-
-#: browser/channels.py:153
-msgid "Channel Menu"
-msgstr "Csatorna menü"
-
-#: browser/channels.py:353 browser/favorites.py:66
-msgid "Export"
-msgstr "Exportálás"
-
-#: browser/channels.py:368 browser/countries.py:201
-msgid " [Fresh data]"
-msgstr ""
-
-#: browser/channels.py:370 browser/countries.py:203
-msgid " [Cache disabled]"
-msgstr ""
-
-#: browser/channels.py:373
-#, python-brace-format
-msgid "Showing {shown} of {total} channels"
-msgstr "{shown} csatorna megjelenítése {total} csatornából"
-
-#: browser/channels.py:379
-#, python-format
-msgid "Found %d playable channels"
-msgstr "%d lejátszható csatorna található"
-
-#: browser/channels.py:385 browser/search.py:339
-#, python-format
-msgid "(skipped %d YouTube)"
-msgstr "(kihagyva %d YouTube)"
-
-#: browser/channels.py:388 browser/search.py:342
-#, python-format
-msgid "(filtered %d problematic)"
-msgstr "(szűrt %d problémás)"
-
-#: browser/channels.py:391 browser/search.py:345
-#, python-format
-msgid "(limited to first %d)"
-msgstr "(az első %d-ra korlátozva)"
-
-#: browser/channels.py:405 browser/search.py:150
-msgid "Error loading channels"
-msgstr "Hiba a csatornák betöltésekor"
-
-#: browser/channels.py:582 browser/channels.py:588 utils/favorites.py:205
-#: utils/favorites.py:299 utils/favorites.py:906
-msgid "No channels to export"
-msgstr "Nincs exportálható csatorna"
-
-#: browser/channels.py:600
-msgid "Channels"
-msgstr "Csatornák"
-
-#: browser/channels.py:605
-#, python-brace-format
-msgid "Export {count} channels to bouquet '{name}'?"
-msgstr "{count} csatorna exportálása a(z) „{name}” csokorba?"
-
-#: browser/channels.py:636
-#, python-format
-msgid "Export failed: %s"
-msgstr "Exportálás sikertelen: %s"
-
-#: browser/channels.py:656 browser/search.py:404 utils/favorites.py:776
-msgid "No stream URL"
-msgstr "Nincs stream URL"
-
-#: browser/channels.py:683 browser/favorites.py:252
-msgid "Unknown"
-msgstr "Ismeretlen"
-
-#: browser/channels.py:689 browser/favorites.py:257
-#, python-format
-msgid "Remove '%s' from favorites?"
-msgstr "Eltávolítja a(z) „%s” elemet a kedvencek közül?"
-
-#: browser/channels.py:723
-#, python-format
-msgid "Stream: %s..."
-msgstr "Stream: %s..."
-
-#: browser/channels.py:725
-#, python-format
-msgid "Stream: %s"
-msgstr "Stream: %s"
-
-#: browser/countries.py:71
-msgid "Loading countries..."
-msgstr "Országok betöltése..."
-
-#: browser/countries.py:75 plugin.py:218
-msgid "Refresh"
-msgstr "Frissítés"
-
-#: browser/countries.py:205
-msgid "Select a country"
-msgstr "Válasszon Országot"
-
-#: browser/countries.py:215
-msgid "No countries with channels found"
-msgstr "Nincs olyan ország, ahol csatornák találhatók"
-
-#: browser/countries.py:218
-msgid "Error loading countries"
-msgstr "Hiba az országok betöltésekor"
-
-#: browser/countries.py:241
-msgid "Will load fresh data next time"
-msgstr ""
-
-#: browser/countries.py:401
-msgid "No country selected"
-msgstr "Nincs kiválasztott ország"
-
-#: browser/favorites.py:62
-msgid "Loading favorites..."
-msgstr "Kedvencek betöltése..."
-
-#: browser/favorites.py:65
-msgid "Options"
-msgstr "Opciók"
-
-#: browser/favorites.py:129
-#, python-format
 msgid "%d favorite channels"
 msgstr "%d kedvenc csatornák"
 
-#: browser/favorites.py:134
-msgid "No favorite channels"
-msgstr "Nincs kedvenc csatorna"
-
-#: browser/favorites.py:139
-msgid "Error loading favorites"
-msgstr "Hiba a kedvencek betöltése során"
-
-#: browser/favorites.py:145 browser/favorites.py:333
-msgid "No channel selected"
-msgstr "Nincs csatorna kiválasztva"
-
-#: browser/favorites.py:149
-msgid "View Channel Info"
-msgstr "Csatorna információk megtekintése"
-
-#: browser/favorites.py:150
-msgid "Remove from Favorites"
-msgstr "Eltávolítás a kedvencek közül"
-
-#: browser/favorites.py:151
-msgid "Clear All Favorites"
-msgstr "Minden kedvenc törlése"
-
-#: browser/favorites.py:152
-msgid "Export to Enigma2 Bouquet"
-msgstr "Exportálás Enigma2 Bouquet-ba"
-
-#: browser/favorites.py:153
-msgid "Export ALL Database (Single File)"
-msgstr ""
-
-#: browser/favorites.py:154
-msgid "Export ALL Database (Multi-File)"
-msgstr ""
-
-#: browser/favorites.py:155
-msgid "Remove Bouquet from Enigma2"
-msgstr "Bouquet eltávolítása az Enigma2-ből"
-
-#: browser/favorites.py:161
-#, python-format
-msgid "Options for: %s"
-msgstr "Lehetőségek ehhez: %s"
-
-#: browser/favorites.py:183
-#, python-format
-msgid "Export '%s' to Enigma2 bouquet?"
-msgstr "Exportálja a(z) „%s” kifejezést Enigma2 csokorba?"
-
-#: browser/favorites.py:191
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Távolítsa el a TV Garden csokrot az Enigma2-ből?"
-
-#: browser/favorites.py:199
-msgid "Clear ALL favorites?"
-msgstr "Minden kedvenc törlése?"
-
-#: browser/favorites.py:207
-msgid ""
-"Export ALL channels from TV Garden database?\n"
-"This may take some time."
-msgstr ""
-"Exportálja az ÖSSZES csatornát a TV Garden adatbázisából?\n"
-"Ez eltarthat egy ideig."
-
-#: browser/favorites.py:215
-msgid ""
-"Export ALL channels with multi-file structure?\n"
-"This will create smaller bouquet files for better performance."
-msgstr ""
-
-#: browser/favorites.py:270
-#, python-format
 msgid "%d favorites"
 msgstr "%d kedvenc"
 
-#: browser/favorites.py:284
-msgid "Loading all channels..."
-msgstr "Az összes csatorna betöltése..."
+msgid "(filtered %d problematic)"
+msgstr "(szűrt %d problémás)"
 
-#: browser/favorites.py:296
-msgid "Database exported successfully"
-msgstr "Az adatbázis exportálása sikeresen megtörtént"
+msgid "(limited to first %d)"
+msgstr "(az első %d-ra korlátozva)"
 
-#: browser/favorites.py:298 browser/favorites.py:319
-msgid "Export failed"
-msgstr "Exportálás sikertelen"
+msgid "(skipped %d YouTube)"
+msgstr "(kihagyva %d YouTube)"
 
-#: browser/favorites.py:305
-msgid "Creating hierarchical structure..."
-msgstr ""
-
-#: browser/favorites.py:317
-msgid "Hierarchical export completed"
-msgstr ""
-
-#: browser/favorites.py:338
-msgid "No stream URL available"
-msgstr "Nincs elérhető stream URL"
-
-#: browser/favorites.py:357 browser/search.py:419
-msgid "Error opening player"
-msgstr "Hiba a lejátszó megnyitásakor"
-
-#: browser/favorites.py:365
-msgid "No favorites to export"
-msgstr "Nincs exportálandó kedvenc"
-
-#: browser/favorites.py:374
-#, python-format
-msgid "Export ALL %d favorites to Enigma2 bouquet?"
-msgstr "Exportálja az ÖSSZES %d kedvencet az Enigma2 csokorba?"
-
-#: browser/search.py:67
-msgid "Search:"
-msgstr "Keresés:"
-
-#: browser/search.py:70 browser/search.py:176
-msgid "Press GREEN for keyboard..."
-msgstr "Nyomja meg a ZÖLD gombot a billentyűzethez..."
-
-#: browser/search.py:72
-msgid "Keyboard"
-msgstr "Billentyűzet"
-
-#: browser/search.py:74
-msgid "Clear"
-msgstr "Törlés"
-
-#: browser/search.py:142
-#, python-format
-msgid "Press GREEN for keyboard... Ready - %d channels"
-msgstr "Nyomja meg a ZÖLD gombot a billentyűzet aktiválásához... Kész - %d csatorna"
-
-#: browser/search.py:145
-msgid "No channels loaded"
-msgstr "Nincs betöltött csatorna"
-
-#: browser/search.py:157
-msgid "Search Channels"
-msgstr "Csatornák keresése"
-
-#: browser/search.py:166
-msgid "Searching..."
-msgstr "Keresés..."
-
-#: browser/search.py:330
-#, python-brace-format
-msgid "Showing {shown} of {total} results"
-msgstr "{shown} eredmények közül {total} megjelenítése"
-
-#: browser/search.py:336
-#, python-format
-msgid "Found %d channels"
-msgstr "%d csatorna található"
-
-#: browser/search.py:353
-#, python-format
-msgid "No channels found for: %s"
-msgstr "Nem található csatorna a következőhöz: %s"
-
-#: browser/search.py:427
-msgid "Removed from favorites"
-msgstr "Eltávolítva a kedvencek közül"
-
-#: browser/search.py:430
-msgid "Added to favorites"
-msgstr "Hozzáadva a kedvencekhez"
-
-#: plugin.py:203
-msgid "Browse by Country"
-msgstr "Országok szerint böngészés"
-
-#: plugin.py:203
-msgid "Browse channels by country"
-msgstr "Csatornák országok szerint"
-
-#: plugin.py:204
-msgid "Browse by Category"
-msgstr "Kategória szerint böngészés"
-
-#: plugin.py:204
-msgid "Browse channels by category"
-msgstr "Csatornák böngészése kategória szerint"
-
-#: plugin.py:205 utils/settings.py:342
-msgid "Favorites"
-msgstr "Kedvencek"
-
-#: plugin.py:205
-msgid "Your favorite channels"
-msgstr "Kedvenc csatornáid"
-
-#: plugin.py:206
-msgid "Search"
-msgstr "Keresés"
-
-#: plugin.py:206
-msgid "Search channels by name"
-msgstr "Csatornák keresése név szerint"
-
-#: plugin.py:207 utils/settings.py:204 utils/settings.py:232
-#: utils/settings.py:551
-msgid "Check for Updates"
-msgstr "Frissítések keresése"
-
-#: plugin.py:207
-msgid "Check for plugin updates"
-msgstr "Bővítményfrissítések keresése"
-
-#: plugin.py:208 plugin.py:219
-msgid "Settings"
-msgstr "Beállítások"
-
-#: plugin.py:208
-msgid "Plugin settings and configuration"
-msgstr "Plugin beállítások és konfiguráció"
-
-#: plugin.py:209
-msgid "About"
-msgstr "Rólunk"
-
-#: plugin.py:209
-msgid "About TV Garden plugin"
-msgstr "A TV Garden pluginról"
-
-#: plugin.py:216
-msgid "Exit"
-msgstr "Kilépés"
-
-#: plugin.py:297
-msgid "Refreshing data..."
-msgstr "Adatok frissítése..."
-
-#: plugin.py:312
-#, python-format
-msgid ""
-"Refresh completed!\n"
-"Loaded %d countries"
-msgstr "Frissítés befejezve! %d ország betöltve"
-
-#: plugin.py:317
-#, python-format
-msgid "Refresh failed: %s"
-msgstr "Frissítés sikertelen: %s"
-
-#: plugin.py:338 utils/update_manager.py:57
-msgid "Update check error"
-msgstr "Frissítés-ellenőrzési hiba"
-
-#: plugin.py:340 utils/favorites.py:290 utils/favorites.py:386
-#: utils/favorites.py:757 utils/favorites.py:805 utils/favorites.py:945
-#: utils/settings.py:256
-#, python-format
-msgid "Error: %s"
-msgstr "Hiba: %s"
-
-#: plugin.py:387
-msgid "TV Garden"
-msgstr "TV Kert"
-
-#: plugin.py:431
-msgid "Access free IPTV channels from around the world"
-msgstr "Hozzáférés ingyenes IPTV csatornákhoz a világ minden tájáról"
-
-#: utils/favorites.py:89
-msgid "Already in favorites"
-msgstr "Már a kedvencek között van"
-
-#: utils/favorites.py:101
-#, python-format
-msgid "Added to favorites: %s"
-msgstr "Hozzáadva a kedvencekhez: %s"
-
-#: utils/favorites.py:104 utils/favorites.py:119
-msgid "Error saving favorites"
-msgstr "Hiba a kedvencek mentésénél"
-
-#: utils/favorites.py:116
-#, python-format
-msgid "Removed from favorites: %s"
-msgstr "Eltávolítva a kedvencek közül: %s"
-
-#: utils/favorites.py:121
-msgid "Channel not found in favorites"
-msgstr "Csatorna nem található a kedvencek között"
-
-#: utils/favorites.py:277 utils/favorites.py:373
-#, python-format
-msgid "Error writing file: %s"
-msgstr ""
-
-#: utils/favorites.py:280 utils/favorites.py:376 utils/favorites.py:601
-msgid "No valid stream URLs found"
-msgstr "Érvényes stream URL-ek nem találhatóak"
-
-#: utils/favorites.py:286 utils/favorites.py:382
-#, python-format
-msgid "Exported %d channels to bouquet"
-msgstr "%d csatorna exportálása csokorba"
-
-#: utils/favorites.py:409 utils/favorites.py:826
-msgid "Empty database"
-msgstr "Üres adatbázis"
-
-#: utils/favorites.py:429 utils/favorites.py:830
-msgid "Failed to load database"
-msgstr "Nem sikerült betölteni az adatbázist"
-
-#: utils/favorites.py:521 utils/favorites.py:867
-msgid "No valid channels found in database"
-msgstr "Nem található érvényes csatorna az adatbázisban"
-
-#: utils/favorites.py:608
-msgid "Exported"
-msgstr ""
-
-#: utils/favorites.py:610
-msgid "channels from"
-msgstr ""
-
-#: utils/favorites.py:612
-msgid "countries"
-msgstr ""
-
-#: utils/favorites.py:621 utils/settings.py:456
-msgid "Error"
-msgstr "Hiba"
-
-#: utils/favorites.py:747
-msgid "Removed"
-msgstr "Törölve"
-
-#: utils/favorites.py:749
-msgid "files and"
-msgstr "fájlok és"
-
-#: utils/favorites.py:751
-msgid "bouquet references"
-msgstr "csokorreferenciák"
-
-#: utils/favorites.py:801
-msgid "Channel added to bouquet"
-msgstr "Csatorna hozzáadva a csomaghoz"
-
-#: utils/favorites.py:930
-msgid "Hierarchical export completed!"
-msgstr ""
-
-#: utils/favorites.py:931
-msgid "Statistics:"
-msgstr ""
-
-#: utils/favorites.py:932
-msgid "Total channels:"
-msgstr ""
-
-#: utils/favorites.py:933
-msgid "Countries exported:"
-msgstr ""
-
-#: utils/favorites.py:934
-msgid "Files created:"
-msgstr ""
-
-#: utils/favorites.py:936
-msgid "Structure created:"
-msgstr ""
-
-#: utils/favorites.py:938
-msgid "Main bouquet:"
-msgstr ""
-
-#: utils/favorites.py:1104
-#, python-format
-msgid "Cleared %d favorites"
-msgstr "%d kedvenc törölve"
-
-#: utils/favorites.py:1107
-msgid "Error clearing favorites"
-msgstr "Hiba a kedvencek törlésénél"
-
-#: utils/settings.py:51
-msgid "Log file is empty or not found"
-msgstr "A naplófájl üres vagy nem található"
-
-#: utils/settings.py:54
-msgid "TV Garden Logs"
-msgstr "TV Kertnapló"
-
-#: utils/settings.py:115
-msgid "TV Garden Settings"
-msgstr "TV Garden beállítások"
-
-#: utils/settings.py:119
-msgid "Save"
-msgstr "Mentés"
-
-#: utils/settings.py:120 utils/settings.py:164 utils/settings.py:168
-msgid "Set options"
-msgstr "Beállítások"
-
-#: utils/settings.py:166
-#, python-format
-msgid "Editing: %s"
-msgstr "Szerkesztés: %s"
-
-#: utils/settings.py:204 utils/settings.py:224 utils/settings.py:545
-msgid "View Log File"
-msgstr "Naplófájl megtekintése"
-
-#: utils/settings.py:204 utils/settings.py:228 utils/settings.py:546
-msgid "Clear Log Files Now"
-msgstr "Naplófájlok törlése most"
-
-#: utils/settings.py:252
-msgid "Are you sure you want to clear all log files?"
-msgstr "Biztosan törölni szeretné az összes naplófájlt?"
-
-#: utils/settings.py:263
-msgid "Logs cleared"
-msgstr "Naplók törölve"
-
-#: utils/settings.py:266
-msgid "Log files cleared successfully"
-msgstr "A naplófájlok sikeresen törölve"
-
-#: utils/settings.py:273
-#, python-format
-msgid "Error clearing logs: %s"
-msgstr "Hiba a naplók törlésekor: %s"
-
-#: utils/settings.py:289
-msgid "ExtePlayer3"
-msgstr "ExtePlayer3"
-
-#: utils/settings.py:290
-msgid "GStreamer"
-msgstr "GStreamer"
-
-#: utils/settings.py:317 utils/settings.py:328 utils/settings.py:371
-msgid "100 channels"
-msgstr "100 csatorna"
-
-#: utils/settings.py:318 utils/settings.py:329 utils/settings.py:372
-msgid "250 channels"
-msgstr "250 csatorna"
-
-#: utils/settings.py:319 utils/settings.py:330 utils/settings.py:373
-msgid "500 channels"
-msgstr "500 csatorna"
-
-#: utils/settings.py:320 utils/settings.py:331 utils/settings.py:374
-msgid "1000 channels"
-msgstr "1000 csatorna"
-
-#: utils/settings.py:321 utils/settings.py:375
-msgid "All channels"
-msgstr "Összes csatorna"
-
-#: utils/settings.py:332
-#, fuzzy
-#| msgid "1000 channels"
-msgid "2000 channels"
-msgstr "1000 csatorna"
-
-#: utils/settings.py:333
-#, fuzzy
-#| msgid "500 channels"
-msgid "5000 channels"
-msgstr "500 csatorna"
-
-#: utils/settings.py:340
-msgid "Countries"
-msgstr "Országok"
-
-#: utils/settings.py:341
-msgid "Categories"
-msgstr "Kategóriák"
-
-#: utils/settings.py:370
-msgid "50 channels"
-msgstr "50 csatorna"
-
-#: utils/settings.py:387
-msgid "Top"
-msgstr ""
-
-#: utils/settings.py:388
-msgid "Bottom"
-msgstr ""
-
-#: utils/settings.py:400
-msgid "512 KB"
-msgstr "512 KB"
-
-#: utils/settings.py:401
 msgid "1 MB"
 msgstr "1 MB"
 
-#: utils/settings.py:402
+msgid "100 channels"
+msgstr "100 csatorna"
+
+msgid "1000 channels"
+msgstr "1000 csatorna"
+
 msgid "2 MB"
 msgstr "2 MB"
 
-#: utils/settings.py:403
+#, fuzzy
+msgid "2000 channels"
+msgstr "1000 csatorna"
+
+msgid "250 channels"
+msgstr "250 csatorna"
+
 msgid "4 MB"
 msgstr "4 MB"
 
-#: utils/settings.py:404
+msgid "50 channels"
+msgstr "50 csatorna"
+
+msgid "500 channels"
+msgstr "500 csatorna"
+
+#, fuzzy
+msgid "5000 channels"
+msgstr "500 csatorna"
+
+msgid "512 KB"
+msgstr "512 KB"
+
 msgid "8 MB"
 msgstr "8 MB"
 
-#: utils/settings.py:444
-msgid "Clear Cache"
-msgstr ""
-
-#: utils/settings.py:445
-msgid "Force Refresh"
-msgstr ""
-
-#: utils/settings.py:453
-msgid "Debug"
-msgstr "Hibakeresés"
-
-#: utils/settings.py:454
-msgid "Info"
-msgstr "Információ"
-
-#: utils/settings.py:455
-msgid "Warning"
-msgstr "Figyelmeztetés"
-
-#: utils/settings.py:457
-msgid "Critical"
-msgstr "Kritikus"
-
-#: utils/settings.py:467
-msgid "Press OK to check for updates"
-msgstr "Nyomja meg az OK gombot a frissítések ellenőrzéséhez"
-
-#: utils/settings.py:472
-msgid "Press OK to view logs"
-msgstr "Nyomja meg az OK gombot a naplók megtekintéséhez"
-
-#: utils/settings.py:477
-msgid "Press OK to clear logs"
-msgstr "Nyomja meg az OK gombot a naplók törléséhez"
-
-#: utils/settings.py:486
 msgid "=== Browser Settings ==="
 msgstr "=== Böngészőbeállítások ==="
 
-#: utils/settings.py:488
-msgid "Default View"
-msgstr "Alapértelmezett nézet"
-
-#: utils/settings.py:489
-#, fuzzy
-#| msgid "Max channels per country"
-msgid "Max channels for country"
-msgstr "Maximális csatornák száma országonként"
-
-#: utils/settings.py:490
-msgid "Show Flags"
-msgstr "Zászlók megjelenítése"
-
-#: utils/settings.py:491
-msgid "Show Logos"
-msgstr "Logók megjelenítése"
-
-#: utils/settings.py:494
-msgid "=== Player Settings ==="
-msgstr "=== Lejátszóbeállítások ==="
-
-#: utils/settings.py:496
-msgid "Player"
-msgstr "Lejátszó"
-
-#: utils/settings.py:499
-msgid "=== Export Settings ==="
-msgstr "=== Exportálási beállítások ==="
-
-#: utils/settings.py:501
-msgid "Enable Export"
-msgstr "Exportálás engedélyezése"
-
-#: utils/settings.py:503
-msgid "List Position"
-msgstr ""
-
-#: utils/settings.py:504
-msgid "Bouquet Name Prefix"
-msgstr "Csokor név előtagja"
-
-#: utils/settings.py:505
-#, fuzzy
-#| msgid "Max Channels per Bouquet"
-msgid "Max Channels for Bouquet"
-msgstr "Max. csatornák száma csokoronként"
-
-#: utils/settings.py:506
-#, fuzzy
-#| msgid "Max Channels per Bouquet"
-msgid "Max Channels for Sub-Bouquet"
-msgstr "Max. csatornák száma csokoronként"
-
-#: utils/settings.py:509
-msgid "=== Performance Settings ==="
-msgstr "=== Teljesítménybeállítások ==="
-
-#: utils/settings.py:511
-msgid "Memory Optimization"
-msgstr ""
-
-#: utils/settings.py:512
-msgid "Use Hardware Acceleration"
-msgstr "Hardveres gyorsítás használata"
-
-#: utils/settings.py:513
-msgid "Buffer Size"
-msgstr "Pufferméret"
-
-#: utils/settings.py:516
-msgid "=== Network Settings ==="
-msgstr "=== Hálózati beállítások ==="
-
-#: utils/settings.py:518
-msgid "User Agent"
-msgstr "Böngésző"
-
-#: utils/settings.py:519
-msgid "Connection Timeout"
-msgstr ""
-
-#: utils/settings.py:522
 msgid "=== Cache Settings ==="
 msgstr "=== Gyorsítótár beállítások ==="
 
-#: utils/settings.py:524
-msgid "Enable Cache"
-msgstr ""
+msgid "=== Export Settings ==="
+msgstr "=== Exportálási beállítások ==="
 
-#: utils/settings.py:527
-msgid "Cache Size"
-msgstr "Cache méret"
-
-#: utils/settings.py:528
-msgid "Refresh Method"
-msgstr ""
-
-#: utils/settings.py:529
-msgid "Force Refresh on Browsing"
-msgstr ""
-
-#: utils/settings.py:530
-msgid "Force Refresh on Export"
-msgstr ""
-
-#: utils/settings.py:533
-msgid "=== Search Settings ==="
-msgstr ""
-
-#: utils/settings.py:535
-msgid "Max Search Results"
-msgstr ""
-
-#: utils/settings.py:538
-msgid "=== Logging Settings ==="
-msgstr "=== Naplózási beállítások ==="
-
-#: utils/settings.py:540
-msgid "Log Level"
-msgstr "Naplózás szintje"
-
-#: utils/settings.py:541
-msgid "Log to File"
-msgstr "Napló fájlba"
-
-#: utils/settings.py:543
 msgid "=== Log Maintenance ==="
 msgstr "--- Napló karbantartás ---"
 
-#: utils/settings.py:549
+msgid "=== Logging Settings ==="
+msgstr "=== Naplózási beállítások ==="
+
+msgid "=== Network Settings ==="
+msgstr "=== Hálózati beállítások ==="
+
+msgid "=== Performance Settings ==="
+msgstr "=== Teljesítménybeállítások ==="
+
+msgid "=== Player Settings ==="
+msgstr "=== Lejátszóbeállítások ==="
+
+msgid "=== Search Settings ==="
+msgstr ""
+
 msgid "=== Update Settings ==="
 msgstr "=== Beállítások frissítése ==="
 
-#: utils/update_manager.py:23
+msgid "About"
+msgstr "Rólunk"
+
+msgid "About TV Garden"
+msgstr "A TV Garden"
+
+msgid "About TV Garden plugin"
+msgstr "A TV Garden pluginról"
+
+msgid "Access free IPTV channels from around the world"
+msgstr "Hozzáférés ingyenes IPTV csatornákhoz a világ minden tájáról"
+
+msgid "Add to Favorites"
+msgstr "Hozzáadás kedvencekhez"
+
+msgid "Added to favorites"
+msgstr "Hozzáadva a kedvencekhez"
+
+msgid "Added to favorites: %s"
+msgstr "Hozzáadva a kedvencekhez: %s"
+
+msgid "All channels"
+msgstr "Összes csatorna"
+
+msgid "Already in favorites"
+msgstr "Már a kedvencek között van"
+
+msgid "Animation"
+msgstr "Animáció"
+
+msgid "Are you sure you want to clear all log files?"
+msgstr "Biztosan törölni szeretné az összes naplófájlt?"
+
+msgid "Auto"
+msgstr "Automatikus"
+
+msgid "Back"
+msgstr "Vissza"
+
+msgid "Bottom"
+msgstr ""
+
+msgid "Bouquet Name Prefix"
+msgstr "Csokor név előtagja"
+
+msgid "Browse by Category"
+msgstr "Kategória szerint böngészés"
+
+msgid "Browse by Country"
+msgstr "Országok szerint böngészés"
+
+msgid "Browse channels by category"
+msgstr "Csatornák böngészése kategória szerint"
+
+msgid "Browse channels by country"
+msgstr "Csatornák országok szerint"
+
+msgid "Buffer Size"
+msgstr "Pufferméret"
+
+msgid "Business"
+msgstr "Üzleti"
+
+msgid "Cache Size"
+msgstr "Cache méret"
+
+msgid "Cache cleared"
+msgstr "Gyorsítótár üres"
+
+msgid "Categories"
+msgstr "Kategóriák"
+
+msgid "Channel Information"
+msgstr "Csatorna információk"
+
+msgid "Channel Menu"
+msgstr "Csatorna menü"
+
+msgid "Channel added to bouquet"
+msgstr "Csatorna hozzáadva a csomaghoz"
+
+msgid "Channel not found in favorites"
+msgstr "Csatorna nem található a kedvencek között"
+
+msgid "Channels"
+msgstr "Csatornák"
+
+msgid "Check for Updates"
+msgstr "Frissítések keresése"
+
+msgid "Check for plugin updates"
+msgstr "Bővítményfrissítések keresése"
+
 msgid "Checking for updates..."
 msgstr "Frissítések keresése..."
 
-#: utils/update_manager.py:34
-msgid "Update check failed"
-msgstr "Frissítésellenőrzés sikertelen"
+msgid "Classic"
+msgstr "Klasszikus"
 
-#: utils/update_manager.py:36
+msgid "Clear"
+msgstr "Törlés"
+
+msgid "Clear ALL favorites?"
+msgstr "Minden kedvenc törlése?"
+
+msgid "Clear All Favorites"
+msgstr "Minden kedvenc törlése"
+
+msgid "Clear Cache"
+msgstr ""
+
+msgid "Clear Log Files Now"
+msgstr "Naplófájlok törlése most"
+
+msgid "Cleared %d favorites"
+msgstr "%d kedvenc törölve"
+
+msgid "Close"
+msgstr "Bezár"
+
+msgid "Comedy"
+msgstr "Humor"
+
+msgid "Connection Timeout"
+msgstr ""
+
+msgid "Cooking"
+msgstr "Főzés"
+
 msgid "Could not check for updates. Check internet connection."
 msgstr "Nem sikerült frissítéseket keresni. Ellenőrizze az internetkapcsolatot."
 
-#: utils/update_manager.py:41
+msgid "Could not check for updates: %s"
+msgstr "Nem sikerült frissítéseket keresni: %s"
+
+msgid "Countries"
+msgstr "Országok"
+
+msgid "Countries exported:"
+msgstr ""
+
+msgid "Creating hierarchical structure..."
+msgstr ""
+
+msgid "Critical"
+msgstr "Kritikus"
+
+msgid "Culture"
+msgstr "Kultúra"
+
+msgid "Database exported successfully"
+msgstr "Az adatbázis exportálása sikeresen megtörtént"
+
+msgid "Debug"
+msgstr "Hibakeresés"
+
+msgid "Default View"
+msgstr "Alapértelmezett nézet"
+
+msgid "Documentary"
+msgstr "Dokumentumfilm"
+
+msgid "Editing: %s"
+msgstr "Szerkesztés: %s"
+
+msgid "Education"
+msgstr "Oktatás"
+
+msgid "Empty database"
+msgstr "Üres adatbázis"
+
+msgid "Enable Cache"
+msgstr ""
+
+msgid "Enable Export"
+msgstr "Exportálás engedélyezése"
+
+msgid "Entertainment"
+msgstr "Szórakoztatóipar"
+
+msgid "Error"
+msgstr "Hiba"
+
+msgid "Error clearing favorites"
+msgstr "Hiba a kedvencek törlésénél"
+
+msgid "Error clearing logs: %s"
+msgstr "Hiba a naplók törlésekor: %s"
+
+msgid "Error loading category"
+msgstr "Hiba a kategória betöltésekor"
+
+msgid "Error loading channels"
+msgstr "Hiba a csatornák betöltésekor"
+
+msgid "Error loading countries"
+msgstr "Hiba az országok betöltésekor"
+
+msgid "Error loading favorites"
+msgstr "Hiba a kedvencek betöltése során"
+
+msgid "Error loading information"
+msgstr "Hiba az információ betöltésekor"
+
+msgid "Error opening player"
+msgstr "Hiba a lejátszó megnyitásakor"
+
+msgid "Error saving favorites"
+msgstr "Hiba a kedvencek mentésénél"
+
+msgid "Error writing file: %s"
+msgstr ""
+
+msgid "Error: %s"
+msgstr "Hiba: %s"
+
+msgid "Exit"
+msgstr "Kilépés"
+
+msgid "Export"
+msgstr "Exportálás"
+
+msgid "Export '%s' to Enigma2 bouquet?"
+msgstr "Exportálja a(z) „%s” kifejezést Enigma2 csokorba?"
+
+msgid "Export ALL %d favorites to Enigma2 bouquet?"
+msgstr "Exportálja az ÖSSZES %d kedvencet az Enigma2 csokorba?"
+
+msgid "Export ALL Database (Multi-File)"
+msgstr ""
+
+msgid "Export ALL Database (Single File)"
+msgstr ""
+
+msgid "Export Current View"
+msgstr "Aktuális nézet exportálása"
+
+msgid "Export failed"
+msgstr "Exportálás sikertelen"
+
+msgid "Export failed: %s"
+msgstr "Exportálás sikertelen: %s"
+
+msgid "Export to Enigma2 Bouquet"
+msgstr "Exportálás Enigma2 Bouquet-ba"
+
+msgid "Export {count} channels to bouquet '{name}'?"
+msgstr "{count} csatorna exportálása a(z) „{name}” csokorba?"
+
+msgid "Exported"
+msgstr ""
+
+msgid "Exported %d channels to bouquet"
+msgstr "%d csatorna exportálása csokorba"
+
+msgid "ExtePlayer3"
+msgstr "ExtePlayer3"
+
+msgid "Failed to create backup. Update cancelled."
+msgstr "Nem sikerült biztonsági mentést készíteni. Frissítés megszakítva."
+
+msgid "Failed to load database"
+msgstr "Nem sikerült betölteni az adatbázist"
+
+msgid "Family"
+msgstr "Család"
+
+msgid "Favorite"
+msgstr "Kedvenc"
+
+msgid "Favorites"
+msgstr "Kedvencek"
+
+msgid "Files created:"
+msgstr ""
+
+msgid "Force Refresh"
+msgstr ""
+
+msgid "Force Refresh on Browsing"
+msgstr ""
+
+msgid "Force Refresh on Export"
+msgstr ""
+
+msgid "Found %d channels"
+msgstr "%d csatorna található"
+
+msgid "Found %d playable channels"
+msgstr "%d lejátszható csatorna található"
+
+msgid "GStreamer"
+msgstr "GStreamer"
+
+msgid "General"
+msgstr "Általános"
+
+msgid "Hierarchical export completed"
+msgstr ""
+
+msgid "Hierarchical export completed!"
+msgstr ""
+
+msgid "History"
+msgstr "Előzmények"
+
+msgid "Hobby"
+msgstr "Hobbi"
+
+msgid "Info"
+msgstr "Információ"
+
+msgid "Item {} of {}"
+msgstr ""
+
+msgid "Keyboard"
+msgstr "Billentyűzet"
+
+msgid "Kids"
+msgstr "Gyerek"
+
+msgid "Legislative"
+msgstr "Jogalkotási"
+
+msgid "Lifestyle"
+msgstr "Életmód"
+
+msgid "List Position"
+msgstr ""
+
+msgid "Loading all channels..."
+msgstr "Az összes csatorna betöltése..."
+
+msgid "Loading categories..."
+msgstr "A kategóriák betöltése..."
+
+msgid "Loading channels..."
+msgstr "Csatornák betöltése..."
+
+msgid "Loading countries..."
+msgstr "Országok betöltése..."
+
+msgid "Loading favorites..."
+msgstr "Kedvencek betöltése..."
+
+msgid "Local"
+msgstr "Helyi"
+
+msgid "Log Level"
+msgstr "Naplózás szintje"
+
+msgid "Log file is empty or not found"
+msgstr "A naplófájl üres vagy nem található"
+
+msgid "Log files cleared successfully"
+msgstr "A naplófájlok sikeresen törölve"
+
+msgid "Log to File"
+msgstr "Napló fájlba"
+
+msgid "Logs cleared"
+msgstr "Naplók törölve"
+
+msgid "Main bouquet:"
+msgstr ""
+
+#, fuzzy
+msgid "Max Channels for Bouquet"
+msgstr "Max. csatornák száma csokoronként"
+
+#, fuzzy
+msgid "Max Channels for Sub-Bouquet"
+msgstr "Max. csatornák száma csokoronként"
+
+msgid "Max Search Results"
+msgstr ""
+
+#, fuzzy
+msgid "Max channels for country"
+msgstr "Maximális csatornák száma országonként"
+
+msgid "Memory Optimization"
+msgstr ""
+
+msgid "Movies"
+msgstr "Filmek"
+
+msgid "Music"
+msgstr "Zene"
+
+msgid "News"
+msgstr "Hírek"
+
+msgid "Next load will use fresh data"
+msgstr ""
+
+msgid "No channel selected"
+msgstr "Nincs csatorna kiválasztva"
+
+msgid "No channels found for: %s"
+msgstr "Nem található csatorna a következőhöz: %s"
+
+msgid "No channels in this category"
+msgstr "Nincs csatorna ebben a kategóriában"
+
+msgid "No channels loaded"
+msgstr "Nincs betöltött csatorna"
+
+msgid "No channels to export"
+msgstr "Nincs exportálható csatorna"
+
+msgid "No countries with channels found"
+msgstr "Nincs olyan ország, ahol csatornák találhatók"
+
+msgid "No country selected"
+msgstr "Nincs kiválasztott ország"
+
+msgid "No favorite channels"
+msgstr "Nincs kedvenc csatorna"
+
+msgid "No favorites to export"
+msgstr "Nincs exportálandó kedvenc"
+
+msgid "No items"
+msgstr ""
+
+msgid "No stream URL"
+msgstr "Nincs stream URL"
+
+msgid "No stream URL available"
+msgstr "Nincs elérhető stream URL"
+
+msgid "No valid channels found in database"
+msgstr "Nem található érvényes csatorna az adatbázisban"
+
+msgid "No valid stream URLs found"
+msgstr "Érvényes stream URL-ek nem találhatóak"
+
+msgid "Options"
+msgstr "Opciók"
+
+msgid "Options for: %s"
+msgstr "Lehetőségek ehhez: %s"
+
+msgid "Play"
+msgstr "Lejátszás"
+
+msgid "Play Channel"
+msgstr "Lejátszási csatorna"
+
+msgid "Player"
+msgstr "Lejátszó"
+
+msgid "Please restart Enigma2 manually."
+msgstr "Kérjük, indítsa újra manuálisan az Enigma2-t."
+
+msgid "Plugin is up to date"
+msgstr "A bővítmény naprakész"
+
+msgid "Plugin settings and configuration"
+msgstr "Plugin beállítások és konfiguráció"
+
+msgid "Politics"
+msgstr "Politika"
+
+msgid "Press GREEN for keyboard..."
+msgstr "Nyomja meg a ZÖLD gombot a billentyűzethez..."
+
+msgid "Press GREEN for keyboard... Ready - %d channels"
+msgstr "Nyomja meg a ZÖLD gombot a billentyűzet aktiválásához... Kész - %d csatorna"
+
+msgid "Press OK to check for updates"
+msgstr "Nyomja meg az OK gombot a frissítések ellenőrzéséhez"
+
+msgid "Press OK to clear logs"
+msgstr "Nyomja meg az OK gombot a naplók törléséhez"
+
+msgid "Press OK to view logs"
+msgstr "Nyomja meg az OK gombot a naplók megtekintéséhez"
+
+msgid "Refresh"
+msgstr "Frissítés"
+
+msgid "Refresh Method"
+msgstr ""
+
+msgid "Refresh failed"
+msgstr "A frissítés sikertelen"
+
+msgid "Refresh failed: %s"
+msgstr "Frissítés sikertelen: %s"
+
+msgid "Refreshing data..."
+msgstr "Adatok frissítése..."
+
+msgid "Refreshing..."
+msgstr "Üdítő..."
+
+msgid "Religious"
+msgstr "Vallásos"
+
+msgid "Remove '%s' from favorites?"
+msgstr "Eltávolítja a(z) „%s” elemet a kedvencek közül?"
+
+msgid "Remove Bouquet from Enigma2"
+msgstr "Bouquet eltávolítása az Enigma2-ből"
+
+msgid "Remove TV Garden bouquet from Enigma2?"
+msgstr "Távolítsa el a TV Garden csokrot az Enigma2-ből?"
+
+msgid "Remove from Favorites"
+msgstr "Eltávolítás a kedvencek közül"
+
+msgid "Removed"
+msgstr "Törölve"
+
+msgid "Removed from favorites"
+msgstr "Eltávolítva a kedvencek közül"
+
+msgid "Removed from favorites: %s"
+msgstr "Eltávolítva a kedvencek közül: %s"
+
+msgid "Save"
+msgstr "Mentés"
+
+msgid "Science"
+msgstr "Tudomány"
+
+msgid "Search"
+msgstr "Keresés"
+
+msgid "Search Channels"
+msgstr "Csatornák keresése"
+
+msgid "Search channels by name"
+msgstr "Csatornák keresése név szerint"
+
+msgid "Search:"
+msgstr "Keresés:"
+
+msgid "Searching..."
+msgstr "Keresés..."
+
+msgid "Select"
+msgstr "Kiválasztás"
+
+msgid "Select a category"
+msgstr "Válasszon egy kategóriát"
+
+msgid "Select a country"
+msgstr "Válasszon Országot"
+
+msgid "Series"
+msgstr "Sorozatok"
+
+msgid "Set options"
+msgstr "Beállítások"
+
+msgid "Settings"
+msgstr "Beállítások"
+
+msgid "Shop"
+msgstr "Webáruház"
+
+msgid "Show Flags"
+msgstr "Zászlók megjelenítése"
+
+msgid "Show Logos"
+msgstr "Logók megjelenítése"
+
+msgid "Showing {shown} of {total} channels"
+msgstr "{shown} csatorna megjelenítése {total} csatornából"
+
+msgid "Showing {shown} of {total} results"
+msgstr "{shown} eredmények közül {total} megjelenítése"
+
+msgid "Sports"
+msgstr "Sportok"
+
+msgid "Statistics:"
+msgstr ""
+
+msgid "Stream: %s"
+msgstr "Stream: %s"
+
+msgid "Stream: %s..."
+msgstr "Stream: %s..."
+
+msgid "Structure created:"
+msgstr ""
+
+msgid "TV Garden"
+msgstr "TV Kert"
+
+msgid "TV Garden Logs"
+msgstr "TV Kertnapló"
+
+msgid "TV Garden Settings"
+msgstr "TV Garden beállítások"
+
+msgid "Top"
+msgstr ""
+
+msgid "Total channels:"
+msgstr ""
+
+msgid "Travel"
+msgstr "Utazás"
+
+msgid "Unknown"
+msgstr "Ismeretlen"
+
 msgid "Update available!"
 msgstr ""
 "{server_version} {version_server}\n"
@@ -1060,84 +717,86 @@ msgstr ""
 "\n"
 "{update_available}"
 
-#: utils/update_manager.py:46
-msgid "Plugin is up to date"
-msgstr "A bővítmény naprakész"
-
-#: utils/update_manager.py:48
-msgid "You have the latest version of TV Garden."
-msgstr "A TV Garden legújabb verziójával rendelkezel."
-
-#: utils/update_manager.py:59
-#, python-format
-msgid "Could not check for updates: %s"
-msgstr "Nem sikerült frissítéseket keresni: %s"
-
-#: utils/update_manager.py:73
 msgid "Update cancelled"
 msgstr "Frissítés megszakítva"
 
-#: utils/update_manager.py:75
-msgid ""
-"A new version is available!\n"
-"\n"
-"Update now?\n"
-"\n"
-"(Recommended to backup first)"
-msgstr ""
-"Új verzió érhető el!\n"
-"\n"
-"Frissít most?\n"
-"\n"
-"(Először a biztonsági mentés ajánlott)"
+msgid "Update check error"
+msgstr "Frissítés-ellenőrzési hiba"
 
-#: utils/update_manager.py:91
-msgid "Update successful!"
-msgstr "Sikeres frissítés!"
+msgid "Update check failed"
+msgstr "Frissítésellenőrzés sikertelen"
 
-#: utils/update_manager.py:93
-#, python-format
-msgid ""
-"%s\n"
-"\n"
-"Restart Enigma2 now for changes to take effect."
-msgstr ""
-"%s\n"
-"\n"
-"Indítsa újra az Enigma2-t, hogy a változtatások érvénybe lépjenek."
-
-#: utils/update_manager.py:102
-msgid "Update failed"
-msgstr "Frissítés sikertelen"
-
-#: utils/update_manager.py:108
-msgid "Updating plugin... Please wait"
-msgstr "Bővítmény frissítése... Kérjük, várjon"
-
-#: utils/update_manager.py:125
-msgid "Please restart Enigma2 manually."
-msgstr "Kérjük, indítsa újra manuálisan az Enigma2-t."
-
-#: utils/updater.py:155
-msgid "Failed to create backup. Update cancelled."
-msgstr "Nem sikerült biztonsági mentést készíteni. Frissítés megszakítva."
-
-#: utils/updater.py:163
 msgid "Update completed successfully!"
 msgstr "A frissítés sikeresen befejeződött!"
 
-#: utils/updater.py:167
-msgid "Update failed. Restored from backup."
-msgstr "Frissítés sikertelen. Visszaállítva a biztonsági mentésből."
+msgid "Update error: %s"
+msgstr "Frissítési hiba: %s"
 
-#: utils/updater.py:169
+msgid "Update failed"
+msgstr "Frissítés sikertelen"
+
 msgid "Update failed and backup restore also failed!"
 msgstr "A frissítés és a biztonsági mentés visszaállítása sem sikerült!"
 
-#: utils/updater.py:178
-#, python-format
-msgid "Update error: %s"
-msgstr "Frissítési hiba: %s"
+msgid "Update failed. Restored from backup."
+msgstr "Frissítés sikertelen. Visszaállítva a biztonsági mentésből."
+
+msgid "Update successful!"
+msgstr "Sikeres frissítés!"
+
+msgid "Updating plugin... Please wait"
+msgstr "Bővítmény frissítése... Kérjük, várjon"
+
+msgid "Use Hardware Acceleration"
+msgstr "Hardveres gyorsítás használata"
+
+msgid "User Agent"
+msgstr "Böngésző"
+
+msgid "View Channel Info"
+msgstr "Csatorna információk megtekintése"
+
+msgid "View Log File"
+msgstr "Naplófájl megtekintése"
+
+msgid "Warning"
+msgstr "Figyelmeztetés"
+
+msgid "Weather"
+msgstr "Időjárás"
+
+msgid "Will load fresh data next time"
+msgstr ""
+
+#, fuzzy
+msgid "You have the latest version of TVGarden."
+msgstr "A TV Garden legújabb verziójával rendelkezel."
+
+msgid "Your favorite channels"
+msgstr "Kedvenc csatornáid"
+
+#, fuzzy
+msgid "[Cache disabled]"
+msgstr "Gyorsítótár üres"
+
+#, fuzzy
+msgid "[Fresh data]"
+msgstr "Adatok frissítése..."
+
+msgid "bouquet references"
+msgstr "csokorreferenciák"
+
+msgid "channels from"
+msgstr ""
+
+msgid "countries"
+msgstr ""
+
+msgid "files and"
+msgstr "fájlok és"
+
+#~ msgid "TV Garden Plugin"
+#~ msgstr "TV Garden plugin"
 
 #~ msgid "Export Settings"
 #~ msgstr "Beállítások exportálása"

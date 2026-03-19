@@ -72,8 +72,7 @@ class BaseBrowser(Screen):
 
     def right(self):
         """Move to next page"""
-        if (self.current_page + 1) * \
-                self.items_per_page < len(self.get_all_items()):
+        if (self.current_page + 1) * self.items_per_page < len(self.get_all_items()):
             self.current_page += 1
             self.load_page()
 
@@ -102,8 +101,7 @@ class BaseBrowser(Screen):
             self["status"].setText(_("No items"))
             return
 
-        current = self["menu"].getSelectedIndex(
-        ) + 1 + (self.current_page * self.items_per_page)
+        current = self["menu"].getSelectedIndex() + 1 + (self.current_page * self.items_per_page)
         translation = _("Item {} of {}").format(current, total)
         self["status"].setText(translation)
 

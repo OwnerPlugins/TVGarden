@@ -3,25 +3,12 @@
 # TV Garden Installer for Enigma2
 # wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/TVGarden/main/installer.sh" -O - | /bin/sh
 
-version='1.7'
+version='1.9'
 echo "TVGarden Version: $version"
 echo "Changelog:"
-echo "- Fix: Completely fixed Cache Manager."
-echo "- Fix: TextBox on OpenVix."
-echo "- Completely removed unused code and unnecessary configurations."
-echo "- - - 1.6 - - - - "
-echo "- Fix: Completely fixed bouquet export 'not readable' error."
-echo "- Improvement: Bouquets now correctly positioned at bottom of Enigma2 list."
-echo "- Stability: More robust and reliable bouquet file writing."
-echo "- Sort: Channels are now organized by country in exported bouquets."
-echo "- Compatibility: Full Python2 support maintained."
-echo "- - - 1.5 - - - - "
-echo "- New option: 'Export ALL Database (Multi-File)'"
-echo "- Retained: 'Export ALL Database (Single File)' for compatibility"
-echo "- Choice: User decides between speed (multi-file) or simplicity (single-file)"
-echo "- Limitation: Max 500 channels per file"
-echo "- Advantage: Enigma2 loads each file quickly"
-echo "- Navigation: Intuitive hierarchical structure"
+echo "- Fix: Screen."
+echo "- Fix: Cache Manager."
+echo "- Completely removed unused code and unnecessary code."
 echo ""
 
 TMPPATH=/tmp/TVGarden-install

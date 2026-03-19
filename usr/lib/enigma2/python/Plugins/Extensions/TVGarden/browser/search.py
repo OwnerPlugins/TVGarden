@@ -14,6 +14,8 @@ from enigma import eServiceReference, eTimer
 
 from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
+from Tools.NumericalTextInput import NumericalTextInput
+import time
 
 from .base import BaseBrowser
 from ..utils.cache import CacheManager
@@ -22,32 +24,55 @@ from ..utils.favorites import FavoritesManager
 from ..player.iptv_player import TVGardenPlayer
 from ..utils.config import PluginConfig, get_config
 
-from .. import _
+from .. import _, PLUGIN_VERSION
 
 
 class SearchBrowser(BaseBrowser):
     skin = """
-        <screen name="SearchBrowser" position="center,center" size="1280,720" title="TV Garden" backgroundColor="#1a1a2e" flags="wfNoBorder">
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/redbutton.png" position="32,688" size="140,6" zPosition="1" transparent="1" alphatest="blend"/>
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/greenbutton.png" position="176,688" size="140,6" zPosition="1" transparent="1" alphatest="blend"/>
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/yellowbutton.png" position="314,688" size="140,6" zPosition="1" transparent="1" alphatest="blend"/>
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/bluebutton.png" position="458,688" size="140,6" zPosition="1" transparent="1" alphatest="blend"/>
-            <!--
-            <ePixmap name="" position="0,0" size="1280,720" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/hd/background.png" scale="1" />
-            -->
-            <widget name="background" position="0,0" size="1280,720" backgroundColor="#1a1a2e" />
-            <ePixmap name="" position="1039,531" size="200,80" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" alphatest="blend"/>
-            <widget name="key_red" position="33,649" zPosition="1" size="140,40" font="Regular;20" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend"/>
-            <widget name="key_green" position="174,650" zPosition="1" size="140,40" font="Regular;20" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend"/>
-            <widget name="key_yellow" position="315,650" zPosition="1" size="140,40" font="Regular;20" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend"/>
-            <widget name="key_blue" position="455,650" zPosition="1" size="140,40" font="Regular;20" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend"/>
-            <widget name="menu" position="28,116" size="680,474" scrollbarMode="showOnDemand" backgroundColor="#16213e"/>
-            <widget name="status" position="603,643" size="648,50" font="Regular; 22" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend"/>
-            <widget name="search_label" position="30,30" size="420,60" zPosition="1" font="Regular; 32" halign="right" valign="center" foregroundColor="#ffffff" alphatest="blend"/>
-            <widget name="search_text" position="460,29" size="789,60" zPosition="1" font="Regular;32" halign="left" valign="center" backgroundColor="#2d3047" foregroundColor="#ffffff" alphatest="blend"/>
-            <eLabel backgroundColor="#001a2336" position="5,639" size="1270,60" zPosition="-80"/>
-            <eLabel name="" position="24,101" size="694,502" zPosition="-1" backgroundColor="#00171a1c" foregroundColor="#00171a1c"/>
-            <widget source="session.VideoPicture" render="Pig" position="739,140" zPosition="19" size="520,308" backgroundColor="transparent" transparent="0" "/>
+        <screen name="SearchBrowser" position="center,center" size="1920,1080" title="TV Garden" backgroundColor="#1a1a2e" flags="wfNoBorder">
+            <!-- Button pixmaps -->
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/redbutton.png" position="47,1038" size="210,6" alphatest="blend" transparent="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/greenbutton.png" position="261,1038" size="210,6" alphatest="blend" transparent="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/yellowbutton.png" position="474,1038" size="210,6" alphatest="blend" transparent="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/bluebutton.png" position="688,1038" size="210,6" alphatest="blend" transparent="1" />
+
+            <!-- Donation icons -->
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
+
+            <!-- Background -->
+            <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
+
+            <!-- Logo -->
+            <ePixmap name="" position="1676,812" size="200,80" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/logo.png" scale="1" transparent="1" />
+
+            <!-- Button texts -->
+            <widget source="key_red" render="Label" position="50,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
+            <widget source="key_green" render="Label" position="260,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
+            <widget source="key_yellow" render="Label" position="470,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
+            <widget source="key_blue" render="Label" position="680,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
+
+            <!-- Menu (risultati ricerca) -->
+            <widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
+
+            <!-- Title -->
+            <widget name="title" position="49,-8" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
+
+            <!-- Search label and text (specifici per SearchBrowser) -->
+            <widget name="search_label" position="48,55" size="610,90" zPosition="10" font="Regular;34" halign="right" valign="center" foregroundColor="#ffffff" render="Label" />
+            <widget name="search_text" position="671,55" size="1220,90" zPosition="10" font="Regular;34" halign="left" valign="center" backgroundColor="#2d3047" foregroundColor="#ffffff" render="Label" />
+
+            <!-- Status -->
+            <widget name="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
+
+            <!-- Bottom bar -->
+            <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
+
+            <!-- Menu background -->
+            <eLabel name="" position="36,152" size="1040,767" zPosition="0" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
+
+            <!-- Video Picture -->
+            <widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="#ff000000" transparent="0" cornerRadius="14" />
         </screen>
     """
 
@@ -66,7 +91,15 @@ class SearchBrowser(BaseBrowser):
         self.all_channels = []
         self.filtered_channels = []
         self.menu_channels = []
-
+        self.selectedIndex = 0
+        self.last_key = None
+        self.last_key_time = 0
+        self.key_timer = eTimer()
+        try:
+            self.key_timer.timeout.connect(self.finishKeyInput)
+        except BaseException:
+            self.key_timer.callback.append(self.finishKeyInput)
+        self['title'] = StaticText("TV Garden %s | by Lululla" % PLUGIN_VERSION)
         self["search_label"] = StaticText(_("Search:"))
         self["search_text"] = StaticText("")
         self["menu"] = MenuList([])
@@ -76,7 +109,7 @@ class SearchBrowser(BaseBrowser):
         self["key_yellow"] = StaticText(_("Favorite"))
         self["key_blue"] = StaticText(_("Clear"))
 
-        self["actions"] = ActionMap(["TVGardenActions", "OkCancelActions", "ColorActions", "DirectionActions"], {
+        self["actions"] = ActionMap(["TVGardenActions", "OkCancelActions", "ColorActions", "DirectionActions", "NumberActions"], {
             "cancel": self.exit,
             "ok": self.play_channel,
             "red": self.exit,
@@ -87,15 +120,25 @@ class SearchBrowser(BaseBrowser):
             "down": self.down,
             "left": self.left,
             "right": self.right,
+            "1": lambda: self.key_number(1),
+            "2": lambda: self.key_number(2),
+            "3": lambda: self.key_number(3),
+            "4": lambda: self.key_number(4),
+            "5": lambda: self.key_number(5),
+            "6": lambda: self.key_number(6),
+            "7": lambda: self.key_number(7),
+            "8": lambda: self.key_number(8),
+            "9": lambda: self.key_number(9),
+            "0": lambda: self.key_number(0),
         }, -2)
 
         self.search_timer = eTimer()
         try:
-            self.search_timer_conn = self.search_timer.timeout.connect(
-                self.perform_search)
+            self.search_timer.timeout.connect(self.perform_search)
         except AttributeError:
             self.search_timer.callback.append(self.perform_search)
 
+        self.numerical_input = NumericalTextInput(self.search_with_string)
         self.onFirstExecBegin.append(self.load_all_channels)
 
     def load_all_channels(self):
@@ -107,27 +150,22 @@ class SearchBrowser(BaseBrowser):
             # Get cache configuration
             config = get_config()
             # cache_enabled = config.get("cache_enabled", True)
-            force_refresh_browsing = config.get(
-                "force_refresh_browsing", False)
+            force_refresh_browsing = config.get("force_refresh_browsing", False)
 
             # 1. FIRST try using all-channels.json
             log.debug("Trying all-channels.json...", module="Search")
-            all_channels_data = self.cache.get_category_channels(
-                "all-channels", force_refresh=force_refresh_browsing)
+            all_channels_data = self.cache.get_category_channels("all-channels", force_refresh=force_refresh_browsing)
 
             if all_channels_data:
                 self.all_channels = all_channels_data
-                log.info("Loaded %d from all-channels.json" %
-                         len(self.all_channels), module="Search")
+                log.info("Loaded %d from all-channels.json" % len(self.all_channels), module="Search")
             else:
                 # 2. FALLBACK: use dynamic categories
                 log.debug("Using dynamic categories...", module="Search")
 
                 # Get available categories
                 categories = self.cache.get_available_categories()
-                log.debug(
-                    "Found %d available categories" %
-                    len(categories), module="Search")
+                log.debug("Found %d available categories" % len(categories), module="Search")
 
                 for category in categories:
                     cat_id = category['id']
@@ -135,31 +173,26 @@ class SearchBrowser(BaseBrowser):
                         continue
 
                     try:
-                        channels = self.cache.get_category_channels(
-                            cat_id, force_refresh=force_refresh_browsing)
+                        channels = self.cache.get_category_channels(cat_id, force_refresh=force_refresh_browsing)
                         if channels:
                             for channel in channels:
                                 channel['category'] = category['name']
                                 self.all_channels.append(channel)
-                            log.debug(
-                                "Added %d from %s" %
-                                (len(channels), cat_id), module="Search")
+                            log.debug("Added %d from %s" % (len(channels), cat_id), module="Search")
                     except Exception as e:
-                        log.warning("Skipped %s: %s" %
-                                    (cat_id, str(e)[:50]), module="Search")
+                        log.warning("Skipped %s: %s" % (cat_id, str(e)[:50]), module="Search")
                         continue
 
             # Final status
             total = len(self.all_channels)
             if total > 0:
-                self["status"].setText(
-                    _("Press GREEN for keyboard... Ready - %d channels") %
-                    total)
+                self["status"].setText(_("Press GREEN for keyboard... Ready - %d channels") % total)
                 log.info("TOTAL: %d channels ready" % total, module="Search")
+                self.search_results = self.all_channels[:]
+                self.display_search_results()
             else:
                 self["status"].setText(_("No channels loaded"))
                 log.error("No channels loaded", module="Search")
-
         except Exception as e:
             log.error("ERROR: %s" % e, module="Search")
             self["status"].setText(_("Error loading channels"))
@@ -182,13 +215,58 @@ class SearchBrowser(BaseBrowser):
 
             self.search_timer.start(300, True)
 
+    def key_number(self, number):
+        """Handle numeric key press (T9 style)"""
+        key_chars = {
+            2: "abc2", 3: "def3", 4: "ghi4", 5: "jkl5", 6: "mno6",
+            7: "pqrs7", 8: "tuv8", 9: "wxyz9", 0: " 0", 1: "."
+        }
+
+        if number in key_chars:
+            chars = key_chars[number]
+            current_time = time.time()
+
+            # Check if same key pressed quickly (cycle through chars)
+            if self.last_key == number and current_time - self.last_key_time < 1.0:
+                if self.search_query and self.search_query[-1] in chars:
+                    current_index = chars.index(self.search_query[-1])
+                    next_index = (current_index + 1) % len(chars)
+                    self.search_query = self.search_query[:-1] + chars[next_index]
+                else:
+                    self.search_query += chars[0]
+            else:
+                self.search_query += chars[0]
+
+            self["search_text"].setText(self.search_query)
+            self["status"].setText(_("Searching..."))
+
+            # Start search timer
+            self.search_timer.start(500, True)
+
+            self.last_key = number
+            self.last_key_time = current_time
+            self.key_timer.start(1000, True)
+
+    def search_with_string(self):
+        """Callback from NumericalTextInput"""
+        pass
+
+    def finishKeyInput(self):
+        """Reset key state after inactivity"""
+        self.last_key = None
+        self.key_timer.stop()
+
     def clear_search(self):
-        """Clear search"""
+        """Clear search text and reset to full channel list"""
         self.search_query = ""
         self["search_text"].setText("")
-        self["menu"].setList([])
-        self.menu_channels = []
-        self["status"].setText(_("Press GREEN for keyboard..."))
+        if hasattr(self, 'all_channels') and self.all_channels:
+            self.search_results = self.all_channels[:]
+            self.display_search_results()
+            self["status"].setText(_("Showing all %d channels") % len(self.all_channels))
+        else:
+            self["menu"].setList([])
+            self["status"].setText(_("Press GREEN for keyboard..."))
 
     def match_channel(self, channel, query):
         """Check if channel matches search query"""
@@ -211,15 +289,11 @@ class SearchBrowser(BaseBrowser):
 
     def perform_search(self):
         query = self.search_query.lower()
-        log.debug("Searching '%s' in %d channels" %
-                  (query, len(self.all_channels)), module="Search")
+        log.debug("Searching '%s' in %d channels" % (query, len(self.all_channels)), module="Search")
 
         if len(self.all_channels) < 100:
-            log.warning("Very few channels (%d)!" %
-                        len(self.all_channels), module="Search")
-            log.warning(
-                "This might explain limited search results",
-                module="Search")
+            log.warning("Very few channels (%d)!" % len(self.all_channels), module="Search")
+            log.warning("This might explain limited search results", module="Search")
 
         self.search_results = []
         self.menu_channels = []
@@ -235,16 +309,13 @@ class SearchBrowser(BaseBrowser):
 
     def display_search_results(self):
         """Display search results in menu"""
-        log.info("Found %d results" %
-                 len(self.search_results), module="Search")
+        log.info("Found %d results" % len(self.search_results), module="Search")
 
         # Get configurable limit
         config = get_config()
         max_channels = config.get("search_max_results", 500)
 
-        log.debug(
-            "Using max_channels limit: %d" %
-            max_channels, module="Search")
+        log.debug("Using max_channels limit: %d" % max_channels, module="Search")
 
         menu_items = []
         self.menu_channels = []
@@ -257,9 +328,7 @@ class SearchBrowser(BaseBrowser):
             # Apply configurable limit (0 = all channels)
             if max_channels > 0:
                 if idx >= max_channels:
-                    log.debug(
-                        "Stopped at %d results (limit: %d)" %
-                        (idx, max_channels), module="Search")
+                    log.debug("Stopped at %d results (limit: %d)" % (idx, max_channels), module="Search")
                     skipped_by_limit = len(self.search_results) - idx
                     break
 
@@ -269,8 +338,7 @@ class SearchBrowser(BaseBrowser):
             is_youtube = False
 
             # 1. Check iptv_urls
-            if 'iptv_urls' in channel and isinstance(
-                    channel['iptv_urls'], list):
+            if 'iptv_urls' in channel and isinstance(channel['iptv_urls'], list):
                 for url in channel['iptv_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -278,8 +346,7 @@ class SearchBrowser(BaseBrowser):
                         break
 
             # 2. Check youtube_urls (skip)
-            if not stream_url and 'youtube_urls' in channel and isinstance(
-                    channel['youtube_urls'], list):
+            if not stream_url and 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
                 for url in channel['youtube_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -365,8 +432,7 @@ class SearchBrowser(BaseBrowser):
             status_text += " " + _("(skipped %d YouTube)") % youtube_count
 
         if problematic_count > 0:
-            status_text += " " + \
-                _("(filtered %d problematic)") % problematic_count
+            status_text += " " + _("(filtered %d problematic)") % problematic_count
 
         if skipped_by_limit > 0:
             status_text += " " + _("(limited to first %d)") % max_channels
@@ -377,13 +443,10 @@ class SearchBrowser(BaseBrowser):
             if self.menu_channels:
                 self.current_channel = self.menu_channels[0]
         else:
-            self["status"].setText(
-                _("No channels found for: %s") %
-                self.search_query)
+            self["status"].setText(_("No channels found for: %s") % self.search_query)
 
-        log.info(
-            "Final: %d playable, %d YouTube skipped, %d problematic filtered, %d limited by config" %
-            (valid_count, youtube_count, problematic_count, skipped_by_limit), module="Search")
+        log.info("Final: %d playable, %d YouTube skipped, %d problematic filtered, %d limited by config" %
+                 (valid_count, youtube_count, problematic_count, skipped_by_limit), module="Search")
 
     def extract_stream_url(self, channel):
         """Extract stream URL from channel"""
@@ -394,8 +457,7 @@ class SearchBrowser(BaseBrowser):
                     return url.strip()
 
         # Check youtube_urls (skip)
-        if 'youtube_urls' in channel and isinstance(
-                channel['youtube_urls'], list):
+        if 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
             for url in channel['youtube_urls']:
                 if isinstance(url, str) and url.strip():
                     return None  # Skip YouTube
@@ -438,24 +500,16 @@ class SearchBrowser(BaseBrowser):
         try:
             url_encoded = stream_url.replace(":", "%3a")
             name_encoded = channel['name'].replace(":", "%3a")
-            ref_str = "4097:0:0:0:0:0:0:0:0:0:%s:%s" % (
-                url_encoded, name_encoded)
+            ref_str = "4097:0:0:0:0:0:0:0:0:0:%s:%s" % (url_encoded, name_encoded)
 
             service_ref = eServiceReference(ref_str)
             service_ref.setName(channel['name'])
 
-            self.session.open(
-                TVGardenPlayer,
-                service_ref,
-                self.menu_channels,
-                idx)
+            self.session.open(TVGardenPlayer, service_ref, self.menu_channels, idx)
 
         except Exception as e:
             log.error("Play error: %s" % e, module="Search")
-            self.session.open(
-                MessageBox,
-                _("Error opening player"),
-                MessageBox.TYPE_ERROR)
+            self.session.open(MessageBox, _("Error opening player"), MessageBox.TYPE_ERROR)
 
     def toggle_favorite(self):
         """Add/remove channel from favorites"""
@@ -468,17 +522,41 @@ class SearchBrowser(BaseBrowser):
                 self.fav_manager.add(channel)
                 self["status"].setText(_("Added to favorites"))
 
+    def moveUp(self):
+        self["menu"].up()
+        self.update_selected_index()
+
+    def moveDown(self):
+        self["menu"].down()
+        self.update_selected_index()
+
+    def moveLeft(self):
+        self["menu"].pageUp()
+        self.update_selected_index()
+
+    def moveRight(self):
+        self["menu"].pageDown()
+        self.update_selected_index()
+
+    def update_selected_index(self):
+        """Update selected index from menu"""
+        self.selectedIndex = self["menu"].getSelectedIndex()
+
     def up(self):
         self["menu"].up()
+        self.update_selected_index()
 
     def down(self):
         self["menu"].down()
+        self.update_selected_index()
 
     def left(self):
         self["menu"].pageUp()
+        self.update_selected_index()
 
     def right(self):
         self["menu"].pageDown()
+        self.update_selected_index()
 
     def exit(self):
         if self.search_timer.isActive():

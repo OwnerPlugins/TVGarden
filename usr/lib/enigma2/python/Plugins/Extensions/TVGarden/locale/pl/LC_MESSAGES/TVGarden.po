@@ -18,1122 +18,779 @@ msgstr ""
 "X-Poedit-SearchPath-3: player\n"
 "X-Poedit-SearchPath-4: utils\n"
 
-#: browser/about.py:44
-msgid "TV Garden Plugin"
-msgstr "Wtyczka TV Garden"
-
-#: browser/about.py:47 utils/settings.py:56
-msgid "Close"
-msgstr "Zamknij"
-
-#: browser/about.py:62
-msgid "About TV Garden"
-msgstr "O wtyczce TV Garden"
-
-#: browser/about.py:137
-msgid "Error loading information"
-msgstr "Błąd pobierania informacji"
-
-#: browser/base.py:103
-msgid "No items"
-msgstr "Brak pozycji"
-
-#: browser/base.py:107
-#, python-brace-format
-msgid "Item {} of {}"
-msgstr "Element {} z {}"
-
-#: browser/categories.py:28
-msgid "Animation"
-msgstr "Animacja"
-
-#: browser/categories.py:29 utils/settings.py:288
-msgid "Auto"
-msgstr "Auto"
-
-#: browser/categories.py:30
-msgid "Business"
-msgstr "Biznes"
-
-#: browser/categories.py:31
-msgid "Classic"
-msgstr "Klasyczny"
-
-#: browser/categories.py:32
-msgid "Comedy"
-msgstr "Komedia"
-
-#: browser/categories.py:33
-msgid "Cooking"
-msgstr "Gotowanie"
-
-#: browser/categories.py:34
-msgid "Culture"
-msgstr "Kultura"
-
-#: browser/categories.py:35
-msgid "Documentary"
-msgstr "Dokumentalny"
-
-#: browser/categories.py:36
-msgid "Education"
-msgstr "Edukacja"
-
-#: browser/categories.py:37
-msgid "Entertainment"
-msgstr "Rozrywka"
-
-#: browser/categories.py:38
-msgid "Family"
-msgstr "Rodzina"
-
-#: browser/categories.py:39
-msgid "General"
-msgstr "Ogólny"
-
-#: browser/categories.py:40
-msgid "History"
-msgstr "Historia"
-
-#: browser/categories.py:41
-msgid "Hobby"
-msgstr "Zainteresowania"
-
-#: browser/categories.py:42
-msgid "Kids"
-msgstr "Dzieci"
-
-#: browser/categories.py:43
-msgid "Legislative"
-msgstr "Ustawodawczy"
-
-#: browser/categories.py:44
-msgid "Lifestyle"
-msgstr "Styl życia"
-
-#: browser/categories.py:45
-msgid "Local"
-msgstr "Lokalny"
-
-#: browser/categories.py:46
-msgid "Movies"
-msgstr "Filmy"
-
-#: browser/categories.py:47
-msgid "Music"
-msgstr "Muzyka"
-
-#: browser/categories.py:48
-msgid "News"
-msgstr "Aktualności"
-
-#: browser/categories.py:49
-msgid "Politics"
-msgstr "Polityka"
-
-#: browser/categories.py:50
-msgid "Religious"
-msgstr "Religijny"
-
-#: browser/categories.py:51
-msgid "Series"
-msgstr "Seriale"
-
-#: browser/categories.py:52
-msgid "Science"
-msgstr "Nauka"
-
-#: browser/categories.py:53
-msgid "Shop"
-msgstr "Sklep"
-
-#: browser/categories.py:54
-msgid "Sports"
-msgstr "Sporty"
-
-#: browser/categories.py:55
-msgid "Travel"
-msgstr "Podróż"
-
-#: browser/categories.py:56
-msgid "Weather"
-msgstr "Pogoda"
-
-#: browser/categories.py:93
-msgid "Loading categories..."
-msgstr "Czytanie kategorii ..."
-
-#: browser/categories.py:95 browser/channels.py:111 browser/countries.py:73
-#: browser/favorites.py:63 browser/search.py:71 utils/settings.py:118
-msgid "Back"
-msgstr "Wstecz"
-
-#: browser/categories.py:96 browser/countries.py:74 plugin.py:214
-msgid "Select"
-msgstr "Wybierać"
-
-#: browser/categories.py:115
-msgid "Select a category"
-msgstr "Wybierz kategorię"
-
-#: browser/categories.py:178
-msgid "No channels in this category"
-msgstr "Brak kanałów w tej kategorii"
-
-#: browser/categories.py:182
-msgid "Error loading category"
-msgstr "Błąd ładowania kategorii"
-
-#: browser/categories.py:189 browser/countries.py:225
-msgid "Refreshing..."
-msgstr "Odświeżam..."
-
-#: browser/categories.py:196 browser/countries.py:234
-msgid "Cache cleared"
-msgstr "Usuń pamięć podręczną"
-
-#: browser/categories.py:201
-msgid "Next load will use fresh data"
-msgstr "Następny pobieranie będzie korzystał ze świeżych danych"
-
-#: browser/categories.py:205 browser/countries.py:246
-msgid "Refresh failed"
-msgstr "Odświeżanie nieudane"
-
-#: browser/channels.py:107
-msgid "Loading channels..."
-msgstr "Ładowanie kanałów..."
-
-#: browser/channels.py:112 browser/favorites.py:64
-msgid "Play"
-msgstr "Odtwarzaj"
-
-#: browser/channels.py:113 browser/search.py:73
-msgid "Favorite"
-msgstr "Ulubione"
-
-#: browser/channels.py:144
-msgid "Play Channel"
-msgstr "Odtwórz kanał"
-
-#: browser/channels.py:145
-msgid "Add to Favorites"
-msgstr "Dodaj do Ulubionych"
-
-#: browser/channels.py:146 browser/favorites.py:421
-msgid "Channel Information"
-msgstr "Kanału Informacje"
-
-#: browser/channels.py:150
-msgid "Export Current View"
-msgstr "Eksportuj Aktualny Widok"
-
-#: browser/channels.py:153
-msgid "Channel Menu"
-msgstr "Menu Kanału"
-
-#: browser/channels.py:353 browser/favorites.py:66
-msgid "Export"
-msgstr "Eksport"
-
-#: browser/channels.py:368 browser/countries.py:201
-msgid " [Fresh data]"
-msgstr "[Świeże dane]"
-
-#: browser/channels.py:370 browser/countries.py:203
-msgid " [Cache disabled]"
-msgstr "[Pamięć podręczna wyłączona]"
-
-#: browser/channels.py:373
-#, python-brace-format
-msgid "Showing {shown} of {total} channels"
-msgstr "Wyświetlono {shown} z {total} kanałów"
-
-#: browser/channels.py:379
-#, python-format
-msgid "Found %d playable channels"
-msgstr "Znaleziono %d kanałów do odtworzenia"
-
-#: browser/channels.py:385 browser/search.py:339
-#, python-format
-msgid "(skipped %d YouTube)"
-msgstr "(pominięto %d YouTube)"
-
-#: browser/channels.py:388 browser/search.py:342
-#, python-format
-msgid "(filtered %d problematic)"
-msgstr "(filtrowano %d problematyczne)"
-
-#: browser/channels.py:391 browser/search.py:345
-#, python-format
-msgid "(limited to first %d)"
-msgstr "(ograniczone do pierwszego %d)"
-
-#: browser/channels.py:405 browser/search.py:150
-msgid "Error loading channels"
-msgstr "Błąd ładowania kanału"
-
-#: browser/channels.py:582 browser/channels.py:588 utils/favorites.py:205
-#: utils/favorites.py:299 utils/favorites.py:906
-msgid "No channels to export"
-msgstr "Brak kanałów do wyeksportowania"
-
-#: browser/channels.py:600
-msgid "Channels"
-msgstr "Kanałów"
-
-#: browser/channels.py:605
-#, python-brace-format
-msgid "Export {count} channels to bouquet '{name}'?"
-msgstr "Wyeksportować {count} kanałów do grupy '{name}'?"
-
-#: browser/channels.py:636
-#, python-format
-msgid "Export failed: %s"
-msgstr "Eksport nie powiódł się: %s"
-
-#: browser/channels.py:656 browser/search.py:404 utils/favorites.py:776
-msgid "No stream URL"
-msgstr "Brak adresu URL strumienia"
-
-#: browser/channels.py:683 browser/favorites.py:252
-msgid "Unknown"
-msgstr "Nieznany"
-
-#: browser/channels.py:689 browser/favorites.py:257
-#, python-format
-msgid "Remove '%s' from favorites?"
-msgstr "Usunąć '%s' z ulubionych?"
-
-#: browser/channels.py:723
-#, python-format
-msgid "Stream: %s..."
-msgstr "Strumień : %s..."
-
-#: browser/channels.py:725
-#, python-format
-msgid "Stream: %s"
-msgstr "Strumień : %s"
-
-#: browser/countries.py:71
-msgid "Loading countries..."
-msgstr "Ładowania kraju..."
-
-#: browser/countries.py:75 plugin.py:215
-msgid "Refresh"
-msgstr "Odświeżać"
-
-#: browser/countries.py:205
-msgid "Select a country"
-msgstr "Wybór kraju"
-
-#: browser/countries.py:215
-msgid "No countries with channels found"
-msgstr "Nie znaleziono krajów z kanałami"
-
-#: browser/countries.py:218
-msgid "Error loading countries"
-msgstr "Błąd ładowania kraju"
-
-#: browser/countries.py:241
-msgid "Will load fresh data next time"
-msgstr "Następnym razem załaduję nowe dane"
-
-#: browser/countries.py:401
-msgid "No country selected"
-msgstr "Nie wybrano kraju"
-
-#: browser/favorites.py:62
-msgid "Loading favorites..."
-msgstr "Pobieranie ulubionych..."
-
-#: browser/favorites.py:65
-msgid "Options"
-msgstr "Opcje"
-
-#: browser/favorites.py:129
-#, python-format
 msgid "%d favorite channels"
 msgstr "%d  ulubione kanały"
 
-#: browser/favorites.py:134
-msgid "No favorite channels"
-msgstr "Brak  ulubionych kanałów"
-
-#: browser/favorites.py:139
-msgid "Error loading favorites"
-msgstr "Błąd ładowania ulubionych"
-
-#: browser/favorites.py:145 browser/favorites.py:333
-msgid "No channel selected"
-msgstr "Nie wybrano kanału"
-
-#: browser/favorites.py:149
-msgid "View Channel Info"
-msgstr "Wyświetl informacje o kanale"
-
-#: browser/favorites.py:150
-msgid "Remove from Favorites"
-msgstr "Usuń z ulubionych"
-
-#: browser/favorites.py:151
-msgid "Clear All Favorites"
-msgstr "Wyczyść wszystkie ulubione"
-
-#: browser/favorites.py:152
-msgid "Export to Enigma2 Bouquet"
-msgstr "Eksport do bukietu Enigma2"
-
-#: browser/favorites.py:153
-msgid "Export ALL Database (Single File)"
-msgstr "Eksportuj CAŁĄ bazę danych (Pojedynczy Plik)"
-
-#: browser/favorites.py:154
-msgid "Export ALL Database (Multi-File)"
-msgstr "Eksportuj CAŁĄ bazę danych (Wiele Plików)"
-
-#: browser/favorites.py:155
-msgid "Remove Bouquet from Enigma2"
-msgstr "Usuń bukiet z Enigmy2"
-
-#: browser/favorites.py:161
-#, python-format
-msgid "Options for: %s"
-msgstr "Opcje dla: %s"
-
-#: browser/favorites.py:183
-#, python-format
-msgid "Export '%s' to Enigma2 bouquet?"
-msgstr "Eksportować '%s' do bukietu Enigma2?"
-
-#: browser/favorites.py:191
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Usunąć bukiet TV Garden z Enigmy2?"
-
-#: browser/favorites.py:199
-msgid "Clear ALL favorites?"
-msgstr "Wyczyścić WSZYSTKIE ulubione?"
-
-#: browser/favorites.py:207
-msgid ""
-"Export ALL channels from TV Garden database?\n"
-"This may take some time."
-msgstr ""
-"Wyeksportować WSZYSTKIE kanały z bazy danych TV Garden?\n"
-"Może to trochę potrwać."
-
-#: browser/favorites.py:215
-msgid ""
-"Export ALL channels with multi-file structure?\n"
-"This will create smaller bouquet files for better performance."
-msgstr ""
-"Eksportować WSZYSTKIE kanały ze strukturą wieloplikową?\n"
-"Spowoduje to utworzenie mniejszych plików bukietów, co przełoży się na "
-"lepszą wydajność."
-
-#: browser/favorites.py:270
-#, python-format
 msgid "%d favorites"
 msgstr "%d ulubione"
 
-#: browser/favorites.py:284
-msgid "Loading all channels..."
-msgstr "Ładowanie wszystkich kanałów..."
+msgid "(filtered %d problematic)"
+msgstr "(filtrowano %d problematyczne)"
 
-#: browser/favorites.py:296
-msgid "Database exported successfully"
-msgstr "Baza danych wyeksportowana pomyślnie"
+msgid "(limited to first %d)"
+msgstr "(ograniczone do pierwszego %d)"
 
-#: browser/favorites.py:298 browser/favorites.py:319
-msgid "Export failed"
-msgstr "Eksport nieudany"
+msgid "(skipped %d YouTube)"
+msgstr "(pominięto %d YouTube)"
 
-#: browser/favorites.py:305
-msgid "Creating hierarchical structure..."
-msgstr "Tworzenie struktury hierarchicznej..."
-
-#: browser/favorites.py:317
-msgid "Hierarchical export completed"
-msgstr "Eksport hierarchiczny zakończony"
-
-#: browser/favorites.py:338
-msgid "No stream URL available"
-msgstr "Brak adresu URL strumienia"
-
-#: browser/favorites.py:357 browser/search.py:419
-msgid "Error opening player"
-msgstr "Błąd otwierania odtwarzacza"
-
-#: browser/favorites.py:365
-msgid "No favorites to export"
-msgstr "Brak ulubionych do eksportu"
-
-#: browser/favorites.py:374
-#, python-format
-msgid "Export ALL %d favorites to Enigma2 bouquet?"
-msgstr "Eksportować WSZYSTKIE %d ulubione do bukietu Enigma2?"
-
-#: browser/search.py:67
-msgid "Search:"
-msgstr "Szukanie:"
-
-#: browser/search.py:70 browser/search.py:176
-msgid "Press GREEN for keyboard..."
-msgstr "Naciśnij ZIELONY, aby włączyć klawiaturę..."
-
-#: browser/search.py:72
-msgid "Keyboard"
-msgstr "Klawiatura"
-
-#: browser/search.py:74
-msgid "Clear"
-msgstr "Czyścić"
-
-#: browser/search.py:142
-#, python-format
-msgid "Press GREEN for keyboard... Ready - %d channels"
-msgstr "Naciśnij ZIELONY, włączy klawiaturę... Gotowy - %d kanałów"
-
-#: browser/search.py:145
-msgid "No channels loaded"
-msgstr "Nie załadowano kanałów"
-
-#: browser/search.py:157
-msgid "Search Channels"
-msgstr "Wyszukaj Kanały"
-
-#: browser/search.py:166
-msgid "Searching..."
-msgstr "Szukam ..."
-
-#: browser/search.py:330
-#, python-brace-format
-msgid "Showing {shown} of {total} results"
-msgstr "Wyświetlanie {shown} z {total} wyników"
-
-#: browser/search.py:336
-#, python-format
-msgid "Found %d channels"
-msgstr "Znaleziono %d kanałów"
-
-#: browser/search.py:353
-#, python-format
-msgid "No channels found for: %s"
-msgstr "Nie znaleziono kanałów dla: %s"
-
-#: browser/search.py:427
-msgid "Removed from favorites"
-msgstr "Usunięto z ulubionych"
-
-#: browser/search.py:430
-msgid "Added to favorites"
-msgstr "Dodano do ulubionych"
-
-#: plugin.py:203
-msgid "Browse by Country"
-msgstr "Przeglądaj według Kraju"
-
-#: plugin.py:203
-msgid "Browse channels by country"
-msgstr "Przeglądaj kanały według kraju"
-
-#: plugin.py:204
-msgid "Browse by Category"
-msgstr "Przeglądaj według Kategorii"
-
-#: plugin.py:204
-msgid "Browse channels by category"
-msgstr "Przeglądaj kanały według kategorii"
-
-#: plugin.py:205 utils/settings.py:342
-msgid "Favorites"
-msgstr "Ulubione"
-
-#: plugin.py:205
-msgid "Your favorite channels"
-msgstr "Twoje ulubione kanały"
-
-#: plugin.py:206
-msgid "Search"
-msgstr "Szukanie"
-
-#: plugin.py:206
-msgid "Search channels by name"
-msgstr "Wyszukaj kanały według nazwy"
-
-#: plugin.py:207 utils/settings.py:204 utils/settings.py:232
-#: utils/settings.py:551
-msgid "Check for Updates"
-msgstr "Sprawdź  Aktualizacje"
-
-#: plugin.py:207
-msgid "Check for plugin updates"
-msgstr "Sprawdź aktualizacje wtyczek"
-
-#: plugin.py:208 plugin.py:216
-msgid "Settings"
-msgstr "Ustawienia"
-
-#: plugin.py:208
-msgid "Plugin settings and configuration"
-msgstr "Ustawienia i konfiguracja wtyczki"
-
-#: plugin.py:209
-msgid "About"
-msgstr "O wtyczce"
-
-#: plugin.py:209
-msgid "About TV Garden plugin"
-msgstr "O wtyczce TV Garden"
-
-#: plugin.py:213
-msgid "Exit"
-msgstr "Wyjście"
-
-#: plugin.py:293
-msgid "Refreshing data..."
-msgstr "Odświeżanie danych..."
-
-#: plugin.py:308
-#, python-format
-msgid ""
-"Refresh completed!\n"
-"Loaded %d countries"
-msgstr ""
-"Odświeżanie zakończone!\n"
-"Załadowano %d krajów"
-
-#: plugin.py:313
-#, python-format
-msgid "Refresh failed: %s"
-msgstr "Odświeżanie nie powiodło się: %s"
-
-#: plugin.py:334 utils/update_manager.py:57
-msgid "Update check error"
-msgstr "Błąd sprawdzania aktualizacji"
-
-#: plugin.py:336 utils/favorites.py:290 utils/favorites.py:386
-#: utils/favorites.py:757 utils/favorites.py:805 utils/favorites.py:945
-#: utils/settings.py:256
-#, python-format
-msgid "Error: %s"
-msgstr "Błąd: %s"
-
-#: plugin.py:383
-msgid "TV Garden"
-msgstr "TV Garden"
-
-#: plugin.py:436
-msgid "Access free IPTV channels from around the world"
-msgstr "Uzyskaj dostęp do bezpłatnych kanałów IPTV z całego świata"
-
-#: utils/favorites.py:89
-msgid "Already in favorites"
-msgstr "Już w ulubionych"
-
-#: utils/favorites.py:101
-#, python-format
-msgid "Added to favorites: %s"
-msgstr "Dodaj do ulubionych: %s"
-
-#: utils/favorites.py:104 utils/favorites.py:119
-msgid "Error saving favorites"
-msgstr "Błąd zapisywania ulubionych"
-
-#: utils/favorites.py:116
-#, python-format
-msgid "Removed from favorites: %s"
-msgstr "Usunięto z ulubionych: %s"
-
-#: utils/favorites.py:121
-msgid "Channel not found in favorites"
-msgstr "Kanał nie został znaleziony w ulubionych"
-
-#: utils/favorites.py:277 utils/favorites.py:373
-#, python-format
-msgid "Error writing file: %s"
-msgstr "Błąd zapisu pliku: %s"
-
-#: utils/favorites.py:280 utils/favorites.py:376 utils/favorites.py:601
-msgid "No valid stream URLs found"
-msgstr "Nie znaleziono prawidłowych adresów URL strumienia"
-
-#: utils/favorites.py:286 utils/favorites.py:382
-#, python-format
-msgid "Exported %d channels to bouquet"
-msgstr "Wyeksportowano %d  do bukietu kanałów"
-
-#: utils/favorites.py:409 utils/favorites.py:826
-msgid "Empty database"
-msgstr "Pusta baza danych"
-
-#: utils/favorites.py:429 utils/favorites.py:830
-msgid "Failed to load database"
-msgstr "Nie udało się załadować bazy danych"
-
-#: utils/favorites.py:521 utils/favorites.py:867
-msgid "No valid channels found in database"
-msgstr "Nie znaleziono prawidłowych kanałów w bazie danych"
-
-#: utils/favorites.py:608
-msgid "Exported"
-msgstr "Eksportowane"
-
-#: utils/favorites.py:610
-msgid "channels from"
-msgstr "kanały z"
-
-#: utils/favorites.py:612
-msgid "countries"
-msgstr "kraje"
-
-#: utils/favorites.py:621 utils/settings.py:456
-msgid "Error"
-msgstr "Błąd"
-
-#: utils/favorites.py:747
-msgid "Removed"
-msgstr "Usunąć"
-
-#: utils/favorites.py:749
-msgid "files and"
-msgstr "pliki i"
-
-#: utils/favorites.py:751
-msgid "bouquet references"
-msgstr "odniesienia do bukietów"
-
-#: utils/favorites.py:801
-msgid "Channel added to bouquet"
-msgstr "Kanał dodany do bukietu"
-
-#: utils/favorites.py:930
-msgid "Hierarchical export completed!"
-msgstr "Eksport hierarchiczny zakończony!"
-
-#: utils/favorites.py:931
-msgid "Statistics:"
-msgstr "Statystyka:"
-
-#: utils/favorites.py:932
-msgid "Total channels:"
-msgstr "Wszystkich kanałów:"
-
-#: utils/favorites.py:933
-msgid "Countries exported:"
-msgstr "Ładowania kraju:"
-
-#: utils/favorites.py:934
-msgid "Files created:"
-msgstr "Utworzone pliki:"
-
-#: utils/favorites.py:936
-msgid "Structure created:"
-msgstr "Utworzona struktura:"
-
-#: utils/favorites.py:938
-msgid "Main bouquet:"
-msgstr "Główny bukiet:"
-
-#: utils/favorites.py:1104
-#, python-format
-msgid "Cleared %d favorites"
-msgstr "Wyczyszczono %d ulubionych"
-
-#: utils/favorites.py:1107
-msgid "Error clearing favorites"
-msgstr "Błąd podczas czyszczenia ulubionych"
-
-#: utils/settings.py:51
-msgid "Log file is empty or not found"
-msgstr "Plik dziennika pusty lub nie znaleziony"
-
-#: utils/settings.py:54
-msgid "TV Garden Logs"
-msgstr "TV Garden Log"
-
-#: utils/settings.py:115
-msgid "TV Garden Settings"
-msgstr "TV Garden Ustawienia"
-
-#: utils/settings.py:119
-msgid "Save"
-msgstr "Zapisz"
-
-#: utils/settings.py:120 utils/settings.py:164 utils/settings.py:168
-msgid "Set options"
-msgstr "Ustaw opcje"
-
-#: utils/settings.py:166
-#, python-format
-msgid "Editing: %s"
-msgstr "Edycja: %s"
-
-#: utils/settings.py:204 utils/settings.py:224 utils/settings.py:545
-msgid "View Log File"
-msgstr "Wyświetl Plik Dziennika"
-
-#: utils/settings.py:204 utils/settings.py:228 utils/settings.py:546
-msgid "Clear Log Files Now"
-msgstr "Wyczyść Pliki Dziennika Teraz"
-
-#: utils/settings.py:252
-msgid "Are you sure you want to clear all log files?"
-msgstr "Czy na pewno chcesz wyczyścić wszystkie pliki dziennika?"
-
-#: utils/settings.py:263
-msgid "Logs cleared"
-msgstr "Logi wyczyszczone"
-
-#: utils/settings.py:266
-msgid "Log files cleared successfully"
-msgstr "Pliki dziennika zostały pomyślnie wyczyszczone"
-
-#: utils/settings.py:273
-#, python-format
-msgid "Error clearing logs: %s"
-msgstr "Błąd czyszczenia dzienników: %s"
-
-#: utils/settings.py:289
-msgid "ExtePlayer3"
-msgstr "ExtePlayer3"
-
-#: utils/settings.py:290
-msgid "GStreamer"
-msgstr "GStreamer"
-
-#: utils/settings.py:317 utils/settings.py:328 utils/settings.py:371
-msgid "100 channels"
-msgstr "10 kanałów"
-
-#: utils/settings.py:318 utils/settings.py:329 utils/settings.py:372
-msgid "250 channels"
-msgstr "250 kanałów"
-
-#: utils/settings.py:319 utils/settings.py:330 utils/settings.py:373
-msgid "500 channels"
-msgstr "500 kanałów"
-
-#: utils/settings.py:320 utils/settings.py:331 utils/settings.py:374
-msgid "1000 channels"
-msgstr "1000 kanałów"
-
-#: utils/settings.py:321 utils/settings.py:375
-msgid "All channels"
-msgstr "Wszyskich kanałów"
-
-#: utils/settings.py:332
-msgid "2000 channels"
-msgstr "2000 kanałów"
-
-#: utils/settings.py:333
-msgid "5000 channels"
-msgstr "5000 kanałów"
-
-#: utils/settings.py:340
-msgid "Countries"
-msgstr "Kraje"
-
-#: utils/settings.py:341
-msgid "Categories"
-msgstr "Kategorie"
-
-#: utils/settings.py:370
-msgid "50 channels"
-msgstr "50 kanałów"
-
-#: utils/settings.py:387
-msgid "Top"
-msgstr "Góra"
-
-#: utils/settings.py:388
-msgid "Bottom"
-msgstr "Dół"
-
-#: utils/settings.py:400
-msgid "512 KB"
-msgstr "512 KB"
-
-#: utils/settings.py:401
 msgid "1 MB"
 msgstr "1 MB"
 
-#: utils/settings.py:402
+msgid "100 channels"
+msgstr "10 kanałów"
+
+msgid "1000 channels"
+msgstr "1000 kanałów"
+
 msgid "2 MB"
 msgstr "2 MB"
 
-#: utils/settings.py:403
+msgid "2000 channels"
+msgstr "2000 kanałów"
+
+msgid "250 channels"
+msgstr "250 kanałów"
+
 msgid "4 MB"
 msgstr "4 MB"
 
-#: utils/settings.py:404
+msgid "50 channels"
+msgstr "50 kanałów"
+
+msgid "500 channels"
+msgstr "500 kanałów"
+
+msgid "5000 channels"
+msgstr "5000 kanałów"
+
+msgid "512 KB"
+msgstr "512 KB"
+
 msgid "8 MB"
 msgstr "8 MB"
 
-#: utils/settings.py:444
-msgid "Clear Cache"
-msgstr "Wyczyść bufor"
-
-#: utils/settings.py:445
-msgid "Force Refresh"
-msgstr "Wymuś Odświeżenie"
-
-#: utils/settings.py:453
-msgid "Debug"
-msgstr "Debugowanie"
-
-#: utils/settings.py:454
-msgid "Info"
-msgstr "Info"
-
-#: utils/settings.py:455
-msgid "Warning"
-msgstr "Ostrzeżenie"
-
-#: utils/settings.py:457
-msgid "Critical"
-msgstr "Krytyczny"
-
-#: utils/settings.py:467
-msgid "Press OK to check for updates"
-msgstr "Naciśnij OK, aby sprawdzić dostępność aktualizacji"
-
-#: utils/settings.py:472
-msgid "Press OK to view logs"
-msgstr "Naciśnij OK, aby wyświetlić dzienniki"
-
-#: utils/settings.py:477
-msgid "Press OK to clear logs"
-msgstr "Naciśnij OK, aby wyczyścić dzienniki"
-
-#: utils/settings.py:486
 msgid "=== Browser Settings ==="
 msgstr "=== Ustawienia Przeglądarki ==="
 
-#: utils/settings.py:488
-msgid "Default View"
-msgstr "Domyślny Podgląd"
-
-#: utils/settings.py:489
-msgid "Max channels for country"
-msgstr "Najwięcej kanałów na kraj"
-
-#: utils/settings.py:490
-msgid "Show Flags"
-msgstr "Pokaż Powiązania"
-
-#: utils/settings.py:491
-msgid "Show Logos"
-msgstr "Pokaż Plakat"
-
-#: utils/settings.py:494
-msgid "=== Player Settings ==="
-msgstr "=== Ustawienia Odtwarzacza ==="
-
-#: utils/settings.py:496
-msgid "Player"
-msgstr "Odtwarzacz"
-
-#: utils/settings.py:499
-msgid "=== Export Settings ==="
-msgstr "=== Eksportuj Ustawienia ==="
-
-#: utils/settings.py:501
-msgid "Enable Export"
-msgstr "Włączyć Export"
-
-#: utils/settings.py:503
-msgid "List Position"
-msgstr "Pozycja na Liście"
-
-#: utils/settings.py:504
-msgid "Bouquet Name Prefix"
-msgstr "Prefiks Nazwy Bukietu"
-
-#: utils/settings.py:505
-msgid "Max Channels for Bouquet"
-msgstr "Maksymalna Liczba Kanałów na Bukiet"
-
-#: utils/settings.py:506
-msgid "Max Channels for Sub-Bouquet"
-msgstr "Maksymalna Liczba Kanałów dla Podbukietu"
-
-#: utils/settings.py:509
-msgid "=== Performance Settings ==="
-msgstr "=== Ustawienia wydajności ==="
-
-#: utils/settings.py:511
-msgid "Memory Optimization"
-msgstr "Optymalizacja Pamięci"
-
-#: utils/settings.py:512
-msgid "Use Hardware Acceleration"
-msgstr "Użyj Przyspieszenia Sprzętowego"
-
-#: utils/settings.py:513
-msgid "Buffer Size"
-msgstr "Rozmiar Bufora"
-
-#: utils/settings.py:516
-msgid "=== Network Settings ==="
-msgstr "=== Ustawienia Sieciowe ==="
-
-#: utils/settings.py:518
-msgid "User Agent"
-msgstr "Użytkownik Agent"
-
-#: utils/settings.py:519
-msgid "Connection Timeout"
-msgstr "Limit Czasu Połączenia"
-
-#: utils/settings.py:522
 msgid "=== Cache Settings ==="
 msgstr "=== Ustawienia Pamięci Podręcznej ==="
 
-#: utils/settings.py:524
-msgid "Enable Cache"
-msgstr "Włącz cache"
+msgid "=== Export Settings ==="
+msgstr "=== Eksportuj Ustawienia ==="
 
-#: utils/settings.py:527
-msgid "Cache Size"
-msgstr "Rozmiar pamięci podręcznej"
-
-#: utils/settings.py:528
-msgid "Refresh Method"
-msgstr "Metoda Odświeżania"
-
-#: utils/settings.py:529
-msgid "Force Refresh on Browsing"
-msgstr "Wymuś Odświeżanie Podczas Przeglądania"
-
-#: utils/settings.py:530
-msgid "Force Refresh on Export"
-msgstr "Wymuś Odświeżenie Podczas Eksportu"
-
-#: utils/settings.py:533
-msgid "=== Search Settings ==="
-msgstr "=== Ustawienia Wyszukiwania ==="
-
-#: utils/settings.py:535
-msgid "Max Search Results"
-msgstr "Maksymalnie Wyników Wyszukiwania"
-
-#: utils/settings.py:538
-msgid "=== Logging Settings ==="
-msgstr "== Ustawienia Dziennika ==="
-
-#: utils/settings.py:540
-msgid "Log Level"
-msgstr "Poziom dziennika"
-
-#: utils/settings.py:541
-msgid "Log to File"
-msgstr "Log do Pliku"
-
-#: utils/settings.py:543
 msgid "=== Log Maintenance ==="
 msgstr "--- Konserwacja Dziennika ---"
 
-#: utils/settings.py:549
+msgid "=== Logging Settings ==="
+msgstr "== Ustawienia Dziennika ==="
+
+msgid "=== Network Settings ==="
+msgstr "=== Ustawienia Sieciowe ==="
+
+msgid "=== Performance Settings ==="
+msgstr "=== Ustawienia wydajności ==="
+
+msgid "=== Player Settings ==="
+msgstr "=== Ustawienia Odtwarzacza ==="
+
+msgid "=== Search Settings ==="
+msgstr "=== Ustawienia Wyszukiwania ==="
+
 msgid "=== Update Settings ==="
 msgstr "=== Aktualizuj Ustawienia ==="
 
-#: utils/update_manager.py:23
+msgid "About"
+msgstr "O wtyczce"
+
+msgid "About TV Garden"
+msgstr "O wtyczce TV Garden"
+
+msgid "About TV Garden plugin"
+msgstr "O wtyczce TV Garden"
+
+msgid "Access free IPTV channels from around the world"
+msgstr "Uzyskaj dostęp do bezpłatnych kanałów IPTV z całego świata"
+
+msgid "Add to Favorites"
+msgstr "Dodaj do Ulubionych"
+
+msgid "Added to favorites"
+msgstr "Dodano do ulubionych"
+
+msgid "Added to favorites: %s"
+msgstr "Dodaj do ulubionych: %s"
+
+msgid "All channels"
+msgstr "Wszyskich kanałów"
+
+msgid "Already in favorites"
+msgstr "Już w ulubionych"
+
+msgid "Animation"
+msgstr "Animacja"
+
+msgid "Are you sure you want to clear all log files?"
+msgstr "Czy na pewno chcesz wyczyścić wszystkie pliki dziennika?"
+
+msgid "Auto"
+msgstr "Auto"
+
+msgid "Back"
+msgstr "Wstecz"
+
+msgid "Bottom"
+msgstr "Dół"
+
+msgid "Bouquet Name Prefix"
+msgstr "Prefiks Nazwy Bukietu"
+
+msgid "Browse by Category"
+msgstr "Przeglądaj według Kategorii"
+
+msgid "Browse by Country"
+msgstr "Przeglądaj według Kraju"
+
+msgid "Browse channels by category"
+msgstr "Przeglądaj kanały według kategorii"
+
+msgid "Browse channels by country"
+msgstr "Przeglądaj kanały według kraju"
+
+msgid "Buffer Size"
+msgstr "Rozmiar Bufora"
+
+msgid "Business"
+msgstr "Biznes"
+
+msgid "Cache Size"
+msgstr "Rozmiar pamięci podręcznej"
+
+msgid "Cache cleared"
+msgstr "Usuń pamięć podręczną"
+
+msgid "Categories"
+msgstr "Kategorie"
+
+msgid "Channel Information"
+msgstr "Kanału Informacje"
+
+msgid "Channel Menu"
+msgstr "Menu Kanału"
+
+msgid "Channel added to bouquet"
+msgstr "Kanał dodany do bukietu"
+
+msgid "Channel not found in favorites"
+msgstr "Kanał nie został znaleziony w ulubionych"
+
+msgid "Channels"
+msgstr "Kanałów"
+
+msgid "Check for Updates"
+msgstr "Sprawdź  Aktualizacje"
+
+msgid "Check for plugin updates"
+msgstr "Sprawdź aktualizacje wtyczek"
+
 msgid "Checking for updates..."
 msgstr "Sprawdzanie aktualizacji..."
 
-#: utils/update_manager.py:34
-msgid "Update check failed"
-msgstr "Sprawdzanie aktualizacji nieudane"
+msgid "Classic"
+msgstr "Klasyczny"
 
-#: utils/update_manager.py:36
+msgid "Clear"
+msgstr "Czyścić"
+
+msgid "Clear ALL favorites?"
+msgstr "Wyczyścić WSZYSTKIE ulubione?"
+
+msgid "Clear All Favorites"
+msgstr "Wyczyść wszystkie ulubione"
+
+msgid "Clear Cache"
+msgstr "Wyczyść bufor"
+
+msgid "Clear Log Files Now"
+msgstr "Wyczyść Pliki Dziennika Teraz"
+
+msgid "Cleared %d favorites"
+msgstr "Wyczyszczono %d ulubionych"
+
+msgid "Close"
+msgstr "Zamknij"
+
+msgid "Comedy"
+msgstr "Komedia"
+
+msgid "Connection Timeout"
+msgstr "Limit Czasu Połączenia"
+
+msgid "Cooking"
+msgstr "Gotowanie"
+
 msgid "Could not check for updates. Check internet connection."
-msgstr ""
-"Nie można sprawdzić dostępności aktualizacji. Sprawdź połączenie internetowe."
+msgstr "Nie można sprawdzić dostępności aktualizacji. Sprawdź połączenie internetowe."
 
-#: utils/update_manager.py:41
-msgid "Update available!"
-msgstr "Aktualizacja dostępna!"
-
-#: utils/update_manager.py:46
-msgid "Plugin is up to date"
-msgstr "Wtyczka jest aktualna"
-
-#: utils/update_manager.py:48
-msgid "You have the latest version of TV Garden."
-msgstr "Masz najnowszą wersję TV Garden."
-
-#: utils/update_manager.py:59
-#, python-format
 msgid "Could not check for updates: %s"
 msgstr "Nie można sprawdzić dostępności aktualizacji: %s"
 
-#: utils/update_manager.py:73
-msgid "Update cancelled"
-msgstr "Aktualizacja anulowana"
+msgid "Countries"
+msgstr "Kraje"
 
-#: utils/update_manager.py:75
-msgid ""
-"A new version is available!\n"
-"\n"
-"Update now?\n"
-"\n"
-"(Recommended to backup first)"
-msgstr ""
-"Nowa wersja jest dostępna!\n"
-"\n"
-"Aktualizować teraz?\n"
-"\n"
-"(Zalecane wykonanie kopii zapasowej)"
+msgid "Countries exported:"
+msgstr "Ładowania kraju:"
 
-#: utils/update_manager.py:91
-msgid "Update successful!"
-msgstr "Aktualizacja powiodła się!"
+msgid "Creating hierarchical structure..."
+msgstr "Tworzenie struktury hierarchicznej..."
 
-#: utils/update_manager.py:93
-#, python-format
-msgid ""
-"%s\n"
-"\n"
-"Restart Enigma2 now for changes to take effect."
-msgstr ""
-"%s\n"
-"\n"
-"Uruchom ponownie Enigmę2 aby zmiany zostały wprowadzone."
+msgid "Critical"
+msgstr "Krytyczny"
 
-#: utils/update_manager.py:102
-msgid "Update failed"
-msgstr "Aktualizacja nie powiodła się"
+msgid "Culture"
+msgstr "Kultura"
 
-#: utils/update_manager.py:108
-msgid "Updating plugin... Please wait"
-msgstr "Aktualizacja wtyczki... Proszę czekać"
+msgid "Database exported successfully"
+msgstr "Baza danych wyeksportowana pomyślnie"
 
-#: utils/update_manager.py:125
+msgid "Debug"
+msgstr "Debugowanie"
+
+msgid "Default View"
+msgstr "Domyślny Podgląd"
+
+msgid "Documentary"
+msgstr "Dokumentalny"
+
+msgid "Editing: %s"
+msgstr "Edycja: %s"
+
+msgid "Education"
+msgstr "Edukacja"
+
+msgid "Empty database"
+msgstr "Pusta baza danych"
+
+msgid "Enable Cache"
+msgstr "Włącz cache"
+
+msgid "Enable Export"
+msgstr "Włączyć Export"
+
+msgid "Entertainment"
+msgstr "Rozrywka"
+
+msgid "Error"
+msgstr "Błąd"
+
+msgid "Error clearing favorites"
+msgstr "Błąd podczas czyszczenia ulubionych"
+
+msgid "Error clearing logs: %s"
+msgstr "Błąd czyszczenia dzienników: %s"
+
+msgid "Error loading category"
+msgstr "Błąd ładowania kategorii"
+
+msgid "Error loading channels"
+msgstr "Błąd ładowania kanału"
+
+msgid "Error loading countries"
+msgstr "Błąd ładowania kraju"
+
+msgid "Error loading favorites"
+msgstr "Błąd ładowania ulubionych"
+
+msgid "Error loading information"
+msgstr "Błąd pobierania informacji"
+
+msgid "Error opening player"
+msgstr "Błąd otwierania odtwarzacza"
+
+msgid "Error saving favorites"
+msgstr "Błąd zapisywania ulubionych"
+
+msgid "Error writing file: %s"
+msgstr "Błąd zapisu pliku: %s"
+
+msgid "Error: %s"
+msgstr "Błąd: %s"
+
+msgid "Exit"
+msgstr "Wyjście"
+
+msgid "Export"
+msgstr "Eksport"
+
+msgid "Export '%s' to Enigma2 bouquet?"
+msgstr "Eksportować '%s' do bukietu Enigma2?"
+
+msgid "Export ALL %d favorites to Enigma2 bouquet?"
+msgstr "Eksportować WSZYSTKIE %d ulubione do bukietu Enigma2?"
+
+msgid "Export ALL Database (Multi-File)"
+msgstr "Eksportuj CAŁĄ bazę danych (Wiele Plików)"
+
+msgid "Export ALL Database (Single File)"
+msgstr "Eksportuj CAŁĄ bazę danych (Pojedynczy Plik)"
+
+msgid "Export Current View"
+msgstr "Eksportuj Aktualny Widok"
+
+msgid "Export failed"
+msgstr "Eksport nieudany"
+
+msgid "Export failed: %s"
+msgstr "Eksport nie powiódł się: %s"
+
+msgid "Export to Enigma2 Bouquet"
+msgstr "Eksport do bukietu Enigma2"
+
+msgid "Export {count} channels to bouquet '{name}'?"
+msgstr "Wyeksportować {count} kanałów do grupy '{name}'?"
+
+msgid "Exported"
+msgstr "Eksportowane"
+
+msgid "Exported %d channels to bouquet"
+msgstr "Wyeksportowano %d  do bukietu kanałów"
+
+msgid "ExtePlayer3"
+msgstr "ExtePlayer3"
+
+msgid "Failed to create backup. Update cancelled."
+msgstr "Nie udało się utworzyć kopii zapasowej. Aktualizacja została anulowana."
+
+msgid "Failed to load database"
+msgstr "Nie udało się załadować bazy danych"
+
+msgid "Family"
+msgstr "Rodzina"
+
+msgid "Favorite"
+msgstr "Ulubione"
+
+msgid "Favorites"
+msgstr "Ulubione"
+
+msgid "Files created:"
+msgstr "Utworzone pliki:"
+
+msgid "Force Refresh"
+msgstr "Wymuś Odświeżenie"
+
+msgid "Force Refresh on Browsing"
+msgstr "Wymuś Odświeżanie Podczas Przeglądania"
+
+msgid "Force Refresh on Export"
+msgstr "Wymuś Odświeżenie Podczas Eksportu"
+
+msgid "Found %d channels"
+msgstr "Znaleziono %d kanałów"
+
+msgid "Found %d playable channels"
+msgstr "Znaleziono %d kanałów do odtworzenia"
+
+msgid "GStreamer"
+msgstr "GStreamer"
+
+msgid "General"
+msgstr "Ogólny"
+
+msgid "Hierarchical export completed"
+msgstr "Eksport hierarchiczny zakończony"
+
+msgid "Hierarchical export completed!"
+msgstr "Eksport hierarchiczny zakończony!"
+
+msgid "History"
+msgstr "Historia"
+
+msgid "Hobby"
+msgstr "Zainteresowania"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Item {} of {}"
+msgstr "Element {} z {}"
+
+msgid "Keyboard"
+msgstr "Klawiatura"
+
+msgid "Kids"
+msgstr "Dzieci"
+
+msgid "Legislative"
+msgstr "Ustawodawczy"
+
+msgid "Lifestyle"
+msgstr "Styl życia"
+
+msgid "List Position"
+msgstr "Pozycja na Liście"
+
+msgid "Loading all channels..."
+msgstr "Ładowanie wszystkich kanałów..."
+
+msgid "Loading categories..."
+msgstr "Czytanie kategorii ..."
+
+msgid "Loading channels..."
+msgstr "Ładowanie kanałów..."
+
+msgid "Loading countries..."
+msgstr "Ładowania kraju..."
+
+msgid "Loading favorites..."
+msgstr "Pobieranie ulubionych..."
+
+msgid "Local"
+msgstr "Lokalny"
+
+msgid "Log Level"
+msgstr "Poziom dziennika"
+
+msgid "Log file is empty or not found"
+msgstr "Plik dziennika pusty lub nie znaleziony"
+
+msgid "Log files cleared successfully"
+msgstr "Pliki dziennika zostały pomyślnie wyczyszczone"
+
+msgid "Log to File"
+msgstr "Log do Pliku"
+
+msgid "Logs cleared"
+msgstr "Logi wyczyszczone"
+
+msgid "Main bouquet:"
+msgstr "Główny bukiet:"
+
+msgid "Max Channels for Bouquet"
+msgstr "Maksymalna Liczba Kanałów na Bukiet"
+
+msgid "Max Channels for Sub-Bouquet"
+msgstr "Maksymalna Liczba Kanałów dla Podbukietu"
+
+msgid "Max Search Results"
+msgstr "Maksymalnie Wyników Wyszukiwania"
+
+msgid "Max channels for country"
+msgstr "Najwięcej kanałów na kraj"
+
+msgid "Memory Optimization"
+msgstr "Optymalizacja Pamięci"
+
+msgid "Movies"
+msgstr "Filmy"
+
+msgid "Music"
+msgstr "Muzyka"
+
+msgid "News"
+msgstr "Aktualności"
+
+msgid "Next load will use fresh data"
+msgstr "Następny pobieranie będzie korzystał ze świeżych danych"
+
+msgid "No channel selected"
+msgstr "Nie wybrano kanału"
+
+msgid "No channels found for: %s"
+msgstr "Nie znaleziono kanałów dla: %s"
+
+msgid "No channels in this category"
+msgstr "Brak kanałów w tej kategorii"
+
+msgid "No channels loaded"
+msgstr "Nie załadowano kanałów"
+
+msgid "No channels to export"
+msgstr "Brak kanałów do wyeksportowania"
+
+msgid "No countries with channels found"
+msgstr "Nie znaleziono krajów z kanałami"
+
+msgid "No country selected"
+msgstr "Nie wybrano kraju"
+
+msgid "No favorite channels"
+msgstr "Brak  ulubionych kanałów"
+
+msgid "No favorites to export"
+msgstr "Brak ulubionych do eksportu"
+
+msgid "No items"
+msgstr "Brak pozycji"
+
+msgid "No stream URL"
+msgstr "Brak adresu URL strumienia"
+
+msgid "No stream URL available"
+msgstr "Brak adresu URL strumienia"
+
+msgid "No valid channels found in database"
+msgstr "Nie znaleziono prawidłowych kanałów w bazie danych"
+
+msgid "No valid stream URLs found"
+msgstr "Nie znaleziono prawidłowych adresów URL strumienia"
+
+msgid "Options"
+msgstr "Opcje"
+
+msgid "Options for: %s"
+msgstr "Opcje dla: %s"
+
+msgid "Play"
+msgstr "Odtwarzaj"
+
+msgid "Play Channel"
+msgstr "Odtwórz kanał"
+
+msgid "Player"
+msgstr "Odtwarzacz"
+
 msgid "Please restart Enigma2 manually."
 msgstr "Proszę ręcznie uruchomić ponownie Enigmę2."
 
-#: utils/updater.py:155
-msgid "Failed to create backup. Update cancelled."
-msgstr ""
-"Nie udało się utworzyć kopii zapasowej. Aktualizacja została anulowana."
+msgid "Plugin is up to date"
+msgstr "Wtyczka jest aktualna"
 
-#: utils/updater.py:163
+msgid "Plugin settings and configuration"
+msgstr "Ustawienia i konfiguracja wtyczki"
+
+msgid "Politics"
+msgstr "Polityka"
+
+msgid "Press GREEN for keyboard..."
+msgstr "Naciśnij ZIELONY, aby włączyć klawiaturę..."
+
+msgid "Press GREEN for keyboard... Ready - %d channels"
+msgstr "Naciśnij ZIELONY, włączy klawiaturę... Gotowy - %d kanałów"
+
+msgid "Press OK to check for updates"
+msgstr "Naciśnij OK, aby sprawdzić dostępność aktualizacji"
+
+msgid "Press OK to clear logs"
+msgstr "Naciśnij OK, aby wyczyścić dzienniki"
+
+msgid "Press OK to view logs"
+msgstr "Naciśnij OK, aby wyświetlić dzienniki"
+
+msgid "Refresh"
+msgstr "Odświeżać"
+
+msgid "Refresh Method"
+msgstr "Metoda Odświeżania"
+
+msgid "Refresh failed"
+msgstr "Odświeżanie nieudane"
+
+msgid "Refresh failed: %s"
+msgstr "Odświeżanie nie powiodło się: %s"
+
+msgid "Refreshing data..."
+msgstr "Odświeżanie danych..."
+
+msgid "Refreshing..."
+msgstr "Odświeżam..."
+
+msgid "Religious"
+msgstr "Religijny"
+
+msgid "Remove '%s' from favorites?"
+msgstr "Usunąć '%s' z ulubionych?"
+
+msgid "Remove Bouquet from Enigma2"
+msgstr "Usuń bukiet z Enigmy2"
+
+msgid "Remove TV Garden bouquet from Enigma2?"
+msgstr "Usunąć bukiet TV Garden z Enigmy2?"
+
+msgid "Remove from Favorites"
+msgstr "Usuń z ulubionych"
+
+msgid "Removed"
+msgstr "Usunąć"
+
+msgid "Removed from favorites"
+msgstr "Usunięto z ulubionych"
+
+msgid "Removed from favorites: %s"
+msgstr "Usunięto z ulubionych: %s"
+
+msgid "Save"
+msgstr "Zapisz"
+
+msgid "Science"
+msgstr "Nauka"
+
+msgid "Search"
+msgstr "Szukanie"
+
+msgid "Search Channels"
+msgstr "Wyszukaj Kanały"
+
+msgid "Search channels by name"
+msgstr "Wyszukaj kanały według nazwy"
+
+msgid "Search:"
+msgstr "Szukanie:"
+
+msgid "Searching..."
+msgstr "Szukam ..."
+
+msgid "Select"
+msgstr "Wybierać"
+
+msgid "Select a category"
+msgstr "Wybierz kategorię"
+
+msgid "Select a country"
+msgstr "Wybór kraju"
+
+msgid "Series"
+msgstr "Seriale"
+
+msgid "Set options"
+msgstr "Ustaw opcje"
+
+msgid "Settings"
+msgstr "Ustawienia"
+
+msgid "Shop"
+msgstr "Sklep"
+
+msgid "Show Flags"
+msgstr "Pokaż Powiązania"
+
+msgid "Show Logos"
+msgstr "Pokaż Plakat"
+
+msgid "Showing {shown} of {total} channels"
+msgstr "Wyświetlono {shown} z {total} kanałów"
+
+msgid "Showing {shown} of {total} results"
+msgstr "Wyświetlanie {shown} z {total} wyników"
+
+msgid "Sports"
+msgstr "Sporty"
+
+msgid "Statistics:"
+msgstr "Statystyka:"
+
+msgid "Stream: %s"
+msgstr "Strumień : %s"
+
+msgid "Stream: %s..."
+msgstr "Strumień : %s..."
+
+msgid "Structure created:"
+msgstr "Utworzona struktura:"
+
+msgid "TV Garden"
+msgstr "TV Garden"
+
+msgid "TV Garden Logs"
+msgstr "TV Garden Log"
+
+msgid "TV Garden Settings"
+msgstr "TV Garden Ustawienia"
+
+msgid "Top"
+msgstr "Góra"
+
+msgid "Total channels:"
+msgstr "Wszystkich kanałów:"
+
+msgid "Travel"
+msgstr "Podróż"
+
+msgid "Unknown"
+msgstr "Nieznany"
+
+msgid "Update available!"
+msgstr "Aktualizacja dostępna!"
+
+msgid "Update cancelled"
+msgstr "Aktualizacja anulowana"
+
+msgid "Update check error"
+msgstr "Błąd sprawdzania aktualizacji"
+
+msgid "Update check failed"
+msgstr "Sprawdzanie aktualizacji nieudane"
+
 msgid "Update completed successfully!"
 msgstr "Aktualizacja zakończona pomyślnie!"
 
-#: utils/updater.py:167
-msgid "Update failed. Restored from backup."
-msgstr "Aktualizacja nie powiodła się. Przywrócono z kopii zapasowej."
+msgid "Update error: %s"
+msgstr "Błąd aktualizacji: %s"
 
-#: utils/updater.py:169
+msgid "Update failed"
+msgstr "Aktualizacja nie powiodła się"
+
 msgid "Update failed and backup restore also failed!"
 msgstr "Aktualizacja nie powiodła się, a przywracanie kopii zapasowej również!"
 
-#: utils/updater.py:178
-#, python-format
-msgid "Update error: %s"
-msgstr "Błąd aktualizacji: %s"
+msgid "Update failed. Restored from backup."
+msgstr "Aktualizacja nie powiodła się. Przywrócono z kopii zapasowej."
+
+msgid "Update successful!"
+msgstr "Aktualizacja powiodła się!"
+
+msgid "Updating plugin... Please wait"
+msgstr "Aktualizacja wtyczki... Proszę czekać"
+
+msgid "Use Hardware Acceleration"
+msgstr "Użyj Przyspieszenia Sprzętowego"
+
+msgid "User Agent"
+msgstr "Użytkownik Agent"
+
+msgid "View Channel Info"
+msgstr "Wyświetl informacje o kanale"
+
+msgid "View Log File"
+msgstr "Wyświetl Plik Dziennika"
+
+msgid "Warning"
+msgstr "Ostrzeżenie"
+
+msgid "Weather"
+msgstr "Pogoda"
+
+msgid "Will load fresh data next time"
+msgstr "Następnym razem załaduję nowe dane"
+
+#, fuzzy
+msgid "You have the latest version of TVGarden."
+msgstr "Masz najnowszą wersję TV Garden."
+
+msgid "Your favorite channels"
+msgstr "Twoje ulubione kanały"
+
+#, fuzzy
+msgid "[Cache disabled]"
+msgstr "[Pamięć podręczna wyłączona]"
+
+#, fuzzy
+msgid "[Fresh data]"
+msgstr "[Świeże dane]"
+
+msgid "bouquet references"
+msgstr "odniesienia do bukietów"
+
+msgid "channels from"
+msgstr "kanały z"
+
+msgid "countries"
+msgstr "kraje"
+
+msgid "files and"
+msgstr "pliki i"
+
+#~ msgid "TV Garden Plugin"
+#~ msgstr "Wtyczka TV Garden"
 
 #~ msgid "Outdoor"
 #~ msgstr "Plener"

@@ -60,8 +60,10 @@ class CacheManager:
         self.cache_dir = "/tmp/tvgarden_cache"
 
         # DEBUG: Verify directory
-        log.debug("Cache directory: %s, exists: %s" %
-                  (self.cache_dir, exists(self.cache_dir)), module="Cache")
+        log.debug(
+            "Cache directory: %s, exists: %s" % (self.cache_dir, exists(self.cache_dir)),
+            module="Cache"
+        )
 
         if not exists(self.cache_dir):
             makedirs(self.cache_dir)
@@ -80,9 +82,7 @@ class CacheManager:
             if exists(cache_file):
                 with open(cache_file, 'r') as f:
                     self.cache_data = load(f)
-                log.debug(
-                    "Memory cache loaded from %s" %
-                    cache_file, module="Cache")
+                log.debug("Memory cache loaded from %s" % cache_file, module="Cache")
                 return True
         except Exception as e:
             log.error("Error loading memory cache: %s" % e, module="Cache")
@@ -96,9 +96,7 @@ class CacheManager:
             try:
                 f = open(cache_file, 'w')
                 dump(self.cache_data, f)
-                log.debug(
-                    "Memory cache saved to %s" %
-                    cache_file, module="Cache")
+                log.debug("Memory cache saved to %s" % cache_file, module="Cache")
                 return True
             finally:
                 if f:
@@ -121,8 +119,8 @@ class CacheManager:
             cache_files = []
             for f in files:
                 # Include .gz files and .json cache files (not logs)
-                if (f.endswith('.gz') or (f.endswith('.json')
-                                          and f not in ['memory_cache.json', 'tvgarden.log'])):
+                if (f.endswith('.gz') or
+                        (f.endswith('.json') and f not in ['memory_cache.json', 'tvgarden.log'])):
                     cache_files.append(f)
 
             # Calculate total size
@@ -131,7 +129,7 @@ class CacheManager:
                 file_path = join(self.cache_dir, f)
                 try:
                     total_size += getsize(file_path)
-                except BaseException:
+                except:
                     pass
 
             info = {
@@ -181,9 +179,7 @@ class CacheManager:
                 return loads(json_str)
 
             except Exception as e:
-                log.error(
-                    "Error reading %s: %s" %
-                    (cache_key, e), module="Cache")
+                log.error("Error reading %s: %s" % (cache_key, e), module="Cache")
         return None
 
     def _set_cached(self, cache_key, data):
@@ -217,9 +213,7 @@ class CacheManager:
             config = get_config()
             timeout = config.get("connection_timeout", 15)
 
-            log.debug(
-                "Fetching URL: %s (timeout: %ss)" %
-                (url, timeout), module="Cache")
+            log.debug("Fetching URL: %s (timeout: %ss)" % (url, timeout), module="Cache")
 
             response = None
             try:
@@ -229,21 +223,16 @@ class CacheManager:
                 # 1. First, check HTTP status code
                 if hasattr(response, 'getcode'):
                     http_code = response.getcode()
-                    log.debug(
-                        "HTTP Status Code: %d" %
-                        http_code, module="Cache")
+                    log.debug("HTTP Status Code: %d" % http_code, module="Cache")
 
                     if http_code != 200:
-                        log.error(
-                            "HTTP Error %d for URL: %s" %
-                            (http_code, url), module="Cache")
+                        log.error("HTTP Error %d for URL: %s" % (http_code, url), module="Cache")
                         # Try to read error body if available
                         try:
                             error_body = response.read()
                             if isinstance(error_body, bytes):
-                                log.debug("Error body: %s" %
-                                          error_body[:100], module="Cache")
-                        except BaseException:
+                                log.debug("Error body: %s" % error_body[:100], module="Cache")
+                        except:
                             pass
                         raise Exception("HTTP Error %d" % http_code)
 
@@ -259,8 +248,10 @@ class CacheManager:
                 if isinstance(raw_data, int):
                     http_code = raw_data
                     log.error(
-                        "PYTHON 2 BUG: response.read() returned int %d for URL: %s" %
-                        (http_code, url), module="Cache")
+                        "PYTHON 2 BUG: response.read() returned int %d for URL: %s"
+                        % (http_code, url),
+                        module="Cache"
+                    )
                     raise Exception("HTTP Error %d (Python 2 bug)" % http_code)
 
                 # 4. Convert to bytes if needed
@@ -281,24 +272,22 @@ class CacheManager:
 
                 # DEBUG: show first part of the data
                 if len(data) > 0:
-                    log.debug("First 100 chars: %s" %
-                              data[:100], module="Cache")
+                    log.debug("First 100 chars: %s" % data[:100], module="Cache")
 
                 # Try to decode as JSON
                 try:
                     json_data = loads(data.decode('utf-8'))
                     log.debug(
-                        "Successfully decoded JSON, type: %s" %
-                        type(json_data), module="Cache")
+                        "Successfully decoded JSON, type: %s" % type(json_data),
+                        module="Cache"
+                    )
                     return json_data
                 except Exception as json_error:
-                    log.debug(
-                        "JSON decode failed: %s" %
-                        json_error, module="Cache")
+                    log.debug("JSON decode failed: %s" % json_error, module="Cache")
                     # Try gzip decompression
                     try:
                         return loads(gzip.decompress(data).decode('utf-8'))
-                    except BaseException:
+                    except:
                         # Fallback: return decoded text
                         return data.decode('utf-8', errors='ignore')
 
@@ -323,7 +312,7 @@ class CacheManager:
             try:
                 log.debug("Using CACHED data for: %s" % url, module="Cache")
                 return self._get_cached(cache_key)
-            except BaseException:
+            except:
                 log.debug("Cache read failed, fetching fresh", module="Cache")
                 pass
 
@@ -385,9 +374,7 @@ class CacheManager:
             self.cache_data[cache_key] = categories
             self._save_cache()
 
-            log.info(
-                "Found %d categories from GitHub" %
-                len(categories), module="Cache")
+            log.info("Found %d categories from GitHub" % len(categories), module="Cache")
             return categories
 
         except Exception as e:
@@ -399,8 +386,7 @@ class CacheManager:
         """Get channels for specific country - WORKING VERSION"""
         try:
             url = get_country_url(country_code)
-            log.debug("Fetching country %s (force_refresh=%s)" %
-                      (country_code, force_refresh), module="Cache")
+            log.debug("Fetching country %s (force_refresh=%s)" % (country_code, force_refresh), module="Cache")
 
             # 1. Fetch the raw JSON data
             raw_result = self.fetch_url(url, force_refresh)
@@ -414,9 +400,7 @@ class CacheManager:
 
             # 2. CASE 1: Already a list of channels (old structure)
             if isinstance(raw_result, list):
-                log.info(
-                    "✓ Direct list: %d channels for %s" %
-                    (len(raw_result), country_code), module="Cache")
+                log.info("✓ Direct list: %d channels for %s" % (len(raw_result), country_code), module="Cache")
                 return raw_result
 
             # 3. CASE 2: Dictionary (new structure)
@@ -442,30 +426,21 @@ class CacheManager:
                 else:
                     # Try case-insensitive search
                     for key in dict_keys:
-                        if isinstance(
-                                key, str) and key.upper() == country_code_upper:
+                        if isinstance(key, str) and key.upper() == country_code_upper:
                             country_data = raw_result[key]
                             found_key = key
                             break
 
                 if not country_data:
-                    log.error(
-                        "Country '%s' not found in keys: %s" %
-                        (country_code, dict_keys), module="Cache")
+                    log.error("Country '%s' not found in keys: %s" % (country_code, dict_keys), module="Cache")
                     return []
 
-                log.debug(
-                    "Found country data under key: '%s'" %
-                    found_key, module="Cache")
-                log.debug(
-                    "Country data type: %s" %
-                    type(country_data), module="Cache")
+                log.debug("Found country data under key: '%s'" % found_key, module="Cache")
+                log.debug("Country data type: %s" % type(country_data), module="Cache")
 
                 # 3A: Country data is already a list of channels
                 if isinstance(country_data, list):
-                    log.info(
-                        "✓ Country data is list: %d channels for %s" %
-                        (len(country_data), country_code), module="Cache")
+                    log.info("✓ Country data is list: %d channels for %s" % (len(country_data), country_code), module="Cache")
                     return country_data
 
                 # 3B: Country data is a dict, extract channels from it
@@ -477,32 +452,25 @@ class CacheManager:
                         if field in country_data:
                             field_data = country_data[field]
                             if isinstance(field_data, list):
-                                log.info(
-                                    "✓ Found %d channels in field '%s' for %s" %
-                                    (len(field_data), field, country_code), module="Cache")
+                                log.info("✓ Found %d channels in field '%s' for %s" %
+                                         (len(field_data), field, country_code), module="Cache")
                                 return field_data
 
                     # No channels found in expected fields
-                    log.error("No 'channels' field found for %s. Available keys: %s" % (
-                        country_code, list(country_data.keys())), module="Cache")
+                    log.error("No 'channels' field found for %s. Available keys: %s" %
+                              (country_code, list(country_data.keys())), module="Cache")
                     return []
 
                 # 3C: Unexpected type
-                log.error(
-                    "Unexpected country data type for %s: %s" %
-                    (country_code, type(country_data)), module="Cache")
+                log.error("Unexpected country data type for %s: %s" % (country_code, type(country_data)), module="Cache")
                 return []
 
             # 4. CASE 3: Unexpected type
-            log.error(
-                "Unexpected raw result type for %s: %s" %
-                (country_code, type(raw_result)), module="Cache")
+            log.error("Unexpected raw result type for %s: %s" % (country_code, type(raw_result)), module="Cache")
             return []
 
         except Exception as e:
-            log.error(
-                "ERROR in get_country_channels for %s: %s" %
-                (country_code, str(e)), module="Cache")
+            log.error("ERROR in get_country_channels for %s: %s" % (country_code, str(e)), module="Cache")
             import traceback
             traceback.print_exc()
             return []
@@ -514,16 +482,12 @@ class CacheManager:
         if not force_refresh:
             cached_data = self._get_cached(cache_key)
             if cached_data is not None:
-                log.debug(
-                    "Using CACHED data for category: %s" %
-                    category_id, module="Cache")
+                log.debug("Using CACHED data for category: %s" % category_id, module="Cache")
                 return cached_data
 
         try:
             url = get_category_url(category_id)
-            log.debug(
-                "Fetching FRESH data for category: %s" %
-                category_id, module="Cache")
+            log.debug("Fetching FRESH data for category: %s" % category_id, module="Cache")
             data = self._fetch_url(url)
 
             # Process data
@@ -536,18 +500,14 @@ class CacheManager:
                         channels = data[key]
                         break
 
-            log.debug(
-                "Extracted %d channels for %s" %
-                (len(channels), category_id), module="Cache")
+            log.debug("Extracted %d channels for %s" % (len(channels), category_id), module="Cache")
 
             if channels:
                 self._set_cached(cache_key, channels)
             return channels
 
         except Exception as e:
-            log.error(
-                "Failed to get category %s: %s" %
-                (category_id, e), module="Cache")
+            log.error("Failed to get category %s: %s" % (category_id, e), module="Cache")
             import traceback
             traceback.print_exc()
         return []

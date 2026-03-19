@@ -11,9 +11,10 @@
 	<widget source="key_green" render="Label" position="260,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
 	<widget source="key_yellow" render="Label" position="470,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
 	<widget source="key_blue" render="Label" position="680,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
-	<widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
-	<widget name="status" position="921,976" size="976,61" font="Regular; 32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
+	<widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="45" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
+	<widget source="title" render="Label" position="44,20" size="1770,80" font="Regular;54" halign="left" valign="center" foregroundColor="#3333ff" zPosition="5" alphatest="blend" transparent="1" />
+	<widget source="status" render="Label" position="921,976" size="976,61" font="Regular;32" halign="center" valign="center" foregroundColor="#3333ff" zPosition="5" alphatest="blend" transparent="1" />
 	<eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
 	<eLabel name="" position="36,152" size="1040,767" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-	<widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="transparent" transparent="0" cornerRadius="14" />
+	<widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="#ff000000" transparent="0" cornerRadius="14" />
 </screen>

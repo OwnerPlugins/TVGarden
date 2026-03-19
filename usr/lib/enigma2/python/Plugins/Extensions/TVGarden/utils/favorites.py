@@ -24,7 +24,6 @@ ENIGMA_PATH = "/etc/enigma2"
 
 class FavoritesManager:
     """Manage favorite channels"""
-
     def __init__(self):
         self.fav_dir = "/etc/enigma2/tvgarden/favorites"
         self.fav_file = join(self.fav_dir, "favorites.json")
@@ -33,8 +32,7 @@ class FavoritesManager:
             makedirs(self.fav_dir)
 
         self.favorites = self.load_favorites()
-        log.info("Initialized with %d favorites" %
-                 len(self.favorites), module="Favorites")
+        log.info("Initialized with %d favorites" % len(self.favorites), module="Favorites")
 
     def get_all(self):
         """Get all favorites"""
@@ -51,7 +49,7 @@ class FavoritesManager:
             try:
                 with open(self.fav_file, 'r') as f:
                     return load(f)
-            except BaseException:
+            except:
                 return []
         return []
 
@@ -61,7 +59,7 @@ class FavoritesManager:
             with open(self.fav_file, 'w') as f:
                 dump(self.favorites, f, indent=2)
             return True
-        except BaseException:
+        except:
             return False
 
     def save_bouquet_file(self, filepath, data):
@@ -71,9 +69,7 @@ class FavoritesManager:
                 dump(data, f, indent=2)
             return True
         except Exception as e:
-            log.error(
-                "Error saving bouquet %s: %s" %
-                (filepath, e), module="Favorites")
+            log.error("Error saving bouquet %s: %s" % (filepath, e), module="Favorites")
             return False
 
     def generate_id(self, channel):
@@ -102,14 +98,10 @@ class FavoritesManager:
         self.favorites.append(channel)
 
         if self.save_favorites():
-            log.info(
-                "✓ Added to favorites: %s" %
-                channel_name, module="Favorites")
+            log.info("✓ Added to favorites: %s" % channel_name, module="Favorites")
             return True, _("Added to favorites: %s") % channel_name
         else:
-            log.error(
-                "✗ Failed to save favorites: %s" %
-                channel_name, module="Favorites")
+            log.error("✗ Failed to save favorites: %s" % channel_name, module="Favorites")
             return False, _("Error saving favorites")
 
     def remove(self, channel):
@@ -121,14 +113,10 @@ class FavoritesManager:
             if fav.get('id') == channel_id:
                 del self.favorites[i]
                 if self.save_favorites():
-                    log.info(
-                        "✓ Removed from favorites: %s" %
-                        channel_name, module="Favorites")
+                    log.info("✓ Removed from favorites: %s" % channel_name, module="Favorites")
                     return True, _("Removed from favorites: %s") % channel_name
                 else:
-                    log.error(
-                        "✗ Failed to save after removal: %s" %
-                        channel_name, module="Favorites")
+                    log.error("✗ Failed to save after removal: %s" % channel_name, module="Favorites")
                     return False, _("Error saving favorites")
 
         return False, _("Channel not found in favorites")
@@ -179,20 +167,17 @@ class FavoritesManager:
         try:
             bouquet_name = "TVGarden"
             tag = "tvgarden"
-            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (
-                tag, bouquet_name)
+            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (tag, bouquet_name)
 
             with open(userbouquet_file, "w") as f:
                 # LULULLA STYLE HEADER
                 f.write("#NAME TV Garden Favorites by Lululla\n")
-                f.write(
-                    "#SERVICE 1:64:0:0:0:0:0:0:0:0:::--- | TV Garden Favorites by Lululla | ---\n")
+                f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0:::--- | TV Garden Favorites by Lululla | ---\n")
                 f.write("#DESCRIPTION --- | TV Garden Favorites by Lululla | ---\n")
 
                 for idx, channel in enumerate(self.favorites, 1):
                     name = channel.get('name', 'Channel %d' % idx)
-                    stream_url = channel.get(
-                        'stream_url') or channel.get('url', '')
+                    stream_url = channel.get('stream_url') or channel.get('url', '')
 
                     if not stream_url:
                         continue
@@ -201,8 +186,7 @@ class FavoritesManager:
                     name_encoded = name.replace(":", "%3a")
 
                     # ONE service line for channel
-                    service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (
-                        url_encoded, name_encoded)
+                    service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (url_encoded, name_encoded)
                     f.write(service_line)
                     f.write('#DESCRIPTION %s\n' % name)
 
@@ -228,9 +212,7 @@ class FavoritesManager:
             # Apply channel limit if specified
             if max_channels > 0 and len(channels) > max_channels:
                 channels = channels[:max_channels]
-                log.info(
-                    "Limited to %d channels" %
-                    max_channels, module="Favorites")
+                log.info("Limited to %d channels" % max_channels, module="Favorites")
 
             tag = "tvgarden"
 
@@ -239,8 +221,7 @@ class FavoritesManager:
                 prefix = config.get("bouquet_name_prefix", "TVGarden")
                 bouquet_name = "%s_favorites" % prefix.lower()
 
-            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (
-                tag, bouquet_name)
+            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (tag, bouquet_name)
 
             # 1. Group channels by country
             channels_by_country = {}
@@ -256,8 +237,7 @@ class FavoritesManager:
 
                 # Write header
                 f.write("#NAME TV Garden Favorites by Lululla\n")
-                f.write(
-                    "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | TV Garden Favorites by Lululla | ---\n")
+                f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | TV Garden Favorites by Lululla | ---\n")
                 f.write("#DESCRIPTION --- | TV Garden Favorites by Lululla | ---\n")
 
                 valid_count = 0
@@ -270,16 +250,13 @@ class FavoritesManager:
                         continue
 
                     # Country separator
-                    f.write(
-                        "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- %s ---\n" %
-                        country.upper())
+                    f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- %s ---\n" % country.upper())
                     f.write("#DESCRIPTION --- %s ---\n" % country.upper())
 
                     # Write channels for this country
                     for channel in country_channels:
                         name = channel.get('name', 'Channel')
-                        stream_url = channel.get(
-                            'stream_url') or channel.get('url', '')
+                        stream_url = channel.get('stream_url') or channel.get('url', '')
 
                         if not stream_url:
                             continue
@@ -289,9 +266,7 @@ class FavoritesManager:
                         name_encoded = name.replace(":", "%3a")
 
                         # Write channel entry
-                        f.write(
-                            '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' %
-                            (url_encoded, name_encoded))
+                        f.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (url_encoded, name_encoded))
                         f.write('#DESCRIPTION %s\n' % name)
 
                         valid_count += 1
@@ -299,9 +274,7 @@ class FavoritesManager:
                 f.close()
 
             except Exception as e:
-                log.error(
-                    "Error writing bouquet file: %s" %
-                    e, module="Favorites")
+                log.error("Error writing bouquet file: %s" % e, module="Favorites")
                 return False, _("Error writing file: %s") % str(e)
 
             if valid_count == 0:
@@ -333,9 +306,7 @@ class FavoritesManager:
             # Apply channel limit if specified
             if max_channels > 0 and len(channels) > max_channels:
                 channels = channels[:max_channels]
-                log.info(
-                    "Limited to %d channels" %
-                    max_channels, module="Favorites")
+                log.info("Limited to %d channels" % max_channels, module="Favorites")
 
             tag = "tvgarden"
 
@@ -344,8 +315,7 @@ class FavoritesManager:
                 prefix = config.get("bouquet_name_prefix", "TVGarden")
                 bouquet_name = "%s_favorites" % prefix.lower()
 
-            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (
-                tag, bouquet_name)
+            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (tag, bouquet_name)
 
             # 1. Group channels by country
             channels_by_country = {}
@@ -359,26 +329,21 @@ class FavoritesManager:
                 f = open(userbouquet_file, "w")
                 try:
                     f.write("#NAME TV Garden Favorites by Lululla\n")
-                    f.write(
-                        "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | TV Garden Favorites by Lululla | ---\n")
-                    f.write(
-                        "#DESCRIPTION --- | TV Garden Favorites by Lululla | ---\n")
+                    f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | TV Garden Favorites by Lululla | ---\n")
+                    f.write("#DESCRIPTION --- | TV Garden Favorites by Lululla | ---\n")
 
                     valid_count = 0
 
                     # 2. Process each country group
                     for country, country_channels in channels_by_country.items():
                         # Add country marker
-                        f.write(
-                            "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- %s ---\n" %
-                            country.upper())
+                        f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- %s ---\n" % country.upper())
                         f.write("#DESCRIPTION --- %s ---\n" % country.upper())
 
                         # Write channels for this country
                         for channel in country_channels:
                             name = channel.get('name', 'Channel')
-                            stream_url = channel.get(
-                                'stream_url') or channel.get('url', '')
+                            stream_url = channel.get('stream_url') or channel.get('url', '')
 
                             if not stream_url:
                                 continue
@@ -388,8 +353,7 @@ class FavoritesManager:
                             name_encoded = name.replace(":", "%3a")
 
                             # Use 4097:0:1:0:0:0:0:0:0:0 format
-                            service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (
-                                url_encoded, name_encoded)
+                            service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (url_encoded, name_encoded)
                             f.write(service_line)
                             f.write('#DESCRIPTION %s\n' % name)
 
@@ -406,9 +370,7 @@ class FavoritesManager:
                     f.close()
 
             except Exception as e:
-                log.error(
-                    "Error writing bouquet file: %s" %
-                    e, module="Favorites")
+                log.error("Error writing bouquet file: %s" % e, module="Favorites")
                 return False, _("Error writing file: %s") % str(e)
 
             if valid_count == 0:
@@ -430,20 +392,16 @@ class FavoritesManager:
             cache = CacheManager()
             config = get_config()
 
-            log.info(
-                "Starting export of ALL channels from database",
-                module="Favorites")
+            log.info("Starting export of ALL channels from database", module="Favorites")
             all_channels_url = get_all_channels_url()
 
             try:
                 # Read from settings
                 cache_enabled = config.get("cache_enabled", True)
-                force_refresh_export = config.get(
-                    "force_refresh_export", False)
+                force_refresh_export = config.get("force_refresh_export", False)
 
                 if cache_enabled:
-                    all_channels_data = cache.fetch_url(
-                        all_channels_url, force_refresh=force_refresh_export)
+                    all_channels_data = cache.fetch_url(all_channels_url, force_refresh=force_refresh_export)
                 else:
                     # Cache disabled, always fresh
                     all_channels_data = cache._fetch_url(all_channels_url)
@@ -452,22 +410,20 @@ class FavoritesManager:
                     return False, _("Empty database")
 
                 log.debug(
-                    "Data type: %s, length: %d" %
-                    (type(all_channels_data),
-                     len(all_channels_data)),
-                    module="Favorites")
+                    "Data type: %s, length: %d" % (type(all_channels_data), len(all_channels_data)),
+                    module="Favorites"
+                )
 
                 # Log first channel for debugging
                 if all_channels_data and len(all_channels_data) > 0:
                     log.debug(
-                        "First channel keys: %s" %
-                        list(
-                            all_channels_data[0].keys()),
-                        module="Favorites")
+                        "First channel keys: %s" % list(all_channels_data[0].keys()),
+                        module="Favorites"
+                    )
                     log.debug(
-                        "First channel iptv_urls: %s" %
-                        all_channels_data[0].get(
-                            'iptv_urls', []), module="Favorites")
+                        "First channel iptv_urls: %s" % all_channels_data[0].get('iptv_urls', []),
+                        module="Favorites"
+                    )
 
             except Exception as e:
                 log.error("Failed to fetch: %s" % e, module="Favorites")
@@ -478,9 +434,9 @@ class FavoritesManager:
 
             if isinstance(all_channels_data, list):
                 log.info(
-                    "Processing %d channels from database" %
-                    len(all_channels_data),
-                    module="Favorites")
+                    "Processing %d channels from database" % len(all_channels_data),
+                    module="Favorites"
+                )
 
                 for idx, channel in enumerate(all_channels_data):
                     try:
@@ -503,12 +459,11 @@ class FavoritesManager:
                             '.mpd', '/dash/', 'drm', 'widevine', 'flex-cdn.net'
                         ]
 
-                        if any(
-                                p in stream_lower for p in problematic_patterns):
+                        if any(p in stream_lower for p in problematic_patterns):
                             log.debug(
-                                "Skipped problematic: %s" %
-                                channel.get(
-                                    'name', ''), module="Favorites")
+                                "Skipped problematic: %s" % channel.get('name', ''),
+                                module="Favorites"
+                            )
                             continue
 
                         # Get country code
@@ -590,8 +545,9 @@ class FavoritesManager:
             with open(userbouquet_file, "w") as f:
                 f.write("#NAME %s - TV Garden All by Lululla\n" % prefix)
                 f.write(
-                    "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | %s TV Garden by Lululla | ---\n" %
-                    prefix)
+                    "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | %s TV Garden by Lululla | ---\n"
+                    % prefix
+                )
                 f.write(
                     "#DESCRIPTION --- | %s TV Garden by Lululla | ---\n"
                     % prefix
@@ -618,8 +574,7 @@ class FavoritesManager:
                     # COMPACT CHANNEL FORMAT
                     for channel in country_channels:
                         name = channel.get('name', '').strip()
-                        stream_url = channel.get(
-                            'stream_url') or channel.get('url', '')
+                        stream_url = channel.get('stream_url') or channel.get('url', '')
 
                         if not name or not stream_url:
                             continue
@@ -661,9 +616,7 @@ class FavoritesManager:
             return True, message
 
         except Exception as e:
-            log.error(
-                "Error exporting all channels: %s" %
-                e, module="Favorites")
+            log.error("Error exporting all channels: %s" % e, module="Favorites")
             import traceback
             traceback.print_exc()
             return False, _("Error") + ": " + str(e)
@@ -686,13 +639,10 @@ class FavoritesManager:
 
             # Fallback: try shell command
             try:
-                system(
-                    "wget -qO - http://127.0.0.1/web/servicelistreload > /dev/null 2>&1")
-                log.info(
-                    "Bouquets reloaded via web interface",
-                    module="Favorites")
+                system("wget -qO - http://127.0.0.1/web/servicelistreload > /dev/null 2>&1")
+                log.info("Bouquets reloaded via web interface", module="Favorites")
                 return True
-            except BaseException:
+            except:
                 log.error("All reload methods failed", module="Favorites")
                 return False
 
@@ -700,8 +650,7 @@ class FavoritesManager:
         """Add bouquet reference to bouquets.tv"""
         try:
             bouquet_tv_file = "/etc/enigma2/bouquets.tv"
-            bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.%s_%s.tv" ORDER BY bouquet\n' % (
-                tag, bouquet_name)
+            bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.%s_%s.tv" ORDER BY bouquet\n' % (tag, bouquet_name)
 
             if exists(bouquet_tv_file):
                 # Read entire file
@@ -710,11 +659,8 @@ class FavoritesManager:
                     lines = content.split('\n')
 
                 # Check if already exists
-                if bouquet_line.strip() in [line.strip()
-                                            for line in lines if line.strip()]:
-                    log.info(
-                        "Bouquet already in bouquets.tv",
-                        module="Favorites")
+                if bouquet_line.strip() in [line.strip() for line in lines if line.strip()]:
+                    log.info("Bouquet already in bouquets.tv", module="Favorites")
                     return True
 
                 # Check if last line is empty
@@ -726,9 +672,7 @@ class FavoritesManager:
                         f.write("\n")
                     f.write(bouquet_line)
 
-                log.info(
-                    "Added bouquet to END of bouquets.tv",
-                    module="Favorites")
+                log.info("Added bouquet to END of bouquets.tv", module="Favorites")
                 return True
             else:
                 # Create new bouquets.tv file
@@ -738,9 +682,7 @@ class FavoritesManager:
                     f.write("\n# TV Garden Favorites\n")
                     f.write(bouquet_line)
 
-                log.info(
-                    "Created bouquets.tv with TV Garden bouquet",
-                    module="Favorites")
+                log.info("Created bouquets.tv with TV Garden bouquet", module="Favorites")
                 return True
 
         except Exception as e:
@@ -778,9 +720,7 @@ class FavoritesManager:
                 if len(new_lines) != len(lines):
                     with open(bouquet_tv_file, "w") as f:
                         f.writelines(new_lines)
-                    log.info(
-                        "Removed %d bouquet references from bouquets.tv" %
-                        removed_lines, module="Favorites")
+                    log.info("Removed %d bouquet references from bouquets.tv" % removed_lines, module="Favorites")
 
             # 2. Find and remove ALL bouquet files with the tag
             import glob
@@ -799,9 +739,7 @@ class FavoritesManager:
                         removed_files += 1
                         log.info("Removed: %s" % file_path, module="Favorites")
                     except Exception as e:
-                        log.error(
-                            "Failed to remove %s: %s" %
-                            (file_path, e), module="Favorites")
+                        log.error("Failed to remove %s: %s" % (file_path, e), module="Favorites")
 
             # 3. SOFT RELOAD
             self._reload_bouquets()
@@ -830,8 +768,7 @@ class FavoritesManager:
                 prefix = config.get("bouquet_name_prefix", "TVGarden")
                 bouquet_name = "%s_favorites" % prefix.lower()
 
-            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (
-                tag, bouquet_name)
+            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (tag, bouquet_name)
 
             name = channel.get('name', 'TV Garden Channel')
             stream_url = channel.get('stream_url') or channel.get('url', '')
@@ -847,17 +784,14 @@ class FavoritesManager:
                 # If creating a new file, add Lululla-style header
                 if file_mode == "w":
                     f.write("#NAME TV Garden Favorites\n")
-                    f.write(
-                        "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | TV Garden Favorites by Lululla | ---\n")
-                    f.write(
-                        "#DESCRIPTION --- | TV Garden Favorites by Lululla | ---\n")
+                    f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | TV Garden Favorites by Lululla | ---\n")
+                    f.write("#DESCRIPTION --- | TV Garden Favorites by Lululla | ---\n")
 
                 # Add channel
                 url_encoded = stream_url.replace(":", "%3a")
                 name_encoded = name.replace(":", "%3a")
 
-                service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (
-                    url_encoded, name_encoded)
+                service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (url_encoded, name_encoded)
                 f.write(service_line)
                 f.write('#DESCRIPTION %s\n' % name)
 
@@ -877,9 +811,7 @@ class FavoritesManager:
             cache = CacheManager()
             config = get_config()
 
-            log.info(
-                "Starting hierarchical export of ALL channels",
-                module="Favorites")
+            log.info("Starting hierarchical export of ALL channels", module="Favorites")
             all_channels_url = get_all_channels_url()
 
             try:
@@ -887,8 +819,7 @@ class FavoritesManager:
                 force_refresh = config.get("force_refresh_export", False)
 
                 if cache_enabled:
-                    all_channels_data = cache.fetch_url(
-                        all_channels_url, force_refresh=force_refresh)
+                    all_channels_data = cache.fetch_url(all_channels_url, force_refresh=force_refresh)
                 else:
                     all_channels_data = cache._fetch_url(all_channels_url)
 
@@ -916,11 +847,9 @@ class FavoritesManager:
                             continue
 
                         stream_lower = stream_url.lower()
-                        problematic_patterns = [
-                            '.mpd', '/dash/', 'drm', 'widevine', 'flex-cdn.net']
+                        problematic_patterns = ['.mpd', '/dash/', 'drm', 'widevine', 'flex-cdn.net']
 
-                        if any(
-                                p in stream_lower for p in problematic_patterns):
+                        if any(p in stream_lower for p in problematic_patterns):
                             continue
 
                         channel_data = {
@@ -996,8 +925,7 @@ class FavoritesManager:
             country_list = "\n".join(country_list_lines)
 
             if len(exported_countries) > 10:
-                country_list += "\n  • ... and %d more countries" % (
-                    len(exported_countries) - 10)
+                country_list += "\n  • ... and %d more countries" % (len(exported_countries) - 10)
 
             message = (
                 _("Hierarchical export completed!") + "\n\n" +
@@ -1014,13 +942,10 @@ class FavoritesManager:
             return True, message
 
         except Exception as e:
-            log.error(
-                "Error in hierarchical export: %s" %
-                e, module="Favorites")
+            log.error("Error in hierarchical export: %s" % e, module="Favorites")
             return False, _("Error: %s") % str(e)
 
-    def _create_country_sub_bouquets(
-            self, country, channels, tag, bouquet_type):
+    def _create_country_sub_bouquets(self, country, channels, tag, bouquet_type):
         """Create sub-bouquets for a single country (only split if >500 channels)"""
         config = get_config()
         max_channels_for_sub = config.get("max_channels_for_sub_bouquet", 500)
@@ -1040,15 +965,12 @@ class FavoritesManager:
             # Write the single sub-bouquet
             with open(sub_path, 'w') as f:
                 f.write("#NAME %s by Lululla\n" % country)
-                f.write(
-                    "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- %s ---\n" %
-                    country)
+                f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- %s ---\n" % country)
                 f.write("#DESCRIPTION --- %s ---\n" % country)
 
                 for channel in channels:
                     name = channel.get('name', '').strip()
-                    stream_url = channel.get(
-                        'stream_url') or channel.get('url', '')
+                    stream_url = channel.get('stream_url') or channel.get('url', '')
 
                     if not name or not stream_url:
                         continue
@@ -1056,8 +978,7 @@ class FavoritesManager:
                     url_encoded = stream_url.replace(":", "%3a")
                     name_encoded = name.replace(":", "%3a")
 
-                    service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (
-                        url_encoded, name_encoded)
+                    service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (url_encoded, name_encoded)
                     f.write(service_line)
                     f.write('#DESCRIPTION %s\n' % name)
 
@@ -1113,8 +1034,7 @@ class FavoritesManager:
 
                     for channel in chunk:
                         name = channel.get('name', '').strip()
-                        stream_url = channel.get(
-                            'stream_url') or channel.get('url', '')
+                        stream_url = channel.get('stream_url') or channel.get('url', '')
 
                         if not name or not stream_url:
                             continue
@@ -1122,8 +1042,7 @@ class FavoritesManager:
                         url_encoded = stream_url.replace(":", "%3a")
                         name_encoded = name.replace(":", "%3a")
 
-                        service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (
-                            url_encoded, name_encoded)
+                        service_line = '#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n' % (url_encoded, name_encoded)
                         f.write(service_line)
                         f.write('#DESCRIPTION %s\n' % name)
 
@@ -1142,22 +1061,14 @@ class FavoritesManager:
 
         return sub_bouquets
 
-    def _create_main_container(
-            self,
-            exported_countries,
-            tag,
-            bouquet_name,
-            bouquet_type,
-            list_position):
+    def _create_main_container(self, exported_countries, tag, bouquet_name, bouquet_type, list_position):
         """Create main container bouquet"""
-        container_name = "userbouquet.%s_%s_container.%s" % (
-            tag, bouquet_name, bouquet_type)
+        container_name = "userbouquet.%s_%s_container.%s" % (tag, bouquet_name, bouquet_type)
         container_path = join(ENIGMA_PATH, container_name)
 
         with open(container_path, 'w') as f:
             f.write("#NAME TV Garden - Complete Database by Lululla\n")
-            f.write(
-                "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | TV Garden Complete Database | ---\n")
+            f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | TV Garden Complete Database | ---\n")
             f.write("#DESCRIPTION --- | TV Garden Complete Database | ---\n")
 
             for country_info in exported_countries:
@@ -1165,24 +1076,20 @@ class FavoritesManager:
                 country_subs = country_info['subs']
 
                 country_display = country.upper() if country != 'UNKNOWN' else 'OTHER'
-                f.write(
-                    "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- %s (%d channels) ---\n" %
-                    (country_display, country_info['total_channels']))
+                f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- %s (%d channels) ---\n" %
+                        (country_display, country_info['total_channels']))
                 f.write("#DESCRIPTION --- %s (%d channels) ---\n" %
                         (country_display, country_info['total_channels']))
 
                 for sub in country_subs:
-                    bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\n' % sub[
-                        'file']
+                    bouquet_line = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\n' % sub['file']
                     f.write(bouquet_line)
 
         self._add_to_bouquets_tv(tag, "%s_container" % bouquet_name)
 
         self._reload_bouquets()
 
-        log.info(
-            "Created main container: %s (reloaded bouquets)" %
-            container_name, module="Favorites")
+        log.info("Created main container: %s (reloaded bouquets)" % container_name, module="Favorites")
 
         return {
             'name': container_name,
@@ -1195,9 +1102,7 @@ class FavoritesManager:
         count = len(self.favorites)
         self.favorites = []
         if self.save_favorites():
-            log.info(
-                "✓ Cleared all favorites (%d)" %
-                count, module="Favorites")
+            log.info("✓ Cleared all favorites (%d)" % count, module="Favorites")
             return True, _("Cleared %d favorites") % count
         else:
             log.error("✗ Failed to clear favorites", module="Favorites")
