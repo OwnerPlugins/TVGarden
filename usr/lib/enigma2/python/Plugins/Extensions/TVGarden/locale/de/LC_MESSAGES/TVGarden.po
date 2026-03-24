@@ -163,6 +163,9 @@ msgstr ""
 msgid "Business"
 msgstr "Geschäftlich"
 
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr ""
+
 msgid "Cache Size"
 msgstr "Cache Größe"
 
@@ -666,6 +669,10 @@ msgstr "Zeige Flaggen"
 
 msgid "Show Logos"
 msgstr "Zeige Logos"
+
+#, fuzzy
+msgid "Showing all %d channels"
+msgstr "Zeige {shown} von {total} Kanälen"
 
 msgid "Showing {shown} of {total} channels"
 msgstr "Zeige {shown} von {total} Kanälen"

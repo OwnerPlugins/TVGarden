@@ -13,7 +13,7 @@ from os import environ
 import gettext
 
 PLUGIN_NAME = "TVGarden"
-PLUGIN_VERSION = "1.9"
+PLUGIN_VERSION = "2.0"
 PLUGIN_PATH = resolveFilename(
     SCOPE_PLUGINS,
     "Extensions/{}".format(PLUGIN_NAME))

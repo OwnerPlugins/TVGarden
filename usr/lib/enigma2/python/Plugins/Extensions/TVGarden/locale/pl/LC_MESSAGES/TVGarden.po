@@ -162,6 +162,9 @@ msgstr "Rozmiar Bufora"
 msgid "Business"
 msgstr "Biznes"
 
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr ""
+
 msgid "Cache Size"
 msgstr "Rozmiar pamięci podręcznej"
 
@@ -665,6 +668,10 @@ msgstr "Pokaż Powiązania"
 
 msgid "Show Logos"
 msgstr "Pokaż Plakat"
+
+#, fuzzy
+msgid "Showing all %d channels"
+msgstr "Ładowanie wszystkich kanałów..."
 
 msgid "Showing {shown} of {total} channels"
 msgstr "Wyświetlono {shown} z {total} kanałów"

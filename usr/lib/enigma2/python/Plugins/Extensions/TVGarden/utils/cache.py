@@ -38,19 +38,24 @@ except ImportError as e:
         print("[%s] [%s] TVGarden: %s" % (level, module, message))
 
     def get_metadata_url():
-        return "https://raw.githubusercontent.com/Belfagor2005/tv-garden-channel-list/main/channels/raw/countries_metadata.json"
+        # Updated to famelack-channels
+        return "https://raw.githubusercontent.com/Belfagor2005/famelack-channels/refs/heads/main/tv/raw/countries_metadata.json"
 
     def get_country_url(code):
-        return "https://raw.githubusercontent.com/Belfagor2005/tv-garden-channel-list/main/channels/raw/countries/%s.json" % code.lower()
+        # Updated to famelack-channels
+        return "https://raw.githubusercontent.com/Belfagor2005/famelack-channels/main/tv/raw/countries/%s.json" % code.lower()
 
     def get_category_url(cat_id):
-        return "https://raw.githubusercontent.com/Belfagor2005/tv-garden-channel-list/main/channels/raw/categories/%s.json" % cat_id
+        # Updated to famelack-channels
+        return "https://raw.githubusercontent.com/Belfagor2005/famelack-channels/main/tv/raw/categories/%s.json" % cat_id
 
     def get_categories_url():
-        return "https://api.github.com/repos/Belfagor2005/tv-garden-channel-list/contents/channels/raw/categories"
+        # Updated to famelack-channels (GitHub API to list directory)
+        return "https://api.github.com/repos/Belfagor2005/famelack-channels/contents/tv/raw/categories"
 
     def get_all_channels_url():
-        return "https://raw.githubusercontent.com/Belfagor2005/tv-garden-channel-list/main/channels/raw/categories/all-channels.json"
+        # Updated to famelack-channels
+        return "https://raw.githubusercontent.com/Belfagor2005/famelack-channels/refs/heads/main/tv/raw/categories/all.json"
 
 
 class CacheManager:
@@ -343,7 +348,7 @@ class CacheManager:
     def _get_default_categories(self):
         """Default categories if GitHub API fails"""
         return [
-            {'id': 'all-channels', 'name': 'All Channels'},
+            {'id': 'all', 'name': 'All Channels'},
             {'id': 'animation', 'name': 'Animation'},
             {'id': 'general', 'name': 'General'},
             {'id': 'news', 'name': 'News'},

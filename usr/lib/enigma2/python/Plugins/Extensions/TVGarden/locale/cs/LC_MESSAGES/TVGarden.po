@@ -162,6 +162,9 @@ msgstr "Velikost vyrovnávací paměti"
 msgid "Business"
 msgstr "Business"
 
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr ""
+
 msgid "Cache Size"
 msgstr "Velikost mezipaměti"
 
@@ -672,6 +675,10 @@ msgstr "Zobrazit příznaky"
 
 msgid "Show Logos"
 msgstr "Zobrazit loga"
+
+#, fuzzy
+msgid "Showing all %d channels"
+msgstr "Načítání všech kanálů..."
 
 msgid "Showing {shown} of {total} channels"
 msgstr "Zobrazeno {shown} z {total} kanálů"

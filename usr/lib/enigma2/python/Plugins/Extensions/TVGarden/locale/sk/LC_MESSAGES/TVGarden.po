@@ -161,6 +161,9 @@ msgstr "Veľkosť zásobníka"
 msgid "Business"
 msgstr "Živnostník / Firma"
 
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr ""
+
 msgid "Cache Size"
 msgstr "Veľkosť vyrovnávacej pamäte"
 
@@ -667,6 +670,10 @@ msgstr "Zobraziť vlajky"
 
 msgid "Show Logos"
 msgstr "Zobraziť logá"
+
+#, fuzzy
+msgid "Showing all %d channels"
+msgstr "Načítavajú sa všetky kanály..."
 
 msgid "Showing {shown} of {total} channels"
 msgstr "Zobrazuje sa {shown} z {total} kanálov"

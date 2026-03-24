@@ -140,7 +140,7 @@ msgid "Back"
 msgstr "Torna"
 
 msgid "Bottom"
-msgstr ""
+msgstr "Basso"
 
 msgid "Bouquet Name Prefix"
 msgstr "Prefisso del nome del bouquet"
@@ -162,6 +162,9 @@ msgstr "Dimensione Buffer"
 
 msgid "Business"
 msgstr "Lavoro"
+
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr "CH+/CH- = Cambia | OK = Attiva/Disattiva | STOP = Esci | di Lululla"
 
 msgid "Cache Size"
 msgstr "Dimensione Cache"
@@ -667,6 +670,9 @@ msgstr "Mostra bandiere"
 msgid "Show Logos"
 msgstr "Mostra loghi"
 
+msgid "Showing all %d channels"
+msgstr "Visualizzazione di tutti i %d canali"
+
 msgid "Showing {shown} of {total} channels"
 msgstr "Visualizzazione di {shown} canali su {total}"
 
@@ -698,7 +704,7 @@ msgid "TV Garden Settings"
 msgstr "Impostazioni TV Garden"
 
 msgid "Top"
-msgstr ""
+msgstr "Alto"
 
 msgid "Total channels:"
 msgstr "Totale canali:"

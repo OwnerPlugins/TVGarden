@@ -161,6 +161,9 @@ msgstr "Pufferméret"
 msgid "Business"
 msgstr "Üzleti"
 
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr ""
+
 msgid "Cache Size"
 msgstr "Cache méret"
 
@@ -667,6 +670,10 @@ msgstr "Zászlók megjelenítése"
 
 msgid "Show Logos"
 msgstr "Logók megjelenítése"
+
+#, fuzzy
+msgid "Showing all %d channels"
+msgstr "Az összes csatorna betöltése..."
 
 msgid "Showing {shown} of {total} channels"
 msgstr "{shown} csatorna megjelenítése {total} csatornából"

@@ -1,6 +1,7 @@
 #, fuzzy
 
 
+
 msgid "%d favorite channels"
 msgstr ""
 
@@ -143,6 +144,9 @@ msgid "Buffer Size"
 msgstr ""
 
 msgid "Business"
+msgstr ""
+
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr ""
 
 msgid "Cache Size"
@@ -647,6 +651,9 @@ msgid "Show Flags"
 msgstr ""
 
 msgid "Show Logos"
+msgstr ""
+
+msgid "Showing all %d channels"
 msgstr ""
 
 msgid "Showing {shown} of {total} channels"

@@ -159,6 +159,9 @@ msgstr "Puskurin koko"
 msgid "Business"
 msgstr "Liiketoiminta"
 
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr ""
+
 msgid "Cache Size"
 msgstr "Välimuistin koko"
 
@@ -662,6 +665,10 @@ msgstr "Näytä liput"
 
 msgid "Show Logos"
 msgstr "Näytö logot"
+
+#, fuzzy
+msgid "Showing all %d channels"
+msgstr "Ladataan kaikki kanavat..."
 
 msgid "Showing {shown} of {total} channels"
 msgstr "Näytetään {shown}/{total} kanavaa"

@@ -1,7 +1,8 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: TVGarden\n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2025-12-15 21:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: giorbak\n"
@@ -9,8 +10,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: helpers.py\n"
+"X-Poedit-SearchPath-1: plugin.py\n"
+"X-Poedit-SearchPath-2: browser\n"
+"X-Poedit-SearchPath-3: player\n"
+"X-Poedit-SearchPath-4: utils\n"
 
 msgid "%d favorite channels"
 msgstr "%d αγαπημένα κανάλια"
@@ -67,7 +74,7 @@ msgid "=== Browser Settings ==="
 msgstr "=== Ρυθμίσεις προγράμματος περιήγησης ==="
 
 msgid "=== Cache Settings ==="
-msgstr "=== Ρυθμίσεις cache ==="
+msgstr "=== Ρυθμίσεις προσωρινής μνήμης ==="
 
 msgid "=== Export Settings ==="
 msgstr "=== Ρυθμίσεις εξαγωγής ==="
@@ -156,11 +163,14 @@ msgstr "Μέγεθος προσωρινής αποθήκευσης"
 msgid "Business"
 msgstr "Επιχειρήσεις"
 
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr ""
+
 msgid "Cache Size"
-msgstr "Μέγεθος cache"
+msgstr "Μέγεθος προσωρινής μνήμης"
 
 msgid "Cache cleared"
-msgstr "Η cache εκκαθαρίστηκε"
+msgstr "Η προσωρινή μνήμη εκκαθαρίστηκε"
 
 msgid "Categories"
 msgstr "Κατηγορίες"
@@ -202,7 +212,7 @@ msgid "Clear All Favorites"
 msgstr "Εκκαθάριση όλων των αγαπημένων"
 
 msgid "Clear Cache"
-msgstr "Εκκαθάριση cache"
+msgstr "Εκκαθάριση προσωρινής μνήμης"
 
 msgid "Clear Log Files Now"
 msgstr "Εκκαθάριση αρχείων καταγραφής"
@@ -265,7 +275,7 @@ msgid "Empty database"
 msgstr "Κενή βάση δεδομένων"
 
 msgid "Enable Cache"
-msgstr "Ενεργοποίηση cache"
+msgstr "Ενεργοποίηση προσωρινής μνήμης"
 
 msgid "Enable Export"
 msgstr "Ενεργοποίηση εξαγωγής"
@@ -660,6 +670,10 @@ msgstr "Εμφάνιση σημαιών"
 msgid "Show Logos"
 msgstr "Εμφάνιση λογότυπων"
 
+#, fuzzy
+msgid "Showing all %d channels"
+msgstr "Φόρτωση όλων των καναλιών..."
+
 msgid "Showing {shown} of {total} channels"
 msgstr "Εμφάνιση {shown} από {total} κανάλια"
 
@@ -756,17 +770,20 @@ msgstr "Καιρός"
 msgid "Will load fresh data next time"
 msgstr "Την επόμενη φορά θα φορτωθούν φρέσκα δεδομένα"
 
+#, fuzzy
 msgid "You have the latest version of TVGarden."
-msgstr "Έχετε την τελευταία έκδοση του TVGarden."
+msgstr "Έχετε την τελευταία έκδοση του TV Garden."
 
 msgid "Your favorite channels"
 msgstr "Τα αγαπημένα σας κανάλια"
 
+#, fuzzy
 msgid "[Cache disabled]"
-msgstr "[Η cache είναι απενεργοποιημένη]"
+msgstr " [Η προσωρινή μνήμη είναι απενεργοποιημένη]"
 
+#, fuzzy
 msgid "[Fresh data]"
-msgstr "[Φρέσκα δεδομένα]"
+msgstr " [Φρέσκα δεδομένα]"
 
 msgid "bouquet references"
 msgstr "αναφορές καναλιών"
@@ -779,3 +796,6 @@ msgstr "χώρες"
 
 msgid "files and"
 msgstr "αρχεία και"
+
+#~ msgid "TV Garden Plugin"
+#~ msgstr "Πρόσθετο TV Garden"

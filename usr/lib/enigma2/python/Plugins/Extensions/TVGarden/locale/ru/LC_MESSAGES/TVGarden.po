@@ -161,6 +161,9 @@ msgstr "Размер буфера"
 msgid "Business"
 msgstr "Бизнес"
 
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgstr ""
+
 msgid "Cache Size"
 msgstr "Размер кэша"
 
@@ -667,6 +670,10 @@ msgstr "Показать флаги"
 
 msgid "Show Logos"
 msgstr "Показать логотипы"
+
+#, fuzzy
+msgid "Showing all %d channels"
+msgstr "Загрузка всех каналов..."
 
 msgid "Showing {shown} of {total} channels"
 msgstr "Отображается {shown} из {total} каналов"
