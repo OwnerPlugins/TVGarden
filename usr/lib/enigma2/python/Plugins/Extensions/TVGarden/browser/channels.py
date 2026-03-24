@@ -319,7 +319,8 @@ class ChannelsBrowser(BaseBrowser):
                             break
 
                 # 3. Check stream_urls (common in famelack-channels)
-                if not stream_url and "stream_urls" in channel and isinstance(channel["stream_urls"], list) and channel["stream_urls"]:
+                if not stream_url and "stream_urls" in channel and isinstance(
+                        channel["stream_urls"], list) and channel["stream_urls"]:
                     for url in channel["stream_urls"]:
                         if isinstance(url, str) and url.strip():
                             stream_url = url.strip()
@@ -327,10 +328,10 @@ class ChannelsBrowser(BaseBrowser):
                             break
 
                 # 4. Fallback: single "url" field
-                if not stream_url and "url" in channel and isinstance(channel["url"], str) and channel["url"].strip():
+                if not stream_url and "url" in channel and isinstance(
+                        channel["url"], str) and channel["url"].strip():
                     stream_url = channel["url"].strip()
                     found_in = "url"
-
 
                 # 3. If YouTube → skip for now
                 if is_youtube:
