@@ -205,7 +205,8 @@ CATEGORIES = [
     {'id': 'sports', 'name': 'Sports'},
     {'id': 'top-news', 'name': 'Top News'},
     {'id': 'travel', 'name': 'Travel'},
-    {'id': 'weather', 'name': 'Weather'}
+    {'id': 'weather', 'name': 'Weather'},
+    {'id': 'webcam', 'name': 'Webcam'},
 ]
 
 
