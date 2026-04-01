@@ -38,24 +38,24 @@ except ImportError as e:
         print("[%s] [%s] TVGarden: %s" % (level, module, message))
 
     def get_metadata_url():
-        # Updated to famelack-channels
-        return "https://raw.githubusercontent.com/Belfagor2005/famelack-channels/refs/heads/main/tv/raw/countries_metadata.json"
+        # Updated to famelack-data
+        return "https://raw.githubusercontent.com/Belfagor2005/famelack-data/refs/heads/main/tv/raw/countries_metadata.json"
 
     def get_country_url(code):
-        # Updated to famelack-channels
-        return "https://raw.githubusercontent.com/Belfagor2005/famelack-channels/main/tv/raw/countries/%s.json" % code.lower()
+        # Updated to famelack-data
+        return "https://raw.githubusercontent.com/Belfagor2005/famelack-data/main/tv/raw/countries/%s.json" % code.lower()
 
     def get_category_url(cat_id):
-        # Updated to famelack-channels
-        return "https://raw.githubusercontent.com/Belfagor2005/famelack-channels/main/tv/raw/categories/%s.json" % cat_id
+        # Updated to famelack-data
+        return "https://raw.githubusercontent.com/Belfagor2005/famelack-data/main/tv/raw/categories/%s.json" % cat_id
 
     def get_categories_url():
-        # Updated to famelack-channels (GitHub API to list directory)
-        return "https://api.github.com/repos/Belfagor2005/famelack-channels/contents/tv/raw/categories"
+        # Updated to famelack-data (GitHub API to list directory)
+        return "https://api.github.com/repos/Belfagor2005/famelack-data/contents/tv/raw/categories"
 
     def get_all_channels_url():
-        # Updated to famelack-channels
-        return "https://raw.githubusercontent.com/Belfagor2005/famelack-channels/refs/heads/main/tv/raw/categories/all.json"
+        # Updated to famelack-data
+        return "https://raw.githubusercontent.com/Belfagor2005/famelack-data/refs/heads/main/tv/raw/categories/all.json"
 
 
 class CacheManager:

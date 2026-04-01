@@ -318,7 +318,7 @@ class ChannelsBrowser(BaseBrowser):
                             is_youtube = True
                             break
 
-                # 3. Check stream_urls (common in famelack-channels)
+                # 3. Check stream_urls (common in famelack-data)
                 if not stream_url and "stream_urls" in channel and isinstance(
                         channel["stream_urls"], list) and channel["stream_urls"]:
                     for url in channel["stream_urls"]:
