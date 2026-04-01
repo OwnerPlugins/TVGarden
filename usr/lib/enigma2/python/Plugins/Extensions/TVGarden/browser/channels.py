@@ -441,7 +441,8 @@ class ChannelsBrowser(BaseBrowser):
                 log.debug("✓ Added: %s" % name, module="Channels")
 
             self.menu_channels.sort(key=lambda c: c['name'].lower())
-            menu_items = [(c['name'], idx) for idx, c in enumerate(self.menu_channels)]
+            menu_items = [(c['name'], idx)
+                          for idx, c in enumerate(self.menu_channels)]
             self["menu"].setList(menu_items)
 
             if menu_items:
