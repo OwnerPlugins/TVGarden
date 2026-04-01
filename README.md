@@ -1,7 +1,7 @@
 # TV Garden Plugin for Enigma2
 
 ![](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
-[![Version](https://img.shields.io/badge/Version-2.0-blue.svg)](https://github.com/Belfagor2005/TVGarden)
+[![Version](https://img.shields.io/badge/Version-2.1-blue.svg)](https://github.com/Belfagor2005/TVGarden)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-2.7%2B-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)

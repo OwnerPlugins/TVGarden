@@ -7,7 +7,7 @@ Based on TV Garden Project
 """
 from __future__ import print_function
 from Components.Sources.StaticText import StaticText
-from Components.Pixmap import Pixmap
+# from Components.Pixmap import Pixmap
 from Components.MenuList import MenuList
 from Components.ActionMap import ActionMap
 
@@ -137,6 +137,10 @@ class CategoriesBrowser(BaseBrowser):
             # Show name only - we'll get count when selected
             menu_items.append((category['name'], category['id']))
 
+        menu_items = sorted(
+            [(category['name'], category['id']) for category in CATEGORIES],
+            key=lambda x: x[0].lower()  # sort alphabetically, case-insensitive
+        )
         self["menu"].setList(menu_items)
         self["status"].setText(_("Select a category"))
 

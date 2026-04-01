@@ -3,11 +3,12 @@
 # TV Garden Installer for Enigma2
 # wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/TVGarden/main/installer.sh" -O - | /bin/sh
 
-version='2.0'
+version='2.1'
 echo "TVGarden Version: $version"
 echo "Changelog:"
 echo "- Fix: Server dump."
 echo "- Fix: Cache Manager."
+echo "- Alph.. Order Channels"
 echo ""
 
 TMPPATH=/tmp/TVGarden-install

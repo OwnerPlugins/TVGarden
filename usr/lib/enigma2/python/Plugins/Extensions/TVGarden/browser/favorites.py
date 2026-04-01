@@ -113,6 +113,7 @@ class FavoritesBrowser(BaseBrowser):
                 "Loaded %d favorites" %
                 len(favorites), module="Favorites")
 
+            favorites.sort(key=lambda c: c.get('name', '').lower())
             menu_items = []
             self.menu_channels = []
 

@@ -330,6 +330,8 @@ class SearchBrowser(BaseBrowser):
         except Exception as e:
             log.error("Search error: %s" % e, module="Search")
 
+        self.search_results.sort(key=lambda c: c.get('name', '').lower())
+
         self.display_search_results()
 
     def display_search_results(self):

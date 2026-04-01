@@ -10,7 +10,7 @@ import tempfile
 from os import unlink
 from os.path import exists
 from Components.Sources.StaticText import StaticText
-from Components.Label import Label
+# from Components.Label import Label
 from enigma import eTimer, loadPNG  # ,ePicLoad
 from Components.Pixmap import Pixmap
 from Components.MenuList import MenuList
