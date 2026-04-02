@@ -149,70 +149,77 @@ class SearchBrowser(BaseBrowser):
         self.onFirstExecBegin.append(self.load_all_channels)
 
     def load_all_channels(self):
-        """Load all channels using dynamic categories"""
+        """Load all channels using multiple strategies"""
         log.info("Loading channels dynamically...", module="Search")
         self.all_channels = []
 
         try:
-            # Get cache configuration
             config = get_config()
-            # cache_enabled = config.get("cache_enabled", True)
-            force_refresh_browsing = config.get(
-                "force_refresh_browsing", False)
+            force_refresh = config.get("force_refresh_browsing", False)
 
-            # 1. FIRST try using all-channels.json
-            log.debug("Trying all-channels.json...", module="Search")
-            all_channels_data = self.cache.get_category_channels(
-                "all-channels", force_refresh=force_refresh_browsing)
+            # Strategy 1: all-channels.json
+            try:
+                all_data = self.cache.get_category_channels("all-channels", force_refresh=force_refresh)
+                if all_data:
+                    self.all_channels = all_data
+                    log.info("Loaded %d from all-channels.json" % len(self.all_channels), module="Search")
+            except Exception as e:
+                log.debug("all-channels.json not available: %s" % str(e), module="Search")
 
-            if all_channels_data:
-                self.all_channels = all_channels_data
-                log.info("Loaded %d from all-channels.json" %
-                         len(self.all_channels), module="Search")
-            else:
-                # 2. FALLBACK: use dynamic categories
-                log.debug("Using dynamic categories...", module="Search")
-
-                # Get available categories
-                categories = self.cache.get_available_categories()
-                log.debug(
-                    "Found %d available categories" %
-                    len(categories), module="Search")
-
-                for category in categories:
-                    cat_id = category['id']
-                    if cat_id == 'all-channels':  # Already attempted
-                        continue
-
+            # Strategy 2: iterate over all countries (skip 404 errors)
+            if not self.all_channels:
+                log.info("Falling back to loading all countries...", module="Search")
+                countries = self.cache.get_countries_metadata(force_refresh=force_refresh)
+                total = 0
+                failed = 0
+                for code, info in countries.items():
                     try:
-                        channels = self.cache.get_category_channels(
-                            cat_id, force_refresh=force_refresh_browsing)
+                        channels = self.cache.get_country_channels(code, force_refresh=force_refresh)
                         if channels:
-                            for channel in channels:
-                                channel['category'] = category['name']
-                                self.all_channels.append(channel)
-                            log.debug(
-                                "Added %d from %s" %
-                                (len(channels), cat_id), module="Search")
+                            for ch in channels:
+                                ch['country'] = info.get('name', code)
+                            self.all_channels.extend(channels)
+                            total += len(channels)
+                            log.debug("Added %d from %s" % (len(channels), code), module="Search")
+                        else:
+                            log.debug("No channels for %s" % code, module="Search")
                     except Exception as e:
-                        log.warning("Skipped %s: %s" %
-                                    (cat_id, str(e)[:50]), module="Search")
+                        if "404" in str(e):
+                            log.debug("Skipped %s (404)" % code, module="Search")
+                        else:
+                            log.warning("Error loading %s: %s" % (code, str(e)[:50]), module="Search")
+                        failed += 1
                         continue
 
-            # Final status
-            total = len(self.all_channels)
-            if total > 0:
-                self["status"].setText(
-                    _("Press GREEN for keyboard... Ready - %d channels") %
-                    total)
-                log.info("TOTAL: %d channels ready" % total, module="Search")
+                log.info("Loaded %d channels from %d countries (skipped %d errors)" %
+                         (total, len(countries), failed), module="Search")
+
+            # Strategy 3: try categories as last resort
+            if not self.all_channels:
+                categories = self.cache.get_available_categories()
+                for cat in categories:
+                    cat_id = cat['id']
+                    if cat_id == 'all-channels':
+                        continue
+                    try:
+                        channels = self.cache.get_category_channels(cat_id, force_refresh=force_refresh)
+                        if channels:
+                            for ch in channels:
+                                ch['category'] = cat['name']
+                            self.all_channels.extend(channels)
+                            log.debug("Added %d from category %s" % (len(channels), cat_id), module="Search")
+                    except Exception as e:
+                        log.debug("Skipped category %s: %s" % (cat_id, str(e)[:30]), module="Search")
+
+            if self.all_channels:
+                self["status"].setText(_("Press GREEN for keyboard... Ready - %d channels") % len(self.all_channels))
                 self.search_results = self.all_channels[:]
                 self.display_search_results()
             else:
                 self["status"].setText(_("No channels loaded"))
-                log.error("No channels loaded", module="Search")
+                log.error("No channels loaded after all strategies", module="Search")
         except Exception as e:
-            log.error("ERROR: %s" % e, module="Search")
+            log.error("ERROR in load_all_channels: %s" % e, module="Search")
             self["status"].setText(_("Error loading channels"))
 
     def open_keyboard(self):
@@ -370,17 +377,23 @@ class SearchBrowser(BaseBrowser):
             is_youtube = False
 
             # 1. Check iptv_urls
-            if 'iptv_urls' in channel and isinstance(
-                    channel['iptv_urls'], list):
+            if 'iptv_urls' in channel and isinstance(channel['iptv_urls'], list):
                 for url in channel['iptv_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
                         found_in = "iptv_urls"
                         break
 
-            # 2. Check youtube_urls (skip)
-            if not stream_url and 'youtube_urls' in channel and isinstance(
-                    channel['youtube_urls'], list):
+            # 2. Check stream_urls (AGGIUNTO)
+            if not stream_url and 'stream_urls' in channel and isinstance(channel['stream_urls'], list):
+                for url in channel['stream_urls']:
+                    if isinstance(url, str) and url.strip():
+                        stream_url = url.strip()
+                        found_in = "stream_urls"
+                        break
+
+            # 3. Check youtube_urls (skip)
+            if not stream_url and 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
                 for url in channel['youtube_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -394,8 +407,13 @@ class SearchBrowser(BaseBrowser):
                 continue
 
             # 4. Basic URL validation
-            if not stream_url:
-                continue
+            # if not stream_url:
+                # continue
+
+            if not stream_url and 'url' in channel and isinstance(channel['url'], str) and channel['url'].strip():
+                stream_url = channel['url'].strip()
+                found_in = "url"
+
 
             # 5. Advanced validation
             if not is_valid_stream_url(stream_url):
@@ -487,20 +505,26 @@ class SearchBrowser(BaseBrowser):
             (valid_count, youtube_count, problematic_count, skipped_by_limit), module="Search")
 
     def extract_stream_url(self, channel):
-        """Extract stream URL from channel"""
-        # Check iptv_urls
+        """Extract stream URL from channel (priorità: iptv_urls -> stream_urls -> youtube_urls -> url)"""
+        # 1. iptv_urls
         if 'iptv_urls' in channel and isinstance(channel['iptv_urls'], list):
             for url in channel['iptv_urls']:
                 if isinstance(url, str) and url.strip():
                     return url.strip()
 
-        # Check youtube_urls (skip)
-        if 'youtube_urls' in channel and isinstance(
-                channel['youtube_urls'], list):
+        # 2. stream_urls (AGGIUNTO)
+        if 'stream_urls' in channel and isinstance(channel['stream_urls'], list):
+            for url in channel['stream_urls']:
+                if isinstance(url, str) and url.strip():
+                    return url.strip()
+
+        # 3. youtube_urls (skip)
+        if 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
             for url in channel['youtube_urls']:
                 if isinstance(url, str) and url.strip():
-                    return None  # Skip YouTube
+                    return None  # Salta YouTube
 
+        # 4. Fallback a 'url'
         return channel.get('url', '')
 
     def create_channel_data(self, channel, stream_url):
