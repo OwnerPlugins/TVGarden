@@ -280,14 +280,17 @@ class SearchBrowser(BaseBrowser):
         if not new_channels:
             return
         self.all_channels.extend(new_channels)
-        log.debug("Added %d from %s, total: %d" % (len(new_channels), country_name, len(self.all_channels)))
+        log.debug("Added %d from %s, total: %d" %
+                  (len(new_channels), country_name, len(self.all_channels)))
         # if not self.search_query:
         #     self.search_results = self.all_channels[:]
         #     self.display_search_results()
         #     self["status"].setText(_("Loading... %d channels so far") % len(self.all_channels))
         # else:
         #     self.perform_search()
-        self["status"].setText(_("Loading... %d channels so far") % len(self.all_channels))
+        self["status"].setText(
+            _("Loading... %d channels so far") % len(
+                self.all_channels))
 
     def open_keyboard(self):
         """Open virtual keyboard"""
@@ -485,7 +488,9 @@ class SearchBrowser(BaseBrowser):
             if is_youtube:
                 youtube_count += 1
                 continue
-            log.debug("Channel: %s, URL: %s, is_youtube: %s" % (name, stream_url, is_youtube))
+            log.debug(
+                "Channel: %s, URL: %s, is_youtube: %s" %
+                (name, stream_url, is_youtube))
 
             # # 7. Advanced validation
             """
