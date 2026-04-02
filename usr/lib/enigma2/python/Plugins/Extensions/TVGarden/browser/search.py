@@ -159,40 +159,56 @@ class SearchBrowser(BaseBrowser):
 
             # Strategy 1: all-channels.json
             try:
-                all_data = self.cache.get_category_channels("all-channels", force_refresh=force_refresh)
+                all_data = self.cache.get_category_channels(
+                    "all-channels", force_refresh=force_refresh)
                 if all_data:
                     self.all_channels = all_data
-                    log.info("Loaded %d from all-channels.json" % len(self.all_channels), module="Search")
+                    log.info("Loaded %d from all-channels.json" %
+                             len(self.all_channels), module="Search")
             except Exception as e:
-                log.debug("all-channels.json not available: %s" % str(e), module="Search")
+                log.debug(
+                    "all-channels.json not available: %s" %
+                    str(e), module="Search")
 
             # Strategy 2: iterate over all countries (skip 404 errors)
             if not self.all_channels:
-                log.info("Falling back to loading all countries...", module="Search")
-                countries = self.cache.get_countries_metadata(force_refresh=force_refresh)
+                log.info(
+                    "Falling back to loading all countries...",
+                    module="Search")
+                countries = self.cache.get_countries_metadata(
+                    force_refresh=force_refresh)
                 total = 0
                 failed = 0
                 for code, info in countries.items():
                     try:
-                        channels = self.cache.get_country_channels(code, force_refresh=force_refresh)
+                        channels = self.cache.get_country_channels(
+                            code, force_refresh=force_refresh)
                         if channels:
                             for ch in channels:
                                 ch['country'] = info.get('name', code)
                             self.all_channels.extend(channels)
                             total += len(channels)
-                            log.debug("Added %d from %s" % (len(channels), code), module="Search")
+                            log.debug(
+                                "Added %d from %s" %
+                                (len(channels), code), module="Search")
                         else:
-                            log.debug("No channels for %s" % code, module="Search")
+                            log.debug(
+                                "No channels for %s" %
+                                code, module="Search")
                     except Exception as e:
                         if "404" in str(e):
-                            log.debug("Skipped %s (404)" % code, module="Search")
+                            log.debug(
+                                "Skipped %s (404)" %
+                                code, module="Search")
                         else:
-                            log.warning("Error loading %s: %s" % (code, str(e)[:50]), module="Search")
+                            log.warning("Error loading %s: %s" %
+                                        (code, str(e)[:50]), module="Search")
                         failed += 1
                         continue
 
-                log.info("Loaded %d channels from %d countries (skipped %d errors)" %
-                         (total, len(countries), failed), module="Search")
+                log.info(
+                    "Loaded %d channels from %d countries (skipped %d errors)" %
+                    (total, len(countries), failed), module="Search")
 
             # Strategy 3: try categories as last resort
             if not self.all_channels:
@@ -202,22 +218,29 @@ class SearchBrowser(BaseBrowser):
                     if cat_id == 'all-channels':
                         continue
                     try:
-                        channels = self.cache.get_category_channels(cat_id, force_refresh=force_refresh)
+                        channels = self.cache.get_category_channels(
+                            cat_id, force_refresh=force_refresh)
                         if channels:
                             for ch in channels:
                                 ch['category'] = cat['name']
                             self.all_channels.extend(channels)
-                            log.debug("Added %d from category %s" % (len(channels), cat_id), module="Search")
+                            log.debug(
+                                "Added %d from category %s" %
+                                (len(channels), cat_id), module="Search")
                     except Exception as e:
-                        log.debug("Skipped category %s: %s" % (cat_id, str(e)[:30]), module="Search")
+                        log.debug("Skipped category %s: %s" %
+                                  (cat_id, str(e)[:30]), module="Search")
 
             if self.all_channels:
-                self["status"].setText(_("Press GREEN for keyboard... Ready - %d channels") % len(self.all_channels))
+                self["status"].setText(
+                    _("Press GREEN for keyboard... Ready - %d channels") % len(self.all_channels))
                 self.search_results = self.all_channels[:]
                 self.display_search_results()
             else:
                 self["status"].setText(_("No channels loaded"))
-                log.error("No channels loaded after all strategies", module="Search")
+                log.error(
+                    "No channels loaded after all strategies",
+                    module="Search")
         except Exception as e:
             log.error("ERROR in load_all_channels: %s" % e, module="Search")
             self["status"].setText(_("Error loading channels"))
@@ -377,7 +400,8 @@ class SearchBrowser(BaseBrowser):
             is_youtube = False
 
             # 1. Check iptv_urls
-            if 'iptv_urls' in channel and isinstance(channel['iptv_urls'], list):
+            if 'iptv_urls' in channel and isinstance(
+                    channel['iptv_urls'], list):
                 for url in channel['iptv_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -385,7 +409,8 @@ class SearchBrowser(BaseBrowser):
                         break
 
             # 2. Check stream_urls (AGGIUNTO)
-            if not stream_url and 'stream_urls' in channel and isinstance(channel['stream_urls'], list):
+            if not stream_url and 'stream_urls' in channel and isinstance(
+                    channel['stream_urls'], list):
                 for url in channel['stream_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -393,7 +418,8 @@ class SearchBrowser(BaseBrowser):
                         break
 
             # 3. Check youtube_urls (skip)
-            if not stream_url and 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
+            if not stream_url and 'youtube_urls' in channel and isinstance(
+                    channel['youtube_urls'], list):
                 for url in channel['youtube_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -410,10 +436,10 @@ class SearchBrowser(BaseBrowser):
             # if not stream_url:
                 # continue
 
-            if not stream_url and 'url' in channel and isinstance(channel['url'], str) and channel['url'].strip():
+            if not stream_url and 'url' in channel and isinstance(
+                    channel['url'], str) and channel['url'].strip():
                 stream_url = channel['url'].strip()
                 found_in = "url"
-
 
             # 5. Advanced validation
             if not is_valid_stream_url(stream_url):
@@ -513,13 +539,15 @@ class SearchBrowser(BaseBrowser):
                     return url.strip()
 
         # 2. stream_urls (AGGIUNTO)
-        if 'stream_urls' in channel and isinstance(channel['stream_urls'], list):
+        if 'stream_urls' in channel and isinstance(
+                channel['stream_urls'], list):
             for url in channel['stream_urls']:
                 if isinstance(url, str) and url.strip():
                     return url.strip()
 
         # 3. youtube_urls (skip)
-        if 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
+        if 'youtube_urls' in channel and isinstance(
+                channel['youtube_urls'], list):
             for url in channel['youtube_urls']:
                 if isinstance(url, str) and url.strip():
                     return None  # Salta YouTube
