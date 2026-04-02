@@ -795,13 +795,17 @@ class TVGardenSettings(ConfigListScreen, Screen):
         # SEARCH SETTINGS
         if hasattr(self, 'cfg_search_max_results'):
             val = self.cfg_search_max_results.value
-            log.info("*** DEBUG: cfg_search_max_results.value = %s (type=%s)" % (val, type(val)))
+            log.info(
+                "*** DEBUG: cfg_search_max_results.value = %s (type=%s)" %
+                (val, type(val)))
             if isinstance(val, tuple):
                 val = val[0]
                 log.info("*** DEBUG: after tuple extraction = %s" % val)
             try:
                 config_data["search_max_results"] = int(val)
-                log.info("*** DEBUG: saving search_max_results = %d" % config_data["search_max_results"])
+                log.info(
+                    "*** DEBUG: saving search_max_results = %d" %
+                    config_data["search_max_results"])
             except (ValueError, TypeError):
                 config_data["search_max_results"] = 500
                 log.info("*** DEBUG: fallback to 500")
@@ -841,9 +845,11 @@ class TVGardenSettings(ConfigListScreen, Screen):
             config_item = current[1]
             if "===" in display_name or isinstance(config_item, ConfigNothing):
                 if direction == 'down':
-                    self["config"].instance.moveSelection(self["config"].instance.moveDown)
+                    self["config"].instance.moveSelection(
+                        self["config"].instance.moveDown)
                 else:
-                    self["config"].instance.moveSelection(self["config"].instance.moveUp)
+                    self["config"].instance.moveSelection(
+                        self["config"].instance.moveUp)
             else:
                 break
 

@@ -177,12 +177,15 @@ class SearchBrowser(BaseBrowser):
             self._loading_in_progress = False
 
             if hasattr(self, '_loading_error'):
-                self["status"].setText(_("Error loading channels: %s") % self._loading_error)
+                self["status"].setText(
+                    _("Error loading channels: %s") %
+                    self._loading_error)
                 self.all_channels = []
             elif hasattr(self, '_loaded_channels'):
                 self.all_channels = self._loaded_channels
                 log.info("Total channels loaded: %d" % len(self.all_channels))
-                self["status"].setText(_("Ready - %d channels") % len(self.all_channels))
+                self["status"].setText(
+                    _("Ready - %d channels") % len(self.all_channels))
                 self.search_results = self.all_channels[:]
                 self.display_search_results()
             else:
@@ -190,7 +193,10 @@ class SearchBrowser(BaseBrowser):
                 log.error("No _loaded_channels found")
 
             # Cleanup
-            for attr in ['_loading_complete', '_loaded_channels', '_loading_error']:
+            for attr in [
+                '_loading_complete',
+                '_loaded_channels',
+                    '_loading_error']:
                 if hasattr(self, attr):
                     delattr(self, attr)
 
@@ -207,23 +213,30 @@ class SearchBrowser(BaseBrowser):
         temp_channels = []
 
         try:
-            countries = self.cache.get_countries_metadata(force_refresh=force_refresh)
+            countries = self.cache.get_countries_metadata(
+                force_refresh=force_refresh)
             total_countries = len(countries)
             processed = 0
 
             for code, info in countries.items():
                 processed += 1
-                self._update_status(_("Loading %s (%d/%d)") % (code.upper(), processed, total_countries))
+                self._update_status(
+                    _("Loading %s (%d/%d)") %
+                    (code.upper(), processed, total_countries))
 
                 try:
-                    channels = self.cache.get_country_channels(code, force_refresh=force_refresh)
+                    channels = self.cache.get_country_channels(
+                        code, force_refresh=force_refresh)
                     if channels:
                         for ch in channels:
                             ch['country'] = info.get('name', code)
                         temp_channels.extend(channels)
-                        log.debug("Added %d from %s" % (len(channels), code), module="Search")
+                        log.debug(
+                            "Added %d from %s" %
+                            (len(channels), code), module="Search")
                 except Exception as e:
-                    log.debug("Skipped %s: %s" % (code, str(e)[:50]), module="Search")
+                    log.debug("Skipped %s: %s" %
+                              (code, str(e)[:50]), module="Search")
                     continue
 
             self._loaded_channels = temp_channels
@@ -247,7 +260,8 @@ class SearchBrowser(BaseBrowser):
         self.all_channels = []
 
         # Start background thread
-        self.load_thread = threading.Thread(target=self._load_all_channels_thread)
+        self.load_thread = threading.Thread(
+            target=self._load_all_channels_thread)
         self.load_thread.daemon = True
         self.load_thread.start()
 
@@ -342,18 +356,24 @@ class SearchBrowser(BaseBrowser):
     def _add_channels_incrementally(self, new_channels, country_name):
         """Thread-safe: posta l'aggiornamento della GUI nel main thread"""
         from twisted.internet import reactor
-        reactor.callFromThread(self._do_add_channels, new_channels, country_name)
+        reactor.callFromThread(
+            self._do_add_channels,
+            new_channels,
+            country_name)
 
     def _do_add_channels(self, new_channels, country_name):
         """Eseguito nel main thread: aggiorna la lista e la UI"""
         if not new_channels:
             return
         self.all_channels.extend(new_channels)
-        log.debug("Added %d from %s, total: %d" % (len(new_channels), country_name, len(self.all_channels)))
+        log.debug("Added %d from %s, total: %d" %
+                  (len(new_channels), country_name, len(self.all_channels)))
         if not self.search_query:
             self.search_results = self.all_channels[:]
             self.display_search_results()
-            self["status"].setText(_("Loading... %d channels so far") % len(self.all_channels))
+            self["status"].setText(
+                _("Loading... %d channels so far") % len(
+                    self.all_channels))
         else:
             self.perform_search()
 
@@ -512,7 +532,8 @@ class SearchBrowser(BaseBrowser):
             is_youtube = False
 
             # 1. iptv_urls
-            if 'iptv_urls' in channel and isinstance(channel['iptv_urls'], list):
+            if 'iptv_urls' in channel and isinstance(
+                    channel['iptv_urls'], list):
                 for url in channel['iptv_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -520,7 +541,8 @@ class SearchBrowser(BaseBrowser):
                         break
 
             # 2. stream_urls (AGGIUNTO)
-            if not stream_url and 'stream_urls' in channel and isinstance(channel['stream_urls'], list):
+            if not stream_url and 'stream_urls' in channel and isinstance(
+                    channel['stream_urls'], list):
                 for url in channel['stream_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -528,7 +550,8 @@ class SearchBrowser(BaseBrowser):
                         break
 
             # 3. youtube_urls (skip)
-            if not stream_url and 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
+            if not stream_url and 'youtube_urls' in channel and isinstance(
+                    channel['youtube_urls'], list):
                 for url in channel['youtube_urls']:
                     if isinstance(url, str) and url.strip():
                         stream_url = url.strip()
@@ -537,7 +560,8 @@ class SearchBrowser(BaseBrowser):
                         break
 
             # 4. Fallback a 'url'
-            if not stream_url and 'url' in channel and isinstance(channel['url'], str) and channel['url'].strip():
+            if not stream_url and 'url' in channel and isinstance(
+                    channel['url'], str) and channel['url'].strip():
                 stream_url = channel['url'].strip()
                 found_in = "url"
 
@@ -554,7 +578,9 @@ class SearchBrowser(BaseBrowser):
             if not is_valid_stream_url(stream_url):
                 continue
 
-            log.debug("Channel: %s, URL: %s, is_youtube: %s" % (name, stream_url, is_youtube))
+            log.debug(
+                "Channel: %s, URL: %s, is_youtube: %s" %
+                (name, stream_url, is_youtube))
 
             # 8. Skip problematic patterns (same as channels.py)
             stream_lower = stream_url.lower()
@@ -649,12 +675,14 @@ class SearchBrowser(BaseBrowser):
                 if isinstance(url, str) and url.strip():
                     return url.strip()
         # 2. stream_urls
-        if 'stream_urls' in channel and isinstance(channel['stream_urls'], list):
+        if 'stream_urls' in channel and isinstance(
+                channel['stream_urls'], list):
             for url in channel['stream_urls']:
                 if isinstance(url, str) and url.strip():
                     return url.strip()
         # 3. youtube_urls (skip)
-        if 'youtube_urls' in channel and isinstance(channel['youtube_urls'], list):
+        if 'youtube_urls' in channel and isinstance(
+                channel['youtube_urls'], list):
             for url in channel['youtube_urls']:
                 if isinstance(url, str) and url.strip():
                     return None  # Skip YouTube
