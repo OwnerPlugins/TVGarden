@@ -406,15 +406,53 @@ class FavoritesBrowser(BaseBrowser):
         self.session.openWithCallback(
             self._export_all_confirmation,
             MessageBox,
-            _("Export ALL %d favorites to Enigma2 bouquet?") % len(
-                self.menu_channels),
-            MessageBox.TYPE_YESNO)
+            _("Export ALL %d favorites to Enigma2 bouquet?") % len(self.menu_channels),
+            MessageBox.TYPE_YESNO
+        )
+
+    def export_to_bouquet(self, channels, bouquet_name=None):
+        if not channels:
+            return False, _("No channels to export")
+
+        if bouquet_name is None:
+            bouquet_name = "tvgarden_favorites"
+
+        userbouquet_file = "/etc/enigma2/userbouquet.%s.tv" % bouquet_name
+        try:
+            with open(userbouquet_file, "w") as f:
+                f.write("#NAME %s\n" % bouquet_name.upper())
+                for ch in channels:
+                    name = ch.get('name', '')
+                    stream_url = ch.get('stream_url') or ch.get('url')
+                    if not stream_url:
+                        continue
+                    url_encoded = stream_url.replace(":", "%3a")
+                    name_encoded = name.replace(":", "%3a")
+                    f.write("#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" % (url_encoded, name_encoded))
+                    f.write("#DESCRIPTION %s\n" % name)
+
+            bouquets_file = "/etc/enigma2/bouquets.tv"
+            entry = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.%s.tv" ORDER BY bouquet\n' % bouquet_name
+            try:
+                with open(bouquets_file, "r") as bf:
+                    lines = bf.readlines()
+            except:
+                lines = []
+            if entry not in lines:
+                with open(bouquets_file, "a") as bf:
+                    bf.write(entry)
+
+            from enigma import eDVBDB
+            eDVBDB.getInstance().reloadBouquets()
+
+            return True, _("Exported %d channels to %s") % (len(channels), bouquet_name)
+        except Exception as e:
+            return False, _("Export failed: %s") % str(e)
 
     def _export_all_confirmation(self, result):
         """Handle export confirmation"""
         if result:
-            success, message = self.fav_manager.export_to_bouquet(
-                self.menu_channels)
+            success, message = self.fav_manager.export_to_bouquet(self.menu_channels)
             self["status"].setText(message)
             self.session.open(
                 MessageBox,

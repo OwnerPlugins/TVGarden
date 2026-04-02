@@ -148,7 +148,7 @@ class ChannelsBrowser(BaseBrowser):
             "green": self.play_channel,
             "yellow": self.toggle_favorite,
             # "blue": self.show_info,
-            "blue": self.export_current_view if self.menu_channels else lambda: None,
+            "blue": self.export_current_view,  #  if self.menu_channels else lambda: None,
             "up": self.up,
             "down": self.down,
             "left": self.left,
@@ -706,51 +706,117 @@ class ChannelsBrowser(BaseBrowser):
                 "Error loading export settings: %s" %
                 e, module="Channels")
 
-    def export_current_view(self):
-        """Export CURRENTLY VISIBLE channels to bouquet"""
-        if not self.menu_channels:
-            self.session.open(MessageBox, _("No channels to export"),
-                              MessageBox.TYPE_INFO, timeout=2)
-            return
+    def export_to_bouquet(self, channels, bouquet_name=None):
+        if not channels:
+            return False, _("No channels to export")
 
+        if bouquet_name is None:
+            bouquet_name = "tvgarden_favorites"
+
+        userbouquet_file = "/etc/enigma2/userbouquet.%s.tv" % bouquet_name
+        try:
+            with open(userbouquet_file, "w") as f:
+                f.write("#NAME %s\n" % bouquet_name.upper())
+                for ch in channels:
+                    name = ch.get('name', '')
+                    stream_url = ch.get('stream_url') or ch.get('url')
+                    if not stream_url:
+                        continue
+                    url_encoded = stream_url.replace(":", "%3a")
+                    name_encoded = name.replace(":", "%3a")
+                    f.write("#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" % (url_encoded, name_encoded))
+                    f.write("#DESCRIPTION %s\n" % name)
+
+            bouquets_file = "/etc/enigma2/bouquets.tv"
+            entry = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.%s.tv" ORDER BY bouquet\n' % bouquet_name
+            try:
+                with open(bouquets_file, "r") as bf:
+                    lines = bf.readlines()
+            except:
+                lines = []
+            if entry not in lines:
+                with open(bouquets_file, "a") as bf:
+                    bf.write(entry)
+
+            from enigma import eDVBDB
+            eDVBDB.getInstance().reloadBouquets()
+
+            return True, _("Exported %d channels to %s") % (len(channels), bouquet_name)
+        except Exception as e:
+            return False, _("Export failed: %s") % str(e)
+
+    def export_current_view(self):
         if not self.menu_channels:
-            self["key_blue"].setText("")
-            self.session.open(MessageBox, _("No channels to export"),
-                              MessageBox.TYPE_INFO, timeout=2)
+            self.session.open(MessageBox, _("No channels to export"), MessageBox.TYPE_INFO, timeout=2)
             return
 
         if self.country_name:
             display_name = self.country_name
             safe_name = self.country_code.lower() if self.country_code else "country"
         elif self.category_name:
-            base_name = self.category_name.split(
-                ' (')[0] if ' (' in self.category_name else self.category_name
+            base_name = self.category_name.split(' (')[0] if ' (' in self.category_name else self.category_name
             display_name = base_name
-            safe_name = ''.join(c for c in base_name.lower()
-                                if c.isalnum() or c == '_')[:30]
+            safe_name = ''.join(c for c in base_name.lower() if c.isalnum() or c == '_')[:30]
         else:
             display_name = _("Channels")
             safe_name = "channels"
 
-        bouquet_name = "%s_%s" % (self.bouquet_name_prefix.lower(), safe_name)
+        bouquet_name = "tvgarden_%s" % safe_name
+        userbouquet_file = "/etc/enigma2/userbouquet.%s.tv" % bouquet_name
 
         msg = _("Export {count} channels to bouquet '{name}'?").format(
-            count=len(self.menu_channels),
-            name=display_name
-        )
-
+            count=len(self.menu_channels), name=display_name)
         self.session.openWithCallback(
-            lambda r: self.execute_export(
-                bouquet_name,
-                display_name) if r else None,
-            MessageBox,
-            msg,
-            MessageBox.TYPE_YESNO)
+            lambda r: self._do_export(userbouquet_file, display_name, bouquet_name) if r else None,
+            MessageBox, msg, MessageBox.TYPE_YESNO)
+
+    def _do_export(self, userbouquet_file, display_name, bouquet_name):
+        try:
+            with open(userbouquet_file, "w") as f:
+                f.write("#NAME %s - %s\n" % (self.bouquet_name_prefix, display_name))
+                f.write("#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | %s %s | ---\n" % (self.bouquet_name_prefix, display_name))
+                f.write("#DESCRIPTION --- | %s %s | ---\n" % (self.bouquet_name_prefix, display_name))
+
+                exported = 0
+                for ch in self.menu_channels:
+                    name = ch.get('name', '')
+                    stream_url = ch.get('stream_url') or ch.get('url')
+                    if not stream_url:
+                        continue
+                    url_encoded = stream_url.replace(":", "%3a")
+                    name_encoded = name.replace(":", "%3a")
+                    f.write("#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" % (url_encoded, name_encoded))
+                    f.write("#DESCRIPTION %s\n" % name)
+                    exported += 1
+
+            if exported == 0:
+                self.session.open(MessageBox, _("No valid streams found"), MessageBox.TYPE_ERROR, timeout=3)
+                return
+
+            bouquets_file = "/etc/enigma2/bouquets.tv"
+            entry = "#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.%s.tv\" ORDER BY bouquet\n" % bouquet_name
+            try:
+                with open(bouquets_file, "r") as bf:
+                    lines = bf.readlines()
+            except:
+                lines = []
+            if entry not in lines:
+                with open(bouquets_file, "a") as bf:
+                    bf.write(entry)
+
+            from enigma import eDVBDB
+            eDVBDB.getInstance().reloadBouquets()
+            self.session.open(MessageBox, _("Exported %d channels to '%s'") % (exported, display_name), MessageBox.TYPE_INFO, timeout=4)
+
+        except Exception as e:
+            self.session.open(MessageBox, _("Export error: %s") % str(e), MessageBox.TYPE_ERROR, timeout=4)
+            import traceback
+            traceback.print_exc()
 
     def execute_export(self, bouquet_name, display_name):
         """Perform actual export"""
         try:
-            success, msg = self.fav_manager.export_to_bouquet(
+            success, msg = self.fav_manager.export_bouquet(
                 self.menu_channels,
                 bouquet_name
             )
