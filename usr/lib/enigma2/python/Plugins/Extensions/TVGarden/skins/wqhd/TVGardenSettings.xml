@@ -1,6 +1,6 @@
 <screen name="TVGardenSettings" position="center,center" size="2560,1440" title="TV Garden Settings" backgroundColor="#1a1a2e" flags="wfNoBorder">
 	<!-- Background widget (richiesto dal codice) -->
-	<widget name="background" position="0,0" size="2560,1440" backgroundColor="#1a1a2e" zPosition="0"/>
+	<!-- <widget name="background" position="0,0" size="2560,1440" backgroundColor="#1a1a2e" zPosition="0"/> -->
 	<!-- Background image -->
 	<ePixmap name="" position="0,0" size="2560,1440" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/wqhd/background.png" scale="1"/>
 	<!-- Button pixmaps -->

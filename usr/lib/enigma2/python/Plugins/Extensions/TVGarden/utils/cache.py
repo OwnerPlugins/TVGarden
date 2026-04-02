@@ -220,7 +220,7 @@ class CacheManager:
             headers = {'User-Agent': 'TVGarden-Enigma2/1.0'}
             req = Request(url, headers=headers)
             config = get_config()
-            timeout = config.get("connection_timeout", 15)
+            timeout = config.get("connection_timeout", 10)
 
             log.debug(
                 "Fetching URL: %s (timeout: %ss)" %

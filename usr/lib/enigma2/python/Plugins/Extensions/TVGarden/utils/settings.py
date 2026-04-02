@@ -118,7 +118,9 @@ class TVGardenSettings(ConfigListScreen, Screen):
     skin = """
         <screen name="TVGardenSettings" position="center,center" size="1920,1080" title="TV Garden Settings" backgroundColor="#1a1a2e" flags="wfNoBorder">
             <!-- Background widget (richiesto dal codice) -->
+            <!--
             <widget name="background" position="0,0" size="1920,1080" backgroundColor="#1a1a2e" zPosition="0"/>
+            -->
             <!-- Background image -->
             <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1"/>
             <!-- Button pixmaps (tutti e 4) -->
@@ -378,6 +380,8 @@ class TVGardenSettings(ConfigListScreen, Screen):
                 (250, _("250 channels")),
                 (500, _("500 channels")),
                 (1000, _("1000 channels")),
+                (2000, _("2000 channels")),
+                (5000, _("5000 channels")),
                 (0, _("All channels"))
             ]
         )
@@ -390,7 +394,8 @@ class TVGardenSettings(ConfigListScreen, Screen):
                 (500, _("500 channels")),
                 (1000, _("1000 channels")),
                 (2000, _("2000 channels")),
-                (5000, _("5000 channels"))
+                (5000, _("5000 channels")),
+                (0, _("All channels"))
             ]
         )
 
@@ -414,11 +419,21 @@ class TVGardenSettings(ConfigListScreen, Screen):
         # )
 
         # ========= SEARCH =========
-        self.cfg_search_max_results = ConfigInteger(
-            default=self.config.get("search_max_results", 200),
-            limits=(10, 1000)
+        self.cfg_search_max_results = ConfigSelection(
+            default=self.config.get("search_max_results", 500),
+            choices=[
+                (0, _("All results")),
+                (10, _("10 results")),
+                (50, _("50 results")),
+                (100, _("100 results")),
+                (250, _("250 results")),
+                (500, _("500 results")),
+                (1000, _("1000 results")),
+                (2500, _("2500 results")),
+                (4000, _("4000 results")),
+                (5000, _("5000 results"))
+            ]
         )
-
         # ========= EXPORT =========
         self.cfg_export_enabled = ConfigYesNo(
             default=self.config.get("export_enabled", True)
@@ -427,12 +442,14 @@ class TVGardenSettings(ConfigListScreen, Screen):
         self.cfg_max_channels_for_bouquet = ConfigSelection(
             default=self.config.get("max_channels_for_bouquet", 500),
             choices=[
+                (0, _("All channels")),
                 (50, _("50 channels")),
                 (100, _("100 channels")),
                 (250, _("250 channels")),
                 (500, _("500 channels")),
                 (1000, _("1000 channels")),
-                (0, _("All channels"))
+                (2000, _("2000 channels")),
+                (5000, _("5000 channels"))
             ]
         )
 
@@ -695,8 +712,6 @@ class TVGardenSettings(ConfigListScreen, Screen):
     def save(self):
         """Save all settings - UPDATED VERSION"""
         log.debug("Starting save...", module="Settings")
-
-        # Build the configuration from UI values
         config_data = {}
 
         # PLAYER
@@ -779,7 +794,17 @@ class TVGardenSettings(ConfigListScreen, Screen):
 
         # SEARCH SETTINGS
         if hasattr(self, 'cfg_search_max_results'):
-            config_data["search_max_results"] = self.cfg_search_max_results.value
+            val = self.cfg_search_max_results.value
+            log.info("*** DEBUG: cfg_search_max_results.value = %s (type=%s)" % (val, type(val)))
+            if isinstance(val, tuple):
+                val = val[0]
+                log.info("*** DEBUG: after tuple extraction = %s" % val)
+            try:
+                config_data["search_max_results"] = int(val)
+                log.info("*** DEBUG: saving search_max_results = %d" % config_data["search_max_results"])
+            except (ValueError, TypeError):
+                config_data["search_max_results"] = 500
+                log.info("*** DEBUG: fallback to 500")
 
         # LOGGING SETTINGS
         if hasattr(self, 'cfg_log_level'):
@@ -806,61 +831,39 @@ class TVGardenSettings(ConfigListScreen, Screen):
 
         self.close(True)
 
-    def keyDown(self):
-        """Down arrow - navigate skipping separators."""
-        # current_index = self["config"].getCurrentIndex()
-        list_length = len(self["config"].list)
-
-        # Navigate down using moveSelection
-        self["config"].instance.moveSelection(self["config"].instance.moveDown)
-
-        # Check if we are on a separator
-        current = self["config"].getCurrent()
-        if current:
+    def _skip_separator(self, direction='down'):
+        """Move the selection until an editable (non-separator) element is found."""
+        for cx in range(100):
+            current = self["config"].getCurrent()
+            if not current:
+                break
             display_name = current[0]
             config_item = current[1]
-
-            # If it's a separator, skip another item down
             if "===" in display_name or isinstance(config_item, ConfigNothing):
-                # If not already at the bottom, move down one more
-                if self["config"].getCurrentIndex() < list_length - 1:
-                    self["config"].instance.moveSelection(
-                        self["config"].instance.moveDown)
-
-        self.updateStatus()
+                if direction == 'down':
+                    self["config"].instance.moveSelection(self["config"].instance.moveDown)
+                else:
+                    self["config"].instance.moveSelection(self["config"].instance.moveUp)
+            else:
+                break
 
     def keyUp(self):
-        """Up arrow - navigate skipping separators."""
-        # Navigate up using moveSelection
-        # current_index = self["config"].getCurrentIndex()
-        list_length = len(self["config"].list)
-        self["config"].instance.moveSelection(self["config"].instance.moveUp)
+        ConfigListScreen.keyUp(self)
+        self._skip_separator('up')
+        self.updateStatus()
 
-        # Check if we are on a separator
-        current = self["config"].getCurrent()
-        if current:
-            display_name = current[0]
-            config_item = current[1]
-
-            # If it's a separator, skip another item down
-            if "===" in display_name or isinstance(config_item, ConfigNothing):
-                # If not already at the bottom, move down one more
-                if self["config"].getCurrentIndex() < list_length - 1:
-                    self["config"].instance.moveSelection(
-                        self["config"].instance.moveUp)
-
+    def keyDown(self):
+        ConfigListScreen.keyDown(self)
+        self._skip_separator('down')
         self.updateStatus()
 
     def keyLeft(self):
-        """Left arrow - navigation only."""
-        # ConfigListScreen.keyLeft(self)
+        ConfigListScreen.keyLeft(self)
         self.updateStatus()
 
     def keyRight(self):
-        """Right arrow - navigation only."""
-        # ConfigListScreen.keyRight(self)
+        ConfigListScreen.keyRight(self)
         self.updateStatus()
 
     def cancel(self):
-        """Cancel without saving"""
         self.close(False)

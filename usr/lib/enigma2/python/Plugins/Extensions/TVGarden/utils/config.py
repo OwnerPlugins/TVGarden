@@ -97,7 +97,7 @@ class PluginConfig:
             "memory_optimization": True,            # Enable memory optimization
 
             # ============ SEARCH SETTINGS ============
-            "search_max_results": 200,              # Max results in search
+            "search_max_results": 500,              # Max results in search
 
             # ============ DEBUG/DEVELOPMENT ============
             "debug_mode": False,                    # Enable debug mode
@@ -255,17 +255,17 @@ class PluginConfig:
             except (ValueError, TypeError):
                 validated_config['cache_size'] = 500
 
-        # Ensure search_max_results is reasonable
+        # Ensure search_max_results is reasonable (0 = all results)
         if 'search_max_results' in validated_config:
             try:
                 val = int(validated_config['search_max_results'])
-                if val < 10:
-                    val = 10
-                elif val > 1000:
-                    val = 1000
+                if val < 0:
+                    val = 0
+                elif val > 10000:   # limite più alto per "all"
+                    val = 10000
                 validated_config['search_max_results'] = val
             except (ValueError, TypeError):
-                validated_config['search_max_results'] = 200
+                validated_config['search_max_results'] = 500   # default
 
         # Ensure list_position is valid
         if 'list_position' in validated_config:
