@@ -1,6 +1,7 @@
 # TV Garden Plugin for Enigma2
 
 ![](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
+[![Python package](https://github.com/Belfagor2005/TVGarden/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/TVGarden/actions/workflows/pylint.yml)
 [![Ruff Status](https://github.com/Belfagor2005/TVGarden/actions/workflows/ruff.yml/badge.svg)](https://github.com/Belfagor2005/TVGarden/actions/workflows/ruff.yml)
 [![Version](https://img.shields.io/badge/Version-2.3-blue.svg)](https://github.com/Belfagor2005/TVGarden)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
