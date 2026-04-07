@@ -347,7 +347,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 ### Core Development
 - **Original Concept**: Lululla (TV Garden Project)
-- **Data Source**: [Belfagor2005 TV Garden Channel List](https://github.com/Belfagor2005/tv-garden-channel-list)
+- **Data Source**: [https://github.com/Belfagor2005/tv-garden-channel-list](https://github.com/Belfagor2005/famelack-data)
 - **Plugin Development**: TV Garden Development Team
 - **Hierarchical Export**: Inspired by Vavoo Plugin architecture
 
