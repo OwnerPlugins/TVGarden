@@ -5,7 +5,6 @@ TV Garden Plugin - IPTV Player
 Advanced player with channel zapping
 Based on TV Garden Project
 """
-from __future__ import print_function
 from enigma import (
     eServiceReference,
     iPlayableService,

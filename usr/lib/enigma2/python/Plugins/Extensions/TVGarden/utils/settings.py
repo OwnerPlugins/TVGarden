@@ -5,7 +5,6 @@ TV Garden Plugin - Settings Screen
 Plugin configuration interface
 Based on TV Garden Project
 """
-from __future__ import print_function
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.TextBox import TextBox

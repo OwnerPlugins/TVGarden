@@ -5,17 +5,15 @@ TV Garden Plugin - Countries Browser
 Browse 150+ countries with flags
 Based on TV Garden Project
 """
-from __future__ import print_function
 import tempfile
 from os import unlink
 from os.path import exists
 from Components.Sources.StaticText import StaticText
-# from Components.Label import Label
-from enigma import eTimer, loadPNG  # ,ePicLoad
+from enigma import eTimer, loadPNG
 from Components.Pixmap import Pixmap
 from Components.MenuList import MenuList
 from Components.ActionMap import ActionMap
-from sys import version_info
+from urllib.request import urlopen, Request
 
 from .. import _, PLUGIN_VERSION
 from .base import BaseBrowser
@@ -24,11 +22,6 @@ from ..helpers import log
 from ..utils.cache import CacheManager
 from ..utils.config import PluginConfig, get_config
 
-
-if version_info[0] == 3:
-    from urllib.request import urlopen, Request
-else:
-    from urllib2 import urlopen, Request
 
 
 class CountriesBrowser(BaseBrowser):

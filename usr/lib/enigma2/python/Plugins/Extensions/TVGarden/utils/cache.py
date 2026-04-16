@@ -5,21 +5,15 @@ TV Garden Plugin - Cache Module
 Smart caching with TTL + gzip
 Based on TV Garden Project
 """
-from __future__ import print_function
 import time
 import hashlib
 import gzip
 from os.path import join, exists, getmtime, getsize
 from os import listdir, remove, makedirs
 from json import load, loads, dump, dumps
-from sys import version_info
+from urllib.request import urlopen, Request
 
 from .config import get_config
-
-if version_info[0] == 3:
-    from urllib.request import urlopen, Request
-else:
-    from urllib2 import urlopen, Request
 
 
 try:

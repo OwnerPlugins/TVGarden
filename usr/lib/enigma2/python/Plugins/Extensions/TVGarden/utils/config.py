@@ -5,7 +5,6 @@ TV Garden Plugin - Config Module
 Settings and configuration management
 Based on TV Garden Project
 """
-from __future__ import print_function
 from os.path import join, exists
 from os import makedirs, chmod
 from json import load, dump

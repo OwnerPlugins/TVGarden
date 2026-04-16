@@ -4,22 +4,16 @@
 TV Garden Plugin - Updater Module
 Based on TV Garden Project
 """
-from __future__ import print_function
 import time
 import shutil
 import subprocess
 from re import sub, search
 from os import makedirs
 from os.path import join, exists
-from sys import version_info
+from urllib.request import urlopen, Request
 
 from ..helpers import log
 from .. import _, PLUGIN_VERSION, PLUGIN_PATH, USER_AGENT
-
-if version_info[0] == 3:
-    from urllib.request import urlopen, Request
-else:
-    from urllib2 import urlopen, Request
 
 
 class PluginUpdater:

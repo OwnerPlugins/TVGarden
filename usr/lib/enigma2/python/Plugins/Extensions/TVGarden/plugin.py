@@ -110,7 +110,7 @@
 ###########################################################
 """
 
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import
 from os.path import dirname
 from sys import path
 from Components.ActionMap import ActionMap
@@ -120,7 +120,6 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
 from . import _, PLUGIN_VERSION, PLUGIN_ICON
-# , PLUGIN_NAME, PLUGIN_PATH
 from .helpers import log, simple_log, get_metadata_url
 from .browser.about import TVGardenAbout
 from .browser.countries import CountriesBrowser

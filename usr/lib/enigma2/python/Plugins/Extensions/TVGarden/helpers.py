@@ -5,8 +5,6 @@ TV Garden Plugin - Helpers Module
 Based on TV Garden Project by Lululla
 Data Source: TV Garden Project
 """
-from __future__ import print_function
-
 from sys import stderr
 from os import remove, makedirs
 from os.path import join, exists

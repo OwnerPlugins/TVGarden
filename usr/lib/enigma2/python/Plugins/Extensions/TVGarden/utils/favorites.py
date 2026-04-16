@@ -5,7 +5,6 @@ TV Garden Plugin - Favorites Manager
 Manages favorite channels storage
 Based on TV Garden Project
 """
-from __future__ import print_function
 import time
 from os import makedirs, remove, system
 from os.path import exists, join

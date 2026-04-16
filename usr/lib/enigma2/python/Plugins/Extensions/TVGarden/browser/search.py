@@ -5,8 +5,6 @@ TV Garden Plugin - SearchBrowser
 Live search
 Data Source: TV Garden Project
 """
-from __future__ import print_function
-
 from Components.Sources.StaticText import StaticText
 from Components.MenuList import MenuList
 from Components.ActionMap import ActionMap

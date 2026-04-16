@@ -5,7 +5,6 @@ TV Garden Plugin - Base Browser
 Base class for all browser screens
 Based on TV Garden Project
 """
-from __future__ import print_function
 from enigma import eTimer
 from Screens.Screen import Screen
 from Components.Sources.StaticText import StaticText

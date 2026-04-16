@@ -5,12 +5,10 @@ TV Garden Plugin - Channels Browser
 List and play IPTV channels
 Based on TV Garden Project
 """
-from __future__ import print_function
-
 import tempfile
 from os import unlink
 from os.path import exists
-from sys import stderr, version_info
+from sys import stderr
 from enigma import ePicLoad, eServiceReference
 from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
@@ -18,11 +16,7 @@ from Components.MenuList import MenuList
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Components.ActionMap import ActionMap
-
-if version_info[0] == 3:
-    from urllib.request import urlopen
-else:
-    from urllib2 import urlopen
+from urllib.request import urlopen, Request
 
 
 try:

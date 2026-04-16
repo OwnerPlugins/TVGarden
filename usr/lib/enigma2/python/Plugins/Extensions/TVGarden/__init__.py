@@ -5,7 +5,6 @@
 TV Garden Plugin for Enigma2
 Based on TV Garden Project
 """
-from __future__ import print_function
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.Language import language
 from os.path import exists
@@ -23,13 +22,9 @@ PLUGIN_ICON = resolveFilename(SCOPE_PLUGINS,
 USER_AGENT = "TVGarden-Enigma2-Updater/%s" % PLUGIN_VERSION
 PluginLanguageDomain = 'TVGarden'
 PluginLanguagePath = "Extensions/TVGarden/locale"
-isDreambox = exists("/usr/bin/apt-get")
 
 
 def localeInit():
-    if isDreambox:
-        lang = language.getLanguage()[:2]
-        environ["LANGUAGE"] = lang
     if PLUGIN_NAME and PluginLanguagePath:
         gettext.bindtextdomain(
             PluginLanguageDomain,
@@ -38,19 +33,15 @@ def localeInit():
                 PluginLanguagePath))
 
 
-if isDreambox:
-    def _(txt):
-        return gettext.dgettext(PluginLanguageDomain, txt) if txt else ""
-else:
-    def _(txt):
-        translated = gettext.dgettext(PluginLanguageDomain, txt)
-        if translated:
-            return translated
-        else:
-            print(
-                "[%s] fallback to default translation for %s" %
-                (PluginLanguageDomain, txt))
-            return gettext.gettext(txt)
+def _(txt):
+    translated = gettext.dgettext(PluginLanguageDomain, txt)
+    if translated:
+        return translated
+    else:
+        print(
+            "[%s] fallback to default translation for %s" %
+            (PluginLanguageDomain, txt))
+        return gettext.gettext(txt)
 
 localeInit()
 language.addCallback(localeInit)

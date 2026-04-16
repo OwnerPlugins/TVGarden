@@ -4,7 +4,6 @@
 TV Garden Plugin - About Screen
 Shows plugin information, credits and version
 """
-from __future__ import print_function
 from os import listdir
 from os.path import exists, join, getsize
 from enigma import eTimer

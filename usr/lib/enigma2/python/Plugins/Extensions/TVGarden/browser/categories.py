@@ -5,9 +5,7 @@ TV Garden Plugin - Categories Browser
 Browse 29 categories of IPTV channels
 Based on TV Garden Project
 """
-from __future__ import print_function
 from Components.Sources.StaticText import StaticText
-# from Components.Pixmap import Pixmap
 from Components.MenuList import MenuList
 from Components.ActionMap import ActionMap
 

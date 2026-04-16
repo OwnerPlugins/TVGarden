@@ -4,7 +4,6 @@
 TV Garden Plugin - Update Manager
 Centralized update functions using existing updater.py
 """
-from __future__ import print_function
 from Screens.MessageBox import MessageBox
 
 from .updater import PluginUpdater
