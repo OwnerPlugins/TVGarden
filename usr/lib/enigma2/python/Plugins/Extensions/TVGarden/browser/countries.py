@@ -23,7 +23,6 @@ from ..utils.cache import CacheManager
 from ..utils.config import PluginConfig, get_config
 
 
-
 class CountriesBrowser(BaseBrowser):
 
     skin = """

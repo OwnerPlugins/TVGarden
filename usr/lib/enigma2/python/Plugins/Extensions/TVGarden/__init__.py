@@ -43,6 +43,7 @@ def _(txt):
             (PluginLanguageDomain, txt))
         return gettext.gettext(txt)
 
+
 localeInit()
 language.addCallback(localeInit)
 
