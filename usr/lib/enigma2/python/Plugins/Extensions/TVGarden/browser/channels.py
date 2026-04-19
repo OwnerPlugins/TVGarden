@@ -16,7 +16,7 @@ from Components.MenuList import MenuList
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Components.ActionMap import ActionMap
-from urllib.request import urlopen, Request
+from urllib.request import urlopen
 
 
 try:

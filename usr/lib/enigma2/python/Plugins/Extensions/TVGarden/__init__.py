@@ -7,8 +7,6 @@ Based on TV Garden Project
 """
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.Language import language
-from os.path import exists
-from os import environ
 import gettext
 
 PLUGIN_NAME = "TVGarden"
