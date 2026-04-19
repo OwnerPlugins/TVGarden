@@ -1,14 +1,14 @@
-# TV Garden Plugin for Enigma2
+<h1 align="center">📺 TV Garden Plugin for Enigma2</h1>
 
-![](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
-[![Python package](https://github.com/Belfagor2005/TVGarden/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/TVGarden/actions/workflows/pylint.yml)
-[![Ruff Status](https://github.com/Belfagor2005/TVGarden/actions/workflows/ruff.yml/badge.svg)](https://github.com/Belfagor2005/TVGarden/actions/workflows/ruff.yml)
+![Visitors](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
 [![Version](https://img.shields.io/badge/Version-2.3-blue.svg)](https://github.com/Belfagor2005/TVGarden)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-2.7%2B-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Python package](https://github.com/Belfagor2005/TVGarden/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/TVGarden/actions/workflows/pylint.yml)
+[![Ruff Status](https://github.com/Belfagor2005/TVGarden/actions/workflows/ruff.yml/badge.svg)](https://github.com/Belfagor2005/TVGarden/actions/workflows/ruff.yml)
 [![GitHub stars](https://img.shields.io/github/stars/Belfagor2005/TVGarden?style=social)](https://github.com/Belfagor2005/TVGarden/stargazers)
-
+[![Donate](https://img.shields.io/badge/_-Donate-red.svg?logo=githubsponsors&labelColor=555555&style=for-the-badge)](Maintainers.md#maintainers "Donate")
 
 <img src="https://play-lh.googleusercontent.com/TuMoS5RrGwz6xmyyYkA56eXukRHNNd2JgldA0wpzVFxiQDAAf9NLuKkTacl29_ltEbr4YvshNOauntxGlrvb=w240-h480-rw" alt="Icon image">
 
