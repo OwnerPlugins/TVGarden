@@ -50,7 +50,7 @@ class PluginConfig:
             "show_info": True,                      # Show channel info
 
             # ============ BROWSER SETTINGS ============
-            "max_channels": 500,                    # Max channels for country (0=all)
+            "max_channels": 1000,                    # Max channels for country (0=all)
             "sort_by": "name",                      # Sort channels by "name", "country", "category"
             "default_view": "countries",            # "countries", "categories", "favorites", "search"
             "refresh_method": "clear_cache",        # "clear_cache" or "force_refresh"
