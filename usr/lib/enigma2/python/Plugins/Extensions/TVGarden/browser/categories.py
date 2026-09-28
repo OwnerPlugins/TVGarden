@@ -186,7 +186,8 @@ class CategoriesBrowser(BaseBrowser):
                             data = self.cache.get_category_channels(
                                 category_id, force_refresh=force_refresh_browsing)
                         except TypeError:
-                            data = self.cache.get_category_channels(category_id)
+                            data = self.cache.get_category_channels(
+                                category_id)
                 else:
                     data = []
 

@@ -255,7 +255,8 @@ class SearchBrowser(BaseBrowser):
                         if channels:
                             for ch in channels:
                                 ch['country'] = info.get('name', code)
-                                ch['media_type'] = media_type  # [TVGarden patch]
+                                # [TVGarden patch]
+                                ch['media_type'] = media_type
                             temp_channels.extend(channels)
                             log.debug(
                                 "Added %d from %s/%s" %
@@ -584,7 +585,13 @@ class SearchBrowser(BaseBrowser):
 
         log.info(
             "Final: %d playable (TV:%d WEB:%d), %d YouTube skipped, %d problematic filtered, %d limited by config" %
-            (valid_count, tv_count, web_count, youtube_count, problematic_count, skipped_by_limit), module="Search")
+            (valid_count,
+             tv_count,
+             web_count,
+             youtube_count,
+             problematic_count,
+             skipped_by_limit),
+            module="Search")
 
     def extract_stream_url(self, channel):
         """Extract stream URL from channel"""

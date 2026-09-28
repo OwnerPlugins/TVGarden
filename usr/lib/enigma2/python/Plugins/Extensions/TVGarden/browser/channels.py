@@ -304,7 +304,8 @@ class ChannelsBrowser(BaseBrowser):
                 sources = channel.get("sources")
                 if isinstance(sources, dict):
                     # 1a. sources.streams (nuovo formato TV)
-                    if not stream_url and isinstance(sources.get("streams"), list):
+                    if not stream_url and isinstance(
+                            sources.get("streams"), list):
                         for url in sources["streams"]:
                             if isinstance(url, str) and url.strip():
                                 stream_url = url.strip()
@@ -312,7 +313,8 @@ class ChannelsBrowser(BaseBrowser):
                                 break
 
                     # 1b. sources.iptv (alternativo)
-                    if not stream_url and isinstance(sources.get("iptv"), list):
+                    if not stream_url and isinstance(
+                            sources.get("iptv"), list):
                         for url in sources["iptv"]:
                             if isinstance(url, str) and url.strip():
                                 stream_url = url.strip()
@@ -320,7 +322,8 @@ class ChannelsBrowser(BaseBrowser):
                                 break
 
                     # 1c. sources.youtube (webcams + TV youtube)
-                    if not stream_url and isinstance(sources.get("youtube"), list):
+                    if not stream_url and isinstance(
+                            sources.get("youtube"), list):
                         for url in sources["youtube"]:
                             if isinstance(url, str) and url.strip():
                                 stream_url = url.strip()
@@ -329,7 +332,8 @@ class ChannelsBrowser(BaseBrowser):
                                 break
 
                     # 1d. sources.iframe (alternativo)
-                    if not stream_url and isinstance(sources.get("iframe"), list):
+                    if not stream_url and isinstance(
+                            sources.get("iframe"), list):
                         for url in sources["iframe"]:
                             if isinstance(url, str) and url.strip():
                                 stream_url = url.strip()

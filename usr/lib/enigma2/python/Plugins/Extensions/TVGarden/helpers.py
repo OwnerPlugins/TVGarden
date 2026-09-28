@@ -169,7 +169,8 @@ def _media_path(media_type):
 # per retrocompatibilità con il codice esistente.
 
 def get_metadata_url(media_type="tv"):
-    return "%s/%s/raw/countries_metadata.json" % (REPO_BASE, _media_path(media_type))
+    return "%s/%s/raw/countries_metadata.json" % (
+        REPO_BASE, _media_path(media_type))
 
 
 def get_country_url(country_code, media_type="tv"):
@@ -185,11 +186,13 @@ def get_category_url(category_id, media_type="tv"):
 
 
 def get_categories_url(media_type="tv"):
-    return "https://api.github.com/repos/OwnerPlugins/famelack-data/contents/%s/raw/categories" % _media_path(media_type)
+    return "https://api.github.com/repos/OwnerPlugins/famelack-data/contents/%s/raw/categories" % _media_path(
+        media_type)
 
 
 def get_all_channels_url(media_type="tv"):
-    return "%s/%s/raw/categories/all.json" % (REPO_BASE, _media_path(media_type))
+    return "%s/%s/raw/categories/all.json" % (
+        REPO_BASE, _media_path(media_type))
 
 
 def get_flag_url(country_code, size=80):

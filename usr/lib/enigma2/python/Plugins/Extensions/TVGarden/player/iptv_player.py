@@ -5,6 +5,7 @@ TV Garden Plugin - IPTV Player
 Advanced player with channel zapping
 Based on TV Garden Project
 """
+import re
 from enigma import (
     eServiceReference,
     iPlayableService,
@@ -73,8 +74,6 @@ else:  # HD (1280x720)
     SKIN_PATH = "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/skins/hd"
 
 
-import re
-
 def convert_youtube_embed_to_watch(url):
     """
     [TVGarden patch] Converte URL embed YouTube in URL watch.
@@ -86,7 +85,8 @@ def convert_youtube_embed_to_watch(url):
     """
     try:
         # youtube-nocookie.com/embed/XXX o youtube.com/embed/XXX
-        m = re.search(r'(?:youtube-nocookie\.com|youtube\.com)/embed/([^/?#&]+)', url)
+        m = re.search(
+            r'(?:youtube-nocookie\.com|youtube\.com)/embed/([^/?#&]+)', url)
         if m:
             return "https://www.youtube.com/watch?v=%s" % m.group(1)
 
@@ -594,7 +594,9 @@ class TVGardenPlayer(
 
         # [TVGarden patch] YouTube: risolvi con yt-dlp interno (metodo WorldCam)
         if "youtube.com" in stream_url or "youtu.be" in stream_url or "youtube-nocookie.com" in stream_url:
-            log.info("YouTube channel detected: %s" % channel_name, module="Player")
+            log.info(
+                "YouTube channel detected: %s" %
+                channel_name, module="Player")
             resolved = get_youtube_stream(stream_url)
             if resolved:
                 stream_url = resolved
@@ -660,7 +662,9 @@ class TVGardenPlayer(
             else:
                 stream_url = str(stream_url)
 
-            log.info("Final stream URL: " + stream_url[:200] + "...", module="Player")
+            log.info("Final stream URL: " +
+                     stream_url[:200] +
+                     "...", module="Player")
 
             if '.m3u8' in stream_url.lower() or stream_url.lower().startswith('http'):
                 service_type = 5001  # HLS

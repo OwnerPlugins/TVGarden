@@ -43,10 +43,12 @@ except ImportError as e:
         return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/countries_metadata.json" % media_type
 
     def get_country_url(code, media_type="tv"):
-        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/countries/%s.json" % (media_type, code.lower())
+        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/countries/%s.json" % (
+            media_type, code.lower())
 
     def get_category_url(cat_id, media_type="tv"):
-        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/categories/%s.json" % (media_type, cat_id)
+        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/categories/%s.json" % (
+            media_type, cat_id)
 
     def get_categories_url(media_type="tv"):
         return "https://api.github.com/repos/OwnerPlugins/famelack-data/contents/%s/raw/categories" % media_type
@@ -376,11 +378,18 @@ class CacheManager:
             for item in data:
                 if item.get('name', '').endswith('.json'):
                     category_id = item['name'].replace('.json', '')
-                    name = category_id.replace('-', ' ').replace('_', ' ').title()
+                    name = category_id.replace(
+                        '-',
+                        ' ').replace(
+                        '_',
+                        ' ').title()
                     categories.append({'id': category_id, 'name': name})
 
             # Ordina: "all" prima, poi il resto alfabetico
-            categories.sort(key=lambda c: (c['id'] != 'all', c['name'].lower()))
+            categories.sort(
+                key=lambda c: (
+                    c['id'] != 'all',
+                    c['name'].lower()))
 
             # Salva in memory
             self.cache_data[cache_key] = categories
@@ -405,7 +414,11 @@ class CacheManager:
     # ============================================================
     # [TVGarden patch] get_country_channels con media_type
     # ============================================================
-    def get_country_channels(self, country_code, media_type="tv", force_refresh=False):
+    def get_country_channels(
+            self,
+            country_code,
+            media_type="tv",
+            force_refresh=False):
         """Get channels for specific country - WORKING VERSION"""
         try:
             url = get_country_url(country_code, media_type)
@@ -480,13 +493,13 @@ class CacheManager:
                             if isinstance(field_data, list):
                                 log.info(
                                     "✓ Found %d channels in field '%s' for %s/%s" %
-                                    (len(field_data), field, media_type, country_code),
-                                    module="Cache")
+                                    (len(field_data), field, media_type, country_code), module="Cache")
                                 return field_data
 
-                    log.error("No 'channels' field found for %s/%s. Available keys: %s" % (
-                        media_type, country_code, list(country_data.keys())),
-                        module="Cache")
+                    log.error(
+                        "No 'channels' field found for %s/%s. Available keys: %s" %
+                        (media_type, country_code, list(
+                            country_data.keys())), module="Cache")
                     return []
 
                 log.error(
@@ -513,7 +526,11 @@ class CacheManager:
     # [TVGarden patch] get_category_channels con media_type
     # Cache key SEPARATA per media_type (evita collisioni TV/Webcams)
     # ============================================================
-    def get_category_channels(self, category_id, media_type="tv", force_refresh=False):
+    def get_category_channels(
+            self,
+            category_id,
+            media_type="tv",
+            force_refresh=False):
         """Get channels for a specific category"""
         cache_key = "cat_%s_%s" % (media_type, category_id)
 
