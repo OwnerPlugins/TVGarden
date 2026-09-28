@@ -161,9 +161,6 @@ msgstr "所有结果"
 msgid "Already in favorites"
 msgstr "已经在收藏夹里了"
 
-msgid "Animation"
-msgstr "动画片"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "您确定要清除所有日志文件吗？"
 
@@ -191,11 +188,16 @@ msgstr "按类别浏览频道"
 msgid "Browse channels by country"
 msgstr "按国家/地区浏览频道"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "按类别浏览频道"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "按国家/地区浏览频道"
+
 msgid "Buffer Size"
 msgstr "缓冲区大小"
-
-msgid "Business"
-msgstr "商业"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = 更改 |确定=切换|停止=退出|通过卢卢拉"
@@ -233,9 +235,6 @@ msgstr "检查插件更新"
 msgid "Checking for updates..."
 msgstr "正在检查更新..."
 
-msgid "Classic"
-msgstr "经典的"
-
 msgid "Clear"
 msgstr "清除"
 
@@ -257,14 +256,8 @@ msgstr "已清除 %d 个收藏夹"
 msgid "Close"
 msgstr "关闭"
 
-msgid "Comedy"
-msgstr "喜剧"
-
 msgid "Connection Timeout"
 msgstr "连接超时"
-
-msgid "Cooking"
-msgstr "烹饪"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "无法检查更新。检查互联网连接。"
@@ -284,9 +277,6 @@ msgstr "创建层次结构..."
 msgid "Critical"
 msgstr "批判的"
 
-msgid "Culture"
-msgstr "文化"
-
 msgid "Database exported successfully"
 msgstr "数据库导出成功"
 
@@ -296,14 +286,8 @@ msgstr "调试"
 msgid "Default View"
 msgstr "默认视图"
 
-msgid "Documentary"
-msgstr "记录"
-
 msgid "Editing: %s"
 msgstr "编辑：%s"
-
-msgid "Education"
-msgstr "教育"
 
 msgid "Empty database"
 msgstr "空数据库"
@@ -314,9 +298,6 @@ msgstr "启用缓存"
 msgid "Enable Export"
 msgstr "启用导出"
 
-msgid "Entertainment"
-msgstr "娱乐"
-
 msgid "Error"
 msgstr "错误"
 
@@ -325,6 +306,10 @@ msgstr "清除收藏夹时出错"
 
 msgid "Error clearing logs: %s"
 msgstr "清除日志时出错：%s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "加载类别时出错"
 
 msgid "Error loading category"
 msgstr "加载类别时出错"
@@ -413,9 +398,6 @@ msgstr "创建备份失败。更新已取消。"
 msgid "Failed to load database"
 msgstr "加载数据库失败"
 
-msgid "Family"
-msgstr "家庭"
-
 msgid "Favorite"
 msgstr "最喜欢的"
 
@@ -443,20 +425,11 @@ msgstr "找到 %d 个可播放频道"
 msgid "GStreamer"
 msgstr ""
 
-msgid "General"
-msgstr "一般的"
-
 msgid "Hierarchical export completed"
 msgstr "分层导出完成"
 
 msgid "Hierarchical export completed!"
 msgstr "分层导出完成！"
-
-msgid "History"
-msgstr "历史"
-
-msgid "Hobby"
-msgstr "爱好"
 
 msgid "Info"
 msgstr "信息"
@@ -467,17 +440,12 @@ msgstr "第 {} 项（共 {} 项）"
 msgid "Keyboard"
 msgstr "键盘"
 
-msgid "Kids"
-msgstr "孩子们"
-
-msgid "Legislative"
-msgstr "立法"
-
-msgid "Lifestyle"
-msgstr "生活方式"
-
 msgid "List Position"
 msgstr "列表位置"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "正在加载国家/地区：%s (%d/%d)"
 
 msgid "Loading all channels in background..."
 msgstr "正在后台加载所有频道..."
@@ -497,17 +465,11 @@ msgstr "正在加载频道..."
 msgid "Loading countries..."
 msgstr "正在加载国家/地区..."
 
-msgid "Loading countries: %s (%d/%d)"
-msgstr "正在加载国家/地区：%s (%d/%d)"
-
 msgid "Loading favorites..."
 msgstr "正在加载收藏夹..."
 
 msgid "Loading... %d channels so far"
 msgstr "正在加载...到目前为止 %d 个频道"
-
-msgid "Local"
-msgstr "当地的"
 
 msgid "Log Level"
 msgstr "日志级别"
@@ -541,15 +503,6 @@ msgstr "国家/地区最大频道数"
 
 msgid "Memory Optimization"
 msgstr "内存优化"
-
-msgid "Movies"
-msgstr "电影"
-
-msgid "Music"
-msgstr "音乐"
-
-msgid "News"
-msgstr "消息"
 
 msgid "Next load will use fresh data"
 msgstr "下次加载将使用新数据"
@@ -623,9 +576,6 @@ msgstr "插件已经是最新的了"
 msgid "Plugin settings and configuration"
 msgstr "插件设置和配置"
 
-msgid "Politics"
-msgstr "政治"
-
 msgid "Press GREEN for keyboard..."
 msgstr "按绿色键盘..."
 
@@ -659,9 +609,6 @@ msgstr "正在刷新数据..."
 msgid "Refreshing..."
 msgstr "清爽..."
 
-msgid "Religious"
-msgstr "宗教"
-
 msgid "Remove '%s' from favorites?"
 msgstr "从收藏夹中删除“%s”？"
 
@@ -685,9 +632,6 @@ msgstr "已从收藏夹中删除：%s"
 
 msgid "Save"
 msgstr "节省"
-
-msgid "Science"
-msgstr "科学"
 
 msgid "Search"
 msgstr "搜索"
@@ -713,17 +657,11 @@ msgstr "选择一个类别"
 msgid "Select a country"
 msgstr "选择一个国家"
 
-msgid "Series"
-msgstr "系列"
-
 msgid "Set options"
 msgstr "设置选项"
 
 msgid "Settings"
 msgstr "设置"
-
-msgid "Shop"
-msgstr "店铺"
 
 msgid "Show Flags"
 msgstr "显示标志"
@@ -739,9 +677,6 @@ msgstr "显示 {shown} 个频道（共 {total} 个）"
 
 msgid "Showing {shown} of {total} results"
 msgstr "显示 {show} 个结果，共 {total} 个结果"
-
-msgid "Sports"
-msgstr "运动的"
 
 msgid "Statistics:"
 msgstr "统计数据："
@@ -769,9 +704,6 @@ msgstr "顶部"
 
 msgid "Total channels:"
 msgstr "总频道："
-
-msgid "Travel"
-msgstr "旅行"
 
 msgid "Unknown"
 msgstr "未知"
@@ -824,8 +756,13 @@ msgstr "查看日志文件"
 msgid "Warning"
 msgstr "警告"
 
-msgid "Weather"
-msgstr "天气"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "按类别浏览"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "按国家浏览"
 
 msgid "Will load fresh data next time"
 msgstr "下次将加载新数据"
@@ -853,3 +790,87 @@ msgstr "国家"
 
 msgid "files and"
 msgstr "文件和"
+
+#~ msgid "Animation"
+#~ msgstr "动画片"
+
+#~ msgid "Business"
+#~ msgstr "商业"
+
+#~ msgid "Classic"
+#~ msgstr "经典的"
+
+#~ msgid "Comedy"
+#~ msgstr "喜剧"
+
+#~ msgid "Cooking"
+#~ msgstr "烹饪"
+
+#~ msgid "Culture"
+#~ msgstr "文化"
+
+#~ msgid "Documentary"
+#~ msgstr "记录"
+
+#~ msgid "Education"
+#~ msgstr "教育"
+
+#~ msgid "Entertainment"
+#~ msgstr "娱乐"
+
+#~ msgid "Family"
+#~ msgstr "家庭"
+
+#~ msgid "General"
+#~ msgstr "一般的"
+
+#~ msgid "History"
+#~ msgstr "历史"
+
+#~ msgid "Hobby"
+#~ msgstr "爱好"
+
+#~ msgid "Kids"
+#~ msgstr "孩子们"
+
+#~ msgid "Legislative"
+#~ msgstr "立法"
+
+#~ msgid "Lifestyle"
+#~ msgstr "生活方式"
+
+#~ msgid "Local"
+#~ msgstr "当地的"
+
+#~ msgid "Movies"
+#~ msgstr "电影"
+
+#~ msgid "Music"
+#~ msgstr "音乐"
+
+#~ msgid "News"
+#~ msgstr "消息"
+
+#~ msgid "Politics"
+#~ msgstr "政治"
+
+#~ msgid "Religious"
+#~ msgstr "宗教"
+
+#~ msgid "Science"
+#~ msgstr "科学"
+
+#~ msgid "Series"
+#~ msgstr "系列"
+
+#~ msgid "Shop"
+#~ msgstr "店铺"
+
+#~ msgid "Sports"
+#~ msgstr "运动的"
+
+#~ msgid "Travel"
+#~ msgstr "旅行"
+
+#~ msgid "Weather"
+#~ msgstr "天气"

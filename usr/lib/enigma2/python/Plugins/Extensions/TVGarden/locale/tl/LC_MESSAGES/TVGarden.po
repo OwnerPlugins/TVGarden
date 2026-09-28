@@ -151,9 +151,6 @@ msgstr "Lahat ng resulta"
 msgid "Already in favorites"
 msgstr "Nasa mga paborito na"
 
-msgid "Animation"
-msgstr "Animasyon"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Sigurado ka bang gusto mong i-clear ang lahat ng log file?"
 
@@ -181,11 +178,16 @@ msgstr "Mag-browse ng mga channel ayon sa kategorya"
 msgid "Browse channels by country"
 msgstr "Mag-browse ng mga channel ayon sa bansa"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Mag-browse ng mga channel ayon sa kategorya"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Mag-browse ng mga channel ayon sa bansa"
+
 msgid "Buffer Size"
 msgstr "Laki ng Buffer"
-
-msgid "Business"
-msgstr "negosyo"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Baguhin | OK = I-toggle | STOP = Lumabas | ni Lululla"
@@ -223,9 +225,6 @@ msgstr "Tingnan kung may mga update sa plugin"
 msgid "Checking for updates..."
 msgstr "Tinitingnan ang mga update..."
 
-msgid "Classic"
-msgstr "Klasiko"
-
 msgid "Clear"
 msgstr "Maaliwalas"
 
@@ -247,14 +246,8 @@ msgstr "Na-clear ang %d na paborito"
 msgid "Close"
 msgstr "Isara"
 
-msgid "Comedy"
-msgstr "Komedya"
-
 msgid "Connection Timeout"
 msgstr "Timeout ng Koneksyon"
-
-msgid "Cooking"
-msgstr "Pagluluto"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Hindi masuri ang mga update. Suriin ang koneksyon sa internet."
@@ -274,9 +267,6 @@ msgstr "Gumagawa ng hierarchical na istraktura..."
 msgid "Critical"
 msgstr "Kritikal"
 
-msgid "Culture"
-msgstr "Kultura"
-
 msgid "Database exported successfully"
 msgstr "Matagumpay na na-export ang database"
 
@@ -286,14 +276,8 @@ msgstr "I-debug"
 msgid "Default View"
 msgstr "Default na View"
 
-msgid "Documentary"
-msgstr "Dokumentaryo"
-
 msgid "Editing: %s"
 msgstr "Pag-edit: %s"
-
-msgid "Education"
-msgstr "Edukasyon"
 
 msgid "Empty database"
 msgstr "Walang laman ang database"
@@ -304,9 +288,6 @@ msgstr "Paganahin ang Cache"
 msgid "Enable Export"
 msgstr "Paganahin ang Pag-export"
 
-msgid "Entertainment"
-msgstr "Libangan"
-
 msgid "Error"
 msgstr ""
 
@@ -315,6 +296,10 @@ msgstr "Error sa pag-clear ng mga paborito"
 
 msgid "Error clearing logs: %s"
 msgstr "Error sa pag-clear ng mga log: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Error sa paglo-load ng kategorya"
 
 msgid "Error loading category"
 msgstr "Error sa paglo-load ng kategorya"
@@ -403,9 +388,6 @@ msgstr "Nabigong gumawa ng backup. Kinansela ang pag-update."
 msgid "Failed to load database"
 msgstr "Nabigong i-load ang database"
 
-msgid "Family"
-msgstr "Pamilya"
-
 msgid "Favorite"
 msgstr "Paborito"
 
@@ -433,20 +415,11 @@ msgstr "Nakahanap ng %d na puwedeng laruin na channel"
 msgid "GStreamer"
 msgstr ""
 
-msgid "General"
-msgstr "Heneral"
-
 msgid "Hierarchical export completed"
 msgstr "Nakumpleto ang hierarchical export"
 
 msgid "Hierarchical export completed!"
 msgstr "Nakumpleto ang hierarchical export!"
-
-msgid "History"
-msgstr "Kasaysayan"
-
-msgid "Hobby"
-msgstr "libangan"
 
 msgid "Info"
 msgstr "Impormasyon"
@@ -457,17 +430,12 @@ msgstr "Item {} ng {}"
 msgid "Keyboard"
 msgstr ""
 
-msgid "Kids"
-msgstr "Mga bata"
-
-msgid "Legislative"
-msgstr "Pambatasan"
-
-msgid "Lifestyle"
-msgstr "Pamumuhay"
-
 msgid "List Position"
 msgstr "Posisyon ng Listahan"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Naglo-load ng mga bansa: %s (%d/%d)"
 
 msgid "Loading all channels in background..."
 msgstr "Nilo-load ang lahat ng channel sa background..."
@@ -487,17 +455,11 @@ msgstr "Naglo-load ng mga channel..."
 msgid "Loading countries..."
 msgstr "Naglo-load ng mga bansa..."
 
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Naglo-load ng mga bansa: %s (%d/%d)"
-
 msgid "Loading favorites..."
 msgstr "Nilo-load ang mga paborito..."
 
 msgid "Loading... %d channels so far"
 msgstr "Naglo-load... %d channel sa ngayon"
-
-msgid "Local"
-msgstr "Lokal"
 
 msgid "Log Level"
 msgstr "Antas ng Log"
@@ -531,15 +493,6 @@ msgstr "Max na channel para sa bansa"
 
 msgid "Memory Optimization"
 msgstr "Pag-optimize ng Memory"
-
-msgid "Movies"
-msgstr "Mga pelikula"
-
-msgid "Music"
-msgstr "Musika"
-
-msgid "News"
-msgstr "Balita"
 
 msgid "Next load will use fresh data"
 msgstr "Ang susunod na pag-load ay gagamit ng bagong data"
@@ -613,9 +566,6 @@ msgstr "Ang plugin ay napapanahon"
 msgid "Plugin settings and configuration"
 msgstr "Mga setting at configuration ng plugin"
 
-msgid "Politics"
-msgstr "Pulitika"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Pindutin ang GREEN para sa keyboard..."
 
@@ -649,9 +599,6 @@ msgstr "Nire-refresh ang data..."
 msgid "Refreshing..."
 msgstr "Nire-refresh..."
 
-msgid "Religious"
-msgstr "Relihiyoso"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Alisin ang '%s' sa mga paborito?"
 
@@ -675,9 +622,6 @@ msgstr "Inalis sa mga paborito: %s"
 
 msgid "Save"
 msgstr "I-save"
-
-msgid "Science"
-msgstr "Agham"
 
 msgid "Search"
 msgstr "Maghanap"
@@ -703,17 +647,11 @@ msgstr "Pumili ng kategorya"
 msgid "Select a country"
 msgstr "Pumili ng bansa"
 
-msgid "Series"
-msgstr "Serye"
-
 msgid "Set options"
 msgstr "Itakda ang mga pagpipilian"
 
 msgid "Settings"
 msgstr "Mga setting"
-
-msgid "Shop"
-msgstr "Mamili"
 
 msgid "Show Flags"
 msgstr "Ipakita ang mga Watawat"
@@ -729,9 +667,6 @@ msgstr "Ipinapakita ang {shown} ng {total} channel"
 
 msgid "Showing {shown} of {total} results"
 msgstr "Ipinapakita ang {shown} ng {total} na mga resulta"
-
-msgid "Sports"
-msgstr "Palakasan"
 
 msgid "Statistics:"
 msgstr "Mga istatistika:"
@@ -759,9 +694,6 @@ msgstr "Nangunguna"
 
 msgid "Total channels:"
 msgstr "Kabuuang mga channel:"
-
-msgid "Travel"
-msgstr "Paglalakbay"
 
 msgid "Unknown"
 msgstr "Hindi alam"
@@ -814,8 +746,13 @@ msgstr "Tingnan ang Log File"
 msgid "Warning"
 msgstr "Babala"
 
-msgid "Weather"
-msgstr "Panahon"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Mag-browse ayon sa Kategorya"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Mag-browse ayon sa Bansa"
 
 msgid "Will load fresh data next time"
 msgstr "Maglo-load ng bagong data sa susunod"
@@ -843,3 +780,87 @@ msgstr "mga bansa"
 
 msgid "files and"
 msgstr "mga file at"
+
+#~ msgid "Animation"
+#~ msgstr "Animasyon"
+
+#~ msgid "Business"
+#~ msgstr "negosyo"
+
+#~ msgid "Classic"
+#~ msgstr "Klasiko"
+
+#~ msgid "Comedy"
+#~ msgstr "Komedya"
+
+#~ msgid "Cooking"
+#~ msgstr "Pagluluto"
+
+#~ msgid "Culture"
+#~ msgstr "Kultura"
+
+#~ msgid "Documentary"
+#~ msgstr "Dokumentaryo"
+
+#~ msgid "Education"
+#~ msgstr "Edukasyon"
+
+#~ msgid "Entertainment"
+#~ msgstr "Libangan"
+
+#~ msgid "Family"
+#~ msgstr "Pamilya"
+
+#~ msgid "General"
+#~ msgstr "Heneral"
+
+#~ msgid "History"
+#~ msgstr "Kasaysayan"
+
+#~ msgid "Hobby"
+#~ msgstr "libangan"
+
+#~ msgid "Kids"
+#~ msgstr "Mga bata"
+
+#~ msgid "Legislative"
+#~ msgstr "Pambatasan"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Pamumuhay"
+
+#~ msgid "Local"
+#~ msgstr "Lokal"
+
+#~ msgid "Movies"
+#~ msgstr "Mga pelikula"
+
+#~ msgid "Music"
+#~ msgstr "Musika"
+
+#~ msgid "News"
+#~ msgstr "Balita"
+
+#~ msgid "Politics"
+#~ msgstr "Pulitika"
+
+#~ msgid "Religious"
+#~ msgstr "Relihiyoso"
+
+#~ msgid "Science"
+#~ msgstr "Agham"
+
+#~ msgid "Series"
+#~ msgstr "Serye"
+
+#~ msgid "Shop"
+#~ msgstr "Mamili"
+
+#~ msgid "Sports"
+#~ msgstr "Palakasan"
+
+#~ msgid "Travel"
+#~ msgstr "Paglalakbay"
+
+#~ msgid "Weather"
+#~ msgstr "Panahon"

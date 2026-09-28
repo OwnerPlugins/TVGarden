@@ -165,9 +165,6 @@ msgstr "Összes csatorna"
 msgid "Already in favorites"
 msgstr "Már a kedvencek között van"
 
-msgid "Animation"
-msgstr "Animáció"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Biztosan törölni szeretné az összes naplófájlt?"
 
@@ -195,11 +192,16 @@ msgstr "Csatornák böngészése kategória szerint"
 msgid "Browse channels by country"
 msgstr "Csatornák országok szerint"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Csatornák böngészése kategória szerint"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Csatornák országok szerint"
+
 msgid "Buffer Size"
 msgstr "Pufferméret"
-
-msgid "Business"
-msgstr "Üzleti"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Változás | OK = Váltás | STOP = Kilépés | írta Lululla"
@@ -237,9 +239,6 @@ msgstr "Bővítményfrissítések keresése"
 msgid "Checking for updates..."
 msgstr "Frissítések keresése..."
 
-msgid "Classic"
-msgstr "Klasszikus"
-
 msgid "Clear"
 msgstr "Törlés"
 
@@ -261,14 +260,8 @@ msgstr "%d kedvenc törölve"
 msgid "Close"
 msgstr "Bezár"
 
-msgid "Comedy"
-msgstr "Humor"
-
 msgid "Connection Timeout"
 msgstr "Kapcsolat időtúllépése"
-
-msgid "Cooking"
-msgstr "Főzés"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Nem sikerült frissítéseket keresni. Ellenőrizze az internetkapcsolatot."
@@ -288,9 +281,6 @@ msgstr "Hierarchikus struktúra létrehozása..."
 msgid "Critical"
 msgstr "Kritikus"
 
-msgid "Culture"
-msgstr "Kultúra"
-
 msgid "Database exported successfully"
 msgstr "Az adatbázis exportálása sikeresen megtörtént"
 
@@ -300,14 +290,8 @@ msgstr "Hibakeresés"
 msgid "Default View"
 msgstr "Alapértelmezett nézet"
 
-msgid "Documentary"
-msgstr "Dokumentumfilm"
-
 msgid "Editing: %s"
 msgstr "Szerkesztés: %s"
-
-msgid "Education"
-msgstr "Oktatás"
 
 msgid "Empty database"
 msgstr "Üres adatbázis"
@@ -318,9 +302,6 @@ msgstr "Gyorsítótár engedélyezése"
 msgid "Enable Export"
 msgstr "Exportálás engedélyezése"
 
-msgid "Entertainment"
-msgstr "Szórakoztatóipar"
-
 msgid "Error"
 msgstr "Hiba"
 
@@ -329,6 +310,10 @@ msgstr "Hiba a kedvencek törlésénél"
 
 msgid "Error clearing logs: %s"
 msgstr "Hiba a naplók törlésekor: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Hiba a kategória betöltésekor"
 
 msgid "Error loading category"
 msgstr "Hiba a kategória betöltésekor"
@@ -421,9 +406,6 @@ msgstr "Nem sikerült biztonsági mentést készíteni. Frissítés megszakítva
 msgid "Failed to load database"
 msgstr "Nem sikerült betölteni az adatbázist"
 
-msgid "Family"
-msgstr "Család"
-
 msgid "Favorite"
 msgstr "Kedvenc"
 
@@ -451,20 +433,11 @@ msgstr "%d lejátszható csatorna található"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "General"
-msgstr "Általános"
-
 msgid "Hierarchical export completed"
 msgstr "A hierarchikus exportálás befejeződött"
 
 msgid "Hierarchical export completed!"
 msgstr "A hierarchikus exportálás befejeződött!"
-
-msgid "History"
-msgstr "Előzmények"
-
-msgid "Hobby"
-msgstr "Hobbi"
 
 msgid "Info"
 msgstr "Információ"
@@ -475,17 +448,12 @@ msgstr "{}/{} elem"
 msgid "Keyboard"
 msgstr "Billentyűzet"
 
-msgid "Kids"
-msgstr "Gyerek"
-
-msgid "Legislative"
-msgstr "Jogalkotási"
-
-msgid "Lifestyle"
-msgstr "Életmód"
-
 msgid "List Position"
 msgstr "Lista pozíció"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Országok betöltése..."
 
 #, fuzzy
 msgid "Loading all channels in background..."
@@ -507,19 +475,12 @@ msgstr "Csatornák betöltése..."
 msgid "Loading countries..."
 msgstr "Országok betöltése..."
 
-#, fuzzy
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Országok betöltése..."
-
 msgid "Loading favorites..."
 msgstr "Kedvencek betöltése..."
 
 #, fuzzy
 msgid "Loading... %d channels so far"
 msgstr "Csatornák betöltése..."
-
-msgid "Local"
-msgstr "Helyi"
 
 msgid "Log Level"
 msgstr "Naplózás szintje"
@@ -556,15 +517,6 @@ msgstr "Maximális csatornák száma országonként"
 
 msgid "Memory Optimization"
 msgstr "Memória optimalizálás"
-
-msgid "Movies"
-msgstr "Filmek"
-
-msgid "Music"
-msgstr "Zene"
-
-msgid "News"
-msgstr "Hírek"
 
 msgid "Next load will use fresh data"
 msgstr "A következő betöltés friss adatokat használ"
@@ -639,9 +591,6 @@ msgstr "A bővítmény naprakész"
 msgid "Plugin settings and configuration"
 msgstr "Plugin beállítások és konfiguráció"
 
-msgid "Politics"
-msgstr "Politika"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Nyomja meg a ZÖLD gombot a billentyűzethez..."
 
@@ -676,9 +625,6 @@ msgstr "Adatok frissítése..."
 msgid "Refreshing..."
 msgstr "Üdítő..."
 
-msgid "Religious"
-msgstr "Vallásos"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Eltávolítja a(z) „%s” elemet a kedvencek közül?"
 
@@ -702,9 +648,6 @@ msgstr "Eltávolítva a kedvencek közül: %s"
 
 msgid "Save"
 msgstr "Mentés"
-
-msgid "Science"
-msgstr "Tudomány"
 
 msgid "Search"
 msgstr "Keresés"
@@ -730,17 +673,11 @@ msgstr "Válasszon egy kategóriát"
 msgid "Select a country"
 msgstr "Válasszon Országot"
 
-msgid "Series"
-msgstr "Sorozatok"
-
 msgid "Set options"
 msgstr "Beállítások"
 
 msgid "Settings"
 msgstr "Beállítások"
-
-msgid "Shop"
-msgstr "Webáruház"
 
 msgid "Show Flags"
 msgstr "Zászlók megjelenítése"
@@ -757,9 +694,6 @@ msgstr "{shown} csatorna megjelenítése {total} csatornából"
 
 msgid "Showing {shown} of {total} results"
 msgstr "{shown} eredmények közül {total} megjelenítése"
-
-msgid "Sports"
-msgstr "Sportok"
 
 msgid "Statistics:"
 msgstr "Statisztika:"
@@ -788,15 +722,12 @@ msgstr ""
 msgid "Total channels:"
 msgstr "Összes csatorna:"
 
-msgid "Travel"
-msgstr "Utazás"
-
 msgid "Unknown"
 msgstr "Ismeretlen"
 
 msgid "Update available!"
 msgstr "Frissítés elérhető!"
-"Frissítés elérhető!{server_version} {version_server}\n"
+"Frissítés elérhető!Frissítés elérhető!{server_version} {version_server}\n"
 "{installed_version} {version}\n"
 "\n"
 "{update_available}"
@@ -846,8 +777,13 @@ msgstr "Naplófájl megtekintése"
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
-msgid "Weather"
-msgstr "Időjárás"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Kategória szerint böngészés"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Országok szerint böngészés"
 
 msgid "Will load fresh data next time"
 msgstr "Legközelebb friss adatokat tölt be"
@@ -878,6 +814,90 @@ msgstr "országokban"
 
 msgid "files and"
 msgstr "fájlok és"
+
+#~ msgid "Animation"
+#~ msgstr "Animáció"
+
+#~ msgid "Business"
+#~ msgstr "Üzleti"
+
+#~ msgid "Classic"
+#~ msgstr "Klasszikus"
+
+#~ msgid "Comedy"
+#~ msgstr "Humor"
+
+#~ msgid "Cooking"
+#~ msgstr "Főzés"
+
+#~ msgid "Culture"
+#~ msgstr "Kultúra"
+
+#~ msgid "Documentary"
+#~ msgstr "Dokumentumfilm"
+
+#~ msgid "Education"
+#~ msgstr "Oktatás"
+
+#~ msgid "Entertainment"
+#~ msgstr "Szórakoztatóipar"
+
+#~ msgid "Family"
+#~ msgstr "Család"
+
+#~ msgid "General"
+#~ msgstr "Általános"
+
+#~ msgid "History"
+#~ msgstr "Előzmények"
+
+#~ msgid "Hobby"
+#~ msgstr "Hobbi"
+
+#~ msgid "Kids"
+#~ msgstr "Gyerek"
+
+#~ msgid "Legislative"
+#~ msgstr "Jogalkotási"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Életmód"
+
+#~ msgid "Local"
+#~ msgstr "Helyi"
+
+#~ msgid "Movies"
+#~ msgstr "Filmek"
+
+#~ msgid "Music"
+#~ msgstr "Zene"
+
+#~ msgid "News"
+#~ msgstr "Hírek"
+
+#~ msgid "Politics"
+#~ msgstr "Politika"
+
+#~ msgid "Religious"
+#~ msgstr "Vallásos"
+
+#~ msgid "Science"
+#~ msgstr "Tudomány"
+
+#~ msgid "Series"
+#~ msgstr "Sorozatok"
+
+#~ msgid "Shop"
+#~ msgstr "Webáruház"
+
+#~ msgid "Sports"
+#~ msgstr "Sportok"
+
+#~ msgid "Travel"
+#~ msgstr "Utazás"
+
+#~ msgid "Weather"
+#~ msgstr "Időjárás"
 
 #~ msgid "Press GREEN for keyboard... Ready - %d channels"
 #~ msgstr "Nyomja meg a ZÖLD gombot a billentyűzet aktiválásához... Kész - %d csatorna"

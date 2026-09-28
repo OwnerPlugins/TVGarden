@@ -165,9 +165,6 @@ msgstr "Все каналы"
 msgid "Already in favorites"
 msgstr "Уже в избранном"
 
-msgid "Animation"
-msgstr "Анимация"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Вы уверены, что хотите очистить все файлы журналов?"
 
@@ -195,11 +192,16 @@ msgstr "Просматривайте каналы по категориям"
 msgid "Browse channels by country"
 msgstr "Просматривайте каналы по странам"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Просматривайте каналы по категориям"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Просматривайте каналы по странам"
+
 msgid "Buffer Size"
 msgstr "Размер буфера"
-
-msgid "Business"
-msgstr "Бизнес"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Изменить | ОК = Переключить | СТОП = Выход | от Лулуллы"
@@ -237,9 +239,6 @@ msgstr "Проверьте наличие обновлений плагина"
 msgid "Checking for updates..."
 msgstr "Проверка наличия обновлений..."
 
-msgid "Classic"
-msgstr "Классический"
-
 msgid "Clear"
 msgstr "Очистить"
 
@@ -261,14 +260,8 @@ msgstr "Удалено %d избранных"
 msgid "Close"
 msgstr "Закрыть"
 
-msgid "Comedy"
-msgstr "Комедия"
-
 msgid "Connection Timeout"
 msgstr "Тайм-аут соединения"
-
-msgid "Cooking"
-msgstr "Готовка"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Не удалось проверить наличие обновлений. Проверьте подключение к интернету."
@@ -288,9 +281,6 @@ msgstr "Создание иерархической структуры..."
 msgid "Critical"
 msgstr "Критический"
 
-msgid "Culture"
-msgstr "Культура"
-
 msgid "Database exported successfully"
 msgstr "База данных успешно экспортирована"
 
@@ -300,14 +290,8 @@ msgstr "Отладка"
 msgid "Default View"
 msgstr "Вид по умолчанию"
 
-msgid "Documentary"
-msgstr "Документальное"
-
 msgid "Editing: %s"
 msgstr "Редактирование: %s"
-
-msgid "Education"
-msgstr "Образование"
 
 msgid "Empty database"
 msgstr "Пустая база данных"
@@ -318,9 +302,6 @@ msgstr "Включить кеш"
 msgid "Enable Export"
 msgstr "Включить экспорт"
 
-msgid "Entertainment"
-msgstr "Развлечения"
-
 msgid "Error"
 msgstr "Ошибка"
 
@@ -329,6 +310,10 @@ msgstr "Ошибка при очистке избранного"
 
 msgid "Error clearing logs: %s"
 msgstr "Ошибка очистки журналов: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Ошибка загрузки категории"
 
 msgid "Error loading category"
 msgstr "Ошибка загрузки категории"
@@ -421,9 +406,6 @@ msgstr "Не удалось создать резервную копию. Обн
 msgid "Failed to load database"
 msgstr "Не удалось загрузить базу данных"
 
-msgid "Family"
-msgstr "Семейство"
-
 msgid "Favorite"
 msgstr "Избранное"
 
@@ -451,20 +433,11 @@ msgstr "Найдено %d доступных для воспроизведени
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "General"
-msgstr "Общие"
-
 msgid "Hierarchical export completed"
 msgstr "Иерархический экспорт завершен"
 
 msgid "Hierarchical export completed!"
 msgstr "Иерархический экспорт завершен!"
-
-msgid "History"
-msgstr "История"
-
-msgid "Hobby"
-msgstr "Хобби"
 
 msgid "Info"
 msgstr "Информация"
@@ -475,17 +448,12 @@ msgstr "Товар {} из {}"
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-msgid "Kids"
-msgstr "Дети"
-
-msgid "Legislative"
-msgstr "Законодательный"
-
-msgid "Lifestyle"
-msgstr "Образ жизни"
-
 msgid "List Position"
 msgstr "Позиция в списке"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Загрузка стран..."
 
 #, fuzzy
 msgid "Loading all channels in background..."
@@ -507,19 +475,12 @@ msgstr "Загрузка каналов..."
 msgid "Loading countries..."
 msgstr "Загрузка стран..."
 
-#, fuzzy
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Загрузка стран..."
-
 msgid "Loading favorites..."
 msgstr "Загрузка избранного..."
 
 #, fuzzy
 msgid "Loading... %d channels so far"
 msgstr "Загрузка каналов..."
-
-msgid "Local"
-msgstr "Локальный"
 
 msgid "Log Level"
 msgstr "Уровень лога"
@@ -556,15 +517,6 @@ msgstr "Максимальное количество каналов на стр
 
 msgid "Memory Optimization"
 msgstr "Оптимизация памяти"
-
-msgid "Movies"
-msgstr "Фильмы"
-
-msgid "Music"
-msgstr "Музыка"
-
-msgid "News"
-msgstr "Новости"
 
 msgid "Next load will use fresh data"
 msgstr "Следующая загрузка будет использовать свежие данные."
@@ -639,9 +591,6 @@ msgstr "Плагин обновлен"
 msgid "Plugin settings and configuration"
 msgstr "Настройки и конфигурация плагина"
 
-msgid "Politics"
-msgstr "Политика"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Нажмите ЗЕЛЕНУЮ кнопку для включения клавиатуры..."
 
@@ -676,9 +625,6 @@ msgstr "Обновленные данные..."
 msgid "Refreshing..."
 msgstr "Обновление ..."
 
-msgid "Religious"
-msgstr "Крестик"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Удалить '%s' из избранного?"
 
@@ -702,9 +648,6 @@ msgstr "Удалено из избранного: %s"
 
 msgid "Save"
 msgstr "Сохранить"
-
-msgid "Science"
-msgstr "Наука"
 
 msgid "Search"
 msgstr "Поиск"
@@ -730,17 +673,11 @@ msgstr "Выберите категорию"
 msgid "Select a country"
 msgstr "Выберите страну"
 
-msgid "Series"
-msgstr "Серии"
-
 msgid "Set options"
 msgstr "Задать настройки"
 
 msgid "Settings"
 msgstr "Настройки"
-
-msgid "Shop"
-msgstr "Магазин"
 
 msgid "Show Flags"
 msgstr "Показать флаги"
@@ -757,9 +694,6 @@ msgstr "Отображается {shown} из {total} каналов"
 
 msgid "Showing {shown} of {total} results"
 msgstr "Показаны {shown} из {total} результатов"
-
-msgid "Sports"
-msgstr "Виды спорта"
 
 msgid "Statistics:"
 msgstr "Статистика:"
@@ -788,15 +722,12 @@ msgstr "Вершина"
 msgid "Total channels:"
 msgstr "Всего каналов:"
 
-msgid "Travel"
-msgstr "Путешествия"
-
 msgid "Unknown"
 msgstr "Неизвестно"
 
 msgid "Update available!"
 msgstr "Доступно обновление!"
-"Доступно обновление!{server_version} {version_server}\n"
+"Доступно обновление!Доступно обновление!{server_version} {version_server}\n"
 "{installed_version} {version}\n"
 "\n"
 "{update_available}"
@@ -846,8 +777,13 @@ msgstr "Просмотреть файл журнала"
 msgid "Warning"
 msgstr "Предупреждение"
 
-msgid "Weather"
-msgstr "Погода"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Просмотр по категориям"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Поиск по стране"
 
 msgid "Will load fresh data next time"
 msgstr "В следующий раз загрузю свежие данные"
@@ -878,6 +814,90 @@ msgstr "страны"
 
 msgid "files and"
 msgstr "файлы и"
+
+#~ msgid "Animation"
+#~ msgstr "Анимация"
+
+#~ msgid "Business"
+#~ msgstr "Бизнес"
+
+#~ msgid "Classic"
+#~ msgstr "Классический"
+
+#~ msgid "Comedy"
+#~ msgstr "Комедия"
+
+#~ msgid "Cooking"
+#~ msgstr "Готовка"
+
+#~ msgid "Culture"
+#~ msgstr "Культура"
+
+#~ msgid "Documentary"
+#~ msgstr "Документальное"
+
+#~ msgid "Education"
+#~ msgstr "Образование"
+
+#~ msgid "Entertainment"
+#~ msgstr "Развлечения"
+
+#~ msgid "Family"
+#~ msgstr "Семейство"
+
+#~ msgid "General"
+#~ msgstr "Общие"
+
+#~ msgid "History"
+#~ msgstr "История"
+
+#~ msgid "Hobby"
+#~ msgstr "Хобби"
+
+#~ msgid "Kids"
+#~ msgstr "Дети"
+
+#~ msgid "Legislative"
+#~ msgstr "Законодательный"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Образ жизни"
+
+#~ msgid "Local"
+#~ msgstr "Локальный"
+
+#~ msgid "Movies"
+#~ msgstr "Фильмы"
+
+#~ msgid "Music"
+#~ msgstr "Музыка"
+
+#~ msgid "News"
+#~ msgstr "Новости"
+
+#~ msgid "Politics"
+#~ msgstr "Политика"
+
+#~ msgid "Religious"
+#~ msgstr "Крестик"
+
+#~ msgid "Science"
+#~ msgstr "Наука"
+
+#~ msgid "Series"
+#~ msgstr "Серии"
+
+#~ msgid "Shop"
+#~ msgstr "Магазин"
+
+#~ msgid "Sports"
+#~ msgstr "Виды спорта"
+
+#~ msgid "Travel"
+#~ msgstr "Путешествия"
+
+#~ msgid "Weather"
+#~ msgstr "Погода"
 
 #~ msgid "Press GREEN for keyboard... Ready - %d channels"
 #~ msgstr "Нажмите ЗЕЛЕНЫЙ для клавиатуры... Готово - %d каналов"

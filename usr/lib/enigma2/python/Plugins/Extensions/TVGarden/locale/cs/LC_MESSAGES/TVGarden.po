@@ -166,9 +166,6 @@ msgstr "Zobrazit všechny kanály"
 msgid "Already in favorites"
 msgstr "Už v oblíbených"
 
-msgid "Animation"
-msgstr "Animace"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Opravdu chcete vymazat všechny soubory protokolu?"
 
@@ -196,11 +193,16 @@ msgstr "Procházet kanály podle kategorie"
 msgid "Browse channels by country"
 msgstr "Procházet kanály podle země"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Procházet kanály podle kategorie"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Procházet kanály podle země"
+
 msgid "Buffer Size"
 msgstr "Velikost vyrovnávací paměti"
-
-msgid "Business"
-msgstr "Business"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = změna | OK = Přepnout | STOP = Konec | od Lululla"
@@ -238,9 +240,6 @@ msgstr "Zkontrolujte aktualizace pluginů"
 msgid "Checking for updates..."
 msgstr "Kontrola aktualizací..."
 
-msgid "Classic"
-msgstr "Klasický"
-
 msgid "Clear"
 msgstr "Vymazat"
 
@@ -263,14 +262,8 @@ msgstr "Vymazáno %d oblíbených"
 msgid "Close"
 msgstr "Zavřít"
 
-msgid "Comedy"
-msgstr "Komedie"
-
 msgid "Connection Timeout"
 msgstr "Časový limit připojení"
-
-msgid "Cooking"
-msgstr "Vaření"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Nepodařilo se zkontrolovat aktualizace. Zkontrolujte připojení k internetu."
@@ -290,9 +283,6 @@ msgstr "Vytváření hierarchické struktury..."
 msgid "Critical"
 msgstr "Kritická"
 
-msgid "Culture"
-msgstr "Kultura"
-
 msgid "Database exported successfully"
 msgstr "Databáze byla úspěšně exportována"
 
@@ -302,14 +292,8 @@ msgstr "Režim ladění"
 msgid "Default View"
 msgstr "Výchozí zobrazení"
 
-msgid "Documentary"
-msgstr "Dokumentární"
-
 msgid "Editing: %s"
 msgstr "Upravuji: %s"
-
-msgid "Education"
-msgstr "Vzdělání"
 
 msgid "Empty database"
 msgstr "Prázdná databáze"
@@ -320,9 +304,6 @@ msgstr "Povolit mezipaměť"
 msgid "Enable Export"
 msgstr "Povolit export"
 
-msgid "Entertainment"
-msgstr "Zábava"
-
 msgid "Error"
 msgstr "Chyba"
 
@@ -331,6 +312,10 @@ msgstr "Chyba při mazání oblíbených položek"
 
 msgid "Error clearing logs: %s"
 msgstr "Chyba při mazání protokolů: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Chyba při načítání kategorie"
 
 msgid "Error loading category"
 msgstr "Chyba při načítání kategorie"
@@ -423,9 +408,6 @@ msgstr "Vytvoření zálohy se nezdařilo. Aktualizace zrušena."
 msgid "Failed to load database"
 msgstr "Nepodařilo se načíst databázi"
 
-msgid "Family"
-msgstr "Rodina"
-
 msgid "Favorite"
 msgstr "Oblíbené"
 
@@ -454,20 +436,11 @@ msgstr "Nalezeno %d přehrávatelných kanálů"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "General"
-msgstr "Hlavní"
-
 msgid "Hierarchical export completed"
 msgstr "Hierarchický export dokončen"
 
 msgid "Hierarchical export completed!"
 msgstr "Hierarchický export dokončen!"
-
-msgid "History"
-msgstr "Historie"
-
-msgid "Hobby"
-msgstr "Hobby"
 
 msgid "Info"
 msgstr "Informace"
@@ -478,17 +451,12 @@ msgstr "Položka {} z {}"
 msgid "Keyboard"
 msgstr "Klávesnice"
 
-msgid "Kids"
-msgstr "Děti"
-
-msgid "Legislative"
-msgstr "Legislativní"
-
-msgid "Lifestyle"
-msgstr "Životní styl"
-
 msgid "List Position"
 msgstr "Pozice seznamu"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Načítání zemí..."
 
 #, fuzzy
 msgid "Loading all channels in background..."
@@ -510,19 +478,12 @@ msgstr "Načítání kanálů..."
 msgid "Loading countries..."
 msgstr "Načítání zemí..."
 
-#, fuzzy
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Načítání zemí..."
-
 msgid "Loading favorites..."
 msgstr "Načítání oblíbených položek..."
 
 #, fuzzy
 msgid "Loading... %d channels so far"
 msgstr "Načítání kanálů..."
-
-msgid "Local"
-msgstr "Místní"
 
 msgid "Log Level"
 msgstr "Úroveň protokolu"
@@ -560,15 +521,6 @@ msgstr "Maximální počet kanálů na zemi"
 
 msgid "Memory Optimization"
 msgstr "Optimalizace paměti"
-
-msgid "Movies"
-msgstr "Filmy"
-
-msgid "Music"
-msgstr "Hudba"
-
-msgid "News"
-msgstr "Novinky"
 
 msgid "Next load will use fresh data"
 msgstr "Další načtení použije čerstvá data"
@@ -643,9 +595,6 @@ msgstr "Plugin je aktuální"
 msgid "Plugin settings and configuration"
 msgstr "Nastavení a konfigurace pluginu"
 
-msgid "Politics"
-msgstr "Politika"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Stiskněte ZELENOU pro zobrazení klávesnice..."
 
@@ -681,9 +630,6 @@ msgstr "Obnovování dat..."
 msgid "Refreshing..."
 msgstr "Aktualizace..."
 
-msgid "Religious"
-msgstr "Náboženský"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Odebrat '%s' z oblíbených?"
 
@@ -707,9 +653,6 @@ msgstr "Odebráno z oblíbených: %s"
 
 msgid "Save"
 msgstr "Uložit"
-
-msgid "Science"
-msgstr "Věda"
 
 msgid "Search"
 msgstr "Hledat"
@@ -735,17 +678,11 @@ msgstr "Vyberte kategorii"
 msgid "Select a country"
 msgstr "Vyberte zemi"
 
-msgid "Series"
-msgstr "Série"
-
 msgid "Set options"
 msgstr "Nastavení možností"
 
 msgid "Settings"
 msgstr "Nastavení"
-
-msgid "Shop"
-msgstr "Obchod"
 
 msgid "Show Flags"
 msgstr "Zobrazit příznaky"
@@ -762,9 +699,6 @@ msgstr "Zobrazeno {shown} z {total} kanálů"
 
 msgid "Showing {shown} of {total} results"
 msgstr "Zobrazeno {shown} z {total} výsledků"
-
-msgid "Sports"
-msgstr "Sporty"
 
 msgid "Statistics:"
 msgstr "Statistika:"
@@ -793,15 +727,12 @@ msgstr "Nahoru"
 msgid "Total channels:"
 msgstr "Celkový počet kanálů:"
 
-msgid "Travel"
-msgstr "Cestovní kancelář"
-
 msgid "Unknown"
 msgstr "Neznámý"
 
 msgid "Update available!"
 msgstr "Aktualizace k dispozici!"
-"Aktualizace k dispozici!{server_version} {version_server}\n"
+"Aktualizace k dispozici!Aktualizace k dispozici!{server_version} {version_server}\n"
 "{installed_version} {version}\n"
 "\n"
 "{update_available}"
@@ -823,7 +754,7 @@ msgstr "Chyba aktualizace: %s"
 
 msgid "Update failed"
 msgstr "Aktualizace se nezdařila"
-"Aktualizace se nezdařilaAktualizace selhala:\n"
+"Aktualizace se nezdařilaAktualizace se nezdařilaAktualizace selhala:\n"
 "%s"
 
 msgid "Update failed and backup restore also failed!"
@@ -853,8 +784,13 @@ msgstr "Zobrazit soubor protokolu"
 msgid "Warning"
 msgstr "Varování"
 
-msgid "Weather"
-msgstr "Počasí"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Procházet podle kategorie"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Procházet podle země"
 
 msgid "Will load fresh data next time"
 msgstr "Příště načte čerstvá data"
@@ -885,6 +821,90 @@ msgstr "zemí"
 
 msgid "files and"
 msgstr "soubory a"
+
+#~ msgid "Animation"
+#~ msgstr "Animace"
+
+#~ msgid "Business"
+#~ msgstr "Business"
+
+#~ msgid "Classic"
+#~ msgstr "Klasický"
+
+#~ msgid "Comedy"
+#~ msgstr "Komedie"
+
+#~ msgid "Cooking"
+#~ msgstr "Vaření"
+
+#~ msgid "Culture"
+#~ msgstr "Kultura"
+
+#~ msgid "Documentary"
+#~ msgstr "Dokumentární"
+
+#~ msgid "Education"
+#~ msgstr "Vzdělání"
+
+#~ msgid "Entertainment"
+#~ msgstr "Zábava"
+
+#~ msgid "Family"
+#~ msgstr "Rodina"
+
+#~ msgid "General"
+#~ msgstr "Hlavní"
+
+#~ msgid "History"
+#~ msgstr "Historie"
+
+#~ msgid "Hobby"
+#~ msgstr "Hobby"
+
+#~ msgid "Kids"
+#~ msgstr "Děti"
+
+#~ msgid "Legislative"
+#~ msgstr "Legislativní"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Životní styl"
+
+#~ msgid "Local"
+#~ msgstr "Místní"
+
+#~ msgid "Movies"
+#~ msgstr "Filmy"
+
+#~ msgid "Music"
+#~ msgstr "Hudba"
+
+#~ msgid "News"
+#~ msgstr "Novinky"
+
+#~ msgid "Politics"
+#~ msgstr "Politika"
+
+#~ msgid "Religious"
+#~ msgstr "Náboženský"
+
+#~ msgid "Science"
+#~ msgstr "Věda"
+
+#~ msgid "Series"
+#~ msgstr "Série"
+
+#~ msgid "Shop"
+#~ msgstr "Obchod"
+
+#~ msgid "Sports"
+#~ msgstr "Sporty"
+
+#~ msgid "Travel"
+#~ msgstr "Cestovní kancelář"
+
+#~ msgid "Weather"
+#~ msgstr "Počasí"
 
 #~ msgid "Press GREEN for keyboard... Ready - %d channels"
 #~ msgstr "Stiskněte ZELENOU pro zobrazení klávesnice... Připraveno - %d kanálů"

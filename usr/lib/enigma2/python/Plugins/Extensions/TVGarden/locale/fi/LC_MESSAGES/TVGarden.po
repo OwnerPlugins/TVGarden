@@ -163,9 +163,6 @@ msgstr "Kaikki kanavat"
 msgid "Already in favorites"
 msgstr "On jo suosikeissa"
 
-msgid "Animation"
-msgstr "Animaatio"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Haluatko varmasti tyhjentää kaikki lokitiedostot?"
 
@@ -193,11 +190,16 @@ msgstr "Selaa kanavia kategorioittain"
 msgid "Browse channels by country"
 msgstr "Selaa kanavia maittain"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Selaa kanavia kategorioittain"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Selaa kanavia maittain"
+
 msgid "Buffer Size"
 msgstr "Puskurin koko"
-
-msgid "Business"
-msgstr "Liiketoiminta"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Muutos | OK = Vaihda | STOP = Poistu | kirjoittanut Lululla"
@@ -235,9 +237,6 @@ msgstr "Tarkista lisäosan päivitykset"
 msgid "Checking for updates..."
 msgstr "Tarkistetaan päivityksiä..."
 
-msgid "Classic"
-msgstr "Klassinen"
-
 msgid "Clear"
 msgstr "Tyhjennä"
 
@@ -259,14 +258,8 @@ msgstr "Tyhjennetty %d suosikkia"
 msgid "Close"
 msgstr "Sulje"
 
-msgid "Comedy"
-msgstr "Komedia"
-
 msgid "Connection Timeout"
 msgstr "Yhteyden aikakatkaisu"
-
-msgid "Cooking"
-msgstr "Ruoanlaitto"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Päivityksiä ei voitu tarkistaa. Tarkista internetyhteytesi."
@@ -286,9 +279,6 @@ msgstr "Luodaan hierarkkista rakennetta..."
 msgid "Critical"
 msgstr "Kriittinen"
 
-msgid "Culture"
-msgstr "Kulttuuri"
-
 msgid "Database exported successfully"
 msgstr "Tietokannan vienti onnistui"
 
@@ -298,14 +288,8 @@ msgstr "Debug"
 msgid "Default View"
 msgstr "Oletusnäkymä"
 
-msgid "Documentary"
-msgstr "Dokumentti"
-
 msgid "Editing: %s"
 msgstr "Muokkaa: %s"
-
-msgid "Education"
-msgstr "Koulutus"
 
 msgid "Empty database"
 msgstr "Tyhjä tietokanta"
@@ -316,9 +300,6 @@ msgstr "Välimuisti käytössä"
 msgid "Enable Export"
 msgstr "Salli vienti"
 
-msgid "Entertainment"
-msgstr "Viihde"
-
 msgid "Error"
 msgstr "Virhe"
 
@@ -327,6 +308,10 @@ msgstr "Virhe tyhjennettäessä suosikkeja"
 
 msgid "Error clearing logs: %s"
 msgstr "Virhe tyhjennettäessä lokeja: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Virhe ladattaessa kategoriaa"
 
 msgid "Error loading category"
 msgstr "Virhe ladattaessa kategoriaa"
@@ -419,9 +404,6 @@ msgstr "Varmuuskopion luonti epäonnistui. Päivitys peruttiin."
 msgid "Failed to load database"
 msgstr "Tietokannan lataus epäonnistui"
 
-msgid "Family"
-msgstr "Perhe"
-
 msgid "Favorite"
 msgstr "Suosikki"
 
@@ -449,20 +431,11 @@ msgstr "Löytyi %d toistettavaa kanavaa"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "General"
-msgstr "Yleinen"
-
 msgid "Hierarchical export completed"
 msgstr "Hierarkkinen vienti valmis"
 
 msgid "Hierarchical export completed!"
 msgstr "Hierarkkinen vienti valmis!"
-
-msgid "History"
-msgstr "Historia"
-
-msgid "Hobby"
-msgstr "Harrastus"
 
 msgid "Info"
 msgstr "Info"
@@ -473,17 +446,12 @@ msgstr "Kohde {} / {}"
 msgid "Keyboard"
 msgstr "Näppäimistö"
 
-msgid "Kids"
-msgstr "Lapset"
-
-msgid "Legislative"
-msgstr "Lainsäädäntö"
-
-msgid "Lifestyle"
-msgstr "Elämäntapa"
-
 msgid "List Position"
 msgstr "Suosikkilistan paikka"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Ladataan maita..."
 
 #, fuzzy
 msgid "Loading all channels in background..."
@@ -505,19 +473,12 @@ msgstr "Ladataan kanavia..."
 msgid "Loading countries..."
 msgstr "Ladataan maita..."
 
-#, fuzzy
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Ladataan maita..."
-
 msgid "Loading favorites..."
 msgstr "Ladataan suosikkeja..."
 
 #, fuzzy
 msgid "Loading... %d channels so far"
 msgstr "Ladataan kanavia..."
-
-msgid "Local"
-msgstr "Paikallinen"
 
 msgid "Log Level"
 msgstr "Lokitaso"
@@ -551,15 +512,6 @@ msgstr "Max kanavat maalle"
 
 msgid "Memory Optimization"
 msgstr "Muistin optimointi"
-
-msgid "Movies"
-msgstr "Elokuvat"
-
-msgid "Music"
-msgstr "Musiikki"
-
-msgid "News"
-msgstr "Uutiset"
 
 msgid "Next load will use fresh data"
 msgstr "Seuraava lataus käyttää uutta dataa"
@@ -634,9 +586,6 @@ msgstr "Lisäosa on ajan tasalla"
 msgid "Plugin settings and configuration"
 msgstr "Lisäosan asetukset ja konfiguraatio"
 
-msgid "Politics"
-msgstr "Politiikka"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Paina VIHREÄÄ näppäimistöä varten..."
 
@@ -671,9 +620,6 @@ msgstr "Virkistetään dataa..."
 msgid "Refreshing..."
 msgstr "Virkistetään..."
 
-msgid "Religious"
-msgstr "Uskonnollinen"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Poista '%s' suosikeista?"
 
@@ -697,9 +643,6 @@ msgstr "Poistettiin suosikeista: %s"
 
 msgid "Save"
 msgstr "Tallenna"
-
-msgid "Science"
-msgstr "Tiede"
 
 msgid "Search"
 msgstr "Etsi"
@@ -725,17 +668,11 @@ msgstr "Valitse kategoria"
 msgid "Select a country"
 msgstr "Valise maa"
 
-msgid "Series"
-msgstr "Sarjat"
-
 msgid "Set options"
 msgstr "Aseta asetukset"
 
 msgid "Settings"
 msgstr "Asetukset"
-
-msgid "Shop"
-msgstr "Ostokset"
 
 msgid "Show Flags"
 msgstr "Näytä liput"
@@ -752,9 +689,6 @@ msgstr "Näytetään {shown}/{total} kanavaa"
 
 msgid "Showing {shown} of {total} results"
 msgstr "Näytetään {shown}/{total} tulosta"
-
-msgid "Sports"
-msgstr "Urheilu"
 
 msgid "Statistics:"
 msgstr "Tilastot:"
@@ -782,9 +716,6 @@ msgstr "Ylimpänä"
 
 msgid "Total channels:"
 msgstr "Kanavia yhteensä:"
-
-msgid "Travel"
-msgstr "Matkustaminen"
 
 msgid "Unknown"
 msgstr "Tuntematon"
@@ -837,8 +768,13 @@ msgstr "Näytä lokitiedosto"
 msgid "Warning"
 msgstr "Varoitus"
 
-msgid "Weather"
-msgstr "Sää"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Selaa kategorioittain"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Selaa maittain"
 
 msgid "Will load fresh data next time"
 msgstr "Ladataan tuoreet tiedot seuraavalla kerralla"
@@ -869,6 +805,90 @@ msgstr "maat"
 
 msgid "files and"
 msgstr "tiedostot ja"
+
+#~ msgid "Animation"
+#~ msgstr "Animaatio"
+
+#~ msgid "Business"
+#~ msgstr "Liiketoiminta"
+
+#~ msgid "Classic"
+#~ msgstr "Klassinen"
+
+#~ msgid "Comedy"
+#~ msgstr "Komedia"
+
+#~ msgid "Cooking"
+#~ msgstr "Ruoanlaitto"
+
+#~ msgid "Culture"
+#~ msgstr "Kulttuuri"
+
+#~ msgid "Documentary"
+#~ msgstr "Dokumentti"
+
+#~ msgid "Education"
+#~ msgstr "Koulutus"
+
+#~ msgid "Entertainment"
+#~ msgstr "Viihde"
+
+#~ msgid "Family"
+#~ msgstr "Perhe"
+
+#~ msgid "General"
+#~ msgstr "Yleinen"
+
+#~ msgid "History"
+#~ msgstr "Historia"
+
+#~ msgid "Hobby"
+#~ msgstr "Harrastus"
+
+#~ msgid "Kids"
+#~ msgstr "Lapset"
+
+#~ msgid "Legislative"
+#~ msgstr "Lainsäädäntö"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Elämäntapa"
+
+#~ msgid "Local"
+#~ msgstr "Paikallinen"
+
+#~ msgid "Movies"
+#~ msgstr "Elokuvat"
+
+#~ msgid "Music"
+#~ msgstr "Musiikki"
+
+#~ msgid "News"
+#~ msgstr "Uutiset"
+
+#~ msgid "Politics"
+#~ msgstr "Politiikka"
+
+#~ msgid "Religious"
+#~ msgstr "Uskonnollinen"
+
+#~ msgid "Science"
+#~ msgstr "Tiede"
+
+#~ msgid "Series"
+#~ msgstr "Sarjat"
+
+#~ msgid "Shop"
+#~ msgstr "Ostokset"
+
+#~ msgid "Sports"
+#~ msgstr "Urheilu"
+
+#~ msgid "Travel"
+#~ msgstr "Matkustaminen"
+
+#~ msgid "Weather"
+#~ msgstr "Sää"
 
 #~ msgid "Press GREEN for keyboard... Ready - %d channels"
 #~ msgstr "Näppäimistö painamalla VIHREÄÄ...Valmiina - %d kanavaa"

@@ -167,9 +167,6 @@ msgstr "Όλα τα κανάλια"
 msgid "Already in favorites"
 msgstr "Ήδη στα αγαπημένα"
 
-msgid "Animation"
-msgstr "Κινούμενα σχέδια"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Είστε σίγουροι ότι θέλετε να εκκαθαρίσετε όλα τα αρχεία καταγραφής;"
 
@@ -197,11 +194,16 @@ msgstr "Περιήγηση καναλιών ανά κατηγορία"
 msgid "Browse channels by country"
 msgstr "Περιήγηση καναλιών ανά χώρα"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Περιήγηση καναλιών ανά κατηγορία"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Περιήγηση καναλιών ανά χώρα"
+
 msgid "Buffer Size"
 msgstr "Μέγεθος προσωρινής αποθήκευσης"
-
-msgid "Business"
-msgstr "Επιχειρήσεις"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Αλλαγή | OK = Εναλλαγή | STOP = Έξοδος | από τον Lululla"
@@ -239,9 +241,6 @@ msgstr "Έλεγχος για ενημερώσεις του πρόσθετου"
 msgid "Checking for updates..."
 msgstr "Γίνεται έλεγχος για ενημερώσεις..."
 
-msgid "Classic"
-msgstr "Κλασικό"
-
 msgid "Clear"
 msgstr "Εκκαθάριση"
 
@@ -263,14 +262,8 @@ msgstr "Εκκαθαρίστηκαν %d αγαπημένα"
 msgid "Close"
 msgstr "Κλείσιμο"
 
-msgid "Comedy"
-msgstr "Κωμωδία"
-
 msgid "Connection Timeout"
 msgstr "Χρονικό όριο σύνδεσης"
-
-msgid "Cooking"
-msgstr "Μαγειρική"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Δεν ήταν δυνατός ο έλεγχος για ενημερώσεις. Ελέγξτε τη σύνδεση στο διαδίκτυο."
@@ -290,9 +283,6 @@ msgstr "Δημιουργία ιεραρχικής δομής..."
 msgid "Critical"
 msgstr "Κρίσιμα"
 
-msgid "Culture"
-msgstr "Κουλτούρα"
-
 msgid "Database exported successfully"
 msgstr "Η εξαγωγή της βάσης δεδομένων ολοκληρώθηκε με επιτυχία"
 
@@ -302,14 +292,8 @@ msgstr "Αποσφαλμάτωση"
 msgid "Default View"
 msgstr "Προεπιλεγμένη προβολή"
 
-msgid "Documentary"
-msgstr "Ντοκιμαντέρ"
-
 msgid "Editing: %s"
 msgstr "Επεξεργασία: %s"
-
-msgid "Education"
-msgstr "Εκπαίδευση"
 
 msgid "Empty database"
 msgstr "Κενή βάση δεδομένων"
@@ -320,9 +304,6 @@ msgstr "Ενεργοποίηση προσωρινής μνήμης"
 msgid "Enable Export"
 msgstr "Ενεργοποίηση εξαγωγής"
 
-msgid "Entertainment"
-msgstr "Ψυχαγωγία"
-
 msgid "Error"
 msgstr "Σφάλμα"
 
@@ -331,6 +312,10 @@ msgstr "Σφάλμα εκκαθάρισης αγαπημένων"
 
 msgid "Error clearing logs: %s"
 msgstr "Σφάλμα εκκαθάρισης αρχείων καταγραφής: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Σφάλμα φόρτωσης κατηγορίας"
 
 msgid "Error loading category"
 msgstr "Σφάλμα φόρτωσης κατηγορίας"
@@ -423,9 +408,6 @@ msgstr "Αποτυχία δημιουργίας αντιγράφου ασφαλ�
 msgid "Failed to load database"
 msgstr "Αποτυχία φόρτωσης βάσης δεδομένων"
 
-msgid "Family"
-msgstr "Οικογένεια"
-
 msgid "Favorite"
 msgstr "Αγαπημένα"
 
@@ -453,20 +435,11 @@ msgstr "Βρέθηκαν %d κανάλια με δυνατότητα αναπα�
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "General"
-msgstr "Γενικά"
-
 msgid "Hierarchical export completed"
 msgstr "Η ιεραρχική εξαγωγή ολοκληρώθηκε"
 
 msgid "Hierarchical export completed!"
 msgstr "Η ιεραρχική εξαγωγή ολοκληρώθηκε!"
-
-msgid "History"
-msgstr "Ιστορία"
-
-msgid "Hobby"
-msgstr "Χόμπι"
 
 msgid "Info"
 msgstr "Πληροφορίες"
@@ -477,17 +450,12 @@ msgstr "Στοιχείο {} από {}"
 msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
 
-msgid "Kids"
-msgstr "Παιδιά"
-
-msgid "Legislative"
-msgstr "Νομοθεσία"
-
-msgid "Lifestyle"
-msgstr "Τρόπος ζωής"
-
 msgid "List Position"
 msgstr "Θέση λίστας"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Φόρτωση χωρών..."
 
 #, fuzzy
 msgid "Loading all channels in background..."
@@ -509,19 +477,12 @@ msgstr "Φόρτωση καναλιών..."
 msgid "Loading countries..."
 msgstr "Φόρτωση χωρών..."
 
-#, fuzzy
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Φόρτωση χωρών..."
-
 msgid "Loading favorites..."
 msgstr "Φόρτωση αγαπημένων..."
 
 #, fuzzy
 msgid "Loading... %d channels so far"
 msgstr "Φόρτωση καναλιών..."
-
-msgid "Local"
-msgstr "Τοπικά"
 
 msgid "Log Level"
 msgstr "Επίπεδο καταγραφής"
@@ -555,15 +516,6 @@ msgstr "Μέγιστος αριθμός καναλιών για χώρα"
 
 msgid "Memory Optimization"
 msgstr "Βελτιστοποίηση μνήμης"
-
-msgid "Movies"
-msgstr "Ταινίες"
-
-msgid "Music"
-msgstr "Μουσική"
-
-msgid "News"
-msgstr "Ειδήσεις"
 
 msgid "Next load will use fresh data"
 msgstr "Η επόμενη φόρτωση θα χρησιμοποιήσει φρέσκα δεδομένα"
@@ -638,9 +590,6 @@ msgstr "Το πρόσθετο είναι ενημερωμένο"
 msgid "Plugin settings and configuration"
 msgstr "Ρυθμίσεις και παραμετροποίηση του πρόσθετου"
 
-msgid "Politics"
-msgstr "Πολιτική"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Πατήστε το ΠΡΑΣΙΝΟ για πληκτρολόγιο..."
 
@@ -675,9 +624,6 @@ msgstr "Ανανέωση δεδομένων..."
 msgid "Refreshing..."
 msgstr "Ανανέωση..."
 
-msgid "Religious"
-msgstr "Θρησκευτικά"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Να γίνει αφαίρεση του '%s' από τα αγαπημένα;"
 
@@ -701,9 +647,6 @@ msgstr "Αφαιρέθηκε από τα αγαπημένα: %s"
 
 msgid "Save"
 msgstr "Αποθήκευση"
-
-msgid "Science"
-msgstr "Επιστήμη"
 
 msgid "Search"
 msgstr "Αναζήτηση"
@@ -729,17 +672,11 @@ msgstr "Επιλέξτε μια κατηγορία"
 msgid "Select a country"
 msgstr "Επιλέξτε μια χώρα"
 
-msgid "Series"
-msgstr "Σειρές"
-
 msgid "Set options"
 msgstr "Ορίστε τις επιλογές"
 
 msgid "Settings"
 msgstr "Ρυθμίσεις"
-
-msgid "Shop"
-msgstr "Αγορές"
 
 msgid "Show Flags"
 msgstr "Εμφάνιση σημαιών"
@@ -756,9 +693,6 @@ msgstr "Εμφάνιση {shown} από {total} κανάλια"
 
 msgid "Showing {shown} of {total} results"
 msgstr "Εμφάνιση {shown} από {total} αποτελέσματα"
-
-msgid "Sports"
-msgstr "Αθλητικά"
 
 msgid "Statistics:"
 msgstr "Στατιστικά:"
@@ -786,9 +720,6 @@ msgstr "Πάνω"
 
 msgid "Total channels:"
 msgstr "Συνολικά κανάλια:"
-
-msgid "Travel"
-msgstr "Ταξίδια"
 
 msgid "Unknown"
 msgstr "Άγνωστο"
@@ -841,8 +772,13 @@ msgstr "Προβολή αρχείου καταγραφής"
 msgid "Warning"
 msgstr "Προειδοποίηση"
 
-msgid "Weather"
-msgstr "Καιρός"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Περιήγηση ανά κατηγορία"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Περιήγηση ανά χώρα"
 
 msgid "Will load fresh data next time"
 msgstr "Την επόμενη φορά θα φορτωθούν φρέσκα δεδομένα"
@@ -873,6 +809,90 @@ msgstr "χώρες"
 
 msgid "files and"
 msgstr "αρχεία και"
+
+#~ msgid "Animation"
+#~ msgstr "Κινούμενα σχέδια"
+
+#~ msgid "Business"
+#~ msgstr "Επιχειρήσεις"
+
+#~ msgid "Classic"
+#~ msgstr "Κλασικό"
+
+#~ msgid "Comedy"
+#~ msgstr "Κωμωδία"
+
+#~ msgid "Cooking"
+#~ msgstr "Μαγειρική"
+
+#~ msgid "Culture"
+#~ msgstr "Κουλτούρα"
+
+#~ msgid "Documentary"
+#~ msgstr "Ντοκιμαντέρ"
+
+#~ msgid "Education"
+#~ msgstr "Εκπαίδευση"
+
+#~ msgid "Entertainment"
+#~ msgstr "Ψυχαγωγία"
+
+#~ msgid "Family"
+#~ msgstr "Οικογένεια"
+
+#~ msgid "General"
+#~ msgstr "Γενικά"
+
+#~ msgid "History"
+#~ msgstr "Ιστορία"
+
+#~ msgid "Hobby"
+#~ msgstr "Χόμπι"
+
+#~ msgid "Kids"
+#~ msgstr "Παιδιά"
+
+#~ msgid "Legislative"
+#~ msgstr "Νομοθεσία"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Τρόπος ζωής"
+
+#~ msgid "Local"
+#~ msgstr "Τοπικά"
+
+#~ msgid "Movies"
+#~ msgstr "Ταινίες"
+
+#~ msgid "Music"
+#~ msgstr "Μουσική"
+
+#~ msgid "News"
+#~ msgstr "Ειδήσεις"
+
+#~ msgid "Politics"
+#~ msgstr "Πολιτική"
+
+#~ msgid "Religious"
+#~ msgstr "Θρησκευτικά"
+
+#~ msgid "Science"
+#~ msgstr "Επιστήμη"
+
+#~ msgid "Series"
+#~ msgstr "Σειρές"
+
+#~ msgid "Shop"
+#~ msgstr "Αγορές"
+
+#~ msgid "Sports"
+#~ msgstr "Αθλητικά"
+
+#~ msgid "Travel"
+#~ msgstr "Ταξίδια"
+
+#~ msgid "Weather"
+#~ msgstr "Καιρός"
 
 #~ msgid "Press GREEN for keyboard... Ready - %d channels"
 #~ msgstr "Πατήστε το ΠΡΑΣΙΝΟ για πληκτρολόγιο... Έτοιμο - %d κανάλια"

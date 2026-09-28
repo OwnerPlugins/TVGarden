@@ -166,9 +166,6 @@ msgstr "Wszyskich kanałów"
 msgid "Already in favorites"
 msgstr "Już w ulubionych"
 
-msgid "Animation"
-msgstr "Animacja"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Czy na pewno chcesz wyczyścić wszystkie pliki dziennika?"
 
@@ -196,11 +193,16 @@ msgstr "Przeglądaj kanały według kategorii"
 msgid "Browse channels by country"
 msgstr "Przeglądaj kanały według kraju"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Przeglądaj kanały według kategorii"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Przeglądaj kanały według kraju"
+
 msgid "Buffer Size"
 msgstr "Rozmiar Bufora"
-
-msgid "Business"
-msgstr "Biznes"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Zmień | OK = Przełącz | STOP = Wyjście | przez Lulullę"
@@ -238,9 +240,6 @@ msgstr "Sprawdź aktualizacje wtyczek"
 msgid "Checking for updates..."
 msgstr "Sprawdzanie aktualizacji..."
 
-msgid "Classic"
-msgstr "Klasyczny"
-
 msgid "Clear"
 msgstr "Czyścić"
 
@@ -262,14 +261,8 @@ msgstr "Wyczyszczono %d ulubionych"
 msgid "Close"
 msgstr "Zamknij"
 
-msgid "Comedy"
-msgstr "Komedia"
-
 msgid "Connection Timeout"
 msgstr "Limit Czasu Połączenia"
-
-msgid "Cooking"
-msgstr "Gotowanie"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Nie można sprawdzić dostępności aktualizacji. Sprawdź połączenie internetowe."
@@ -289,9 +282,6 @@ msgstr "Tworzenie struktury hierarchicznej..."
 msgid "Critical"
 msgstr "Krytyczny"
 
-msgid "Culture"
-msgstr "Kultura"
-
 msgid "Database exported successfully"
 msgstr "Baza danych wyeksportowana pomyślnie"
 
@@ -301,14 +291,8 @@ msgstr "Debugowanie"
 msgid "Default View"
 msgstr "Domyślny Podgląd"
 
-msgid "Documentary"
-msgstr "Dokumentalny"
-
 msgid "Editing: %s"
 msgstr "Edycja: %s"
-
-msgid "Education"
-msgstr "Edukacja"
 
 msgid "Empty database"
 msgstr "Pusta baza danych"
@@ -319,9 +303,6 @@ msgstr "Włącz cache"
 msgid "Enable Export"
 msgstr "Włączyć Export"
 
-msgid "Entertainment"
-msgstr "Rozrywka"
-
 msgid "Error"
 msgstr "Błąd"
 
@@ -330,6 +311,10 @@ msgstr "Błąd podczas czyszczenia ulubionych"
 
 msgid "Error clearing logs: %s"
 msgstr "Błąd czyszczenia dzienników: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Błąd ładowania kategorii"
 
 msgid "Error loading category"
 msgstr "Błąd ładowania kategorii"
@@ -422,9 +407,6 @@ msgstr "Nie udało się utworzyć kopii zapasowej. Aktualizacja została anulowa
 msgid "Failed to load database"
 msgstr "Nie udało się załadować bazy danych"
 
-msgid "Family"
-msgstr "Rodzina"
-
 msgid "Favorite"
 msgstr "Ulubione"
 
@@ -452,20 +434,11 @@ msgstr "Znaleziono %d kanałów do odtworzenia"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "General"
-msgstr "Ogólny"
-
 msgid "Hierarchical export completed"
 msgstr "Eksport hierarchiczny zakończony"
 
 msgid "Hierarchical export completed!"
 msgstr "Eksport hierarchiczny zakończony!"
-
-msgid "History"
-msgstr "Historia"
-
-msgid "Hobby"
-msgstr "Zainteresowania"
 
 msgid "Info"
 msgstr "Info"
@@ -476,17 +449,12 @@ msgstr "Element {} z {}"
 msgid "Keyboard"
 msgstr "Klawiatura"
 
-msgid "Kids"
-msgstr "Dzieci"
-
-msgid "Legislative"
-msgstr "Ustawodawczy"
-
-msgid "Lifestyle"
-msgstr "Styl życia"
-
 msgid "List Position"
 msgstr "Pozycja na Liście"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Ładowania kraju..."
 
 #, fuzzy
 msgid "Loading all channels in background..."
@@ -508,19 +476,12 @@ msgstr "Ładowanie kanałów..."
 msgid "Loading countries..."
 msgstr "Ładowania kraju..."
 
-#, fuzzy
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Ładowania kraju..."
-
 msgid "Loading favorites..."
 msgstr "Pobieranie ulubionych..."
 
 #, fuzzy
 msgid "Loading... %d channels so far"
 msgstr "Ładowanie kanałów..."
-
-msgid "Local"
-msgstr "Lokalny"
 
 msgid "Log Level"
 msgstr "Poziom dziennika"
@@ -554,15 +515,6 @@ msgstr "Najwięcej kanałów na kraj"
 
 msgid "Memory Optimization"
 msgstr "Optymalizacja Pamięci"
-
-msgid "Movies"
-msgstr "Filmy"
-
-msgid "Music"
-msgstr "Muzyka"
-
-msgid "News"
-msgstr "Aktualności"
 
 msgid "Next load will use fresh data"
 msgstr "Następny pobieranie będzie korzystał ze świeżych danych"
@@ -637,9 +589,6 @@ msgstr "Wtyczka jest aktualna"
 msgid "Plugin settings and configuration"
 msgstr "Ustawienia i konfiguracja wtyczki"
 
-msgid "Politics"
-msgstr "Polityka"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Naciśnij ZIELONY, aby włączyć klawiaturę..."
 
@@ -674,9 +623,6 @@ msgstr "Odświeżanie danych..."
 msgid "Refreshing..."
 msgstr "Odświeżam..."
 
-msgid "Religious"
-msgstr "Religijny"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Usunąć '%s' z ulubionych?"
 
@@ -700,9 +646,6 @@ msgstr "Usunięto z ulubionych: %s"
 
 msgid "Save"
 msgstr "Zapisz"
-
-msgid "Science"
-msgstr "Nauka"
 
 msgid "Search"
 msgstr "Szukanie"
@@ -728,17 +671,11 @@ msgstr "Wybierz kategorię"
 msgid "Select a country"
 msgstr "Wybór kraju"
 
-msgid "Series"
-msgstr "Seriale"
-
 msgid "Set options"
 msgstr "Ustaw opcje"
 
 msgid "Settings"
 msgstr "Ustawienia"
-
-msgid "Shop"
-msgstr "Sklep"
 
 msgid "Show Flags"
 msgstr "Pokaż Powiązania"
@@ -755,9 +692,6 @@ msgstr "Wyświetlono {shown} z {total} kanałów"
 
 msgid "Showing {shown} of {total} results"
 msgstr "Wyświetlanie {shown} z {total} wyników"
-
-msgid "Sports"
-msgstr "Sporty"
 
 msgid "Statistics:"
 msgstr "Statystyka:"
@@ -785,9 +719,6 @@ msgstr "Góra"
 
 msgid "Total channels:"
 msgstr "Wszystkich kanałów:"
-
-msgid "Travel"
-msgstr "Podróż"
 
 msgid "Unknown"
 msgstr "Nieznany"
@@ -840,8 +771,13 @@ msgstr "Wyświetl Plik Dziennika"
 msgid "Warning"
 msgstr "Ostrzeżenie"
 
-msgid "Weather"
-msgstr "Pogoda"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Przeglądaj według Kategorii"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Przeglądaj według Kraju"
 
 msgid "Will load fresh data next time"
 msgstr "Następnym razem załaduję nowe dane"
@@ -872,6 +808,90 @@ msgstr "kraje"
 
 msgid "files and"
 msgstr "pliki i"
+
+#~ msgid "Animation"
+#~ msgstr "Animacja"
+
+#~ msgid "Business"
+#~ msgstr "Biznes"
+
+#~ msgid "Classic"
+#~ msgstr "Klasyczny"
+
+#~ msgid "Comedy"
+#~ msgstr "Komedia"
+
+#~ msgid "Cooking"
+#~ msgstr "Gotowanie"
+
+#~ msgid "Culture"
+#~ msgstr "Kultura"
+
+#~ msgid "Documentary"
+#~ msgstr "Dokumentalny"
+
+#~ msgid "Education"
+#~ msgstr "Edukacja"
+
+#~ msgid "Entertainment"
+#~ msgstr "Rozrywka"
+
+#~ msgid "Family"
+#~ msgstr "Rodzina"
+
+#~ msgid "General"
+#~ msgstr "Ogólny"
+
+#~ msgid "History"
+#~ msgstr "Historia"
+
+#~ msgid "Hobby"
+#~ msgstr "Zainteresowania"
+
+#~ msgid "Kids"
+#~ msgstr "Dzieci"
+
+#~ msgid "Legislative"
+#~ msgstr "Ustawodawczy"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Styl życia"
+
+#~ msgid "Local"
+#~ msgstr "Lokalny"
+
+#~ msgid "Movies"
+#~ msgstr "Filmy"
+
+#~ msgid "Music"
+#~ msgstr "Muzyka"
+
+#~ msgid "News"
+#~ msgstr "Aktualności"
+
+#~ msgid "Politics"
+#~ msgstr "Polityka"
+
+#~ msgid "Religious"
+#~ msgstr "Religijny"
+
+#~ msgid "Science"
+#~ msgstr "Nauka"
+
+#~ msgid "Series"
+#~ msgstr "Seriale"
+
+#~ msgid "Shop"
+#~ msgstr "Sklep"
+
+#~ msgid "Sports"
+#~ msgstr "Sporty"
+
+#~ msgid "Travel"
+#~ msgstr "Podróż"
+
+#~ msgid "Weather"
+#~ msgstr "Pogoda"
 
 #~ msgid "Press GREEN for keyboard... Ready - %d channels"
 #~ msgstr "Naciśnij ZIELONY, włączy klawiaturę... Gotowy - %d kanałów"

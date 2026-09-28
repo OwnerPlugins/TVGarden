@@ -161,9 +161,6 @@ msgstr "Tüm sonuçlar"
 msgid "Already in favorites"
 msgstr "Zaten favorilerde"
 
-msgid "Animation"
-msgstr "Animasyon"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Tüm günlük dosyalarını temizlemek istediğinizden emin misiniz?"
 
@@ -191,11 +188,16 @@ msgstr "Kanallara kategoriye göre göz atın"
 msgid "Browse channels by country"
 msgstr "Kanallara ülkeye göre göz atın"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Kanallara kategoriye göre göz atın"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Kanallara ülkeye göre göz atın"
+
 msgid "Buffer Size"
 msgstr "Arabellek Boyutu"
-
-msgid "Business"
-msgstr "İşletme"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Değiştir | Tamam = Değiştir | DUR = Çıkış | tarafından Lululla"
@@ -233,9 +235,6 @@ msgstr "Eklenti güncellemelerini kontrol edin"
 msgid "Checking for updates..."
 msgstr "Güncellemeler kontrol ediliyor..."
 
-msgid "Classic"
-msgstr "Klasik"
-
 msgid "Clear"
 msgstr "Temizlemek"
 
@@ -257,14 +256,8 @@ msgstr "%d favori temizlendi"
 msgid "Close"
 msgstr "Kapalı"
 
-msgid "Comedy"
-msgstr "Komedi"
-
 msgid "Connection Timeout"
 msgstr "Bağlantı Zaman Aşımı"
-
-msgid "Cooking"
-msgstr "Yemek pişirmek"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Güncellemeler kontrol edilemedi. İnternet bağlantısını kontrol edin."
@@ -284,9 +277,6 @@ msgstr "Hiyerarşik yapı oluşturmak..."
 msgid "Critical"
 msgstr "Kritik"
 
-msgid "Culture"
-msgstr "Kültür"
-
 msgid "Database exported successfully"
 msgstr "Veritabanı başarıyla dışa aktarıldı"
 
@@ -296,14 +286,8 @@ msgstr "Hata ayıklama"
 msgid "Default View"
 msgstr "Varsayılan Görünüm"
 
-msgid "Documentary"
-msgstr "Belgesel"
-
 msgid "Editing: %s"
 msgstr "Düzenleme: %s"
-
-msgid "Education"
-msgstr "Eğitim"
 
 msgid "Empty database"
 msgstr "Veritabanını boşalt"
@@ -314,9 +298,6 @@ msgstr "Önbelleği Etkinleştir"
 msgid "Enable Export"
 msgstr "Dışa Aktarmayı Etkinleştir"
 
-msgid "Entertainment"
-msgstr "Eğlence"
-
 msgid "Error"
 msgstr "Hata"
 
@@ -325,6 +306,10 @@ msgstr "Favoriler temizlenirken hata oluştu"
 
 msgid "Error clearing logs: %s"
 msgstr "Günlükler temizlenirken hata oluştu: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Kategori yüklenirken hata oluştu"
 
 msgid "Error loading category"
 msgstr "Kategori yüklenirken hata oluştu"
@@ -413,9 +398,6 @@ msgstr "Yedekleme oluşturulamadı. Güncelleme iptal edildi."
 msgid "Failed to load database"
 msgstr "Veritabanı yüklenemedi"
 
-msgid "Family"
-msgstr "Aile"
-
 msgid "Favorite"
 msgstr "Favori"
 
@@ -443,20 +425,11 @@ msgstr "%d oynanabilir kanal bulundu"
 msgid "GStreamer"
 msgstr "Gstreamer"
 
-msgid "General"
-msgstr "Genel"
-
 msgid "Hierarchical export completed"
 msgstr "Hiyerarşik dışa aktarma tamamlandı"
 
 msgid "Hierarchical export completed!"
 msgstr "Hiyerarşik dışa aktarma tamamlandı!"
-
-msgid "History"
-msgstr "Tarih"
-
-msgid "Hobby"
-msgstr "Hobi"
 
 msgid "Info"
 msgstr "Bilgi"
@@ -467,17 +440,12 @@ msgstr "Öğe {} / {}"
 msgid "Keyboard"
 msgstr "Klavye"
 
-msgid "Kids"
-msgstr "Çocuklar"
-
-msgid "Legislative"
-msgstr "Yasama"
-
-msgid "Lifestyle"
-msgstr "Yaşam Tarzı"
-
 msgid "List Position"
 msgstr "Liste Konumu"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Ülkeler yükleniyor: %s (%d/%d)"
 
 msgid "Loading all channels in background..."
 msgstr "Tüm kanallar arka planda yükleniyor..."
@@ -497,17 +465,11 @@ msgstr "Kanallar yükleniyor..."
 msgid "Loading countries..."
 msgstr "Ülkeler yükleniyor..."
 
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Ülkeler yükleniyor: %s (%d/%d)"
-
 msgid "Loading favorites..."
 msgstr "Favoriler yükleniyor..."
 
 msgid "Loading... %d channels so far"
 msgstr "Yükleniyor... Şu ana kadar %d kanal"
-
-msgid "Local"
-msgstr "Yerel"
 
 msgid "Log Level"
 msgstr "Günlük Düzeyi"
@@ -541,15 +503,6 @@ msgstr "Ülke için maksimum kanallar"
 
 msgid "Memory Optimization"
 msgstr "Bellek Optimizasyonu"
-
-msgid "Movies"
-msgstr "Filmler"
-
-msgid "Music"
-msgstr "Müzik"
-
-msgid "News"
-msgstr "Haberler"
 
 msgid "Next load will use fresh data"
 msgstr "Sonraki yüklemede yeni veriler kullanılacak"
@@ -623,9 +576,6 @@ msgstr "Eklenti güncel"
 msgid "Plugin settings and configuration"
 msgstr "Eklenti ayarları ve yapılandırması"
 
-msgid "Politics"
-msgstr "Politika"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Klavye için YEŞİL tuşuna basın..."
 
@@ -659,9 +609,6 @@ msgstr "Veriler yenileniyor..."
 msgid "Refreshing..."
 msgstr "Yenileniyor..."
 
-msgid "Religious"
-msgstr "Din"
-
 msgid "Remove '%s' from favorites?"
 msgstr "'%s' favorilerden kaldırılsın mı?"
 
@@ -685,9 +632,6 @@ msgstr "Favorilerden kaldırıldı: %s"
 
 msgid "Save"
 msgstr "Kaydetmek"
-
-msgid "Science"
-msgstr "Bilim"
 
 msgid "Search"
 msgstr "Aramak"
@@ -713,17 +657,11 @@ msgstr "Bir kategori seçin"
 msgid "Select a country"
 msgstr "Bir ülke seçin"
 
-msgid "Series"
-msgstr "Seri"
-
 msgid "Set options"
 msgstr "Seçenekleri ayarla"
 
 msgid "Settings"
 msgstr "Ayarlar"
-
-msgid "Shop"
-msgstr "Mağaza"
 
 msgid "Show Flags"
 msgstr "Bayrakları Göster"
@@ -739,9 +677,6 @@ msgstr "{total} kanaldan {showon} tanesi gösteriliyor"
 
 msgid "Showing {shown} of {total} results"
 msgstr "{total} sonuçtan {gösterilmektedir} tanesi gösteriliyor"
-
-msgid "Sports"
-msgstr "Spor"
 
 msgid "Statistics:"
 msgstr "İstatistikler:"
@@ -769,9 +704,6 @@ msgstr "Tepe"
 
 msgid "Total channels:"
 msgstr "Toplam kanallar:"
-
-msgid "Travel"
-msgstr "Seyahat"
 
 msgid "Unknown"
 msgstr "Bilinmiyor"
@@ -824,8 +756,13 @@ msgstr "Günlük Dosyasını Görüntüle"
 msgid "Warning"
 msgstr "Uyarı"
 
-msgid "Weather"
-msgstr "Hava durumu"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Kategoriye Göre Gözat"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Ülkeye Göre Gözat"
 
 msgid "Will load fresh data next time"
 msgstr "Bir dahaki sefere yeni veriler yüklenecek"
@@ -853,3 +790,87 @@ msgstr "ülkeler"
 
 msgid "files and"
 msgstr "dosyalar ve"
+
+#~ msgid "Animation"
+#~ msgstr "Animasyon"
+
+#~ msgid "Business"
+#~ msgstr "İşletme"
+
+#~ msgid "Classic"
+#~ msgstr "Klasik"
+
+#~ msgid "Comedy"
+#~ msgstr "Komedi"
+
+#~ msgid "Cooking"
+#~ msgstr "Yemek pişirmek"
+
+#~ msgid "Culture"
+#~ msgstr "Kültür"
+
+#~ msgid "Documentary"
+#~ msgstr "Belgesel"
+
+#~ msgid "Education"
+#~ msgstr "Eğitim"
+
+#~ msgid "Entertainment"
+#~ msgstr "Eğlence"
+
+#~ msgid "Family"
+#~ msgstr "Aile"
+
+#~ msgid "General"
+#~ msgstr "Genel"
+
+#~ msgid "History"
+#~ msgstr "Tarih"
+
+#~ msgid "Hobby"
+#~ msgstr "Hobi"
+
+#~ msgid "Kids"
+#~ msgstr "Çocuklar"
+
+#~ msgid "Legislative"
+#~ msgstr "Yasama"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Yaşam Tarzı"
+
+#~ msgid "Local"
+#~ msgstr "Yerel"
+
+#~ msgid "Movies"
+#~ msgstr "Filmler"
+
+#~ msgid "Music"
+#~ msgstr "Müzik"
+
+#~ msgid "News"
+#~ msgstr "Haberler"
+
+#~ msgid "Politics"
+#~ msgstr "Politika"
+
+#~ msgid "Religious"
+#~ msgstr "Din"
+
+#~ msgid "Science"
+#~ msgstr "Bilim"
+
+#~ msgid "Series"
+#~ msgstr "Seri"
+
+#~ msgid "Shop"
+#~ msgstr "Mağaza"
+
+#~ msgid "Sports"
+#~ msgstr "Spor"
+
+#~ msgid "Travel"
+#~ msgstr "Seyahat"
+
+#~ msgid "Weather"
+#~ msgstr "Hava durumu"

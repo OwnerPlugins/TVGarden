@@ -150,9 +150,6 @@ msgstr ""
 msgid "Already in favorites"
 msgstr ""
 
-msgid "Animation"
-msgstr ""
-
 msgid "Are you sure you want to clear all log files?"
 msgstr ""
 
@@ -180,10 +177,13 @@ msgstr ""
 msgid "Browse channels by country"
 msgstr ""
 
-msgid "Buffer Size"
+msgid "Browse webcams by category"
 msgstr ""
 
-msgid "Business"
+msgid "Browse webcams by country"
+msgstr ""
+
+msgid "Buffer Size"
 msgstr ""
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
@@ -222,9 +222,6 @@ msgstr ""
 msgid "Checking for updates..."
 msgstr ""
 
-msgid "Classic"
-msgstr ""
-
 msgid "Clear"
 msgstr ""
 
@@ -246,13 +243,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-msgid "Comedy"
-msgstr ""
-
 msgid "Connection Timeout"
-msgstr ""
-
-msgid "Cooking"
 msgstr ""
 
 msgid "Could not check for updates. Check internet connection."
@@ -273,9 +264,6 @@ msgstr ""
 msgid "Critical"
 msgstr ""
 
-msgid "Culture"
-msgstr ""
-
 msgid "Database exported successfully"
 msgstr ""
 
@@ -285,13 +273,7 @@ msgstr ""
 msgid "Default View"
 msgstr ""
 
-msgid "Documentary"
-msgstr ""
-
 msgid "Editing: %s"
-msgstr ""
-
-msgid "Education"
 msgstr ""
 
 msgid "Empty database"
@@ -303,9 +285,6 @@ msgstr ""
 msgid "Enable Export"
 msgstr ""
 
-msgid "Entertainment"
-msgstr ""
-
 msgid "Error"
 msgstr ""
 
@@ -313,6 +292,9 @@ msgid "Error clearing favorites"
 msgstr ""
 
 msgid "Error clearing logs: %s"
+msgstr ""
+
+msgid "Error loading categories"
 msgstr ""
 
 msgid "Error loading category"
@@ -402,9 +384,6 @@ msgstr ""
 msgid "Failed to load database"
 msgstr ""
 
-msgid "Family"
-msgstr ""
-
 msgid "Favorite"
 msgstr ""
 
@@ -432,19 +411,10 @@ msgstr ""
 msgid "GStreamer"
 msgstr ""
 
-msgid "General"
-msgstr ""
-
 msgid "Hierarchical export completed"
 msgstr ""
 
 msgid "Hierarchical export completed!"
-msgstr ""
-
-msgid "History"
-msgstr ""
-
-msgid "Hobby"
 msgstr ""
 
 msgid "Info"
@@ -456,16 +426,10 @@ msgstr ""
 msgid "Keyboard"
 msgstr ""
 
-msgid "Kids"
-msgstr ""
-
-msgid "Legislative"
-msgstr ""
-
-msgid "Lifestyle"
-msgstr ""
-
 msgid "List Position"
+msgstr ""
+
+msgid "Loading %s: %s (%d/%d)"
 msgstr ""
 
 msgid "Loading all channels in background..."
@@ -486,16 +450,10 @@ msgstr ""
 msgid "Loading countries..."
 msgstr ""
 
-msgid "Loading countries: %s (%d/%d)"
-msgstr ""
-
 msgid "Loading favorites..."
 msgstr ""
 
 msgid "Loading... %d channels so far"
-msgstr ""
-
-msgid "Local"
 msgstr ""
 
 msgid "Log Level"
@@ -529,15 +487,6 @@ msgid "Max channels for country"
 msgstr ""
 
 msgid "Memory Optimization"
-msgstr ""
-
-msgid "Movies"
-msgstr ""
-
-msgid "Music"
-msgstr ""
-
-msgid "News"
 msgstr ""
 
 msgid "Next load will use fresh data"
@@ -612,9 +561,6 @@ msgstr ""
 msgid "Plugin settings and configuration"
 msgstr ""
 
-msgid "Politics"
-msgstr ""
-
 msgid "Press GREEN for keyboard..."
 msgstr ""
 
@@ -648,9 +594,6 @@ msgstr ""
 msgid "Refreshing..."
 msgstr ""
 
-msgid "Religious"
-msgstr ""
-
 msgid "Remove '%s' from favorites?"
 msgstr ""
 
@@ -673,9 +616,6 @@ msgid "Removed from favorites: %s"
 msgstr ""
 
 msgid "Save"
-msgstr ""
-
-msgid "Science"
 msgstr ""
 
 msgid "Search"
@@ -702,16 +642,10 @@ msgstr ""
 msgid "Select a country"
 msgstr ""
 
-msgid "Series"
-msgstr ""
-
 msgid "Set options"
 msgstr ""
 
 msgid "Settings"
-msgstr ""
-
-msgid "Shop"
 msgstr ""
 
 msgid "Show Flags"
@@ -727,9 +661,6 @@ msgid "Showing {shown} of {total} channels"
 msgstr ""
 
 msgid "Showing {shown} of {total} results"
-msgstr ""
-
-msgid "Sports"
 msgstr ""
 
 msgid "Statistics:"
@@ -757,9 +688,6 @@ msgid "Top"
 msgstr ""
 
 msgid "Total channels:"
-msgstr ""
-
-msgid "Travel"
 msgstr ""
 
 msgid "Unknown"
@@ -813,7 +741,10 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-msgid "Weather"
+msgid "Webcams by Category"
+msgstr ""
+
+msgid "Webcams by Country"
 msgstr ""
 
 msgid "Will load fresh data next time"

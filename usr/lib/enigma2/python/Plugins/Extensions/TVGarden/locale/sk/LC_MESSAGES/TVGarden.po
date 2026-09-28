@@ -165,9 +165,6 @@ msgstr "Všetky kanály"
 msgid "Already in favorites"
 msgstr "Už v obľúbených"
 
-msgid "Animation"
-msgstr "Animácia"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Naozaj chcete vymazať všetky súbory denníka?"
 
@@ -195,11 +192,16 @@ msgstr "Prehliadanie kanálov podľa kategórie"
 msgid "Browse channels by country"
 msgstr "Prehliadať kanály podľa krajiny"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Prehliadanie kanálov podľa kategórie"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Prehliadať kanály podľa krajiny"
+
 msgid "Buffer Size"
 msgstr "Veľkosť zásobníka"
-
-msgid "Business"
-msgstr "Živnostník / Firma"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = zmena | OK = Prepnúť | STOP = výstup | od Lulully"
@@ -237,9 +239,6 @@ msgstr "Skontrolujte aktualizácie pluginov"
 msgid "Checking for updates..."
 msgstr "Kontrola aktualizácií..."
 
-msgid "Classic"
-msgstr "Klasický"
-
 msgid "Clear"
 msgstr "Vyčistiť"
 
@@ -261,14 +260,8 @@ msgstr "Vymazané obľúbené položky (%d)"
 msgid "Close"
 msgstr "Zatvoriť"
 
-msgid "Comedy"
-msgstr "Komédia"
-
 msgid "Connection Timeout"
 msgstr "Časový limit pripojenia"
-
-msgid "Cooking"
-msgstr "Varenie"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Nepodarilo sa skontrolovať aktualizácie. Skontrolujte internetové pripojenie."
@@ -288,9 +281,6 @@ msgstr "Vytvára sa hierarchická štruktúra..."
 msgid "Critical"
 msgstr "Kritická"
 
-msgid "Culture"
-msgstr "Kultúra"
-
 msgid "Database exported successfully"
 msgstr "Databáza bola úspešne exportovaná"
 
@@ -300,14 +290,8 @@ msgstr "Debug"
 msgid "Default View"
 msgstr "Predvolené"
 
-msgid "Documentary"
-msgstr "Dokumentárny film"
-
 msgid "Editing: %s"
 msgstr "Úprava: %s"
-
-msgid "Education"
-msgstr "Vzdelanie"
 
 msgid "Empty database"
 msgstr "Prázdna databáza"
@@ -318,9 +302,6 @@ msgstr "Povoliť vyrovnávaciu pamäť"
 msgid "Enable Export"
 msgstr "Povoliť export"
 
-msgid "Entertainment"
-msgstr "Zábava"
-
 msgid "Error"
 msgstr "Chyba"
 
@@ -329,6 +310,10 @@ msgstr "Chyba pri vymazávaní obľúbených položiek"
 
 msgid "Error clearing logs: %s"
 msgstr "Chyba pri vymazaní protokolov: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Chyba pri načítaní kategórie"
 
 msgid "Error loading category"
 msgstr "Chyba pri načítaní kategórie"
@@ -421,9 +406,6 @@ msgstr "Vytvorenie zálohy zlyhalo. Aktualizácia zrušená."
 msgid "Failed to load database"
 msgstr "Nepodarilo sa načítať databázu"
 
-msgid "Family"
-msgstr "Rodina"
-
 msgid "Favorite"
 msgstr "Obľúbené"
 
@@ -451,20 +433,11 @@ msgstr "Nájdených %d prehrávateľných kanálov"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "General"
-msgstr "Všeobecné"
-
 msgid "Hierarchical export completed"
 msgstr "Hierarchický export dokončený"
 
 msgid "Hierarchical export completed!"
 msgstr "Hierarchický export dokončený!"
-
-msgid "History"
-msgstr "História"
-
-msgid "Hobby"
-msgstr "Koníček"
 
 msgid "Info"
 msgstr "Informácie"
@@ -475,17 +448,12 @@ msgstr "Položka {} z {}"
 msgid "Keyboard"
 msgstr "Klávesnica"
 
-msgid "Kids"
-msgstr "Deti"
-
-msgid "Legislative"
-msgstr "Legislatíva"
-
-msgid "Lifestyle"
-msgstr "Lifestyle"
-
 msgid "List Position"
 msgstr "Pozícia zoznamu"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Načítavajú sa krajiny..."
 
 #, fuzzy
 msgid "Loading all channels in background..."
@@ -507,19 +475,12 @@ msgstr "Načítavajú sa kanály..."
 msgid "Loading countries..."
 msgstr "Načítavajú sa krajiny..."
 
-#, fuzzy
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Načítavajú sa krajiny..."
-
 msgid "Loading favorites..."
 msgstr "Načítavajú sa obľúbené položky..."
 
 #, fuzzy
 msgid "Loading... %d channels so far"
 msgstr "Načítavajú sa kanály..."
-
-msgid "Local"
-msgstr "Lokálne"
 
 msgid "Log Level"
 msgstr "Úroveň záznamu"
@@ -556,15 +517,6 @@ msgstr "Maximálny počet kanálov na krajinu"
 
 msgid "Memory Optimization"
 msgstr "Optimalizácia pamäte"
-
-msgid "Movies"
-msgstr "Filmy"
-
-msgid "Music"
-msgstr "Hudba"
-
-msgid "News"
-msgstr "Aktuality"
 
 msgid "Next load will use fresh data"
 msgstr "Ďalšie načítanie použije čerstvé údaje"
@@ -639,9 +591,6 @@ msgstr "Plugin je aktuálny"
 msgid "Plugin settings and configuration"
 msgstr "Nastavenia a konfigurácia pluginu"
 
-msgid "Politics"
-msgstr "Politika"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Stlačte ZELENÉ tlačidlo pre klávesnicu..."
 
@@ -676,9 +625,6 @@ msgstr "Obnovujú sa údaje..."
 msgid "Refreshing..."
 msgstr "Osviežujúce..."
 
-msgid "Religious"
-msgstr "Náboženské"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Odstrániť „%s“ z obľúbených?"
 
@@ -702,9 +648,6 @@ msgstr "Odstránené z obľúbených: %s"
 
 msgid "Save"
 msgstr "Uložiť"
-
-msgid "Science"
-msgstr "Veda"
 
 msgid "Search"
 msgstr "Hľadať"
@@ -730,17 +673,11 @@ msgstr "Vyberte kategóriu"
 msgid "Select a country"
 msgstr "Vyberte krajinu"
 
-msgid "Series"
-msgstr "Séria"
-
 msgid "Set options"
 msgstr "Nastavenie možností"
 
 msgid "Settings"
 msgstr "Nastavenia"
-
-msgid "Shop"
-msgstr "Obchod"
 
 msgid "Show Flags"
 msgstr "Zobraziť vlajky"
@@ -757,9 +694,6 @@ msgstr "Zobrazuje sa {shown} z {total} kanálov"
 
 msgid "Showing {shown} of {total} results"
 msgstr "Zobrazuje sa {shown} z {total} výsledkov"
-
-msgid "Sports"
-msgstr "Športy"
 
 msgid "Statistics:"
 msgstr "štatistiky:"
@@ -787,9 +721,6 @@ msgstr "Hore"
 
 msgid "Total channels:"
 msgstr "Celkový počet kanálov:"
-
-msgid "Travel"
-msgstr "Cestovanie"
 
 msgid "Unknown"
 msgstr "Neznáme"
@@ -842,8 +773,13 @@ msgstr "Zobraziť súbor denníka"
 msgid "Warning"
 msgstr "Upozornenie"
 
-msgid "Weather"
-msgstr "Počasie"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Prehľadávať podľa kategórie"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Prehľadávať podľa krajiny"
 
 msgid "Will load fresh data next time"
 msgstr "Nabudúce sa načítajú čerstvé údaje"
@@ -874,6 +810,90 @@ msgstr "krajín"
 
 msgid "files and"
 msgstr "súbory a"
+
+#~ msgid "Animation"
+#~ msgstr "Animácia"
+
+#~ msgid "Business"
+#~ msgstr "Živnostník / Firma"
+
+#~ msgid "Classic"
+#~ msgstr "Klasický"
+
+#~ msgid "Comedy"
+#~ msgstr "Komédia"
+
+#~ msgid "Cooking"
+#~ msgstr "Varenie"
+
+#~ msgid "Culture"
+#~ msgstr "Kultúra"
+
+#~ msgid "Documentary"
+#~ msgstr "Dokumentárny film"
+
+#~ msgid "Education"
+#~ msgstr "Vzdelanie"
+
+#~ msgid "Entertainment"
+#~ msgstr "Zábava"
+
+#~ msgid "Family"
+#~ msgstr "Rodina"
+
+#~ msgid "General"
+#~ msgstr "Všeobecné"
+
+#~ msgid "History"
+#~ msgstr "História"
+
+#~ msgid "Hobby"
+#~ msgstr "Koníček"
+
+#~ msgid "Kids"
+#~ msgstr "Deti"
+
+#~ msgid "Legislative"
+#~ msgstr "Legislatíva"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Lifestyle"
+
+#~ msgid "Local"
+#~ msgstr "Lokálne"
+
+#~ msgid "Movies"
+#~ msgstr "Filmy"
+
+#~ msgid "Music"
+#~ msgstr "Hudba"
+
+#~ msgid "News"
+#~ msgstr "Aktuality"
+
+#~ msgid "Politics"
+#~ msgstr "Politika"
+
+#~ msgid "Religious"
+#~ msgstr "Náboženské"
+
+#~ msgid "Science"
+#~ msgstr "Veda"
+
+#~ msgid "Series"
+#~ msgstr "Séria"
+
+#~ msgid "Shop"
+#~ msgstr "Obchod"
+
+#~ msgid "Sports"
+#~ msgstr "Športy"
+
+#~ msgid "Travel"
+#~ msgstr "Cestovanie"
+
+#~ msgid "Weather"
+#~ msgstr "Počasie"
 
 #~ msgid "Press GREEN for keyboard... Ready - %d channels"
 #~ msgstr "Stlačte ZELENÉ tlačidlo pre klávesnicu... Pripravené - %d kanálov"

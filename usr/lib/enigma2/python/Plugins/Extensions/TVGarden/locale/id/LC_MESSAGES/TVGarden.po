@@ -151,9 +151,6 @@ msgstr "Semua hasil"
 msgid "Already in favorites"
 msgstr "Sudah di favorit"
 
-msgid "Animation"
-msgstr "Animasi"
-
 msgid "Are you sure you want to clear all log files?"
 msgstr "Apakah Anda yakin ingin menghapus semua file log?"
 
@@ -181,11 +178,16 @@ msgstr "Jelajahi saluran berdasarkan kategori"
 msgid "Browse channels by country"
 msgstr "Jelajahi saluran berdasarkan negara"
 
+#, fuzzy
+msgid "Browse webcams by category"
+msgstr "Jelajahi saluran berdasarkan kategori"
+
+#, fuzzy
+msgid "Browse webcams by country"
+msgstr "Jelajahi saluran berdasarkan negara"
+
 msgid "Buffer Size"
 msgstr "Ukuran Penyangga"
-
-msgid "Business"
-msgstr "Bisnis"
 
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Ubah | OK = Beralih | BERHENTI = Keluar | oleh Lululla"
@@ -223,9 +225,6 @@ msgstr "Periksa pembaruan plugin"
 msgid "Checking for updates..."
 msgstr "Memeriksa pembaruan..."
 
-msgid "Classic"
-msgstr "Klasik"
-
 msgid "Clear"
 msgstr "Jernih"
 
@@ -247,14 +246,8 @@ msgstr "Menghapus %d favorit"
 msgid "Close"
 msgstr "Menutup"
 
-msgid "Comedy"
-msgstr "Komedi"
-
 msgid "Connection Timeout"
 msgstr "Batas Waktu Koneksi"
-
-msgid "Cooking"
-msgstr "Memasak"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Tidak dapat memeriksa pembaruan. Periksa koneksi internet."
@@ -274,9 +267,6 @@ msgstr "Membuat struktur hierarki..."
 msgid "Critical"
 msgstr "Kritis"
 
-msgid "Culture"
-msgstr "Budaya"
-
 msgid "Database exported successfully"
 msgstr "Basis data berhasil diekspor"
 
@@ -286,14 +276,8 @@ msgstr "Men-debug"
 msgid "Default View"
 msgstr "Tampilan Bawaan"
 
-msgid "Documentary"
-msgstr "Dokumenter"
-
 msgid "Editing: %s"
 msgstr "Pengeditan: %s"
-
-msgid "Education"
-msgstr "Pendidikan"
 
 msgid "Empty database"
 msgstr "Basis data kosong"
@@ -304,9 +288,6 @@ msgstr "Aktifkan Cache"
 msgid "Enable Export"
 msgstr "Aktifkan Ekspor"
 
-msgid "Entertainment"
-msgstr "Hiburan"
-
 msgid "Error"
 msgstr "Kesalahan"
 
@@ -315,6 +296,10 @@ msgstr "Terjadi kesalahan saat menghapus favorit"
 
 msgid "Error clearing logs: %s"
 msgstr "Kesalahan saat menghapus log: %s"
+
+#, fuzzy
+msgid "Error loading categories"
+msgstr "Terjadi kesalahan saat memuat kategori"
 
 msgid "Error loading category"
 msgstr "Terjadi kesalahan saat memuat kategori"
@@ -403,9 +388,6 @@ msgstr "Gagal membuat cadangan. Pembaruan dibatalkan."
 msgid "Failed to load database"
 msgstr "Gagal memuat basis data"
 
-msgid "Family"
-msgstr "Keluarga"
-
 msgid "Favorite"
 msgstr "Favorit"
 
@@ -433,20 +415,11 @@ msgstr "Ditemukan %d saluran yang dapat diputar"
 msgid "GStreamer"
 msgstr ""
 
-msgid "General"
-msgstr "Umum"
-
 msgid "Hierarchical export completed"
 msgstr "Ekspor hierarki selesai"
 
 msgid "Hierarchical export completed!"
 msgstr "Ekspor hierarki selesai!"
-
-msgid "History"
-msgstr "Sejarah"
-
-msgid "Hobby"
-msgstr "Hobi"
 
 msgid "Info"
 msgstr "Informasi"
@@ -457,17 +430,12 @@ msgstr "Butir {} dari {}"
 msgid "Keyboard"
 msgstr "papan ketik"
 
-msgid "Kids"
-msgstr "Anak-anak"
-
-msgid "Legislative"
-msgstr "Legislatif"
-
-msgid "Lifestyle"
-msgstr "Gaya hidup"
-
 msgid "List Position"
 msgstr "Daftar Posisi"
+
+#, fuzzy
+msgid "Loading %s: %s (%d/%d)"
+msgstr "Memuat negara: %s (%d/%d)"
 
 msgid "Loading all channels in background..."
 msgstr "Memuat semua saluran di latar belakang..."
@@ -487,17 +455,11 @@ msgstr "Memuat saluran..."
 msgid "Loading countries..."
 msgstr "Memuat negara..."
 
-msgid "Loading countries: %s (%d/%d)"
-msgstr "Memuat negara: %s (%d/%d)"
-
 msgid "Loading favorites..."
 msgstr "Memuat favorit..."
 
 msgid "Loading... %d channels so far"
 msgstr "Memuat... %d saluran sejauh ini"
-
-msgid "Local"
-msgstr "Lokal"
 
 msgid "Log Level"
 msgstr "Tingkat Log"
@@ -531,15 +493,6 @@ msgstr "Saluran maksimal untuk negara"
 
 msgid "Memory Optimization"
 msgstr "Optimasi Memori"
-
-msgid "Movies"
-msgstr "Film"
-
-msgid "Music"
-msgstr "Musik"
-
-msgid "News"
-msgstr "Berita"
 
 msgid "Next load will use fresh data"
 msgstr "Pemuatan berikutnya akan menggunakan data baru"
@@ -613,9 +566,6 @@ msgstr "Plugin sudah diperbarui"
 msgid "Plugin settings and configuration"
 msgstr "Pengaturan dan konfigurasi plugin"
 
-msgid "Politics"
-msgstr "Politik"
-
 msgid "Press GREEN for keyboard..."
 msgstr "Tekan HIJAU untuk keyboard..."
 
@@ -649,9 +599,6 @@ msgstr "Menyegarkan data..."
 msgid "Refreshing..."
 msgstr "Menyegarkan..."
 
-msgid "Religious"
-msgstr "Keagamaan"
-
 msgid "Remove '%s' from favorites?"
 msgstr "Hapus '%s' dari favorit?"
 
@@ -675,9 +622,6 @@ msgstr "Dihapus dari favorit: %s"
 
 msgid "Save"
 msgstr "Menyimpan"
-
-msgid "Science"
-msgstr "Sains"
 
 msgid "Search"
 msgstr "Mencari"
@@ -703,17 +647,11 @@ msgstr "Pilih kategori"
 msgid "Select a country"
 msgstr "Pilih negara"
 
-msgid "Series"
-msgstr "Seri"
-
 msgid "Set options"
 msgstr "Tetapkan opsi"
 
 msgid "Settings"
 msgstr "Pengaturan"
-
-msgid "Shop"
-msgstr "Toko"
 
 msgid "Show Flags"
 msgstr "Tampilkan Bendera"
@@ -729,9 +667,6 @@ msgstr "Menampilkan {shown} dari {total} saluran"
 
 msgid "Showing {shown} of {total} results"
 msgstr "Menampilkan {ditampilkan} dari {total} hasil"
-
-msgid "Sports"
-msgstr "Olahraga"
 
 msgid "Statistics:"
 msgstr "Statistik:"
@@ -759,9 +694,6 @@ msgstr "Atas"
 
 msgid "Total channels:"
 msgstr "Jumlah saluran:"
-
-msgid "Travel"
-msgstr "Bepergian"
 
 msgid "Unknown"
 msgstr "Tidak dikenal"
@@ -814,8 +746,13 @@ msgstr "Lihat File Log"
 msgid "Warning"
 msgstr "Peringatan"
 
-msgid "Weather"
-msgstr "Cuaca"
+#, fuzzy
+msgid "Webcams by Category"
+msgstr "Jelajahi berdasarkan Kategori"
+
+#, fuzzy
+msgid "Webcams by Country"
+msgstr "Telusuri berdasarkan Negara"
 
 msgid "Will load fresh data next time"
 msgstr "Akan memuat data baru lain kali"
@@ -843,3 +780,87 @@ msgstr "negara"
 
 msgid "files and"
 msgstr "file dan"
+
+#~ msgid "Animation"
+#~ msgstr "Animasi"
+
+#~ msgid "Business"
+#~ msgstr "Bisnis"
+
+#~ msgid "Classic"
+#~ msgstr "Klasik"
+
+#~ msgid "Comedy"
+#~ msgstr "Komedi"
+
+#~ msgid "Cooking"
+#~ msgstr "Memasak"
+
+#~ msgid "Culture"
+#~ msgstr "Budaya"
+
+#~ msgid "Documentary"
+#~ msgstr "Dokumenter"
+
+#~ msgid "Education"
+#~ msgstr "Pendidikan"
+
+#~ msgid "Entertainment"
+#~ msgstr "Hiburan"
+
+#~ msgid "Family"
+#~ msgstr "Keluarga"
+
+#~ msgid "General"
+#~ msgstr "Umum"
+
+#~ msgid "History"
+#~ msgstr "Sejarah"
+
+#~ msgid "Hobby"
+#~ msgstr "Hobi"
+
+#~ msgid "Kids"
+#~ msgstr "Anak-anak"
+
+#~ msgid "Legislative"
+#~ msgstr "Legislatif"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Gaya hidup"
+
+#~ msgid "Local"
+#~ msgstr "Lokal"
+
+#~ msgid "Movies"
+#~ msgstr "Film"
+
+#~ msgid "Music"
+#~ msgstr "Musik"
+
+#~ msgid "News"
+#~ msgstr "Berita"
+
+#~ msgid "Politics"
+#~ msgstr "Politik"
+
+#~ msgid "Religious"
+#~ msgstr "Keagamaan"
+
+#~ msgid "Science"
+#~ msgstr "Sains"
+
+#~ msgid "Series"
+#~ msgstr "Seri"
+
+#~ msgid "Shop"
+#~ msgstr "Toko"
+
+#~ msgid "Sports"
+#~ msgstr "Olahraga"
+
+#~ msgid "Travel"
+#~ msgstr "Bepergian"
+
+#~ msgid "Weather"
+#~ msgstr "Cuaca"
