@@ -4,6 +4,11 @@
 TV Garden Plugin - Helpers Module
 Based on TV Garden Project by Lululla
 Data Source: TV Garden Project
+
+[TVGarden patch] Aggiunto supporto multi-sorgente (tv / webcams).
+Tutte le funzioni URL accettano `media_type` con fallback su "tv".
+Le liste di categorie sono state rimosse: vengono lette dinamicamente
+dalla GitHub API tramite CacheManager.get_available_categories().
 """
 from sys import stderr
 from os import remove, makedirs
@@ -146,25 +151,45 @@ DEFAULT_IMAGES_PATH = join(PLUGIN_PATH, "images", "hd")
 
 REPO_BASE = "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/main"
 
-
-def get_metadata_url():
-    return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/main/tv/raw/countries_metadata.json"
-
-
-def get_country_url(country_code):
-    return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/main/tv/raw/countries/%s.json" % country_code.lower()
+# ============ MEDIA TYPE HANDLING ============
+# [TVGarden patch] Whitelist per media_type. Aggiungere qui eventuali
+# nuove sorgenti in futuro (es. "radio").
+VALID_MEDIA = ("tv", "webcams")
 
 
-def get_category_url(category_id):
-    return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/main/tv/raw/categories/%s.json" % category_id
+def _media_path(media_type):
+    """Sanitize media_type, fallback su 'tv' se non valido."""
+    if media_type not in VALID_MEDIA:
+        return "tv"
+    return media_type
 
 
-def get_categories_url():
-    return "https://api.github.com/repos/OwnerPlugins/famelack-data/contents/tv/raw/categories"
+# ============ URL BUILDERS ============
+# [TVGarden patch] Tutte le funzioni accettano media_type (default "tv")
+# per retrocompatibilità con il codice esistente.
+
+def get_metadata_url(media_type="tv"):
+    return "%s/%s/raw/countries_metadata.json" % (REPO_BASE, _media_path(media_type))
 
 
-def get_all_channels_url():
-    return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/main/tv/raw/categories/all.json"
+def get_country_url(country_code, media_type="tv"):
+    return "%s/%s/raw/countries/%s.json" % (
+        REPO_BASE, _media_path(media_type), country_code.lower()
+    )
+
+
+def get_category_url(category_id, media_type="tv"):
+    return "%s/%s/raw/categories/%s.json" % (
+        REPO_BASE, _media_path(media_type), category_id
+    )
+
+
+def get_categories_url(media_type="tv"):
+    return "https://api.github.com/repos/OwnerPlugins/famelack-data/contents/%s/raw/categories" % _media_path(media_type)
+
+
+def get_all_channels_url(media_type="tv"):
+    return "%s/%s/raw/categories/all.json" % (REPO_BASE, _media_path(media_type))
 
 
 def get_flag_url(country_code, size=80):
@@ -172,48 +197,27 @@ def get_flag_url(country_code, size=80):
     return "https://flagcdn.com/w%d/%s.png" % (size, country_code.lower())
 
 
-CATEGORIES = [
-    {'id': 'all', 'name': 'All Channels'},
-    {'id': 'animation', 'name': 'Animation'},
-    {'id': 'auto', 'name': 'Auto'},
-    {'id': 'business', 'name': 'Business'},
-    {'id': 'classic', 'name': 'Classic'},
-    {'id': 'comedy', 'name': 'Comedy'},
-    {'id': 'cooking', 'name': 'Cooking'},
-    {'id': 'culture', 'name': 'Culture'},
-    {'id': 'documentary', 'name': 'Documentary'},
-    {'id': 'education', 'name': 'Education'},
-    {'id': 'entertainment', 'name': 'Entertainment'},
-    {'id': 'family', 'name': 'Family'},
-    {'id': 'general', 'name': 'General'},
-    {'id': 'kids', 'name': 'Kids'},
-    {'id': 'legislative', 'name': 'Legislative'},
-    {'id': 'lifestyle', 'name': 'Lifestyle'},
-    {'id': 'movies', 'name': 'Movies'},
-    {'id': 'music', 'name': 'Music'},
-    {'id': 'news', 'name': 'News'},
-    {'id': 'outdoor', 'name': 'Outdoor'},
-    {'id': 'public', 'name': 'Public'},
-    {'id': 'relax', 'name': 'Relax'},
-    {'id': 'religious', 'name': 'Religious'},
-    {'id': 'science', 'name': 'Science'},
-    {'id': 'series', 'name': 'Series'},
-    {'id': 'shop', 'name': 'Shop'},
-    {'id': 'show', 'name': 'Show'},
-    {'id': 'sports', 'name': 'Sports'},
-    {'id': 'top-news', 'name': 'Top News'},
-    {'id': 'travel', 'name': 'Travel'},
-    {'id': 'weather', 'name': 'Weather'},
-    {'id': 'webcam', 'name': 'Webcam'},
+# ============ CATEGORY FALLBACK ============
+# [TVGarden patch] Le categorie vengono lette dinamicamente dalla GitHub API
+# tramite CacheManager.get_available_categories(media_type).
+# Qui sotto solo un fallback MINIMO usato se la API non risponde
+# E la cache è vuota (es. primo avvio offline).
+CATEGORIES_FALLBACK = [
+    {'id': 'all', 'name': 'All'},
 ]
 
 
-def get_category_name(category_id):
-    """Get display name for category ID"""
-    for cat in CATEGORIES:
-        if cat['id'] == category_id:
-            return cat['name']
-    return category_id
+def get_category_name(category_id, media_type="tv"):
+    """
+    [TVGarden patch] Lookup name per category_id.
+    Non usa più una lista hardcoded: prova a leggere dal cache.
+    Se il cache non è disponibile, ritorna l'id formattato.
+    """
+    # Formattazione leggibile fallback (es. "top-news" -> "Top News")
+    try:
+        return category_id.replace('-', ' ').replace('_', ' ').title()
+    except BaseException:
+        return category_id
 
 
 def safe_get(dictionary, keys, default=None):
@@ -248,20 +252,6 @@ def is_valid_stream_url(url):
 
     if not any(url.startswith(prefix) for prefix in valid_prefixes):
         return False
-
-    # supported_patterns = (
-        # '.m3u8',
-        # '.mp4',
-        # '.ts',
-        # '.avi',
-        # '.mkv',
-        # '.flv',
-        # 'mpegts')
-
-    # url_lower = url.lower()
-    # for pattern in supported_patterns:
-        # if pattern in url_lower:
-        # return True
 
     if url.startswith(('http://', 'https://')):
         return True

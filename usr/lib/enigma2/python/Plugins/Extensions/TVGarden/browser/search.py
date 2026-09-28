@@ -4,6 +4,9 @@
 TV Garden Plugin - SearchBrowser
 Live search
 Data Source: TV Garden Project
+
+[TVGarden patch] Ricerca unificata su TV + Webcams.
+I risultati mostrano un prefisso [TV] o [WEB] per distinguere la sorgente.
 """
 from Components.Sources.StaticText import StaticText
 from Components.MenuList import MenuList
@@ -18,12 +21,22 @@ import threading
 
 from .base import BaseBrowser
 from ..utils.cache import CacheManager
-from ..helpers import log  # , is_valid_stream_url
+from ..helpers import log
 from ..utils.favorites import FavoritesManager
 from ..player.iptv_player import TVGardenPlayer
 from ..utils.config import PluginConfig, get_config
 
 from .. import _, PLUGIN_VERSION
+
+
+# [TVGarden patch] Sorgenti da cercare in un'unica ricerca
+SEARCH_MEDIA_TYPES = ("tv", "webcams")
+
+# [TVGarden patch] Etichette brevi per distinguere i risultati
+MEDIA_LABELS = {
+    "tv": "TV",
+    "webcams": "WEB",
+}
 
 
 class SearchBrowser(BaseBrowser):
@@ -57,7 +70,7 @@ class SearchBrowser(BaseBrowser):
             <!-- Title -->
             <widget name="title" position="49,-8" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
 
-            <!-- Search label and text (specifici per SearchBrowser) -->
+            <!-- Search label and text -->
             <widget name="search_label" position="48,55" size="610,90" zPosition="10" font="Regular;34" halign="right" valign="center" foregroundColor="#ffffff" render="Label" />
             <widget name="search_text" position="671,55" size="1220,90" zPosition="10" font="Regular;34" halign="left" valign="center" backgroundColor="#2d3047" foregroundColor="#ffffff" render="Label" />
 
@@ -99,8 +112,7 @@ class SearchBrowser(BaseBrowser):
         except BaseException:
             self.key_timer.callback.append(self.finishKeyInput)
         self['title'] = StaticText(
-            "TV Garden %s | by Lululla" %
-            PLUGIN_VERSION)
+            "TV Garden %s | by Lululla" % PLUGIN_VERSION)
         self["search_label"] = StaticText(_("Search:"))
         self["search_text"] = StaticText("")
         self["menu"] = MenuList([])
@@ -148,13 +160,11 @@ class SearchBrowser(BaseBrowser):
         self.onFirstExecBegin.append(self.load_all_channels)
 
     def _update_status(self, text):
-        """Thread-safe status update (posts an event to the main queue)"""
-        # Use callFromThread if available, otherwise use eTimer
+        """Thread-safe status update"""
         try:
             from twisted.internet import reactor
             reactor.callFromThread(self._set_status_text, text)
         except ImportError:
-            # Fallback: use eTimer to post the update
             self._pending_status = text
             if not hasattr(self, '_status_timer'):
                 self._status_timer = eTimer()
@@ -190,7 +200,6 @@ class SearchBrowser(BaseBrowser):
                 self["status"].setText(_("No channels loaded"))
                 log.error("No _loaded_channels found")
 
-            # Cleanup
             for attr in [
                 '_loading_complete',
                 '_loaded_channels',
@@ -199,7 +208,10 @@ class SearchBrowser(BaseBrowser):
                     delattr(self, attr)
 
     def _load_all_channels_thread(self):
-        """Background thread: fetch all countries and accumulate channels"""
+        """
+        [TVGarden patch] Carica canali da TV + Webcams in un unico thread.
+        Ogni channel viene taggato con `media_type` per distinguerlo.
+        """
         config = get_config()
         force_refresh = config.get("force_refresh_browsing", False)
         timeout = config.get("connection_timeout", 10)
@@ -211,30 +223,49 @@ class SearchBrowser(BaseBrowser):
         temp_channels = []
 
         try:
-            countries = self.cache.get_countries_metadata(
-                force_refresh=force_refresh)
-            total_countries = len(countries)
-            processed = 0
-
-            for code, info in countries.items():
-                processed += 1
-                self._update_status(
-                    _("Loading countries: %s (%d/%d)") %
-                    (code.upper(), processed, total_countries))
+            # [TVGarden patch] Itera su tutte le sorgenti definite in SEARCH_MEDIA_TYPES
+            for media_type in SEARCH_MEDIA_TYPES:
                 try:
-                    channels = self.cache.get_country_channels(
-                        code, force_refresh=force_refresh)
-                    if channels:
-                        for ch in channels:
-                            ch['country'] = info.get('name', code)
-                        temp_channels.extend(channels)
-                        log.debug(
-                            "Added %d from %s" %
-                            (len(channels), code), module="Search")
-                except Exception as e:
-                    log.debug("Skipped %s: %s" %
-                              (code, str(e)[:50]), module="Search")
-                    continue
+                    countries = self.cache.get_countries_metadata(
+                        media_type=media_type,
+                        force_refresh=force_refresh)
+                except TypeError:
+                    # Retrocompatibilità
+                    countries = self.cache.get_countries_metadata(
+                        force_refresh=force_refresh)
+
+                total_countries = len(countries)
+                processed = 0
+
+                for code, info in countries.items():
+                    processed += 1
+                    self._update_status(
+                        _("Loading %s: %s (%d/%d)") %
+                        (media_type, code.upper(), processed, total_countries))
+                    try:
+                        try:
+                            channels = self.cache.get_country_channels(
+                                code,
+                                media_type=media_type,
+                                force_refresh=force_refresh)
+                        except TypeError:
+                            channels = self.cache.get_country_channels(
+                                code, force_refresh=force_refresh)
+
+                        if channels:
+                            for ch in channels:
+                                ch['country'] = info.get('name', code)
+                                ch['media_type'] = media_type  # [TVGarden patch]
+                            temp_channels.extend(channels)
+                            log.debug(
+                                "Added %d from %s/%s" %
+                                (len(channels), media_type, code),
+                                module="Search")
+                    except Exception as e:
+                        log.debug("Skipped %s/%s: %s" %
+                                  (media_type, code, str(e)[:50]),
+                                  module="Search")
+                        continue
 
             self._loaded_channels = temp_channels
             self._loading_complete = True
@@ -256,7 +287,6 @@ class SearchBrowser(BaseBrowser):
         self["status"].setText(_("Loading all channels in background..."))
         self.all_channels = []
 
-        # Start background thread
         self.load_thread = threading.Thread(
             target=self._load_all_channels_thread)
         self.load_thread.daemon = True
@@ -264,7 +294,7 @@ class SearchBrowser(BaseBrowser):
 
         self.load_check_timer = eTimer()
         self.load_check_timer.callback.append(self._check_loading_complete)
-        self.load_check_timer.start(500)  # check every 500ms
+        self.load_check_timer.start(500)
 
     def _add_channels_incrementally(self, new_channels, country_name):
         """Thread-safe: posta l'aggiornamento della GUI nel main thread"""
@@ -280,12 +310,6 @@ class SearchBrowser(BaseBrowser):
         self.all_channels.extend(new_channels)
         log.debug("Added %d from %s, total: %d" %
                   (len(new_channels), country_name, len(self.all_channels)))
-        # if not self.search_query:
-        #     self.search_results = self.all_channels[:]
-        #     self.display_search_results()
-        #     self["status"].setText(_("Loading... %d channels so far") % len(self.all_channels))
-        # else:
-        #     self.perform_search()
         self["status"].setText(
             _("Loading... %d channels so far") % len(
                 self.all_channels))
@@ -319,7 +343,6 @@ class SearchBrowser(BaseBrowser):
             chars = key_chars[number]
             current_time = time.time()
 
-            # Check if same key pressed quickly (cycle through chars)
             if self.last_key == number and current_time - self.last_key_time < 1.0:
                 if self.search_query and self.search_query[-1] in chars:
                     current_index = chars.index(self.search_query[-1])
@@ -334,7 +357,6 @@ class SearchBrowser(BaseBrowser):
             self["search_text"].setText(self.search_query)
             self["status"].setText(_("Searching..."))
 
-            # Start search timer
             self.search_timer.start(500, True)
 
             self.last_key = number
@@ -366,19 +388,21 @@ class SearchBrowser(BaseBrowser):
 
     def match_channel(self, channel, query):
         """Check if channel matches search query"""
-        # Search in name
         name = channel.get('name', '').lower()
         if query in name:
             return True
 
-        # Search in description
         description = channel.get('description', '').lower()
         if description and query in description:
             return True
 
-        # Search in group/category
         group = channel.get('group', '').lower()
         if group and query in group:
+            return True
+
+        # [TVGarden patch] cerca anche nel media_type (es. "web", "tv")
+        media_type = channel.get('media_type', '').lower()
+        if media_type and query in media_type:
             return True
 
         return False
@@ -391,9 +415,6 @@ class SearchBrowser(BaseBrowser):
         if len(self.all_channels) < 100:
             log.warning("Very few channels (%d)!" %
                         len(self.all_channels), module="Search")
-            log.warning(
-                "This might explain limited search results",
-                module="Search")
 
         self.search_results = []
         self.menu_channels = []
@@ -414,7 +435,6 @@ class SearchBrowser(BaseBrowser):
         log.info("Found %d results" %
                  len(self.search_results), module="Search")
 
-        # Get configurable limit
         config = get_config()
         max_channels = config.get("search_max_results", 500)
 
@@ -428,9 +448,10 @@ class SearchBrowser(BaseBrowser):
         youtube_count = 0
         problematic_count = 0
         skipped_by_limit = 0
+        tv_count = 0
+        web_count = 0
 
         for idx, channel in enumerate(self.search_results):
-            # Apply configurable limit (0 = all channels)
             if max_channels > 0:
                 if idx >= max_channels:
                     log.debug(
@@ -478,61 +499,34 @@ class SearchBrowser(BaseBrowser):
                 stream_url = channel['url'].strip()
                 found_in = "url"
 
-            # 5. Basic URL validation
-            # if not stream_url:
-                # continue
-
-            # 6. Skip YouTube
             if is_youtube:
                 youtube_count += 1
                 continue
+
             log.debug(
                 "Channel: %s, URL: %s, is_youtube: %s" %
                 (name, stream_url, is_youtube))
 
-            # # 7. Advanced validation
-            """
-            if not is_valid_stream_url(stream_url):
-                continue
+            # [TVGarden patch] Conta per media_type e crea prefisso
+            media_type = channel.get('media_type', 'tv')
+            media_label = MEDIA_LABELS.get(media_type, "TV")
 
-            # 8. Skip problematic patterns (same as channels.py)
-            stream_lower = stream_url.lower()
-            problematic_patterns = [
-                "moveonjoy.com",  # caused crashes in logs
-                # ".mpd",           # DASH DRM
-                # "/dash/",         # DASH stream
-                "drm",
-                "widevine",       # DRM: Widevine
-                "playready",      # DRM: PlayReady
-                "fairplay",       # DRM: Apple FairPlay
-                "keydelivery",
-                "license.",
-                "encryption",
-                "akamaihd.net",   # often DRM
-                "level3.net"      # problematic CDN
-            ]
-            is_problematic = False
-            for pattern in problematic_patterns:
-                if pattern in stream_lower:
-                    problematic_count += 1
-                    is_problematic = True
-                    break
+            if media_type == "tv":
+                tv_count += 1
+            elif media_type == "webcams":
+                web_count += 1
 
-            if is_problematic:
-                continue
-            """
-
-            # Create display name
+            # Display name con prefisso [TV] / [WEB]
             extra_info = []
             if channel.get('category'):
                 extra_info.append(channel['category'])
             if channel.get('country'):
                 extra_info.append(channel['country'])
-            display_name = name
+
+            display_name = "[%s] %s" % (media_label, name)
             if extra_info:
                 display_name += " [%s]" % ', '.join(extra_info)
 
-            # Create channel data
             channel_data = {
                 'name': name,
                 'url': stream_url,
@@ -544,18 +538,17 @@ class SearchBrowser(BaseBrowser):
                 'language': channel.get('language', ''),
                 'country': channel.get('country', ''),
                 'is_youtube': False,
-                'found_in': found_in
+                'found_in': found_in,
+                'media_type': media_type,  # [TVGarden patch]
             }
 
             menu_items.append((display_name, idx))
             self.menu_channels.append(channel_data)
             valid_count += 1
 
-        # Update UI
         log.info("Valid channels found: %d" % len(menu_items))
         self["menu"].setList(menu_items)
 
-        # Build status message
         if max_channels > 0 and len(self.search_results) > max_channels:
             msg = _("Showing {shown} of {total} results")
             status_text = msg.format(
@@ -564,6 +557,10 @@ class SearchBrowser(BaseBrowser):
             )
         else:
             status_text = _("Found %d channels") % valid_count
+
+        # [TVGarden patch] Info su TV vs Webcams
+        if tv_count or web_count:
+            status_text += " [TV: %d / WEB: %d]" % (tv_count, web_count)
 
         if youtube_count > 0:
             status_text += " " + _("(skipped %d YouTube)") % youtube_count
@@ -586,29 +583,25 @@ class SearchBrowser(BaseBrowser):
                 self.search_query)
 
         log.info(
-            "Final: %d playable, %d YouTube skipped, %d problematic filtered, %d limited by config" %
-            (valid_count, youtube_count, problematic_count, skipped_by_limit), module="Search")
+            "Final: %d playable (TV:%d WEB:%d), %d YouTube skipped, %d problematic filtered, %d limited by config" %
+            (valid_count, tv_count, web_count, youtube_count, problematic_count, skipped_by_limit), module="Search")
 
     def extract_stream_url(self, channel):
-        """Extract stream URL from channel (priorità: iptv_urls -> stream_urls -> youtube_urls -> url)"""
-        # 1. iptv_urls
+        """Extract stream URL from channel"""
         if 'iptv_urls' in channel and isinstance(channel['iptv_urls'], list):
             for url in channel['iptv_urls']:
                 if isinstance(url, str) and url.strip():
                     return url.strip()
-        # 2. stream_urls
         if 'stream_urls' in channel and isinstance(
                 channel['stream_urls'], list):
             for url in channel['stream_urls']:
                 if isinstance(url, str) and url.strip():
                     return url.strip()
-        # 3. youtube_urls (skip)
         if 'youtube_urls' in channel and isinstance(
                 channel['youtube_urls'], list):
             for url in channel['youtube_urls']:
                 if isinstance(url, str) and url.strip():
-                    return None  # Skip YouTube
-        # 4. Fallback a 'url'
+                    return None
         return channel.get('url', '')
 
     def create_channel_data(self, channel, stream_url):
@@ -624,7 +617,8 @@ class SearchBrowser(BaseBrowser):
             'language': channel.get('language', ''),
             'country': channel.get('country', ''),
             'category': channel.get('category', ''),
-            'is_youtube': False
+            'is_youtube': False,
+            'media_type': channel.get('media_type', 'tv'),
         }
 
     def get_current_channel(self):

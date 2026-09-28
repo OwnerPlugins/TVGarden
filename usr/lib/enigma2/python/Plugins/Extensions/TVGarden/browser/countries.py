@@ -4,6 +4,11 @@
 TV Garden Plugin - Countries Browser
 Browse 150+ countries with flags
 Based on TV Garden Project
+
+[TVGarden patch] Supporto multi-sorgente (tv / webcams).
+Il browser accetta `media_type` e lo propaga a:
+- cache.get_countries_metadata()
+- ChannelsBrowser
 """
 import tempfile
 from os import unlink
@@ -32,11 +37,6 @@ class CountriesBrowser(BaseBrowser):
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/greenbutton.png" position="261,1038" size="210,6" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/yellowbutton.png" position="474,1038" size="210,6" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/bluebutton.png" position="688,1038" size="210,6" alphatest="blend" transparent="1" />
-
-            <!--
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
-            -->
 
             <!-- Background -->
             <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
@@ -73,7 +73,10 @@ class CountriesBrowser(BaseBrowser):
         </screen>
     """
 
-    def __init__(self, session):
+    def __init__(self, session, media_type="tv"):
+        # [TVGarden patch] media_type: "tv" (default) oppure "webcams"
+        self.media_type = media_type
+
         self.config = PluginConfig()
         dynamic_skin = self.config.load_skin("CountriesBrowser", self.skin)
         self.skin = dynamic_skin
@@ -87,11 +90,16 @@ class CountriesBrowser(BaseBrowser):
         self.current_flag_path = None
 
         log.info("Flags enabled using loadPNG method", module="Countries")
+        log.info("CountriesBrowser opened with media_type=%s" %
+                 self.media_type, module="Countries")
+
+        # [TVGarden patch] Titolo dinamico in base al media_type
+        title_label = "Webcams" if self.media_type == "webcams" else "TV Garden"
+
         self["menu"] = MenuList([], enableWrapAround=True)
         self["menu"].onSelectionChanged.append(self.onSelectionChanged)
         self['title'] = StaticText(
-            "TV Garden %s | by Lululla" %
-            PLUGIN_VERSION)
+            "%s %s | by Lululla" % (title_label, PLUGIN_VERSION))
         self["status"] = StaticText(_("Loading countries..."))
         self["flag"] = Pixmap()
         self["key_red"] = StaticText(_("Back"))
@@ -115,12 +123,10 @@ class CountriesBrowser(BaseBrowser):
         """Cleanup resources on close"""
         log.debug("Cleaning up", module="Countries")
 
-        # Flag to prevent double cleanup
         if getattr(self, '_cleaned_up', False):
             return
         self._cleaned_up = True
 
-        # Remove timer callbacks
         if hasattr(self, 'timer') and self.timer:
             try:
                 self.timer.callback = []
@@ -143,7 +149,6 @@ class CountriesBrowser(BaseBrowser):
             finally:
                 self.flag_timer = None
 
-        # Remove temporary flag file
         if hasattr(self, 'current_flag_path') and self.current_flag_path:
             if exists(self.current_flag_path):
                 try:
@@ -154,15 +159,12 @@ class CountriesBrowser(BaseBrowser):
                         module="Countries")
             self.current_flag_path = None
 
-        # Remove picload callback
         if hasattr(self, 'picload_conn') and self.picload_conn:
             try:
                 if self.picload and hasattr(self.picload, 'PictureData'):
                     if exists('/var/lib/dpkg/info'):
-                        # DreamOS
                         self.picload.PictureData.disconnect(self.picload_conn)
                     else:
-                        # Python3 images
                         if self.picload.PictureData and self.picload.PictureData.get():
                             self.picload.PictureData.get().remove(self.picload_conn)
             except Exception as e:
@@ -173,7 +175,6 @@ class CountriesBrowser(BaseBrowser):
             finally:
                 self.picload_conn = None
 
-        # Cleanup picload
         if hasattr(self, 'picload') and self.picload:
             try:
                 pass
@@ -182,7 +183,6 @@ class CountriesBrowser(BaseBrowser):
             finally:
                 self.picload = None
 
-        # Remove menu callback
         try:
             if hasattr(self["menu"], 'onSelectionChanged'):
                 self["menu"].onSelectionChanged = []
@@ -192,27 +192,27 @@ class CountriesBrowser(BaseBrowser):
     def load_countries(self):
         """Load countries list from TV Garden repository"""
         try:
-            # Get cache configuration
             config = get_config()
             cache_enabled = config.get("cache_enabled", True)
             force_refresh_browsing = config.get(
                 "force_refresh_browsing", False)
 
-            # Load metadata with cache config
+            # [TVGarden patch] Passiamo media_type al cache
             if hasattr(self.cache, 'get_countries_metadata'):
                 try:
                     metadata = self.cache.get_countries_metadata(
+                        media_type=self.media_type,
                         force_refresh=force_refresh_browsing)
                 except TypeError:
-                    # If the method does not support force_refresh
-                    metadata = self.cache.get_countries_metadata()
+                    # Retrocompatibilità con versioni vecchie del cache
+                    metadata = self.cache.get_countries_metadata(
+                        force_refresh=force_refresh_browsing)
             else:
-                # Fallback
                 metadata = {}
 
             log.debug(
-                "Metadata received: %d countries" %
-                len(metadata), module="Countries")
+                "Metadata received for %s: %d countries" %
+                (self.media_type, len(metadata)), module="Countries")
 
             self.countries = []
             for code, info in metadata.items():
@@ -225,7 +225,6 @@ class CountriesBrowser(BaseBrowser):
 
             self.countries.sort(key=lambda x: x['name'])
 
-            # Create menu items
             menu_items = []
             for idx, country in enumerate(self.countries):
                 display_text = "%s" % country['name']
@@ -244,7 +243,6 @@ class CountriesBrowser(BaseBrowser):
 
                 self["status"].setText(_("Select a country") + cache_info)
 
-                # Load initial flag with delay
                 self.timer = eTimer()
                 try:
                     self.timer_conn = self.timer.timeout.connect(
@@ -266,20 +264,15 @@ class CountriesBrowser(BaseBrowser):
         self["status"].setText(_("Refreshing..."))
         try:
             config = get_config()
-            # "clear_cache" o "force_refresh"
             refresh_method = config.get("refresh_method", "clear_cache")
 
             if refresh_method == "clear_cache":
-                # Clean all cache
                 self.cache.clear_all()
                 log.info("Cache cleared manually", module="Countries")
                 self["status"].setText(_("Cache cleared"))
             else:
-                # Set force refresh for next call
-                # Here you may want to set a temporary flag
-                # For now, force refresh
                 if hasattr(self.cache, 'clear_all'):
-                    self.cache.clear_all()  # Clear come fallback
+                    self.cache.clear_all()
                 self["status"].setText(_("Will load fresh data next time"))
 
             self.load_countries()
@@ -304,16 +297,13 @@ class CountriesBrowser(BaseBrowser):
         if 0 <= index < len(self.countries):
             self.selected_country = self.countries[index]
 
-            # Load new flag with proper error handling
             self["flag"].hide()
             flag_code = self.selected_country['code'].lower()
 
-            # DEBUG: mostra info
             log.debug("=" * 50, module="Countries")
             log.debug(
                 "SELECTED COUNTRY: %s (%s)" %
-                (self.selected_country['name'],
-                 flag_code),
+                (self.selected_country['name'], flag_code),
                 module="Countries")
             log.debug(
                 "Channels: %d" %
@@ -323,7 +313,6 @@ class CountriesBrowser(BaseBrowser):
             flag_url = "https://flagcdn.com/w80/%s.png" % flag_code
             log.debug("Flag URL: %s" % flag_url, module="Countries")
 
-            # Use a timer to prevent rapid consecutive loads
             if hasattr(self, 'flag_timer'):
                 self.flag_timer.stop()
 
@@ -342,14 +331,12 @@ class CountriesBrowser(BaseBrowser):
     def download_flag_safe(self, url, country_code):
         """Load flag using PROPER loadPNG pattern"""
         try:
-            # Hide first
             self["flag"].hide()
 
             log.debug(
                 "Loading flag for: %s" %
                 country_code, module="Countries")
 
-            # Download flag
             req = Request(url, headers={'User-Agent': 'TVGarden-Enigma2/1.0'})
             response = None
             flag_data = None
@@ -375,7 +362,6 @@ class CountriesBrowser(BaseBrowser):
                     country_code, module="Countries")
                 return
 
-            # Save temporarily
             import os
             temp_fd, temp_path = tempfile.mkstemp(suffix='.png')
             os.close(temp_fd)
@@ -385,15 +371,7 @@ class CountriesBrowser(BaseBrowser):
 
             log.debug("Saved to temp file: %s" % temp_path, module="Countries")
 
-            # 1. Check if file exists
-            # 2. Encode for Python 2 if needed
-            # 3. Load with loadPNG
-            # 4. Set pixmap
-            # 5. Set scale
-            # 6. Show
-
             if exists(temp_path):
-                # Handle Python 2/3 encoding
                 if exists('/var/lib/dpkg/info'):
                     png_path = temp_path.encode('utf-8')
                 else:
@@ -402,7 +380,6 @@ class CountriesBrowser(BaseBrowser):
                 try:
                     pixmap = loadPNG(png_path)
                     if pixmap:
-                        # Set to widget
                         self["flag"].instance.setPixmap(pixmap)
                         self["flag"].instance.setScale(1)
                         self["flag"].instance.invalidate()
@@ -424,7 +401,6 @@ class CountriesBrowser(BaseBrowser):
                     import traceback
                     traceback.print_exc()
 
-            # Cleanup
             try:
                 os.unlink(temp_path)
             except BaseException:
@@ -436,7 +412,6 @@ class CountriesBrowser(BaseBrowser):
                 (country_code, e), module="Countries")
             import traceback
             traceback.print_exc()
-            # Hide if all failed
             self["flag"].hide()
 
     def load_default_flag(self):
@@ -448,8 +423,6 @@ class CountriesBrowser(BaseBrowser):
 
     def update_flag(self, picInfo=None):
         """Callback for async picload - use with caution"""
-        # This is called when picload finishes async decode
-        # We're using sync decode mainly, but keep this for compatibility
         if picInfo:
             log.debug(
                 "Async decode finished: %s" %
@@ -462,28 +435,28 @@ class CountriesBrowser(BaseBrowser):
             return
 
         log.info(
-            "Opening channels for: {}".format(
-                self.selected_country['code']),
+            "Opening channels for: {} (media_type={})".format(
+                self.selected_country['code'], self.media_type),
             module="Countries")
 
-        # Cleanup before opening new screen
         if self.current_flag_path and exists(self.current_flag_path):
             try:
                 unlink(self.current_flag_path)
             except BaseException:
                 pass
 
-        # Additional minor cleanup
         if hasattr(self, 'flag_timer') and self.flag_timer:
             try:
                 self.flag_timer.stop()
             except BaseException:
                 pass
 
+        # [TVGarden patch] Passiamo media_type a ChannelsBrowser
         self.session.open(
             ChannelsBrowser,
             country_code=str(self.selected_country.get('code', '')),
-            country_name=str(self.selected_country.get('name', ''))
+            country_name=str(self.selected_country.get('name', '')),
+            media_type=self.media_type
         )
 
     def up(self):

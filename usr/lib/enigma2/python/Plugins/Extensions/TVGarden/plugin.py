@@ -15,95 +15,23 @@
 #  PLUGIN FEATURES:                                       #
 #  • Global: 150+ countries with flags                    #
 #  • Content: 29 categories, 50,000+ channels             #
+#  • Webcams: separate source (countries + categories)    #
 #  • Caching: Smart TTL + gzip compression                #
 #  • Player: Advanced with channel zapping                #
 #  • Favorites: Export to Enigma2 bouquets                #
-#  • Search: Fast virtual keyboard search                 #
+#  • Search: Fast virtual keyboard search (TV + Webcams)  #
 #  • Skins: Auto-detection (HD/FHD/WQHD)                  #
 #  • Safety: DRM/crash stream filtering                   #
 #  • Performance: HW acceleration + buffer control        #
 #  • Logging: File logging with rotation                  #
 #  • Updates: Auto-check with notifications               #
 #                                                         #
-#  PERFORMANCE OPTIMIZATION:                              #
-#  • Hardware acceleration for H.264/H.265                #
-#  • Configurable buffer size (512KB-8MB)                 #
-#  • Smart player selection (Auto/ExtePlayer3/GStreamer)  #
-#  • Memory efficient (~50MB RAM usage)                   #
-#                                                         #
-#  BOUQUET EXPORT SYSTEM:                                 #
-#  • Export favorites to native Enigma2 bouquets          #
-#  • Configurable bouquet name prefix                     #
-#  • Max channels for bouquet limit                       #
-#  • Max channels per sub-bouquet limit (Hierarchical)    #
-#  • Auto-refresh bouquet option                          #
-#  • Confirm before export option                         #
-#  • Single / Multi-file (Hierarchical) export            #
-#  • Requires Enigma2 restart after export                #
-#                                                         #
-#  CONFIGURATION SYSTEM:                                  #
-#  • 20+ configurable parameters                          #
-#  • Organized settings categories:                       #
-#    - Player: Player engine selection                    #
-#    - Display: Show flags, Show logos                    #
-#    - Browser: Max channels, Default view                #
-#    - Cache: Enable/Disable, Size, Refresh method        #
-#    - Export: Enable/Disable, Max channels, Prefix       #
-#    - Network: User agent, Connection & Download timeout #
-#    - Logging: Level, File logging                       #
-#    - Performance: HW acceleration, Buffer size, Memory  #
-#    - Search: Max results                                #
-#    - Bouquet Management: Auto-reload after export       #
-#                                                         #
-#  KEY CONTROLS:                                          #
-#  [ BROWSER ]                                            #
-#    OK/GREEN    - Play selected channel                  #
-#    EXIT/RED    - Back / Exit                            #
-#    YELLOW      - Context menu (Remove/Export)           #
-#    BLUE        - Export favorites to bouquet            #
-#    MENU        - Context menu                           #
-#                                                         #
-#  [ FAVORITES BROWSER ]                                  #
-#    OK/GREEN    - Play selected channel                  #
-#    EXIT/RED    - Back / Exit                            #
-#    YELLOW      - Options (Remove/Info/Export)           #
-#    BLUE        - Export ALL to Enigma2 bouquet          #
-#    ARROWS      - Navigate channels                      #
-#                                                         #
-#  [ PLAYER ]                                             #
-#    CHANNEL +/- - Zap between channels                   #
-#    OK          - Show channel info + performance stats  #
-#    RED         - Toggle favorite                        #
-#    GREEN       - Show channel list                      #
-#    EXIT        - Close player                           #
-#                                                         #
-#  TECHNICAL DETAILS:                                     #
-#  • Python 2.7+ compatible (Enigma2 optimized)           #
-#  • Player engines: GStreamer / ExtePlayer3 / Auto       #
-#  • HLS stream support with adaptive bitrate             #
-#  • Smart cache management with force refresh options    #
-#  • Configuration backup & restore                       #
-#  • Skin system with resolution detection                #
-#  • Bouquet integration with Enigma2 EPG                 #
-#                                                         #
-#  STATISTICS:                                            #
-#  • 50,000+ channels available                           #
-#  • ~70% stream compatibility rate                       #
-#  • <5 sec loading time (cached)                         #
-#  • 20+ configuration parameters                         #
-#  • 150+ countries supported                             #
-#  • 29 content categories                                #
-#                                                         #
-#  CREDITS & THANKS:                                      #
-#  • Original TV Garden concept: Lululla                  #
-#  • Repository fork & maintenance: Belfagor2005          #
-#  • Plugin development: TV Garden Team                   #
-#  • Performance optimization: Recent updates             #
-#  • Enigma2 community for testing & feedback             #
-#  • All open-source contributors                         #
-#                                                         #
-#  NOTE: This plugin is for educational purposes only.    #
-#  Please respect content rights and usage policies.      #
+#  [TVGarden patch] Aggiunto supporto multi-sorgente:     #
+#  - TV (default)                                         #
+#  - Webcams                                              #
+#  Le sorgenti sono definite in helpers.VALID_MEDIA       #
+#  e le categorie vengono lette dinamicamente dalla       #
+#  GitHub API (nessuna lista hardcoded).                  #
 #                                                         #
 #  Last Updated: 2025-12-17                               #
 #  Code Review & Cleanup: Configurations consolidated     #
@@ -198,17 +126,20 @@ class TVGardenMain(Screen):
         Screen.__init__(self, session)
         self.session = session
         self.cache = CacheManager()
+
+        # [TVGarden patch] Aggiunte le due voci Webcams.
+        # Le azioni sono "webcams_countries" e "webcams_categories".
         self.menu_items = [
             (_("Browse by Country"), "countries", _("Browse channels by country")),
             (_("Browse by Category"), "categories", _("Browse channels by category")),
+            (_("Webcams by Country"), "webcams_countries", _("Browse webcams by country")),
+            (_("Webcams by Category"), "webcams_categories", _("Browse webcams by category")),
             (_("Favorites"), "favorites", _("Your favorite channels")),
             (_("Search"), "search", _("Search channels by name")),
             (_("Settings"), "settings", _("Plugin settings and configuration")),
             (_("Check for Updates"), "updates", _("Check for plugin updates")),
             (_("About"), "about", _("About TV Garden plugin"))
         ]
-
-        # self["menu"] = MenuList(self.menu_items, entry=lambda x: x[0])
 
         self["menu"] = MenuList(self.menu_items)
         self["key_red"] = StaticText(_("Exit"))
@@ -246,9 +177,14 @@ class TVGardenMain(Screen):
         if selection:
             action = selection[1]
             if action == "countries":
-                self.session.open(CountriesBrowser)
+                self.session.open(CountriesBrowser, media_type="tv")
             elif action == "categories":
-                self.session.open(CategoriesBrowser)
+                self.session.open(CategoriesBrowser, media_type="tv")
+            # [TVGarden patch] Nuove voci Webcams
+            elif action == "webcams_countries":
+                self.session.open(CountriesBrowser, media_type="webcams")
+            elif action == "webcams_categories":
+                self.session.open(CategoriesBrowser, media_type="webcams")
             elif action == "favorites":
                 self.session.open(FavoritesBrowser)
             elif action == "search":
@@ -302,17 +238,13 @@ class TVGardenMain(Screen):
         self["status"].setText(_("Refreshing data..."))
 
         try:
-            # Clear cache
             self.cache.clear_all()
 
-            # Force refresh countries metadata
             countries_data = self.cache.get_countries_metadata(
-                force_refresh=True)
+                media_type="tv", force_refresh=True)
 
-            # Update status using the same method
             self.update_cache_status()
 
-            # Show completion message
             self.session.open(
                 MessageBox,
                 _("Refresh completed!\nLoaded %d countries") %
@@ -337,7 +269,6 @@ class TVGardenMain(Screen):
                 "Direct test - Latest version: %s" %
                 latest, module="Main")
 
-            # UpdateManager
             UpdateManager.check_for_updates(self.session, self["status"])
 
             self.update_cache_status()
@@ -376,7 +307,6 @@ class TVGardenMain(Screen):
         try:
             self.session.open(TVGardenAbout)
         except ImportError:
-            # Fallback to MessageBox
             self.show_about_fallback()
 
     def exit(self):
@@ -405,11 +335,9 @@ def main(session, **kwargs):
             log.error("TVGarden Crash: %s" % str(e), module="Main")
             log.error(traceback.format_exc(), module="Main")
         except ImportError:
-            # Fallback se log non è disponibile
             print("[TVGarden CRASH]: %s" % str(e))
             traceback.print_exc()
 
-        # Scrivi sempre il crash log
         log_path = "/tmp/tvgarden_crash.log"
         try:
             with open(log_path, "a") as f:

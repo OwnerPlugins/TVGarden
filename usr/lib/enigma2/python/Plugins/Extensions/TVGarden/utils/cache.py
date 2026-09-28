@@ -4,6 +4,11 @@
 TV Garden Plugin - Cache Module
 Smart caching with TTL + gzip
 Based on TV Garden Project
+
+[TVGarden patch] Supporto multi-sorgente (tv / webcams).
+- Tutte le funzioni pubbliche accettano `media_type` (default "tv")
+- Le cache key sono separate per media_type (no collisioni TV/Webcams)
+- get_available_categories() legge dalla GitHub API con fallback minimo
 """
 import time
 import hashlib
@@ -23,6 +28,7 @@ try:
         get_category_url,
         get_categories_url,
         get_all_channels_url,
+        CATEGORIES_FALLBACK,
         log
     )
 except ImportError as e:
@@ -31,37 +37,22 @@ except ImportError as e:
     def log(message, level="INFO", module=""):
         print("[%s] [%s] TVGarden: %s" % (level, module, message))
 
-    def get_metadata_url():
-        # Updated to famelack-data
-        # return
-        # "https://raw.githubusercontent.com/Belfagor2005/famelack-data/refs/heads/main/tv/raw/countries_metadata.json"
-        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/tv/raw/countries_metadata.json"
+    CATEGORIES_FALLBACK = [{'id': 'all', 'name': 'All'}]
 
-    def get_country_url(code):
-        # Updated to famelack-data
-        # return
-        # "https://raw.githubusercontent.com/Belfagor2005/famelack-data/main/tv/raw/countries/%s.json"
-        # % code.lower()
-        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/tv/raw/countries/%s.json" % code.lower()
+    def get_metadata_url(media_type="tv"):
+        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/countries_metadata.json" % media_type
 
-    def get_category_url(cat_id):
-        # Updated to famelack-data
-        # return
-        # "https://raw.githubusercontent.com/Belfagor2005/famelack-data/main/tv/raw/categories/%s.json"
-        # % cat_id
-        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/tv/raw/categories/%s.json" % cat_id
+    def get_country_url(code, media_type="tv"):
+        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/countries/%s.json" % (media_type, code.lower())
 
-    def get_categories_url():
-        # Updated to famelack-data (GitHub API to list directory)
-        # return
-        # "https://api.github.com/repos/Belfagor2005/famelack-data/contents/tv/raw/categories"
-        return "https://api.github.com/repos/OwnerPlugins/famelack-data/contents/tv/raw/categories"
+    def get_category_url(cat_id, media_type="tv"):
+        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/categories/%s.json" % (media_type, cat_id)
 
-    def get_all_channels_url():
-        # Updated to famelack-data
-        # return
-        # "https://raw.githubusercontent.com/Belfagor2005/famelack-data/refs/heads/main/tv/raw/categories/all.json"
-        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/tv/raw/categories/all.json"
+    def get_categories_url(media_type="tv"):
+        return "https://api.github.com/repos/OwnerPlugins/famelack-data/contents/%s/raw/categories" % media_type
+
+    def get_all_channels_url(media_type="tv"):
+        return "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/refs/heads/main/%s/raw/categories/all.json" % media_type
 
 
 class CacheManager:
@@ -248,7 +239,6 @@ class CacheManager:
                         log.error(
                             "HTTP Error %d for URL: %s" %
                             (http_code, url), module="Cache")
-                        # Try to read error body if available
                         try:
                             error_body = response.read()
                             if isinstance(error_body, bytes):
@@ -290,7 +280,6 @@ class CacheManager:
                 # raw_data is now guaranteed to be bytes
                 data = raw_data
 
-                # DEBUG: show first part of the data
                 if len(data) > 0:
                     log.debug("First 100 chars: %s" %
                               data[:100], module="Cache")
@@ -342,7 +331,6 @@ class CacheManager:
             log.debug("Fetching FRESH data for: %s" % url, module="Cache")
             result = self._fetch_url(url)
 
-            # Cache the result
             log.debug("Saving to cache: %s" % cache_key, module="Cache")
             self._set_cached(cache_key, result)
 
@@ -351,99 +339,107 @@ class CacheManager:
             log.error("Error in fetch_url: %s" % e, module="Cache")
             raise
 
-    def _get_default_categories(self):
-        """Default categories if GitHub API fails"""
-        return [
-            {'id': 'all', 'name': 'All Channels'},
-            {'id': 'animation', 'name': 'Animation'},
-            {'id': 'general', 'name': 'General'},
-            {'id': 'news', 'name': 'News'},
-            {'id': 'entertainment', 'name': 'Entertainment'},
-            {'id': 'music', 'name': 'Music'},
-            {'id': 'sports', 'name': 'Sports'},
-            {'id': 'movies', 'name': 'Movies'},
-            {'id': 'kids', 'name': 'Kids'},
-            {'id': 'documentary', 'name': 'Documentary'},
-        ]
+    # ============================================================
+    # [TVGarden patch] Categorie lette dinamicamente dalla GitHub API
+    # ============================================================
+    def get_available_categories(self, media_type="tv", force_refresh=False):
+        """
+        Get list of available categories from GitHub directory.
 
-    def get_available_categories(self):
-        """Get list of available categories from GitHub directory"""
-        categories_url = get_categories_url()
+        Legge dinamicamente i file .json presenti in:
+            {media_type}/raw/categories/
+        e ritorna una lista di dict {'id': ..., 'name': ...}.
+
+        Fallback: se la API non risponde E la cache è vuota,
+        ritorna CATEGORIES_FALLBACK (solo "all").
+        """
+        cache_key = "available_categories_%s" % media_type
+
+        # 1. Cache in-memory (se non forziamo refresh)
+        if not force_refresh and cache_key in self.cache_data:
+            log.debug(
+                "Using MEMORY cached categories for %s (%d)" %
+                (media_type, len(self.cache_data[cache_key])),
+                module="Cache")
+            return self.cache_data[cache_key]
+
+        # 2. Cache su disco (via fetch_url, che è md5-based)
         try:
-            # Use cache if it already exists
-            cache_key = "available_categories"
-            if cache_key in self.cache_data:
-                return self.cache_data[cache_key]
+            categories_url = get_categories_url(media_type)
+            log.debug("Fetching categories for %s from %s" %
+                      (media_type, categories_url), module="Cache")
 
-            # Download file list from GitHub directory
-            response = None
-            try:
-                response = urlopen(categories_url, timeout=10)
-                data = load(response)
-            finally:
-                if response:
-                    response.close()
+            data = self.fetch_url(categories_url, force_refresh=force_refresh)
 
             # Extract .json filenames
             categories = []
             for item in data:
-                if item['name'].endswith('.json'):
+                if item.get('name', '').endswith('.json'):
                     category_id = item['name'].replace('.json', '')
-                    name = category_id.replace('-', ' ').title()
+                    name = category_id.replace('-', ' ').replace('_', ' ').title()
                     categories.append({'id': category_id, 'name': name})
 
-            # Save to cache
+            # Ordina: "all" prima, poi il resto alfabetico
+            categories.sort(key=lambda c: (c['id'] != 'all', c['name'].lower()))
+
+            # Salva in memory
             self.cache_data[cache_key] = categories
             self._save_cache()
 
             log.info(
-                "Found %d categories from GitHub" %
-                len(categories), module="Cache")
+                "Found %d categories for %s from GitHub" %
+                (len(categories), media_type), module="Cache")
             return categories
 
         except Exception as e:
-            log.error("Error getting categories: %s" % e, module="Cache")
-            # Fallback to hardcoded list
-            return self._get_default_categories()
+            log.error("Error getting categories for %s: %s" %
+                      (media_type, e), module="Cache")
 
-    def get_country_channels(self, country_code, force_refresh=False):
+            # Fallback: cache disco già presente? La usiamo.
+            # (fetch_url la userebbe, ma se siamo qui è perché è fallito tutto)
+            log.warning(
+                "Using minimal fallback for %s categories" % media_type,
+                module="Cache")
+            return list(CATEGORIES_FALLBACK)
+
+    # ============================================================
+    # [TVGarden patch] get_country_channels con media_type
+    # ============================================================
+    def get_country_channels(self, country_code, media_type="tv", force_refresh=False):
         """Get channels for specific country - WORKING VERSION"""
         try:
-            url = get_country_url(country_code)
-            log.debug("Fetching country %s (force_refresh=%s)" %
-                      (country_code, force_refresh), module="Cache")
+            url = get_country_url(country_code, media_type)
+            log.debug("Fetching %s/%s (force_refresh=%s)" %
+                      (media_type, country_code, force_refresh), module="Cache")
 
             # 1. Fetch the raw JSON data
             raw_result = self.fetch_url(url, force_refresh)
 
-            # DEBUG: Show what we received
             log.debug("RAW RESULT TYPE: %s" % type(raw_result), module="Cache")
 
             if raw_result is None:
-                log.error("NULL result for %s" % country_code, module="Cache")
+                log.error("NULL result for %s/%s" %
+                          (media_type, country_code), module="Cache")
                 return []
 
             # 2. CASE 1: Already a list of channels (old structure)
             if isinstance(raw_result, list):
                 log.info(
-                    "✓ Direct list: %d channels for %s" %
-                    (len(raw_result), country_code), module="Cache")
+                    "✓ Direct list: %d channels for %s/%s" %
+                    (len(raw_result), media_type, country_code), module="Cache")
                 return raw_result
 
             # 3. CASE 2: Dictionary (new structure)
             if isinstance(raw_result, dict):
-                # Log all keys for debugging
                 dict_keys = list(raw_result.keys())
                 log.debug("Dict keys: %s" % dict_keys[:10], module="Cache")
 
-                # STRATEGY 1: Look for country code in keys (case insensitive)
                 country_code_upper = country_code.upper()
                 country_code_lower = country_code.lower()
 
                 country_data = None
                 found_key = None
 
-                # Try exact match first
                 if country_code_upper in raw_result:
                     country_data = raw_result[country_code_upper]
                     found_key = country_code_upper
@@ -451,7 +447,6 @@ class CacheManager:
                     country_data = raw_result[country_code_lower]
                     found_key = country_code_lower
                 else:
-                    # Try case-insensitive search
                     for key in dict_keys:
                         if isinstance(
                                 key, str) and key.upper() == country_code_upper:
@@ -468,20 +463,15 @@ class CacheManager:
                 log.debug(
                     "Found country data under key: '%s'" %
                     found_key, module="Cache")
-                log.debug(
-                    "Country data type: %s" %
-                    type(country_data), module="Cache")
 
-                # 3A: Country data is already a list of channels
                 if isinstance(country_data, list):
                     log.info(
-                        "✓ Country data is list: %d channels for %s" %
-                        (len(country_data), country_code), module="Cache")
+                        "✓ Country data is list: %d channels for %s/%s" %
+                        (len(country_data), media_type, country_code),
+                        module="Cache")
                     return country_data
 
-                # 3B: Country data is a dict, extract channels from it
                 if isinstance(country_data, dict):
-                    # Look for channels in common field names
                     channel_fields = ['channels', 'items', 'streams', 'data']
 
                     for field in channel_fields:
@@ -489,55 +479,59 @@ class CacheManager:
                             field_data = country_data[field]
                             if isinstance(field_data, list):
                                 log.info(
-                                    "✓ Found %d channels in field '%s' for %s" %
-                                    (len(field_data), field, country_code), module="Cache")
+                                    "✓ Found %d channels in field '%s' for %s/%s" %
+                                    (len(field_data), field, media_type, country_code),
+                                    module="Cache")
                                 return field_data
 
-                    # No channels found in expected fields
-                    log.error("No 'channels' field found for %s. Available keys: %s" % (
-                        country_code, list(country_data.keys())), module="Cache")
+                    log.error("No 'channels' field found for %s/%s. Available keys: %s" % (
+                        media_type, country_code, list(country_data.keys())),
+                        module="Cache")
                     return []
 
-                # 3C: Unexpected type
                 log.error(
-                    "Unexpected country data type for %s: %s" %
-                    (country_code, type(country_data)), module="Cache")
+                    "Unexpected country data type for %s/%s: %s" %
+                    (media_type, country_code, type(country_data)),
+                    module="Cache")
                 return []
 
             # 4. CASE 3: Unexpected type
             log.error(
-                "Unexpected raw result type for %s: %s" %
-                (country_code, type(raw_result)), module="Cache")
+                "Unexpected raw result type for %s/%s: %s" %
+                (media_type, country_code, type(raw_result)), module="Cache")
             return []
 
         except Exception as e:
             log.error(
-                "ERROR in get_country_channels for %s: %s" %
-                (country_code, str(e)), module="Cache")
+                "ERROR in get_country_channels for %s/%s: %s" %
+                (media_type, country_code, str(e)), module="Cache")
             import traceback
             traceback.print_exc()
             return []
 
-    def get_category_channels(self, category_id, force_refresh=False):
+    # ============================================================
+    # [TVGarden patch] get_category_channels con media_type
+    # Cache key SEPARATA per media_type (evita collisioni TV/Webcams)
+    # ============================================================
+    def get_category_channels(self, category_id, media_type="tv", force_refresh=False):
         """Get channels for a specific category"""
-        cache_key = "cat_%s" % category_id
+        cache_key = "cat_%s_%s" % (media_type, category_id)
 
         if not force_refresh:
             cached_data = self._get_cached(cache_key)
             if cached_data is not None:
                 log.debug(
-                    "Using CACHED data for category: %s" %
-                    category_id, module="Cache")
+                    "Using CACHED data for category: %s/%s" %
+                    (media_type, category_id), module="Cache")
                 return cached_data
 
         try:
-            url = get_category_url(category_id)
+            url = get_category_url(category_id, media_type)
             log.debug(
-                "Fetching FRESH data for category: %s" %
-                category_id, module="Cache")
+                "Fetching FRESH data for category: %s/%s" %
+                (media_type, category_id), module="Cache")
             data = self._fetch_url(url)
 
-            # Process data
             channels = []
             if isinstance(data, list):
                 channels = data
@@ -548,8 +542,8 @@ class CacheManager:
                         break
 
             log.debug(
-                "Extracted %d channels for %s" %
-                (len(channels), category_id), module="Cache")
+                "Extracted %d channels for %s/%s" %
+                (len(channels), media_type, category_id), module="Cache")
 
             if channels:
                 self._set_cached(cache_key, channels)
@@ -557,15 +551,18 @@ class CacheManager:
 
         except Exception as e:
             log.error(
-                "Failed to get category %s: %s" %
-                (category_id, e), module="Cache")
+                "Failed to get category %s/%s: %s" %
+                (media_type, category_id, e), module="Cache")
             import traceback
             traceback.print_exc()
         return []
 
-    def get_countries_metadata(self, force_refresh=False):
+    # ============================================================
+    # [TVGarden patch] get_countries_metadata con media_type
+    # ============================================================
+    def get_countries_metadata(self, media_type="tv", force_refresh=False):
         """Get countries metadata"""
-        url = get_metadata_url()
+        url = get_metadata_url(media_type)
         return self.fetch_url(url, force_refresh)
 
     def clear_all(self):

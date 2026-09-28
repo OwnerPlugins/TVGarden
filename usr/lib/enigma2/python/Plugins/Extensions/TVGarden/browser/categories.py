@@ -2,8 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 TV Garden Plugin - Categories Browser
-Browse 29 categories of IPTV channels
+Browse categories of IPTV channels / webcams
 Based on TV Garden Project
+
+[TVGarden patch] Supporto multi-sorgente (tv / webcams).
+- Le categorie NON sono più hardcoded: vengono lette dalla GitHub API
+  tramite CacheManager.get_available_categories(media_type).
+- Il browser accetta `media_type` e lo propaga a ChannelsBrowser.
 """
 from Components.Sources.StaticText import StaticText
 from Components.MenuList import MenuList
@@ -15,43 +20,6 @@ from ..helpers import log
 from ..utils.cache import CacheManager
 from ..utils.config import PluginConfig, get_config
 from .. import _, PLUGIN_VERSION
-
-
-try:
-    from ..helpers import CATEGORIES
-except ImportError:
-    # Fallback
-    CATEGORIES = [
-        {'id': 'animation', 'name': _('Animation'), 'icon': 'film'},
-        {'id': 'auto', 'name': _('Auto'), 'icon': 'car'},
-        {'id': 'business', 'name': _('Business'), 'icon': 'briefcase'},
-        {'id': 'classic', 'name': _('Classic'), 'icon': 'landmark'},
-        {'id': 'comedy', 'name': _('Comedy'), 'icon': 'masks-theater'},
-        {'id': 'cooking', 'name': _('Cooking'), 'icon': 'utensils'},
-        {'id': 'culture', 'name': _('Culture'), 'icon': 'palette'},
-        {'id': 'documentary', 'name': _('Documentary'), 'icon': 'camera-retro'},
-        {'id': 'education', 'name': _('Education'), 'icon': 'graduation-cap'},
-        {'id': 'entertainment', 'name': _('Entertainment'), 'icon': 'gamepad'},
-        {'id': 'family', 'name': _('Family'), 'icon': 'users'},
-        {'id': 'general', 'name': _('General'), 'icon': 'tv'},
-        {'id': 'history', 'name': _('History'), 'icon': 'scroll'},
-        {'id': 'hobby', 'name': _('Hobby'), 'icon': 'puzzle-piece'},
-        {'id': 'kids', 'name': _('Kids'), 'icon': 'child-reaching'},
-        {'id': 'legislative', 'name': _('Legislative'), 'icon': 'gavel'},
-        {'id': 'lifestyle', 'name': _('Lifestyle'), 'icon': 'person-walking'},
-        {'id': 'local', 'name': _('Local'), 'icon': 'map-marker-alt'},
-        {'id': 'movies', 'name': _('Movies'), 'icon': 'clapperboard'},
-        {'id': 'music', 'name': _('Music'), 'icon': 'music'},
-        {'id': 'news', 'name': _('News'), 'icon': 'newspaper'},
-        {'id': 'politics', 'name': _('Politics'), 'icon': 'landmark-dome'},
-        {'id': 'religious', 'name': _('Religious'), 'icon': 'place-of-worship'},
-        {'id': 'series', 'name': _('Series'), 'icon': 'photo-film'},
-        {'id': 'science', 'name': _('Science'), 'icon': 'flask'},
-        {'id': 'shop', 'name': _('Shop'), 'icon': 'shopping-cart'},
-        {'id': 'sports', 'name': _('Sports'), 'icon': 'futbol'},
-        {'id': 'travel', 'name': _('Travel'), 'icon': 'plane-departure'},
-        {'id': 'weather', 'name': _('Weather'), 'icon': 'cloud-sun'}
-    ]
 
 
 class CategoriesBrowser(BaseBrowser):
@@ -98,7 +66,9 @@ class CategoriesBrowser(BaseBrowser):
         </screen>
     """
 
-    def __init__(self, session):
+    def __init__(self, session, media_type="tv"):
+        # [TVGarden patch] media_type: "tv" (default) oppure "webcams"
+        self.media_type = media_type
 
         self.config = PluginConfig()
         dynamic_skin = self.config.load_skin("CategoriesBrowser", self.skin)
@@ -109,13 +79,15 @@ class CategoriesBrowser(BaseBrowser):
 
         self.cache = CacheManager()
         self.selected_category = None
+        self.categories = []  # [TVGarden patch] popolata dinamicamente
+
+        # [TVGarden patch] Titolo dinamico in base al media_type
+        title_label = "Webcams" if self.media_type == "webcams" else "TV Garden"
 
         self["menu"] = MenuList([])
         self['title'] = StaticText(
-            "TV Garden %s | by Lululla" %
-            PLUGIN_VERSION)
+            "%s %s | by Lululla" % (title_label, PLUGIN_VERSION))
         self["status"] = StaticText(_("Loading categories..."))
-        # self["icon"] = Pixmap()
         self["key_red"] = StaticText(_("Back"))
         self["key_green"] = StaticText(_("Select"))
         self["actions"] = ActionMap(["TVGardenActions", "OkCancelActions", "ColorActions"], {
@@ -129,18 +101,54 @@ class CategoriesBrowser(BaseBrowser):
         self.onFirstExecBegin.append(self.load_categories)
 
     def load_categories(self):
-        """Load categories list"""
-        menu_items = []
-        for category in CATEGORIES:
-            # Show name only - we'll get count when selected
-            menu_items.append((category['name'], category['id']))
+        """
+        [TVGarden patch] Load categories dynamically from GitHub API.
+        Non usa più la lista hardcoded CATEGORIES di helpers.py.
+        """
+        try:
+            config = get_config()
+            force_refresh_browsing = config.get(
+                "force_refresh_browsing", False)
 
-        menu_items = sorted(
-            [(category['name'], category['id']) for category in CATEGORIES],
-            key=lambda x: x[0].lower()  # sort alphabetically, case-insensitive
-        )
-        self["menu"].setList(menu_items)
-        self["status"].setText(_("Select a category"))
+            # Legge le categorie dal cache (che le scarica dalla GitHub API)
+            if hasattr(self.cache, 'get_available_categories'):
+                try:
+                    self.categories = self.cache.get_available_categories(
+                        media_type=self.media_type,
+                        force_refresh=force_refresh_browsing)
+                except TypeError:
+                    # Retrocompatibilità con versioni vecchie
+                    self.categories = self.cache.get_available_categories()
+            else:
+                # Fallback estremo
+                self.categories = [{'id': 'all', 'name': 'All'}]
+
+            log.info(
+                "Loaded %d categories for %s" %
+                (len(self.categories), self.media_type), module="Categories")
+
+            # Costruisci i menu items
+            menu_items = []
+            for category in self.categories:
+                menu_items.append((category['name'], category['id']))
+
+            # Sort alfabetico (tranne "all" che va prima)
+            menu_items = sorted(
+                menu_items,
+                key=lambda x: (x[1] != 'all', x[0].lower())
+            )
+
+            self["menu"].setList(menu_items)
+            self["status"].setText(_("Select a category"))
+
+        except Exception as e:
+            log.error(
+                "Error loading categories for %s: %s" %
+                (self.media_type, e), module="Categories")
+            import traceback
+            traceback.print_exc()
+            self["status"].setText(_("Error loading categories"))
+            self["menu"].setList([])
 
     def select_category(self):
         """Select category"""
@@ -150,42 +158,42 @@ class CategoriesBrowser(BaseBrowser):
             category_name = selection[0]
 
             log.debug(
-                "Selected: %s (%s)" %
-                (category_id,
-                 category_name),
+                "Selected: %s (%s) for media_type=%s" %
+                (category_id, category_name, self.media_type),
                 module="Categories")
 
             try:
-                # Get cache configuration
                 config = get_config()
-                # cache_enabled = config.get("cache_enabled", True)
                 force_refresh_browsing = config.get(
                     "force_refresh_browsing", False)
 
-                # Load data with cache config
                 log.debug(
-                    "Calling cache.get_category_channels('%s')" %
-                    category_id, module="Categories")
+                    "Calling cache.get_category_channels('%s', media_type='%s')" %
+                    (category_id, self.media_type), module="Categories")
 
+                # [TVGarden patch] Passiamo media_type
                 if hasattr(
                         self.cache, 'get_category_channels') and callable(
                         self.cache.get_category_channels):
-                    # If the method supports force_refresh
                     try:
                         data = self.cache.get_category_channels(
-                            category_id, force_refresh=force_refresh_browsing)
+                            category_id,
+                            media_type=self.media_type,
+                            force_refresh=force_refresh_browsing)
                     except TypeError:
-                        # If it doesn't support the parameter, use default
-                        data = self.cache.get_category_channels(category_id)
+                        # Retrocompatibilità
+                        try:
+                            data = self.cache.get_category_channels(
+                                category_id, force_refresh=force_refresh_browsing)
+                        except TypeError:
+                            data = self.cache.get_category_channels(category_id)
                 else:
-                    # Fallback
                     data = []
 
                 log.debug(
                     "Data received, type: %s" %
                     type(data), module="Categories")
 
-                # Full log for the first 500 characters
                 data_str = str(data)
                 log.debug("Data sample: %s..." % data_str[:300] if len(
                     data_str) > 300 else data_str, module="Categories")
@@ -209,7 +217,6 @@ class CategoriesBrowser(BaseBrowser):
                             "Found 'channels' key with %d items" %
                             len(channels), module="Categories")
                     else:
-                        # Search for other keys
                         for key in ['items', 'streams', 'list']:
                             if key in data:
                                 channels = data[key]
@@ -226,12 +233,14 @@ class CategoriesBrowser(BaseBrowser):
                     log.debug(
                         "Opening ChannelsBrowser with %d channels" %
                         len(channels), module="Categories")
+                    # [TVGarden patch] Passiamo media_type
                     self.session.open(
                         ChannelsBrowser,
                         category_id=category_id,
                         category_name="%s (%d channels)" %
                         (category_name,
-                         len(channels)))
+                         len(channels)),
+                        media_type=self.media_type)
                 else:
                     self["status"].setText(_("No channels in this category"))
                     log.warning("Empty channel list!", module="Categories")
@@ -249,7 +258,6 @@ class CategoriesBrowser(BaseBrowser):
         self["status"].setText(_("Refreshing..."))
         try:
             config = get_config()
-            # "clear_cache" o "force_refresh"
             refresh_method = config.get("refresh_method", "clear_cache")
 
             if refresh_method == "clear_cache":
@@ -257,8 +265,6 @@ class CategoriesBrowser(BaseBrowser):
                 self["status"].setText(_("Cache cleared"))
                 log.info("Cache cleared manually", module="Categories")
             else:
-                # Set force_refresh for next navigation
-                # You may want to set a temporary flag
                 self["status"].setText(_("Next load will use fresh data"))
                 log.info(
                     "Force refresh enabled for next load",

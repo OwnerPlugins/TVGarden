@@ -73,6 +73,47 @@ else:  # HD (1280x720)
     SKIN_PATH = "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/skins/hd"
 
 
+import re
+
+def convert_youtube_embed_to_watch(url):
+    """
+    [TVGarden patch] Converte URL embed YouTube in URL watch.
+    Così ytdlpwrapper (Enigma2) lo riconosce e lo risolve.
+
+    https://www.youtube-nocookie.com/embed/VIDEO_ID  →  https://www.youtube.com/watch?v=VIDEO_ID
+    https://www.youtube.com/embed/VIDEO_ID            →  https://www.youtube.com/watch?v=VIDEO_ID
+    https://youtu.be/VIDEO_ID                         →  https://www.youtube.com/watch?v=VIDEO_ID
+    """
+    try:
+        # youtube-nocookie.com/embed/XXX o youtube.com/embed/XXX
+        m = re.search(r'(?:youtube-nocookie\.com|youtube\.com)/embed/([^/?#&]+)', url)
+        if m:
+            return "https://www.youtube.com/watch?v=%s" % m.group(1)
+
+        # youtube.com/live/XXX (live diretti)
+        m = re.search(r'youtube\.com/live/([^/?#&]+)', url)
+        if m:
+            return "https://www.youtube.com/watch?v=%s" % m.group(1)
+
+        # youtu.be/XXX (short)
+        m = re.search(r'youtu\.be/([^/?#&]+)', url)
+        if m:
+            return "https://www.youtube.com/watch?v=%s" % m.group(1)
+
+        # youtube.com/shorts/XXX
+        m = re.search(r'youtube\.com/shorts/([^/?#&]+)', url)
+        if m:
+            return "https://www.youtube.com/watch?v=%s" % m.group(1)
+
+        # youtube.com/v/XXX
+        m = re.search(r'youtube\.com/v/([^/?#&]+)', url)
+        if m:
+            return "https://www.youtube.com/watch?v=%s" % m.group(1)
+    except Exception:
+        pass
+    return url
+
+
 class TvInfoBarShowHide():
     """ InfoBar show/hide control, accepts toggleShow and hide actions, might start
     fancy animations. """
@@ -551,11 +592,9 @@ class TVGardenPlayer(
             module="Player")
         log.info("Buffer Size: %s KB" % buffer_size, module="Player")
 
-        # YouTube detection
+        # [TVGarden patch] YouTube: risolvi con yt-dlp interno (metodo WorldCam)
         if "youtube.com" in stream_url or "youtu.be" in stream_url or "youtube-nocookie.com" in stream_url:
-            log.info(
-                "YouTube channel detected: %s" %
-                channel_name, module="Player")
+            log.info("YouTube channel detected: %s" % channel_name, module="Player")
             resolved = get_youtube_stream(stream_url)
             if resolved:
                 stream_url = resolved
@@ -615,49 +654,28 @@ class TVGardenPlayer(
         self.eof_count = 0
 
         try:
-            # Create service reference with performance parameters
-            url_encoded = stream_url.replace(":", "%3a")
-            name_encoded = channel_name.replace(":", "%3a")
-
-            if "googlevideo.com" in stream_url:
-                user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-                # Forza l'uso di questo UA per questo stream
-                if "#User-Agent=" not in stream_url:
-                    stream_url += "#User-Agent=" + \
-                        user_agent.replace(" ", "%20")
-
-            # Add User-Agent if needed
-            if "#User-Agent=" not in stream_url:
-                # stream_url_with_ua = stream_url + "#User-Agent=TVGarden/1.0"
-                user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-                stream_url_with_ua = stream_url + \
-                    "#User-Agent=" + user_agent.replace(" ", "%20")
-                url_encoded = stream_url_with_ua.replace(":", "%3a")
-
-            # Build service reference string with additional parameters
-            if self.should_use_hardware_acceleration(stream_url):
-
-                ref_str = self.build_service_ref_with_hw_accel(
-                    url_encoded, name_encoded)
-                log.debug("Using hardware acceleration", module="Player")
+            # [TVGarden patch] Metodo WorldCam: service_type 5001 per HLS/http
+            if isinstance(stream_url, (tuple, list)):
+                stream_url = str(stream_url[0])
             else:
-                # Use standard format
-                ref_str = self.build_standard_service_ref(
-                    url_encoded, name_encoded)
-                log.debug("Using standard playback", module="Player")
+                stream_url = str(stream_url)
 
-            # Add buffer size if supported
-            ref_str = self.add_buffer_size_param(ref_str, buffer_size)
+            log.info("Final stream URL: " + stream_url[:200] + "...", module="Player")
 
-            log.debug("ServiceRef string: " +
-                      ref_str[:100] + "...", module="Player")
+            if '.m3u8' in stream_url.lower() or stream_url.lower().startswith('http'):
+                service_type = 5001  # HLS
+                log.info("Using service_type=5001 (HLS)", module="Player")
+            else:
+                service_type = 4097  # HTTP
+                log.info("Using service_type=4097 (HTTP)", module="Player")
 
-            sref = eServiceReference(ref_str)
+            sref = eServiceReference(service_type, 0, stream_url)
             sref.setName(channel_name)
 
-            # Start service with timeout
+            # Avvia la riproduzione
             self.session.nav.playService(sref)
             self.current_service = sref
+            log.info("Playback started successfully", module="Player")
 
             # Show overlays briefly
             self.show_overlays()

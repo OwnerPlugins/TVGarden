@@ -33,7 +33,7 @@
         <convert type="ClockToText">Default</convert>
     </widget>
     <eLabel backgroundColor="#181b2e" position="0,0" size="2560,1440" transparent="0" zPosition="-9" foregroundColor="#ffffff" />
-    <widget source="session.CurrentService" render="Label" position="1764,272" size="734,60" font="cvfont;35" backgroundColor="#181b2e" transparent="1" halign="left" foregroundColor="#ffffff" zPosition="30" valign="center" noWrap="1">
+    <widget source="session.CurrentService" render="Label" position="1764,272" size="734,60" font="Regular;35" backgroundColor="#181b2e" transparent="1" halign="left" foregroundColor="#ffffff" zPosition="30" valign="center" noWrap="1">
         <convert type="ServiceName">Name</convert>
     </widget>
     <widget source="session.VideoPicture" render="Pig" position="1768,339" zPosition="20" size="730,415" backgroundColor="#ff000000" transparent="0" />

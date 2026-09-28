@@ -4,6 +4,11 @@
 TV Garden Plugin - Channels Browser
 List and play IPTV channels
 Based on TV Garden Project
+
+[TVGarden patch] Supporto multi-sorgente (tv / webcams).
+Il browser accetta `media_type` e lo propaga a:
+- cache.get_country_channels()
+- cache.get_category_channels()
 """
 import tempfile
 from os import unlink
@@ -24,7 +29,6 @@ try:
 except ImportError as e:
     print("[CHANNELS IMPORT ERROR] %s" % e, file=stderr)
 
-    # Fallback functions
     def log(msg, level="INFO"):
         print("[%s] TVGarden: %s" % (level, msg))
 
@@ -54,10 +58,6 @@ class ChannelsBrowser(BaseBrowser):
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/yellowbutton.png" position="474,1038" size="210,6" alphatest="blend" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/bluebutton.png" position="688,1038" size="210,6" alphatest="blend" transparent="1" />
 
-            <!--
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/kofi.png" position="1134,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons/paypal.png" position="1300,730" size="150,150" scale="1" alphatest="blend" transparent="1" />
-            -->
             <!-- Background -->
             <ePixmap name="" position="0,0" size="1920,1080" alphatest="blend" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/images/fhd/background.png" scale="1" />
 
@@ -94,7 +94,9 @@ class ChannelsBrowser(BaseBrowser):
     """
 
     def __init__(self, session, country_code=None, country_name=None,
-                 category_id=None, category_name=None):
+                 category_id=None, category_name=None, media_type="tv"):
+        # [TVGarden patch] media_type: "tv" (default) oppure "webcams"
+        self.media_type = media_type
 
         self.config = PluginConfig()
         dynamic_skin = self.config.load_skin("ChannelsBrowser", self.skin)
@@ -114,11 +116,14 @@ class ChannelsBrowser(BaseBrowser):
         self.category_id = category_id
         self.category_name = category_name
 
+        # [TVGarden patch] Prefisso per il titolo in base al media_type
+        media_label = "Webcams" if self.media_type == "webcams" else "Channels"
+
         title = ""
         if country_name:
-            title = "Channels - %s" % str(country_name)
+            title = "%s - %s" % (media_label, str(country_name))
         elif category_name:
-            title = "Channels - %s" % str(category_name)
+            title = "%s - %s" % (media_label, str(category_name))
 
         self.setTitle(title)
 
@@ -126,8 +131,7 @@ class ChannelsBrowser(BaseBrowser):
 
         self["menu"] = MenuList([])
         self['title'] = StaticText(
-            "TV Garden %s | by Lululla" %
-            PLUGIN_VERSION)
+            "TV Garden %s | by Lululla" % PLUGIN_VERSION)
         self["status"] = StaticText(_("Loading channels..."))
         self["logo"] = Pixmap()
         self["key_red"] = StaticText(_("Back"))
@@ -135,14 +139,13 @@ class ChannelsBrowser(BaseBrowser):
         self["key_yellow"] = StaticText(_("Favorite"))
         self["key_blue"] = StaticText("")
 
-        self["actions"] = ActionMap(["TVGardenActions", "OkCancelActions", "ColorActions"], {
+        self["actions"] = ActionMap(["TVGardenActions", "OkCancelActions", "ColorActions", "DirectionActions"], {
             "cancel": self.exit,
             "ok": self.play_channel,
             "red": self.exit,
             "green": self.play_channel,
             "yellow": self.toggle_favorite,
-            # "blue": self.show_info,
-            "blue": self.export_current_view,  # if self.menu_channels else lambda: None,
+            "blue": self.export_current_view,
             "up": self.up,
             "down": self.down,
             "left": self.left,
@@ -160,7 +163,6 @@ class ChannelsBrowser(BaseBrowser):
             self.picload_conn = self.picload.PictureData.get().append(self.update_logo)
 
         self.onFirstExecBegin.append(self.load_channels)
-        # self.onLayoutFinish.append(self.refresh)
 
     def onSelectionChanged(self):
         """Called when menu selection changes"""
@@ -200,7 +202,6 @@ class ChannelsBrowser(BaseBrowser):
             config = get_config()
             max_channels = config.get("max_channels", 500)
 
-            # Cache settings
             cache_enabled = config.get("cache_enabled", True)
             force_refresh_browsing = config.get(
                 "force_refresh_browsing", False)
@@ -208,37 +209,52 @@ class ChannelsBrowser(BaseBrowser):
             channels = []
             if self.country_code:
                 log.debug(
-                    "Loading country channels: %s" %
-                    self.country_code, module="Channels")
-                # Use cache with config
+                    "Loading country channels: %s (media_type=%s)" %
+                    (self.country_code, self.media_type), module="Channels")
+
+                # [TVGarden patch] Passiamo media_type
                 if hasattr(self.cache, 'get_country_channels'):
                     try:
                         channels = self.cache.get_country_channels(
                             self.country_code,
+                            media_type=self.media_type,
                             force_refresh=force_refresh_browsing
                         )
                     except TypeError:
-                        # Method doesn't support force_refresh parameter
-                        channels = self.cache.get_country_channels(
-                            self.country_code)
+                        # Retrocompatibilità
+                        try:
+                            channels = self.cache.get_country_channels(
+                                self.country_code,
+                                force_refresh=force_refresh_browsing
+                            )
+                        except TypeError:
+                            channels = self.cache.get_country_channels(
+                                self.country_code)
                 else:
                     channels = []
 
             elif self.category_id:
                 log.debug(
-                    "Loading category channels: %s" %
-                    self.category_id, module="Channels")
-                # Use cache with config
+                    "Loading category channels: %s (media_type=%s)" %
+                    (self.category_id, self.media_type), module="Channels")
+
+                # [TVGarden patch] Passiamo media_type
                 if hasattr(self.cache, 'get_category_channels'):
                     try:
                         channels = self.cache.get_category_channels(
                             self.category_id,
+                            media_type=self.media_type,
                             force_refresh=force_refresh_browsing
                         )
                     except TypeError:
-                        # Method doesn't support force_refresh parameter
-                        channels = self.cache.get_category_channels(
-                            self.category_id)
+                        try:
+                            channels = self.cache.get_category_channels(
+                                self.category_id,
+                                force_refresh=force_refresh_browsing
+                            )
+                        except TypeError:
+                            channels = self.cache.get_category_channels(
+                                self.category_id)
                 else:
                     channels = []
             else:
@@ -256,10 +272,8 @@ class ChannelsBrowser(BaseBrowser):
             log.debug("Cache enabled: %s, Force refresh: %s" %
                       (cache_enabled, force_refresh_browsing), module="Channels")
 
-            # Save the ORIGINAL channels
             self.channels = channels
 
-            # Process channels list
             menu_items = []
             self.menu_channels = []
 
@@ -269,7 +283,6 @@ class ChannelsBrowser(BaseBrowser):
             skipped_count = 0
 
             for idx, channel in enumerate(channels):
-                # Apply configurable limit (0 = all channels)
                 if max_channels > 0 and idx >= max_channels:
                     log.debug(
                         "Stopped at %d channels (limit: %d)" %
@@ -283,9 +296,55 @@ class ChannelsBrowser(BaseBrowser):
                 found_in = None
                 is_youtube = False
 
-                # 1. Check iptv_urls
+                # ============================================================
+                # [TVGarden patch] Supporto formato NUOVO con "sources" annidato
+                # Esempio webcams: {"sources": {"youtube": ["..."]}}
+                # Esempio TV nuovo: {"sources": {"streams": ["..."]}}
+                # ============================================================
+                sources = channel.get("sources")
+                if isinstance(sources, dict):
+                    # 1a. sources.streams (nuovo formato TV)
+                    if not stream_url and isinstance(sources.get("streams"), list):
+                        for url in sources["streams"]:
+                            if isinstance(url, str) and url.strip():
+                                stream_url = url.strip()
+                                found_in = "sources.streams"
+                                break
+
+                    # 1b. sources.iptv (alternativo)
+                    if not stream_url and isinstance(sources.get("iptv"), list):
+                        for url in sources["iptv"]:
+                            if isinstance(url, str) and url.strip():
+                                stream_url = url.strip()
+                                found_in = "sources.iptv"
+                                break
+
+                    # 1c. sources.youtube (webcams + TV youtube)
+                    if not stream_url and isinstance(sources.get("youtube"), list):
+                        for url in sources["youtube"]:
+                            if isinstance(url, str) and url.strip():
+                                stream_url = url.strip()
+                                found_in = "sources.youtube"
+                                is_youtube = True
+                                break
+
+                    # 1d. sources.iframe (alternativo)
+                    if not stream_url and isinstance(sources.get("iframe"), list):
+                        for url in sources["iframe"]:
+                            if isinstance(url, str) and url.strip():
+                                stream_url = url.strip()
+                                found_in = "sources.iframe"
+                                is_youtube = True
+                                break
+
+                # ============================================================
+                # Formato VECCHIO (chiavi piatte) - mantenuto per retrocompatibilità
+                # ============================================================
+
+                # 2. iptv_urls
                 if (
-                    "iptv_urls" in channel
+                    not stream_url
+                    and "iptv_urls" in channel
                     and isinstance(channel["iptv_urls"], list)
                     and channel["iptv_urls"]
                 ):
@@ -295,10 +354,7 @@ class ChannelsBrowser(BaseBrowser):
                             found_in = "iptv_urls"
                             break
 
-                # 2. If not found, check youtube_urls
-                if not stream_url:
-                    log.debug("Channel data: %s" % channel, module="Channels")
-
+                # 3. youtube_urls
                 if (
                     not stream_url
                     and "youtube_urls" in channel
@@ -312,7 +368,7 @@ class ChannelsBrowser(BaseBrowser):
                             is_youtube = True
                             break
 
-                # 3. Check stream_urls (common in famelack-data)
+                # 4. stream_urls
                 if not stream_url and "stream_urls" in channel and isinstance(
                         channel["stream_urls"], list) and channel["stream_urls"]:
                     for url in channel["stream_urls"]:
@@ -321,69 +377,33 @@ class ChannelsBrowser(BaseBrowser):
                             found_in = "stream_urls"
                             break
 
-                # 4. Fallback: single "url" field
+                # 5. single url field
                 if not stream_url and "url" in channel and isinstance(
                         channel["url"], str) and channel["url"].strip():
                     stream_url = channel["url"].strip()
                     found_in = "url"
 
-                # 3. If YouTube → skip for now
                 if is_youtube:
                     youtube_count += 1
                     print(
                         "[CHANNELS DEBUG] ⏭️ Skipping YouTube: %s" % name,
                         file=stderr
                     )
-                    # continue  # skip this channel
 
-                # 4. Basic URL validation
                 if not stream_url:
                     log.warning(
                         "✗ No stream URL: %s" %
                         name, module="Channels")
                     continue
 
-                # 5. Advanced validation: playable URL
                 if not is_valid_stream_url(stream_url):
                     log.warning(
                         "✗ Invalid URL format: %s" %
                         name, module="Channels")
                     continue
 
-                # 6. CRITICAL FILTER: skip known problematic hosts/protocols
-                """
-                stream_lower = stream_url.lower()
-                problematic_patterns = [
-                    "moveonjoy.com",  # caused crashes in logs
-                    # ".mpd",           # DASH DRM
-                    # "/dash/",         # DASH stream
-                    "drm",
-                    "widevine",       # DRM: Widevine
-                    "playready",      # DRM: PlayReady
-                    "fairplay",       # DRM: Apple FairPlay
-                    "keydelivery",
-                    "license.",
-                    "encryption",
-                    "akamaihd.net",   # often DRM
-                    "level3.net"      # problematic CDN
-                ]
-
-                is_problematic = False
-                for pattern in problematic_patterns:
-                    if pattern in stream_lower:
-                        log.warning("⚠️ Skipping problematic pattern '%s': %s..." % (
-                            pattern, name[:30]), module="Channels")
-                        problematic_count += 1
-                        is_problematic = True
-                        break
-
-                if is_problematic:
-                    continue
-                """
-                # 7. Prefer HTTP over HTTPS (more stable on Enigma2)
                 stream_url_to_use = stream_url
 
-                # Debug URL type
                 if stream_url.startswith("http://"):
                     log.debug("   HTTP URL (good)", module="Channels")
                 elif stream_url.startswith("https://"):
@@ -395,40 +415,22 @@ class ChannelsBrowser(BaseBrowser):
                         "   RTMP/RTSP URL (needs gstreamer)",
                         module="Channels")
 
-                # 8. Build channel object
                 channel_data = {
-                    "name": str(
-                        name or ""),
+                    "name": str(name or ""),
                     "url": stream_url_to_use,
                     "stream_url": stream_url_to_use,
                     "logo": channel.get("logo") or channel.get("icon") or channel.get("image"),
-                    "id": str(
-                        channel.get(
-                            "nanoid",
-                            "ch_%d" %
-                            idx)),
-                    "description": str(
-                        channel.get(
-                            "description",
-                            "")),
-                    "group": str(
-                        channel.get(
-                            "group",
-                            "")),
-                    "language": str(
-                        channel.get(
-                            "language",
-                            "")),
-                    "country": str(
-                        channel.get(
-                            "country",
-                            "")),
+                    "id": str(channel.get("nanoid", "ch_%d" % idx)),
+                    "description": str(channel.get("description", "")),
+                    "group": str(channel.get("group", "")),
+                    "language": str(channel.get("language", "")),
+                    "country": str(channel.get("country", "")),
                     "found_in": str(found_in),
                     "original_index": idx,
-                    "is_youtube": is_youtube,  # False,
+                    "is_youtube": is_youtube,
+                    "media_type": self.media_type,  # [TVGarden patch]
                 }
 
-                # menu_items.append((name, idx))
                 self.menu_channels.append(channel_data)
 
                 valid_count += 1
@@ -460,7 +462,6 @@ class ChannelsBrowser(BaseBrowser):
                         module="Channels")
                     self.update_channel_selection(0)
 
-            # Build status message with cache info
             cache_info = ""
             if force_refresh_browsing:
                 cache_info = _(" [Fresh data]")
@@ -476,7 +477,6 @@ class ChannelsBrowser(BaseBrowser):
             else:
                 status_text = _("Found %d playable channels") % valid_count
 
-            # Add cache info
             status_text += cache_info
 
             if youtube_count > 0:
@@ -578,14 +578,11 @@ class ChannelsBrowser(BaseBrowser):
                 self["logo"].hide()
                 return
 
-            # Load with ePicLoad
             self.picload.setPara((80, 50, 1, 1, False, 1, "#00000000"))
 
             if exists('/var/lib/dpkg/info'):
-                # DreamOS
                 self.picload.startDecode(temp_path, 0, 0, False)
             else:
-                # Python2 images
                 self.picload.startDecode(temp_path)
 
             try:
@@ -604,18 +601,15 @@ class ChannelsBrowser(BaseBrowser):
 
             tag = "tvgarden"
 
-            # Use prefix from config
             config = get_config()
             prefix = config.get("bouquet_name_prefix", "TVGarden")
 
-            # Create bouquet name: prefix_countrycode
             bouquet_name = "%s_%s" % (prefix.lower(), country_code.lower())
             userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (
                 tag, bouquet_name)
 
             valid_count = 0
             with open(userbouquet_file, "w") as f:
-                # Use prefix in display name
                 f.write("#NAME %s - %s\n" % (prefix, country_code.upper()))
                 f.write(
                     "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | %s %s | ---\n" %
@@ -659,27 +653,26 @@ class ChannelsBrowser(BaseBrowser):
         try:
             cache = CacheManager()
 
-            # Get all countries
-            countries_meta = cache.get_countries_metadata()
+            countries_meta = cache.get_countries_metadata(
+                media_type=self.media_type)
 
             results = []
             for country_code in countries_meta.keys():
-                # Load channels for this country
-                channels = cache.get_country_channels(country_code)
+                channels = cache.get_country_channels(
+                    country_code, media_type=self.media_type)
 
                 if channels:
                     success, message = self.generate_country_bouquet(
                         country_code, channels)
                     results.append((country_code, success, message))
 
-            # Also create a bouquet containing all countries
             if results:
                 all_channels = []
                 for country_code, success, msg in results:
                     if success:
-                        channels = cache.get_country_channels(country_code)
+                        channels = cache.get_country_channels(
+                            country_code, media_type=self.media_type)
                         if channels:
-                            # Limit to 10 for country
                             all_channels.extend(channels[:10])
 
                 if all_channels:
@@ -869,7 +862,6 @@ class ChannelsBrowser(BaseBrowser):
 
     def play_channel(self):
         """Play the selected channel."""
-        # 1. Get the correct index from the menu
         menu_idx = self["menu"].getSelectedIndex()
         log.debug("Menu index: %d" % menu_idx, module="Channels")
 
@@ -878,7 +870,6 @@ class ChannelsBrowser(BaseBrowser):
             log.error("ERROR: Invalid index %d" % menu_idx, module="Channels")
             return
 
-        # 2. Get the selected channel by index
         selected_channel = self.menu_channels[menu_idx]
         stream_url = selected_channel.get(
             "stream_url") or selected_channel.get("url")
@@ -887,7 +878,6 @@ class ChannelsBrowser(BaseBrowser):
             self["status"].setText(_("No stream URL"))
             return
 
-        # 3. Critical debug info
         log.debug("===== PASSING TO PLAYER =====", module="Channels")
         log.debug(
             "Channel: %s" %
@@ -897,11 +887,9 @@ class ChannelsBrowser(BaseBrowser):
         log.debug("Total: %d" % len(self.menu_channels), module="Channels")
         log.debug("URL: %s..." % stream_url[:80], module="Channels")
 
-        # 4. Create a basic service reference
         service_ref = eServiceReference(4097, 0, stream_url)
         service_ref.setName(selected_channel.get("name", "TV Garden"))
 
-        # 5. Pass to player: service_ref, channel list, index
         self.session.open(
             TVGardenPlayer,
             service_ref,
