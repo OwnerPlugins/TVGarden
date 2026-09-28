@@ -1,19 +1,17 @@
 <h1 align="center">📺 TV Garden Plugin for Enigma2</h1>
 
-[![Version](https://img.shields.io/badge/Version-2.6-blue.svg)](https://github.com/Belfagor2005/TVGarden)
+[![Version](https://img.shields.io/badge/Version-2.7-blue.svg)](https://github.com/OwnerPlugins/TVGarden)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-2.7%2B-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Python package](https://github.com/Belfagor2005/TVGarden/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/TVGarden/actions/workflows/pylint.yml)
-[![Ruff Status](https://github.com/Belfagor2005/TVGarden/actions/workflows/ruff.yml/badge.svg)](https://github.com/Belfagor2005/TVGarden/actions/workflows/ruff.yml)
 
-[![Visitors](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)](https://github.com/Belfagor2005)
+[![Visitors](https://komarev.com/ghpvc/?username=OwnerPlugins&label=Repository%20Views&color=blueviolet)](https://github.com/OwnerPlugins)
 [![Donate](https://img.shields.io/badge/_-Donate-red.svg?logo=githubsponsors&labelColor=555555&style=for-the-badge)](https://ko-fi.com/lululla)
 [![Donate](https://img.shields.io/badge/_-Donate-green.svg?logo=githubsponsors&labelColor=555555&style=for-the-badge)](https://paypal.me/belfagor2005)
 
 <img src="https://play-lh.googleusercontent.com/TuMoS5RrGwz6xmyyYkA56eXukRHNNd2JgldA0wpzVFxiQDAAf9NLuKkTacl29_ltEbr4YvshNOauntxGlrvb=w240-h480-rw" alt="Icon image">
 
-**Professional IPTV Streaming Solution** for Enigma2 receivers with access to **50,000+ channels** from **150+ countries** across **29 categories**. Featuring **smart caching**, **hardware acceleration**, and **native Enigma2 bouquet export**.
+**Professional IPTV Streaming Solution** for Enigma2 receivers with access to **50,000+ channels** from **150+ countries** across **29 categories**, plus **live webcams** from around the world. Featuring **smart caching**, **hardware acceleration**, and **native Enigma2 bouquet export**.
 
 ---
 
@@ -56,8 +54,15 @@
 
 ### 🌍 Global Content Access
 - **150+ Countries** with national flags display
-- **29 Content Categories** (News, Sports, Movies, Music, Kids, etc.)
+- **29 TV Categories** (News, Sports, Movies, Music, Kids, etc.)
 - **50,000+ Channels** regularly updated
+- **Live Webcams** - browse by country or by category
+
+### 📹 Webcams Support
+- **Webcams by Country** - browse public live webcams from around the world
+- **Webcams by Category** - filter by type (beach, city, nature, mountain, traffic, etc.)
+- **Dynamic Categories** - categories are read live from the data source
+- **YouTube & HLS playback** - via `ytdlpwrapper` / `streamlinkwrapper`
 
 ### ⚙️ Advanced Technology
 - **Smart Configuration System** - 20+ configurable parameters
@@ -80,7 +85,7 @@
 
 ### 🔍 Enhanced User Experience
 - **Channel Zapping** - CH+/CH- navigation between channels in player
-- **Real-time Search** - Virtual keyboard with case-insensitive search across all channels
+- **Real-time Search** - Virtual keyboard with case-insensitive search across TV + webcams
 - **Performance Stats** - HW acceleration and buffer info in player overlay
 - **Multi-language Interface** - Support for international users
 
@@ -92,7 +97,8 @@
 |-----------|--------------|
 | **Total Channels** | 50,000+ |
 | **Countries** | 150+ |
-| **Categories** | 29 |
+| **TV Categories** | 29 |
+| **Webcams** | Available by country & category |
 | **Configuration Parameters** | 20+ |
 | **Player Engines** | Auto / ExtePlayer3 / GStreamer |
 | **Buffer Size Range** | 512KB - 8MB |
@@ -101,6 +107,32 @@
 | **Load Time (cached)** | <5 seconds |
 | **Stream Compatibility** | ~70% success rate |
 | **Python Compatibility** | 2.7+ (Enigma2 optimized) |
+
+---
+
+## 📦 Requirements
+
+Before installing, make sure the following packages are present:
+
+```bash
+opkg update
+opkg install python3-yt-dlp python3-youtube-dl
+opkg install streamlink
+opkg install exteplayer3 gstplayer
+opkg install ffmpeg
+opkg install enigma2-plugin-systemplugins-serviceapp
+opkg install enigma2-plugin-extensions-streamlinkwrapper
+opkg install enigma2-plugin-extensions-ytdlpwrapper
+opkg install enigma2-plugin-extensions-ytdlwrapper
+```
+
+### ⚙️ ServiceApp configuration
+
+Open:
+
+**Menu → Settings → System → ServiceApp**
+
+Set **Player IPTV** to **`exteplayer3`** (recommended) or **`gstplayer`**.
 
 ---
 
@@ -139,8 +171,6 @@ export_enabled = true     # Enable bouquet export
 bouquet_name_prefix = TVGarden  # Bouquet name prefix
 max_channels_for_bouquet = 100  # Max channels per bouquet (0=all)
 max_channels_for_sub_bouquet = 500 # Max channels per sub-bouquet
-auto_refresh_bouquet = false    # Auto-refresh bouquet after export
-confirm_before_export = true    # Confirm before exporting
 list_position = bottom    # top or bottom in Enigma2 list
 ```
 
@@ -155,7 +185,6 @@ sort_by = name            # Sort channels by name / country / category
 ```ini
 user_agent = TVGarden-Enigma2/1.0  # Custom user agent
 connection_timeout = 30   # Network connection timeout (10-300s)
-download_timeout = 60     # Download timeout for large files (30-600s)
 ```
 
 ### Logging Settings
@@ -166,18 +195,26 @@ log_to_file = true        # Enable file logging
 
 ### Search Settings
 ```ini
-search_max_results = 200  # Max results in search (10-1000)
-search_real_time = true   # Real-time search while typing
-```
-
-### Bouquet Management
-```ini
-bouquet_auto_reload = true # Auto-reload bouquets after export
+search_max_results = 500  # Max results in search (0=all)
 ```
 
 ---
 
 ## 🎮 Usage Guide
+
+### Main Menu
+
+```
+Browse by Country      - TV channels by country
+Browse by Category     - TV channels by category
+Webcams by Country     - Live webcams by country
+Webcams by Category    - Live webcams by category
+Favorites              - Your saved channels
+Search                 - Search across TV + webcams
+Settings               - Plugin configuration
+Check for Updates      - Check for plugin updates
+About                  - Plugin information
+```
 
 ### Navigation Controls
 
@@ -185,17 +222,9 @@ bouquet_auto_reload = true # Auto-reload bouquets after export
 ```
 OK / GREEN      - Play selected channel
 EXIT / RED      - Back / Exit
-YELLOW          - Context menu (Remove/Export)
-BLUE            - Export favorites to bouquet
-```
-
-**Favorites Browser:**
-```
-OK / GREEN      - Play selected channel
-EXIT / RED      - Back / Exit
-YELLOW          - Options (Remove/Info/Export)
-BLUE            - Export ALL to Enigma2 bouquet
-ARROWS          - Navigate channels
+YELLOW          - Add/remove favorite
+BLUE            - Export current view to bouquet
+MENU            - Channel context menu
 ```
 
 **Player Controls:**
@@ -217,9 +246,8 @@ EXIT            - Close player
    - Creates `userbouquet.tvgarden_complete_container.tv` (parent)
    - Creates `subbouquet.tvgarden_[country].tv` for each country
    - Countries with >500 channels are split into parts (e.g., `_part1`)
-3. **Export Options**: Access via Yellow button → Export ALL Database
-4. **Location**: `/etc/enigma2/*.tvgarden_*`
-5. **Restart**: Enigma2 to see new bouquets
+3. **Location**: `/etc/enigma2/*.tvgarden_*`
+4. **Restart**: Enigma2 to see new bouquets
 
 ---
 
@@ -227,11 +255,30 @@ EXIT            - Close player
 
 ```bash
 # Download and install via script (Recommended)
-wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/TVGarden/main/installer.sh" -O - | /bin/sh
+wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 
 # Restart Enigma2
 reboot
 ```
+
+---
+
+## 📁 Data Source
+
+Channel and webcam data comes from an external public dataset:
+
+➡ **https://github.com/OwnerPlugins/famelack-data**
+
+Sources are organized as:
+
+```
+tv/raw/countries/{code}.json       → TV channels by country
+tv/raw/categories/{id}.json        → TV channels by category
+webcams/raw/countries/{code}.json  → Webcams by country
+webcams/raw/categories/{id}.json   → Webcams by category
+```
+
+Categories are **read dynamically** from the GitHub API — no hardcoded lists.
 
 ---
 
@@ -249,7 +296,7 @@ TVGarden/
 ├── skins/
 ├── icons/
 ├── locale/
-├── install.sh
+├── installer.sh
 └── README.md
 ```
 
@@ -262,6 +309,7 @@ TVGarden/
 ### Player Features
 - **Hardware Acceleration**: Automatic detection for H.264/H.265 streams
 - **Buffer Management**: Configurable buffer size applied to service reference
+- **YouTube & HLS**: Native support via system wrappers
 - **Performance Settings**: Integrated into player initialization
 
 ---
@@ -270,8 +318,9 @@ TVGarden/
 
 ### Features
 - **Real-time Case-Insensitive Search** - Instant results as you type
+- **TV + Webcams** - unified search across both sources
 - **Virtual Keyboard** - Full text input support
-- **Configurable Limits** - 10-1000 results (default: 200)
+- **Configurable Limits** - 0-1000 results (default: 500)
 - **Cache-aware** - Uses cached data when available
 
 ---
@@ -305,7 +354,7 @@ TVGarden/
 ### Common Issues
 | Issue | Solution |
 |-------|----------|
-| **Channels not loading** | Check internet, clear cache (`Settings → Clear Logs`), restart plugin |
+| **Channels not loading** | Check internet, clear cache, restart plugin |
 | **Player won't start** | Verify GStreamer/ExtePlayer3 installation, check URL format |
 | **Search not working** | Clear cache, check network connection to GitHub |
 | **Bouquets not appearing** | Restart Enigma2 after export |
@@ -349,9 +398,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 ### Core Development
 - **Original Concept**: Lululla (TV Garden Project)
-- **Data Source**: [https://github.com/Belfagor2005/famelack-data](https://github.com/Belfagor2005/famelack-data)
-- **Plugin Development**: TV Garden Development Team
-- **Hierarchical Export**: Inspired by Vavoo Plugin architecture
+- **Upstream Fork**: Belfagor2005
+- **Data Source**: [https://github.com/OwnerPlugins/famelack-data](https://github.com/OwnerPlugins/famelack-data)
+- **Fork & Webcams Support**: OwnerPlugins
 
 ### Special Thanks
 - Enigma2 community for testing & feedback
@@ -361,11 +410,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 ## 📞 Support & Resources
 
-### Documentation & Support
-- **GitHub Issues**: [Report bugs/request features](https://github.com/Belfagor2005/TVGarden/issues)
-- **Releases**: [Latest versions and changelog](https://github.com/Belfagor2005/TVGarden/releases)
+- **Fork**: [https://github.com/OwnerPlugins/TVGarden](https://github.com/OwnerPlugins/TVGarden)
+- **Data Source**: [https://github.com/OwnerPlugins/famelack-data](https://github.com/OwnerPlugins/famelack-data)
 
 **Enjoy optimized streaming with TV Garden!** 📺⚡
 
-*Last Updated: 2025-12-17* | *Version: 1.7* | *Code Review: Configuration cleanup completed*
-```
+*Last Updated: 2026* | *Version: 2.7*
+
