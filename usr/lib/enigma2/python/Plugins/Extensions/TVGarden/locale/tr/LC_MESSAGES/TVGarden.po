@@ -756,6 +756,9 @@ msgstr "Günlük Dosyasını Görüntüle"
 msgid "Warning"
 msgstr "Uyarı"
 
+msgid "Webcams"
+msgstr "Web kameraları"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Kategoriye Göre Gözat"
@@ -766,10 +769,6 @@ msgstr "Ülkeye Göre Gözat"
 
 msgid "You have the latest version of TVGarden."
 msgstr "TVGarden'ın en son sürümüne sahipsiniz."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Dışa aktarılacak kanal yok"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -795,6 +794,10 @@ msgstr "ülkeler"
 
 msgid "files and"
 msgstr "dosyalar ve"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Dışa aktarılacak kanal yok"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(%d YouTube atlandı)"

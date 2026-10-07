@@ -769,6 +769,9 @@ msgstr "Wyświetl Plik Dziennika"
 msgid "Warning"
 msgstr "Ostrzeżenie"
 
+msgid "Webcams"
+msgstr "Kamery internetowe"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Przeglądaj według Kategorii"
@@ -780,10 +783,6 @@ msgstr "Przeglądaj według Kraju"
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "Masz najnowszą wersję TV Garden."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Brak kanałów do wyeksportowania"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -811,6 +810,10 @@ msgstr "kraje"
 
 msgid "files and"
 msgstr "pliki i"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Brak kanałów do wyeksportowania"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(pominięto %d YouTube)"

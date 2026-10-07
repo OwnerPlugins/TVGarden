@@ -756,6 +756,9 @@ msgstr "查看日志文件"
 msgid "Warning"
 msgstr "警告"
 
+msgid "Webcams"
+msgstr "网络摄像头"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "按类别浏览"
@@ -766,10 +769,6 @@ msgstr "按国家浏览"
 
 msgid "You have the latest version of TVGarden."
 msgstr "您拥有最新版本的 TVGarden。"
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "没有导出渠道"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -795,6 +794,10 @@ msgstr "国家"
 
 msgid "files and"
 msgstr "文件和"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "没有导出渠道"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "（跳过 %d 个 YouTube）"

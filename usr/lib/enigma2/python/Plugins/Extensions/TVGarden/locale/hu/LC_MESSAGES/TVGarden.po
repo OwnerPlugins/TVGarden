@@ -728,7 +728,7 @@ msgstr "Ismeretlen"
 
 msgid "Update available!"
 msgstr "Frissítés elérhető!"
-"Frissítés elérhető!Frissítés elérhető!Frissítés elérhető!{server_version} {version_server}\n"
+"Frissítés elérhető!Frissítés elérhető!Frissítés elérhető!Frissítés elérhető!{server_version} {version_server}\n"
 "{installed_version} {version}\n"
 "\n"
 "{update_available}"
@@ -775,6 +775,9 @@ msgstr "Naplófájl megtekintése"
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
+msgid "Webcams"
+msgstr "Webkamerák"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Kategória szerint böngészés"
@@ -786,10 +789,6 @@ msgstr "Országok szerint böngészés"
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "A TV Garden legújabb verziójával rendelkezel."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Nincs exportálható csatorna"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -817,6 +816,10 @@ msgstr "országokban"
 
 msgid "files and"
 msgstr "fájlok és"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Nincs exportálható csatorna"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(kihagyva %d YouTube)"

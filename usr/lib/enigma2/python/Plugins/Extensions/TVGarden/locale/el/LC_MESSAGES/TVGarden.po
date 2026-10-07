@@ -770,6 +770,9 @@ msgstr "Προβολή αρχείου καταγραφής"
 msgid "Warning"
 msgstr "Προειδοποίηση"
 
+msgid "Webcams"
+msgstr ""
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Περιήγηση ανά κατηγορία"
@@ -781,10 +784,6 @@ msgstr "Περιήγηση ανά χώρα"
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "Έχετε την τελευταία έκδοση του TV Garden."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Δεν υπάρχουν κανάλια για εξαγωγή"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -812,6 +811,10 @@ msgstr "χώρες"
 
 msgid "files and"
 msgstr "αρχεία και"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Δεν υπάρχουν κανάλια για εξαγωγή"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(παραλείφθηκαν %d YouTube)"

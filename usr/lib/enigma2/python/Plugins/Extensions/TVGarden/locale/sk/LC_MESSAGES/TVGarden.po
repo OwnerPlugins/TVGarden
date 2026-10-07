@@ -771,6 +771,9 @@ msgstr "Zobraziť súbor denníka"
 msgid "Warning"
 msgstr "Upozornenie"
 
+msgid "Webcams"
+msgstr "Webkamery"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Prehľadávať podľa kategórie"
@@ -782,10 +785,6 @@ msgstr "Prehľadávať podľa krajiny"
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "Máte najnovšiu verziu TV Garden."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Žiadne kanály na export"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -813,6 +812,10 @@ msgstr "krajín"
 
 msgid "files and"
 msgstr "súbory a"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Žiadne kanály na export"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(preskočené %d YouTube)"

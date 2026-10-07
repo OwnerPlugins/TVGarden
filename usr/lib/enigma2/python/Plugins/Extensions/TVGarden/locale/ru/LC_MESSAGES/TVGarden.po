@@ -728,7 +728,7 @@ msgstr "Неизвестно"
 
 msgid "Update available!"
 msgstr "Доступно обновление!"
-"Доступно обновление!Доступно обновление!Доступно обновление!{server_version} {version_server}\n"
+"Доступно обновление!Доступно обновление!Доступно обновление!Доступно обновление!{server_version} {version_server}\n"
 "{installed_version} {version}\n"
 "\n"
 "{update_available}"
@@ -775,6 +775,9 @@ msgstr "Просмотреть файл журнала"
 msgid "Warning"
 msgstr "Предупреждение"
 
+msgid "Webcams"
+msgstr "Веб-камеры"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Просмотр по категориям"
@@ -786,10 +789,6 @@ msgstr "Поиск по стране"
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "У вас установлена последняя версия TV Garden."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Нет каналов для экспорта"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -817,6 +816,10 @@ msgstr "страны"
 
 msgid "files and"
 msgstr "файлы и"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Нет каналов для экспорта"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(пропущено %d YouTube)"

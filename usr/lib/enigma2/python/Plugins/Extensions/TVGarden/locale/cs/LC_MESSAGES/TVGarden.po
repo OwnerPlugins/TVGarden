@@ -733,7 +733,7 @@ msgstr "Neznámý"
 
 msgid "Update available!"
 msgstr "Aktualizace k dispozici!"
-"Aktualizace k dispozici!Aktualizace k dispozici!Aktualizace k dispozici!{server_version} {version_server}\n"
+"Aktualizace k dispozici!Aktualizace k dispozici!Aktualizace k dispozici!Aktualizace k dispozici!{server_version} {version_server}\n"
 "{installed_version} {version}\n"
 "\n"
 "{update_available}"
@@ -755,7 +755,7 @@ msgstr "Chyba aktualizace: %s"
 
 msgid "Update failed"
 msgstr "Aktualizace se nezdařila"
-"Aktualizace se nezdařilaAktualizace se nezdařilaAktualizace se nezdařilaAktualizace selhala:\n"
+"Aktualizace se nezdařilaAktualizace se nezdařilaAktualizace se nezdařilaAktualizace se nezdařilaAktualizace selhala:\n"
 "%s"
 
 msgid "Update failed and backup restore also failed!"
@@ -782,6 +782,9 @@ msgstr "Zobrazit soubor protokolu"
 msgid "Warning"
 msgstr "Varování"
 
+msgid "Webcams"
+msgstr "Webové kamery"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Procházet podle kategorie"
@@ -793,10 +796,6 @@ msgstr "Procházet podle země"
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "Máte nejnovější verzi TV Garden."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Žádné kanály k exportu"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -824,6 +823,10 @@ msgstr "zemí"
 
 msgid "files and"
 msgstr "soubory a"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Žádné kanály k exportu"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(přeskočeno %d YouTube)"

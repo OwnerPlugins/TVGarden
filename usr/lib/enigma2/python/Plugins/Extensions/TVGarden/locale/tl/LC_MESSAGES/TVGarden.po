@@ -746,6 +746,9 @@ msgstr "Tingnan ang Log File"
 msgid "Warning"
 msgstr "Babala"
 
+msgid "Webcams"
+msgstr "Mga webcam"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Mag-browse ayon sa Kategorya"
@@ -756,10 +759,6 @@ msgstr "Mag-browse ayon sa Bansa"
 
 msgid "You have the latest version of TVGarden."
 msgstr "Mayroon kang pinakabagong bersyon ng TVGarden."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Walang mga channel na ie-export"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -785,6 +784,10 @@ msgstr "mga bansa"
 
 msgid "files and"
 msgstr "mga file at"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Walang mga channel na ie-export"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(nilaktawan ang %d YouTube)"

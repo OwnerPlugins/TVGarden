@@ -735,6 +735,9 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
+msgid "Webcams"
+msgstr ""
+
 msgid "Webcams by Category"
 msgstr ""
 
@@ -742,9 +745,6 @@ msgid "Webcams by Country"
 msgstr ""
 
 msgid "You have the latest version of TVGarden."
-msgstr ""
-
-msgid "YouTube channels cannot be exported"
 msgstr ""
 
 msgid "YouTube stream not available"

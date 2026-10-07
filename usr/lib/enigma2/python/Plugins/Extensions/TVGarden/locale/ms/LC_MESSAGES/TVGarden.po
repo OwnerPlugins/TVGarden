@@ -746,6 +746,9 @@ msgstr "Lihat Fail Log"
 msgid "Warning"
 msgstr "Amaran"
 
+msgid "Webcams"
+msgstr "Kamera web"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Semak imbas mengikut Kategori"
@@ -756,10 +759,6 @@ msgstr "Semak imbas mengikut Negara"
 
 msgid "You have the latest version of TVGarden."
 msgstr "Anda mempunyai versi terkini TVGarden."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Tiada saluran untuk dieksport"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -785,6 +784,10 @@ msgstr "negara"
 
 msgid "files and"
 msgstr "fail dan"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Tiada saluran untuk dieksport"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(dilangkau %d YouTube)"

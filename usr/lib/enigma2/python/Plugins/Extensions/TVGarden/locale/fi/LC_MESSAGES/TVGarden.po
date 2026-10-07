@@ -766,6 +766,9 @@ msgstr "Näytä lokitiedosto"
 msgid "Warning"
 msgstr "Varoitus"
 
+msgid "Webcams"
+msgstr "Web-kamerat"
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Selaa kategorioittain"
@@ -777,10 +780,6 @@ msgstr "Selaa maittain"
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "Sinulla on viimeisin versio TV Garden:sta."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Ei vietäviä kanavia"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -808,6 +807,10 @@ msgstr "maat"
 
 msgid "files and"
 msgstr "tiedostot ja"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Ei vietäviä kanavia"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(YouTube: ohitettu %d)"

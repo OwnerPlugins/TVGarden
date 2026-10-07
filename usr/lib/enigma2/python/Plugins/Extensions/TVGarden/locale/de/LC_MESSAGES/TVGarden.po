@@ -766,6 +766,9 @@ msgstr "Protokolldatei anzeigen"
 msgid "Warning"
 msgstr "Warnung"
 
+msgid "Webcams"
+msgstr ""
+
 #, fuzzy
 msgid "Webcams by Category"
 msgstr "Nach Kategorie suchen"
@@ -776,10 +779,6 @@ msgstr "Nach Land suchen"
 
 msgid "You have the latest version of TVGarden."
 msgstr "Sie haben die neueste Version von TVGarden."
-
-#, fuzzy
-msgid "YouTube channels cannot be exported"
-msgstr "Keine Kanäle zum Exportieren"
 
 #, fuzzy
 msgid "YouTube stream not available"
@@ -807,6 +806,10 @@ msgstr "Länder"
 
 msgid "files and"
 msgstr "Dateien und"
+
+#, fuzzy
+#~ msgid "YouTube channels cannot be exported"
+#~ msgstr "Keine Kanäle zum Exportieren"
 
 #~ msgid "(skipped %d YouTube)"
 #~ msgstr "(%d YouTube übersprungen)"
