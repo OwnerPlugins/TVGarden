@@ -6,6 +6,7 @@ TV Garden Plugin - YouTube helper
 import subprocess
 import re
 from os.path import exists
+from shutil import which
 from urllib.parse import unquote
 from ..helpers import log
 
@@ -13,6 +14,9 @@ from ..helpers import log
 def find_ytdlp():
     """Find yt-dlp executable in system"""
     paths = ["/usr/bin/yt-dlp", "/usr/local/bin/yt-dlp"]
+    found = which("yt-dlp")
+    if found and found not in paths:
+        paths.insert(0, found)
     for path in paths:
         if exists(path):
             try:
