@@ -1,4 +1,4 @@
-﻿#!/bin/sh
+#!/bin/sh
 # postrm script for TV Garden Plugin
 # This script runs AFTER package removal
 
@@ -39,7 +39,7 @@ for skin_link in "$SKINS_DIR"/TVGarden_*; do
 done 2>/dev/null || true
 
 echo ""
-echo "⚠�?  User data and configuration preserved:"
+echo "User data and configuration preserved:"
 echo "   - Configuration: $CONFIG_DIR"
 echo "   - Favorites: $CONFIG_DIR/favorites/"
 echo "   - Cache: $CACHE_DIR"
@@ -57,7 +57,7 @@ fi
 echo "For complete cleanup, restart Enigma2 GUI:"
 echo "  reboot"
 echo ""
-echo "✅ TV Garden Plugin removal completed!"
+echo "TV Garden Plugin removal completed!"
 echo "   Some user data was preserved (see above)."
 
 exit 0

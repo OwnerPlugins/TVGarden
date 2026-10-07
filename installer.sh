@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TV Garden Installer for Enigma2
-# wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/TVGarden/main/installer.sh" -O - | /bin/sh
+# wget -q "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 
 version='2.7'
 echo "TVGarden Version: $version"
@@ -111,7 +111,8 @@ if [ "$PYTHON" = "PY3" ]; then
 fi
 # install_pkg "$Packagerequests"
 
-[ -e "/usr/bin/python3" ] && PY="python3" || PY="python"; opkg update; opkg install "${PY}-requests"
+# Needed to download over verified HTTPS
+install_pkg "ca-certificates"
 
 if [ "$OSTYPE" = "OE" ]; then
     echo "Installing additional multimedia packages..."
@@ -121,9 +122,10 @@ if [ "$OSTYPE" = "OE" ]; then
 fi
 
 echo "Downloading TVGarden..."
-wget --no-check-certificate 'https://github.com/Belfagor2005/TVGarden/archive/refs/heads/main.tar.gz' -O "$FILEPATH"
+wget 'https://github.com/OwnerPlugins/TVGarden/archive/refs/heads/main.tar.gz' -O "$FILEPATH"
 if [ $? -ne 0 ]; then
     echo "Failed to download TVGarden package!"
+    echo "If this is a certificate error, install the 'ca-certificates' package."
     cleanup
     exit 1
 fi
@@ -169,6 +171,8 @@ if [ -n "$SOURCE_DIR" ]; then
         chmod -R 755 "$PLUGINPATH"
         find "$PLUGINPATH" -name "*.py" -exec chmod 644 {} \;
         find "$PLUGINPATH" -name "*.sh" -exec chmod 755 {} \;
+        # Developer tools are not needed on the receiver
+        rm -f "$PLUGINPATH/update_translations.py" "$PLUGINPATH/translate_utils.py"
     else
         echo "Error: Failed to copy plugin files!"
         echo "Attempting fallback method..."

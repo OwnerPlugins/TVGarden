@@ -27,24 +27,30 @@ jobs:
           python -m pip install --upgrade pip
           pip install autopep8 pycodestyle
 
-      - name: Fix indentation (replace tabs with spaces)
+      # Pull requests: only report what would change, never push
+      - name: Check formatting (pull request)
+        if: github.event_name == 'pull_request'
         run: |
-          find . -name "*.py" -exec sed -i 's/\t/    /g' {} +
+          autopep8 . --diff --recursive --aggressive --aggressive
 
       - name: Run autopep8 (aggressive)
+        if: github.event_name != 'pull_request'
         run: |
           autopep8 . --in-place --recursive --aggressive --aggressive
 
       - name: Configure Git identity
+        if: github.event_name != 'pull_request'
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
 
       - name: Pull latest changes
+        if: github.event_name != 'pull_request'
         run: |
           git pull origin main --no-rebase || echo "No remote changes to pull"
 
       - name: Commit and push if changes exist
+        if: github.event_name != 'pull_request'
         run: |
           git add .
           git diff --cached --quiet || git commit -m "Apply auto PEP8 aggressive fixes"

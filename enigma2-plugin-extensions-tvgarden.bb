@@ -16,7 +16,7 @@ PKGV = "1.0+git${GITPKGV}"
 VER ="1.0"
 PR = "r0"
 
-SRC_URI = "git://github.com/Belfagor2005/TVGarden.git;protocol=https;branch=main"
+SRC_URI = "git://github.com/OwnerPlugins/TVGarden.git;protocol=https;branch=main"
 
 S = "${WORKDIR}/git"
 
