@@ -3,17 +3,15 @@
 # TV Garden Installer for Enigma2
 # wget -q "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 
-version='2.8'
+version='2.9'
 echo "TVGarden Version: $version"
 echo "Changelog:"
-echo "- Fix Search and Export ALL Database with the current data format"
-echo "- Fix YouTube channels/webcams: yt-dlp android_vr client, no JS runtime needed"
-echo "- Installer installs all requirements (yt-dlp, ca-certificates, ServiceApp)"
-echo "- Player follows the Player setting, no longer closes while zapping"
-echo "- Logos, flags, YouTube and exports load in the background (no freezes)"
-echo "- Fix cache expiry, corrupted cache files and settings that had no effect"
-echo "- Fix MENU and YELLOW keys, bouquets.tv handling and favorites removal"
-echo "- Secure updater (verified HTTPS), Python 3 only"
+echo "- Fix webcam export to bouquets (No valid streams found)"
+echo "- YouTube entries exported as youtube.com/watch links (play with ytdlpwrapper)"
+echo "- Webcam bouquets no longer overwrite the TV bouquet of the same country"
+echo "- Installer installs ytdlpwrapper"
+echo "- Updater also reads three-part versions (e.g. 2.9.1)"
+echo "- CHANGELOG added"
 echo ""
 
 # Branch to install (default: main). Example for testing:
@@ -109,7 +107,8 @@ install_pkg ca-certificates
 # Players: ServiceApp provides gstplayer (5001) and exteplayer3 (5002)
 if [ "$OSTYPE" = "OE" ]; then
     echo "Installing multimedia packages..."
-    for pkg in ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp; do
+    # ytdlpwrapper: plays YouTube entries exported to bouquets
+    for pkg in ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp enigma2-plugin-extensions-ytdlpwrapper; do
         install_pkg "$pkg"
     done
 fi

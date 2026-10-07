@@ -1,6 +1,6 @@
 <h1 align="center">📺 TV Garden Plugin for Enigma2</h1>
 
-[![Version](https://img.shields.io/badge/Version-2.8-blue.svg)](https://github.com/OwnerPlugins/TVGarden)
+[![Version](https://img.shields.io/badge/Version-2.9-blue.svg)](https://github.com/OwnerPlugins/TVGarden)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-3%20only-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -107,6 +107,7 @@ The installer script installs the required packages automatically. To install th
 opkg update
 opkg install ca-certificates python3-yt-dlp
 opkg install enigma2-plugin-systemplugins-serviceapp exteplayer3 gstplayer ffmpeg
+opkg install enigma2-plugin-extensions-ytdlpwrapper
 ```
 
 If your feed has no `python3-yt-dlp` package:
@@ -121,6 +122,7 @@ opkg install python3-pip && pip3 install -U yt-dlp
 | `python3-yt-dlp` | YouTube channels and all webcams |
 | `serviceapp`, `exteplayer3`, `gstplayer` | The ExtePlayer3 / GStreamer player options |
 | `ffmpeg` | Some stream formats |
+| `ytdlpwrapper` | Playing YouTube entries (webcams) from exported bouquets |
 
 ### ⚙️ Player and ServiceApp
 
@@ -261,13 +263,16 @@ on a receiver this can take 10-60 seconds.
 
 ### Bouquet Export
 1. **Current list** (BLUE in a channel list): `userbouquet.tvgarden_<country or category>.tv`
+   (webcams: `userbouquet.tvgarden_webcams_<country or category>.tv`)
 2. **Favorites** (BLUE in Favorites): `userbouquet.tvgarden_<prefix>_favorites.tv`
 3. **Whole database, single file**: `userbouquet.tvgarden_<prefix>_all_channels.tv`
 4. **Whole database, multi-file**:
    - `userbouquet.tvgarden_<prefix>_complete_container.tv` (parent)
    - `subbouquet.tvgarden_<country>.tv` for each country
    - countries larger than *Max Channels for Sub-Bouquet* are split (`_part1`, `_part2`, ...)
-5. YouTube entries are not exported (they need yt-dlp, which bouquets cannot use)
+5. YouTube entries (all webcams) are exported as `youtube.com/watch` links; they play
+   from the bouquet only with **ytdlpwrapper** (`enigma2-plugin-extensions-ytdlpwrapper`,
+   installed by the installer when your feed has it). The whole-database export skips them
 6. Bouquets are reloaded automatically; all files are in `/etc/enigma2/`
 
 ---
@@ -451,5 +456,5 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 **Enjoy streaming with TV Garden!** 📺
 
-*Last Updated: 2026* | *Version: 2.8*
+*Last Updated: 2026* | *Version: 2.9*
 

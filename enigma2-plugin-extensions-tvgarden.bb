@@ -7,7 +7,7 @@ LICENSE = "proprietary"
 require conf/license/license-gplv2.inc
 
 RDEPENDS:${PN} = "python3-core ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp"
-RRECOMMENDS:${PN} = "ca-certificates python3-yt-dlp"
+RRECOMMENDS:${PN} = "ca-certificates python3-yt-dlp enigma2-plugin-extensions-ytdlpwrapper"
 
 inherit allarch gitpkgv
 

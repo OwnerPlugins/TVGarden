@@ -17,6 +17,7 @@ from datetime import datetime
 from enigma import getDesktop
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, fileExists
 import codecs
+import re
 
 from . import PLUGIN_NAME, PLUGIN_PATH
 
@@ -270,6 +271,43 @@ def is_youtube_url(url):
     url = url.lower()
     return ("youtube.com" in url or "youtu.be" in url or
             "youtube-nocookie.com" in url)
+
+
+def youtube_watch_url(url):
+    """
+    Convert any YouTube link (embed, nocookie, youtu.be, live, shorts)
+    to https://www.youtube.com/watch?v=ID, the form Enigma2 YouTube
+    resolvers (ytdlpwrapper) recognise in bouquets. Other URLs unchanged.
+    """
+    if not is_youtube_url(url):
+        return url
+    patterns = (
+        r'[?&]v=([^&#]+)',
+        r'youtu\.be/([^/?&#]+)',
+        r'/(?:embed|live|shorts|v)/([^/?&#]+)',
+    )
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return "https://www.youtube.com/watch?v=%s" % match.group(1)
+    return url
+
+
+def bouquet_stream_url(channel):
+    """
+    URL to write in a bouquet for a channel dict
+    (YouTube links converted to watch URLs). Returns (url, is_youtube).
+    """
+    stream_url = channel.get('stream_url') or channel.get('url') or ''
+    is_youtube = bool(channel.get('is_youtube')) or is_youtube_url(stream_url)
+    if is_youtube:
+        stream_url = youtube_watch_url(stream_url)
+    return stream_url, is_youtube
+
+
+YOUTUBE_BOUQUET_NOTE = (
+    "YouTube entries play from the bouquet only with the yt-dlp wrapper "
+    "plugin (enigma2-plugin-extensions-ytdlpwrapper).")
 
 
 def _first_url(values):

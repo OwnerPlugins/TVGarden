@@ -1,12 +1,12 @@
 Package: enigma2-plugin-extensions-tvgarden
-Version: 2.8
+Version: 2.9
 Section: base
 OE: 2.0
 License: GPLv3
 Priority: optional
 Architecture: all
 Depends: python3-core
-Recommends: ca-certificates, python3-yt-dlp, enigma2-plugin-systemplugins-serviceapp
+Recommends: ca-certificates, python3-yt-dlp, enigma2-plugin-systemplugins-serviceapp, enigma2-plugin-extensions-ytdlpwrapper
 Maintainer: Lululla
 Description: TV Garden Plugin
 Source: enigma2-plugin-extensions-tvgarden
