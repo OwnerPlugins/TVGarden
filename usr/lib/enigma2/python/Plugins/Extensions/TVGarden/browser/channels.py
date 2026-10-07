@@ -24,6 +24,8 @@ from Components.ActionMap import ActionMap
 
 from ..helpers import (
     is_valid_stream_url,
+    bouquet_stream_url,
+    YOUTUBE_BOUQUET_NOTE,
     extract_stream_url,
     get_channel_language,
     bouquet_service_lines,
@@ -528,12 +530,19 @@ class ChannelsBrowser(BaseBrowser):
         if self.country_name:
             display_name = self.country_name
             safe_name = self.country_code.lower() if self.country_code else "country"
+            if self.media_type == "webcams":
+                # Do not overwrite the TV bouquet of the same country
+                display_name = "%s - %s" % (_("Webcams"), self.country_name)
+                safe_name = "webcams_%s" % safe_name
         elif self.category_name:
             base_name = self.category_name.split(
                 ' (')[0] if ' (' in self.category_name else self.category_name
             display_name = base_name
             safe_name = ''.join(c for c in base_name.lower()
                                 if c.isalnum() or c == '_')[:30]
+            if self.media_type == "webcams":
+                display_name = "%s - %s" % (_("Webcams"), base_name)
+                safe_name = "webcams_%s" % safe_name
         else:
             display_name = _("Channels")
             safe_name = "channels"
@@ -561,6 +570,7 @@ class ChannelsBrowser(BaseBrowser):
             prefix = encode_bouquet_text(self.bouquet_name_prefix)
             title = encode_bouquet_text(display_name)
             exported = 0
+            youtube_count = 0
             with open(userbouquet_file, "w") as f:
                 f.write("#NAME %s - %s\n" % (prefix, title))
                 f.write(
@@ -569,15 +579,16 @@ class ChannelsBrowser(BaseBrowser):
                 f.write("#DESCRIPTION --- | %s %s | ---\n" % (prefix, title))
 
                 for ch in channels:
-                    stream_url = ch.get('stream_url') or ch.get('url')
-                    # YouTube pages cannot be played from a bouquet
-                    if not stream_url or ch.get('is_youtube'):
+                    stream_url, is_youtube = bouquet_stream_url(ch)
+                    if not stream_url:
                         continue
                     f.write(
                         bouquet_service_lines(
                             stream_url, ch.get(
                                 'name', '')))
                     exported += 1
+                    if is_youtube:
+                        youtube_count += 1
 
             if exported == 0:
                 try:
@@ -597,9 +608,12 @@ class ChannelsBrowser(BaseBrowser):
 
             from enigma import eDVBDB
             eDVBDB.getInstance().reloadBouquets()
+            message = _("Exported %d channels to '%s'") % (exported, display_name)
+            if youtube_count:
+                message += "\n\n%s" % _(YOUTUBE_BOUQUET_NOTE)
             self.session.open(
-                MessageBox, _("Exported %d channels to '%s'") %
-                (exported, display_name), MessageBox.TYPE_INFO, timeout=4)
+                MessageBox, message, MessageBox.TYPE_INFO,
+                timeout=8 if youtube_count else 4)
 
         except Exception as e:
             log.error("Export error: %s" % e, module="Channels")

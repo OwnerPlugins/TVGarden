@@ -19,6 +19,8 @@ from ..helpers import (
     extract_stream_url,
     get_channel_language,
     bouquet_service_lines,
+    bouquet_stream_url,
+    YOUTUBE_BOUQUET_NOTE,
     add_bouquet_to_index,
     encode_bouquet_text
 )
@@ -268,6 +270,7 @@ class FavoritesManager:
 
             # 2. Write the bouquet file
             valid_count = 0
+            youtube_count = 0
             try:
                 with open(userbouquet_file, "w") as f:
                     f.write("#NAME TV Garden Favorites by Lululla\n")
@@ -284,13 +287,15 @@ class FavoritesManager:
                         f.write("#DESCRIPTION --- %s ---\n" % country_label)
 
                         for channel in channels_by_country[country]:
-                            stream_url = channel.get(
-                                'stream_url') or channel.get('url', '')
-                            if not stream_url or channel.get('is_youtube'):
+                            stream_url, is_youtube = bouquet_stream_url(
+                                channel)
+                            if not stream_url:
                                 continue
                             f.write(bouquet_service_lines(
                                 stream_url, channel.get('name', 'Channel')))
                             valid_count += 1
+                            if is_youtube:
+                                youtube_count += 1
             except Exception as e:
                 log.error(
                     "Error writing bouquet file: %s" %
@@ -304,7 +309,10 @@ class FavoritesManager:
             self._add_to_bouquets_tv(tag, bouquet_name)
             self._reload_bouquets()
 
-            return True, _("Exported %d channels to bouquet") % valid_count
+            message = _("Exported %d channels to bouquet") % valid_count
+            if youtube_count:
+                message += "\n\n%s" % _(YOUTUBE_BOUQUET_NOTE)
+            return True, message
 
         except Exception as e:
             log.error("Error: %s" % e, module="Favorites")
@@ -573,12 +581,10 @@ class FavoritesManager:
             userbouquet_file = self._bouquet_path(tag, bouquet_name)
 
             name = channel.get('name', 'TV Garden Channel')
-            stream_url = channel.get('stream_url') or channel.get('url', '')
+            stream_url, is_youtube = bouquet_stream_url(channel)
 
             if not stream_url:
                 return False, _("No stream URL")
-            if channel.get('is_youtube'):
-                return False, _("YouTube channels cannot be exported")
 
             service_lines = bouquet_service_lines(stream_url, name)
             url_line = service_lines.split("\n")[0]
@@ -605,7 +611,10 @@ class FavoritesManager:
             self._add_to_bouquets_tv(tag, bouquet_name)
             self._reload_bouquets()
 
-            return True, _("Channel added to bouquet")
+            message = _("Channel added to bouquet")
+            if is_youtube:
+                message += "\n\n%s" % _(YOUTUBE_BOUQUET_NOTE)
+            return True, message
 
         except Exception as e:
             log.error("Error: %s" % e, module="Favorites")

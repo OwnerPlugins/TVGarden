@@ -109,7 +109,8 @@ install_pkg ca-certificates
 # Players: ServiceApp provides gstplayer (5001) and exteplayer3 (5002)
 if [ "$OSTYPE" = "OE" ]; then
     echo "Installing multimedia packages..."
-    for pkg in ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp; do
+    # ytdlpwrapper: plays YouTube entries exported to bouquets
+    for pkg in ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp enigma2-plugin-extensions-ytdlpwrapper; do
         install_pkg "$pkg"
     done
 fi
