@@ -3,22 +3,17 @@
 # TV Garden Installer for Enigma2
 # wget -q "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 
-version='2.7'
+version='2.8'
 echo "TVGarden Version: $version"
 echo "Changelog:"
-echo "- Add Webcams support (by Country and by Category)"
-echo "- Add Webcams integration in Search (TV + Webcams unified)"
-echo "- Add dynamic category loading from GitHub API (no hardcoded lists)"
-echo "- Add multi-source support (tv / webcams) with media_type propagation"
-echo "- Add ServiceApp + ytdlpwrapper integration for YouTube streams"
-echo "- Add embed-to-watch URL conversion for YouTube webcams"
-echo "- Add opkg .list fix compatibility"
-echo "- Fix Skin HD font sizes and item heights for 1280x720"
-echo "- Fix ActionMap 'menu' action on ChannelsBrowser"
-echo "- Fix Main menu layout for HD resolution"
-echo "- Update README with webcams documentation"
-echo "- Add youtube streaming on player"
-echo "- Fix Problematic Channels"
+echo "- Fix Search and Export ALL Database with the current data format"
+echo "- Fix YouTube channels/webcams: yt-dlp android_vr client, no JS runtime needed"
+echo "- Installer installs all requirements (yt-dlp, ca-certificates, ServiceApp)"
+echo "- Player follows the Player setting, no longer closes while zapping"
+echo "- Logos, flags, YouTube and exports load in the background (no freezes)"
+echo "- Fix cache expiry, corrupted cache files and settings that had no effect"
+echo "- Fix MENU and YELLOW keys, bouquets.tv handling and favorites removal"
+echo "- Secure updater (verified HTTPS), Python 3 only"
 echo ""
 
 # Branch to install (default: main). Example for testing:
