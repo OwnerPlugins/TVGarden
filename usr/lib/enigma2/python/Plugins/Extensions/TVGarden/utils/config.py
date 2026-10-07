@@ -507,7 +507,12 @@ class PluginConfig:
 
         # No SD skins are shipped: use the HD ones
         if not fileExists(skin_file):
-            skin_file = join(PLUGIN_PATH, "skins", "hd", "%s.xml" % screen_name)
+            skin_file = join(
+                PLUGIN_PATH,
+                "skins",
+                "hd",
+                "%s.xml" %
+                screen_name)
 
         if fileExists(skin_file):
             try:

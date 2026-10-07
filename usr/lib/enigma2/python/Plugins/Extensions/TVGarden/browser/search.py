@@ -114,7 +114,8 @@ class SearchBrowser(BaseBrowser):
         self.last_key = None
         self.last_key_time = 0
         self.key_timer = eTimer()
-        self.key_timer_conn = timer_connect(self.key_timer, self.finishKeyInput)
+        self.key_timer_conn = timer_connect(
+            self.key_timer, self.finishKeyInput)
         self.load_check_timer = None
         self._cancel_loading = False
         self['title'] = StaticText(
@@ -187,7 +188,7 @@ class SearchBrowser(BaseBrowser):
             elif hasattr(self, '_loaded_channels'):
                 self.all_channels = self._loaded_channels
                 log.info("Total channels loaded: %d" %
-                     len(self.all_channels), module="Search")
+                         len(self.all_channels), module="Search")
                 self["status"].setText(
                     _("Ready - %d channels") % len(self.all_channels))
                 self.search_results = self.all_channels[:]

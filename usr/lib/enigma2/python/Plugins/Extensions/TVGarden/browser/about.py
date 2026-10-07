@@ -68,17 +68,21 @@ class TVGardenAbout(Screen):
         self["scrolltext"] = ScrollLabel()
         self["version"] = StaticText("")
         self["key_red"] = StaticText(_("Close"))
-        self["actions"] = ActionMap(["DirectionActions", "ColorActions", "OkCancelActions", "ChannelSelectBaseActions"], {
-            "cancel": self.close,
-            "red": self.close,
-            "ok": self.close,
-            "up": self.pageUp,
-            "down": self.pageDown,
-            "left": self.pageUp,
-            "right": self.pageDown,
-            "nextBouquet": self.pageUp,
-            "prevBouquet": self.pageDown,
-        }, -2)
+        self["actions"] = ActionMap(["DirectionActions",
+                                     "ColorActions",
+                                     "OkCancelActions",
+                                     "ChannelSelectBaseActions"],
+                                    {"cancel": self.close,
+                                     "red": self.close,
+                                     "ok": self.close,
+                                     "up": self.pageUp,
+                                     "down": self.pageDown,
+                                     "left": self.pageUp,
+                                     "right": self.pageDown,
+                                     "nextBouquet": self.pageUp,
+                                     "prevBouquet": self.pageDown,
+                                     },
+                                    -2)
 
         self.setTitle(_("About TV Garden"))
         self.onLayoutFinish.append(self.load_content)

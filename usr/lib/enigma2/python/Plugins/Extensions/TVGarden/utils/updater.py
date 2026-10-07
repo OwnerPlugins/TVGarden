@@ -250,8 +250,11 @@ class PluginUpdater:
     def _cleanup_old_backups(self):
         """Keep only the newest MAX_BACKUPS backups (they live in RAM)"""
         try:
-            backups = [join(self.BACKUP_DIR, d) for d in listdir(self.BACKUP_DIR)
-                       if d.startswith("backup_v")]
+            backups = [
+                join(
+                    self.BACKUP_DIR,
+                    d) for d in listdir(
+                    self.BACKUP_DIR) if d.startswith("backup_v")]
             backups.sort(key=getmtime)
             for path in backups[:max(0, len(backups) - self.MAX_BACKUPS)]:
                 shutil.rmtree(path, ignore_errors=True)

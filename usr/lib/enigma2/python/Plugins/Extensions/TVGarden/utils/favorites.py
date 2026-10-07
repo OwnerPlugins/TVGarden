@@ -46,7 +46,10 @@ def _database_stream_url(channel):
 
 def _safe_file_part(text):
     """Make text usable inside a bouquet file name"""
-    return re.sub(r'[^a-z0-9_]+', '_', str(text).lower()).strip('_') or 'unknown'
+    return re.sub(
+        r'[^a-z0-9_]+',
+        '_',
+        str(text).lower()).strip('_') or 'unknown'
 
 
 class FavoritesManager:
@@ -642,8 +645,8 @@ class FavoritesManager:
                     country_info = {
                         'name': country,
                         'subs': country_subs,
-                        'total_channels': sum(sub['count'] for sub in country_subs)
-                    }
+                        'total_channels': sum(
+                            sub['count'] for sub in country_subs)}
                     exported_countries.append(country_info)
                     total_channels += country_info['total_channels']
 
@@ -696,7 +699,8 @@ class FavoritesManager:
             f.write("#DESCRIPTION --- %s ---\n" % title)
             for channel in channels:
                 name = str(channel.get('name', '')).strip()
-                stream_url = channel.get('stream_url') or channel.get('url', '')
+                stream_url = channel.get(
+                    'stream_url') or channel.get('url', '')
                 if not name or not stream_url:
                     continue
                 f.write(bouquet_service_lines(stream_url, name))

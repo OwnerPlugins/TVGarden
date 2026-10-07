@@ -17,17 +17,23 @@ class UpdateManager:
     @staticmethod
     def check_for_updates(session, status_label=None):
         """Check for updates - unified function for both plugin and settings"""
-        log.debug("UpdateManager.check_for_updates called", module="UpdateManager")
+        log.debug(
+            "UpdateManager.check_for_updates called",
+            module="UpdateManager")
 
         if status_label:
             status_label.setText(_("Checking for updates..."))
 
         try:
             updater = PluginUpdater()
-            log.debug("PluginUpdater created successfully", module="UpdateManager")
+            log.debug(
+                "PluginUpdater created successfully",
+                module="UpdateManager")
 
             def update_callback(result):
-                log.debug("update_callback received result: %s" % result, module="UpdateManager")
+                log.debug(
+                    "update_callback received result: %s" %
+                    result, module="UpdateManager")
 
                 if result is None:
                     if status_label:
@@ -53,7 +59,9 @@ class UpdateManager:
             updater.check_update(update_callback)
 
         except Exception as e:
-            log.debug("Error in check_for_updates: %s" % str(e), module="UpdateManager")
+            log.debug(
+                "Error in check_for_updates: %s" %
+                str(e), module="UpdateManager")
             if status_label:
                 status_label.setText(_("Update check error"))
             session.open(MessageBox,

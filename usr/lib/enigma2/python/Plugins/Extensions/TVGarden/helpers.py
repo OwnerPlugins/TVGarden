@@ -358,7 +358,10 @@ def bouquet_service_lines(stream_url, name):
         url, name.replace(":", "%3a"), name)
 
 
-def add_bouquet_to_index(bouquet_file, position="bottom", bouquets_index="/etc/enigma2/bouquets.tv"):
+def add_bouquet_to_index(
+        bouquet_file,
+        position="bottom",
+        bouquets_index="/etc/enigma2/bouquets.tv"):
     """
     Add a userbouquet reference to bouquets.tv (once), honouring the
     'top'/'bottom' list position. Returns True on success.
@@ -389,7 +392,8 @@ def add_bouquet_to_index(bouquet_file, position="bottom", bouquets_index="/etc/e
             f.write("\n".join(lines) + "\n")
         return True
     except Exception as e:
-        log.error("Error updating %s: %s" % (bouquets_index, e), module="Bouquet")
+        log.error("Error updating %s: %s" %
+                  (bouquets_index, e), module="Bouquet")
         return False
 
 

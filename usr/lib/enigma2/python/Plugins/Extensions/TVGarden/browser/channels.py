@@ -395,7 +395,12 @@ class ChannelsBrowser(BaseBrowser):
 
             log.info(
                 "Playable: %d, YouTube: %d, Filtered problematic: %d, Config limit: %d, Skipped by limit: %d" %
-                (valid_count, youtube_count, problematic_count, max_channels, skipped_count), module="Channels")
+                (valid_count,
+                 youtube_count,
+                 problematic_count,
+                 max_channels,
+                 skipped_count),
+                module="Channels")
 
             log.info("Cache status: enabled=%s, force_refresh=%s" %
                      (cache_enabled, force_refresh_browsing), module="Channels")
@@ -568,7 +573,10 @@ class ChannelsBrowser(BaseBrowser):
                     # YouTube pages cannot be played from a bouquet
                     if not stream_url or ch.get('is_youtube'):
                         continue
-                    f.write(bouquet_service_lines(stream_url, ch.get('name', '')))
+                    f.write(
+                        bouquet_service_lines(
+                            stream_url, ch.get(
+                                'name', '')))
                     exported += 1
 
             if exported == 0:

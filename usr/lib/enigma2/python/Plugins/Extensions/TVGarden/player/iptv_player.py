@@ -42,7 +42,10 @@ SERVICE_EXTEPLAYER3 = 5002
 def has_serviceapp():
     """Check if the ServiceApp system plugin is installed"""
     try:
-        return isdir(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/ServiceApp"))
+        return isdir(
+            resolveFilename(
+                SCOPE_PLUGINS,
+                "SystemPlugins/ServiceApp"))
     except Exception:
         return False
 
@@ -540,7 +543,8 @@ class TVGardenPlayer(
             if error:
                 message += "\n\n%s" % error
             if error == "yt-dlp is not installed":
-                message += "\n" + _("Install it with: opkg install python3-yt-dlp")
+                message += "\n" + \
+                    _("Install it with: opkg install python3-yt-dlp")
             self.show_error_message(message)
 
     def _youtube_failed(self, failure, request_id):

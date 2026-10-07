@@ -277,8 +277,11 @@ class CountriesBrowser(BaseBrowser):
             log.error("Flag download error: %s" % e, module="Countries")
 
     def _flag_failed(self, failure, country_code):
-        log.debug("Flag %s not available: %s" %
-                  (country_code, failure.getErrorMessage()), module="Countries")
+        log.debug(
+            "Flag %s not available: %s" %
+            (country_code,
+             failure.getErrorMessage()),
+            module="Countries")
 
     def _flag_downloaded(self, flag_data, request_id, country_code):
         """Runs on the GUI thread once the flag has been downloaded"""
