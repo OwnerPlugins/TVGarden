@@ -3,9 +3,14 @@
 TV Garden Plugin - YouTube helper
 [TVGarden patch] Risoluzione YouTube con yt-dlp.
 
-yt-dlp is started ONCE per stream with a format fallback chain
-("18/22/.../best"): live webcams only offer HLS, so trying formats one by
-one (one slow yt-dlp start each) used to hit the timeouts on receivers.
+yt-dlp is started with a format fallback chain ("18/22/.../best"):
+live webcams only offer HLS, so trying formats one by one (one slow
+yt-dlp start each) used to hit the timeouts on receivers.
+
+Recent yt-dlp needs a JavaScript runtime (deno) for the default YouTube
+clients; deno does not exist for most receivers (32-bit ARM / MIPS).
+The android_vr client works without JavaScript and returns a muxed HLS
+stream, so it is tried first; the default clients are the fallback.
 """
 import subprocess
 import re
@@ -23,7 +28,32 @@ RESOLVE_TIMEOUT = 150
 # Progressive MP4 first (VOD), then anything playable (live = HLS)
 FORMAT_CHAIN = "18/22/best[ext=mp4][protocol^=http]/best"
 
+# Attempts in order: extra yt-dlp arguments for each run
+CLIENT_ATTEMPTS = [
+    ["--extractor-args", "youtube:player_client=android_vr"],
+    [],
+]
+
+# JavaScript runtimes yt-dlp can use besides deno (enabled if installed)
+JS_RUNTIMES = (("node", "node"), ("bun", "bun"), ("quickjs", "qjs"))
+
 _ytdlp_cmd = None
+_js_args = None
+
+
+def find_js_runtime_args():
+    """--js-runtimes arguments for an installed runtime (empty if none)"""
+    global _js_args
+    if _js_args is None:
+        _js_args = []
+        for runtime, binary in JS_RUNTIMES:
+            path = which(binary)
+            if path:
+                log.info("JavaScript runtime found: %s" %
+                         path, module="YouTube")
+                _js_args = ["--js-runtimes", "%s:%s" % (runtime, path)]
+                break
+    return _js_args
 
 
 def find_ytdlp():
@@ -99,21 +129,14 @@ def _short_error(stderr):
     return text[:160]
 
 
-def get_stream_with_ytdlp(ytdlp_cmd, video_id):
-    """Run yt-dlp once; return (stream_url, error_message)"""
-    youtube_url = "https://www.youtube.com/watch?v=" + video_id
-    cmd = ytdlp_cmd + [
-        "-g", "--no-playlist", "--no-warnings",
-        "--socket-timeout", "20",
-        "-f", FORMAT_CHAIN,
-        youtube_url
-    ]
+def _run_ytdlp(cmd):
+    """Run one yt-dlp command; return (stream_url, error_message)"""
     log.info("yt-dlp: %s" % " ".join(cmd), module="YouTube")
     try:
         result = subprocess.run(
             cmd, capture_output=True, text=True, timeout=RESOLVE_TIMEOUT)
     except subprocess.TimeoutExpired:
-        log.warning("yt-dlp timeout for %s" % video_id, module="YouTube")
+        log.warning("yt-dlp timeout", module="YouTube")
         return None, "yt-dlp timeout"
     except Exception as e:
         log.warning("yt-dlp error: %s" % e, module="YouTube")
@@ -125,10 +148,28 @@ def get_stream_with_ytdlp(ytdlp_cmd, video_id):
             log.info("yt-dlp OK: %s..." % line[:80], module="YouTube")
             return line, None
 
-    error = _short_error(result.stderr)
     log.warning("yt-dlp failed (code %s): %s" %
                 (result.returncode, result.stderr[-500:] if result.stderr else ""),
                 module="YouTube")
+    return None, _short_error(result.stderr)
+
+
+def get_stream_with_ytdlp(ytdlp_cmd, video_id):
+    """Resolve video_id; return (stream_url, error_message)"""
+    youtube_url = "https://www.youtube.com/watch?v=" + video_id
+    base = ytdlp_cmd + [
+        "-g", "--no-playlist", "--no-warnings",
+        "--socket-timeout", "20",
+        "-f", FORMAT_CHAIN,
+    ] + find_js_runtime_args()
+
+    error = None
+    for extra in CLIENT_ATTEMPTS:
+        stream_url, error = _run_ytdlp(base + extra + [youtube_url])
+        if stream_url:
+            return stream_url, None
+        if error == "yt-dlp timeout":
+            break
     return None, error
 
 
