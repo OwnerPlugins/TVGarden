@@ -10,7 +10,7 @@ from Components.Language import language
 import gettext
 
 PLUGIN_NAME = "TVGarden"
-__version__ = "2.8"
+__version__ = "2.9"
 PLUGIN_VERSION = __version__
 PLUGIN_PATH = resolveFilename(
     SCOPE_PLUGINS,
