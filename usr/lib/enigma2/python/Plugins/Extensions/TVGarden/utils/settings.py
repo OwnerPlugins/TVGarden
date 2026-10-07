@@ -26,6 +26,14 @@ from .config import get_config
 from .update_manager import UpdateManager
 
 
+def _selection(value, choices, fallback):
+    """ConfigSelection whose default is guaranteed to be a valid choice"""
+    keys = [c[0] for c in choices]
+    if value not in keys:
+        value = fallback if fallback in keys else keys[0]
+    return ConfigSelection(default=value, choices=choices)
+
+
 class LogViewerScreen(TextBox):
     skin = """
         <screen name="LogViewerScreen" position="center,center" size="1920,1080" title="TV Garden Logs" backgroundColor="#1a1a2e" flags="wfNoBorder">
@@ -49,7 +57,7 @@ class LogViewerScreen(TextBox):
             <widget name="text" position="48,120" size="1830,850" font="Console;28" itemHeight="40" backgroundColor="#16213e" transparent="0" zPosition="2" />
 
             <!-- Title -->
-            <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
+            <widget source="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
 
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
@@ -138,9 +146,9 @@ class TVGardenSettings(ConfigListScreen, Screen):
             <!-- Config menu (impostazioni) -->
             <widget name="config" position="48,160" size="1020,750" scrollbarMode="showOnDemand" backgroundColor="#16213e" zPosition="6"/>
             <!-- Title -->
-            <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="7" render="Label" backgroundColor="#ff000000"/>
+            <widget source="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="7" render="Label" backgroundColor="#ff000000"/>
             <!-- Status -->
-            <widget name="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" zPosition="8" render="Label"/>
+            <widget source="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" zPosition="8" render="Label"/>
             <!-- Video Picture -->
             <widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="10" size="780,462" backgroundColor="transparent" transparent="0" cornerRadius="14"/>
         </screen>
@@ -179,21 +187,6 @@ class TVGardenSettings(ConfigListScreen, Screen):
             }, -2
         )
 
-        # ========= NETWORK =========
-        self.cfg_user_agent = ConfigText(
-            default=self.config.get("user_agent", USER_AGENT),
-            fixed_size=False
-        )
-
-        # NOTA: connection_timeout è utilizzato in:
-        # - helpers.py: funzione download_url()
-        # - api_manager.py: richieste HTTP
-        # - cache.py: operazioni di rete
-
-        self.cfg_connection_timeout = ConfigInteger(
-            default=self.config.get("connection_timeout", 30),
-            limits=(10, 300)
-        )
         self.initConfig()
         self.createSetup()
         self.onChangedEntry.append(self.updateStatus)
@@ -343,13 +336,14 @@ class TVGardenSettings(ConfigListScreen, Screen):
     def initConfig(self):
         """Initialize all configuration objects"""
         # ========= PLAYER =========
-        self.cfg_player = ConfigSelection(
-            default=self.config.get("player", "auto"),
-            choices=[
+        self.cfg_player = _selection(
+            self.config.get("player", "auto"),
+            [
                 ("auto", _("Auto")),
                 ("exteplayer3", _("ExtePlayer3")),
                 ("gstplayer", _("GStreamer"))
-            ]
+            ],
+            "auto"
         )
 
         # ========= DISPLAY =========
@@ -368,13 +362,13 @@ class TVGardenSettings(ConfigListScreen, Screen):
         )
 
         self.cfg_show_logos = ConfigYesNo(
-            default=self.config.get("show_logos", False)
+            default=self.config.get("show_logos", True)
         )
 
         # ========= BROWSER =========
-        self.cfg_max_channels = ConfigSelection(
-            default=self.config.get("max_channels", 500),
-            choices=[
+        self.cfg_max_channels = _selection(
+            self.config.get("max_channels", 500),
+            [
                 (100, _("100 channels")),
                 (250, _("250 channels")),
                 (500, _("500 channels")),
@@ -382,12 +376,13 @@ class TVGardenSettings(ConfigListScreen, Screen):
                 (2000, _("2000 channels")),
                 (5000, _("5000 channels")),
                 (0, _("All channels"))
-            ]
+            ],
+            500
         )
 
-        self.cfg_max_channels_for_sub_bouquet = ConfigSelection(
-            default=self.config.get("max_channels_for_sub_bouquet", 500),
-            choices=[
+        self.cfg_max_channels_for_sub_bouquet = _selection(
+            self.config.get("max_channels_for_sub_bouquet", 500),
+            [
                 (100, _("100 channels")),
                 (250, _("250 channels")),
                 (500, _("500 channels")),
@@ -395,16 +390,18 @@ class TVGardenSettings(ConfigListScreen, Screen):
                 (2000, _("2000 channels")),
                 (5000, _("5000 channels")),
                 (0, _("All channels"))
-            ]
+            ],
+            500
         )
 
-        self.cfg_default_view = ConfigSelection(
-            default=self.config.get("default_view", "countries"),
-            choices=[
+        self.cfg_default_view = _selection(
+            self.config.get("default_view", "countries"),
+            [
                 ("countries", _("Countries")),
                 ("categories", _("Categories")),
                 ("favorites", _("Favorites"))
-            ]
+            ],
+            "countries"
         )
 
         # ========= FAVORITES =========
@@ -418,9 +415,9 @@ class TVGardenSettings(ConfigListScreen, Screen):
         # )
 
         # ========= SEARCH =========
-        self.cfg_search_max_results = ConfigSelection(
-            default=self.config.get("search_max_results", 500),
-            choices=[
+        self.cfg_search_max_results = _selection(
+            self.config.get("search_max_results", 500),
+            [
                 (0, _("All results")),
                 (10, _("10 results")),
                 (50, _("50 results")),
@@ -431,16 +428,17 @@ class TVGardenSettings(ConfigListScreen, Screen):
                 (2500, _("2500 results")),
                 (4000, _("4000 results")),
                 (5000, _("5000 results"))
-            ]
+            ],
+            500
         )
         # ========= EXPORT =========
         self.cfg_export_enabled = ConfigYesNo(
             default=self.config.get("export_enabled", True)
         )
 
-        self.cfg_max_channels_for_bouquet = ConfigSelection(
-            default=self.config.get("max_channels_for_bouquet", 500),
-            choices=[
+        self.cfg_max_channels_for_bouquet = _selection(
+            self.config.get("max_channels_for_bouquet", 500),
+            [
                 (0, _("All channels")),
                 (50, _("50 channels")),
                 (100, _("100 channels")),
@@ -449,7 +447,8 @@ class TVGardenSettings(ConfigListScreen, Screen):
                 (1000, _("1000 channels")),
                 (2000, _("2000 channels")),
                 (5000, _("5000 channels"))
-            ]
+            ],
+            500
         )
 
         self.cfg_bouquet_name_prefix = ConfigText(
@@ -457,32 +456,13 @@ class TVGardenSettings(ConfigListScreen, Screen):
             fixed_size=False
         )
 
-        self.cfg_list_position = ConfigSelection(
-            default=self.config.get("list_position", "bottom"),
-            choices=[
+        self.cfg_list_position = _selection(
+            self.config.get("list_position", "bottom"),
+            [
                 ("top", _("Top")),
                 ("bottom", _("Bottom"))
-            ]
-        )
-
-        # ========= PERFORMANCE =========
-        self.cfg_use_hardware_acceleration = ConfigYesNo(
-            default=self.config.get("use_hardware_acceleration", True)
-        )
-
-        self.cfg_buffer_size = ConfigSelection(
-            default=self.config.get("buffer_size", 2048),
-            choices=[
-                (512, _("512 KB")),
-                (1024, _("1 MB")),
-                (2048, _("2 MB")),
-                (4096, _("4 MB")),
-                (8192, _("8 MB"))
-            ]
-        )
-
-        self.cfg_memory_optimization = ConfigYesNo(
-            default=self.config.get("memory_optimization", True)
+            ],
+            "bottom"
         )
 
         # ========= NETWORK =========
@@ -501,6 +481,18 @@ class TVGardenSettings(ConfigListScreen, Screen):
             default=self.config.get("cache_enabled", True)
         )
 
+        self.cfg_cache_ttl = _selection(
+            self.config.get("cache_ttl", 3600),
+            [
+                (900, _("15 minutes")),
+                (3600, _("1 hour")),
+                (21600, _("6 hours")),
+                (86400, _("24 hours")),
+                (604800, _("7 days"))
+            ],
+            3600
+        )
+
         self.cfg_cache_size = ConfigInteger(
             default=self.config.get("cache_size", 500),
             limits=(10, 5000)
@@ -514,24 +506,26 @@ class TVGardenSettings(ConfigListScreen, Screen):
             default=self.config.get("force_refresh_browsing", False)
         )
 
-        self.cfg_refresh_method = ConfigSelection(
-            default=self.config.get("refresh_method", "clear_cache"),
-            choices=[
+        self.cfg_refresh_method = _selection(
+            self.config.get("refresh_method", "clear_cache"),
+            [
                 ("clear_cache", _("Clear Cache")),
                 ("force_refresh", _("Force Refresh"))
-            ]
+            ],
+            "clear_cache"
         )
 
         # ========= LOGGING =========
-        self.cfg_log_level = ConfigSelection(
-            default=self.config.get("log_level", "INFO"),
-            choices=[
+        self.cfg_log_level = _selection(
+            self.config.get("log_level", "INFO"),
+            [
                 ("DEBUG", _("Debug")),
                 ("INFO", _("Info")),
                 ("WARNING", _("Warning")),
                 ("ERROR", _("Error")),
                 ("CRITICAL", _("Critical"))
-            ]
+            ],
+            "INFO"
         )
 
         self.cfg_log_to_file = ConfigYesNo(
@@ -608,22 +602,6 @@ class TVGardenSettings(ConfigListScreen, Screen):
                     _("Max Channels for Sub-Bouquet"),
                     self.cfg_max_channels_for_sub_bouquet))
 
-        # ============ PERFORMANCE SETTINGS ============
-        section = _('=== Performance Settings ===')
-        self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
-        self.list.append(
-            getConfigListEntry(
-                _("Memory Optimization"),
-                self.cfg_memory_optimization))
-        self.list.append(
-            getConfigListEntry(
-                _("Use Hardware Acceleration"),
-                self.cfg_use_hardware_acceleration))
-        self.list.append(
-            getConfigListEntry(
-                _("Buffer Size"),
-                self.cfg_buffer_size))
-
         # ============ NETWORK SETTINGS ============
         section = _('=== Network Settings ===')
         self.list.append(getConfigListEntry(section, NoSave(ConfigNothing())))
@@ -645,6 +623,10 @@ class TVGardenSettings(ConfigListScreen, Screen):
                 self.cfg_cache_enabled))
 
         if self.cfg_cache_enabled.value:
+            self.list.append(
+                getConfigListEntry(
+                    _("Cache Duration"),
+                    self.cfg_cache_ttl))
             self.list.append(
                 getConfigListEntry(
                     _("Cache Size"),
@@ -738,11 +720,14 @@ class TVGardenSettings(ConfigListScreen, Screen):
             config_data["default_view"] = self.cfg_default_view.value
 
         if hasattr(self, 'cfg_max_channels_for_sub_bouquet'):
-            config_data["max_channels_for_sub_bouquet"] = self.cfg_max_channels_for_sub_bouquet.value
+            config_data["max_channels_for_sub_bouquet"] = int(
+                self.cfg_max_channels_for_sub_bouquet.value)
 
         # CACHE SETTINGS
         if hasattr(self, 'cfg_cache_enabled'):
             config_data["cache_enabled"] = self.cfg_cache_enabled.value
+        if hasattr(self, 'cfg_cache_ttl'):
+            config_data["cache_ttl"] = int(self.cfg_cache_ttl.value)
         if hasattr(self, 'cfg_cache_size'):
             config_data["cache_size"] = self.cfg_cache_size.value
         if hasattr(self, 'cfg_force_refresh_export'):
@@ -775,14 +760,6 @@ class TVGardenSettings(ConfigListScreen, Screen):
             if hasattr(self, 'cfg_list_position'):
                 config_data["list_position"] = self.cfg_list_position.value
 
-        # PERFORMANCE SETTINGS
-        if hasattr(self, 'cfg_use_hardware_acceleration'):
-            config_data["use_hardware_acceleration"] = self.cfg_use_hardware_acceleration.value
-        if hasattr(self, 'cfg_buffer_size'):
-            config_data["buffer_size"] = int(self.cfg_buffer_size.value)
-        if hasattr(self, 'cfg_memory_optimization'):
-            config_data["memory_optimization"] = self.cfg_memory_optimization.value
-
         # NETWORK SETTINGS
         if hasattr(self, 'cfg_user_agent'):
             config_data["user_agent"] = self.cfg_user_agent.value
@@ -794,20 +771,12 @@ class TVGardenSettings(ConfigListScreen, Screen):
         # SEARCH SETTINGS
         if hasattr(self, 'cfg_search_max_results'):
             val = self.cfg_search_max_results.value
-            log.info(
-                "*** DEBUG: cfg_search_max_results.value = %s (type=%s)" %
-                (val, type(val)))
             if isinstance(val, tuple):
                 val = val[0]
-                log.info("*** DEBUG: after tuple extraction = %s" % val)
             try:
                 config_data["search_max_results"] = int(val)
-                log.info(
-                    "*** DEBUG: saving search_max_results = %d" %
-                    config_data["search_max_results"])
             except (ValueError, TypeError):
                 config_data["search_max_results"] = 500
-                log.info("*** DEBUG: fallback to 500")
 
         # LOGGING SETTINGS
         if hasattr(self, 'cfg_log_level'):

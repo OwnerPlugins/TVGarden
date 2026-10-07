@@ -48,7 +48,7 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
 from . import _, PLUGIN_VERSION, PLUGIN_ICON
-from .helpers import log, simple_log, get_metadata_url
+from .helpers import log, simple_log
 from .browser.about import TVGardenAbout
 from .browser.countries import CountriesBrowser
 from .browser.categories import CategoriesBrowser
@@ -57,7 +57,6 @@ from .browser.search import SearchBrowser
 from .utils.cache import CacheManager
 from .utils.config import PluginConfig
 from .utils.update_manager import UpdateManager
-from .utils.updater import PluginUpdater
 
 
 # Add plugin path to sys.path for imports
@@ -107,8 +106,8 @@ class TVGardenMain(Screen):
         <widget source="key_yellow" render="Label" position="470,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
         <widget source="key_blue" render="Label" position="680,975" zPosition="1" size="210,60" font="Regular;32" foregroundColor="#3333ff" halign="center" valign="center" transparent="1" alphatest="blend" />
         <widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
-        <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" />
-        <widget name="status" position="921,976" size="976,61" font="Regular; 32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
+        <widget source="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" />
+        <widget source="status" render="Label" position="921,976" size="976,61" font="Regular; 32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
         <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
         <eLabel name="" position="36,152" size="1040,767" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
         <widget source="session.VideoPicture" render="Pig" position="1109,210" zPosition="19" size="780,462" backgroundColor="transparent" transparent="0" cornerRadius="14" />
@@ -120,8 +119,6 @@ class TVGardenMain(Screen):
         self.config = PluginConfig()
         dynamic_skin = self.config.load_skin("TVGardenMain", self.skin)
         self.skin = dynamic_skin
-
-        print('Skin is:\n', self.skin)
 
         Screen.__init__(self, session)
         self.session = session
@@ -159,17 +156,17 @@ class TVGardenMain(Screen):
             "blue": self.open_settings,
         }, -2)
 
-        test_url = get_metadata_url()
-        try:
-            data = self.cache.fetch_url(test_url, force_refresh=False)
-            log.info("✓ Cache test OK: %s, %d items" %
-                     (type(data), len(data) if data else 0), module="Test")
-            self.update_cache_status()
-        except Exception as e:
-            log.error("✗ Cache test failed: %s" % str(e), module="Test")
-            self["status"].setText(
-                "TV Garden v.%s | Cache error" %
-                PLUGIN_VERSION)
+        # No network access here: opening the menu must never block
+        self.update_cache_status()
+        self.onLayoutFinish.append(self.select_default_view)
+
+    def select_default_view(self):
+        """Move the cursor on the 'Default View' chosen in settings"""
+        default_view = self.config.get("default_view", "countries")
+        for idx, item in enumerate(self.menu_items):
+            if item[1] == default_view:
+                self["menu"].moveToIndex(idx)
+                break
 
     def select_item(self):
         """Handle menu item selection"""
@@ -260,20 +257,9 @@ class TVGardenMain(Screen):
         """Check for plugin updates"""
         log.debug("check_for_updates called from main menu", module="Main")
         try:
-            log.debug("Creating UpdateManager instance...", module="Main")
-            updater = PluginUpdater()
-            log.debug("PluginUpdater created successfully", module="Main")
-
-            latest = updater.get_latest_version()
-            log.debug(
-                "Direct test - Latest version: %s" %
-                latest, module="Main")
-
             UpdateManager.check_for_updates(self.session, self["status"])
-
-            self.update_cache_status()
         except Exception as e:
-            log.error("Direct test error: %s" % e, module="Main")
+            log.error("Update check error: %s" % e, module="Main")
             self["status"].setText(_("Update check error"))
 
     def show_about_fallback(self):
@@ -284,7 +270,7 @@ class TVGardenMain(Screen):
             CONTROLS:
             • Browser: OK=Play, Yellow=Options, Blue=Export
             • Favorites: Blue=Export all, Yellow=Single/Multi export
-            • Player: CH+/−=Zap, OK=Info, Red=Favorite
+            • Player: CH+/-=Zap, INFO=Channel info
 
             NEW EXPORT SYSTEM:
             • Single File: All in one bouquet
@@ -292,10 +278,8 @@ class TVGardenMain(Screen):
             • Parent: userbouquet.tvgarden_container.tv
             • Children: subbouquet.tvgarden_[country].tv
 
-            PERFORMANCE:
-            • HW Acceleration for H.264/H.265
-            • Buffer: 512KB-8MB configurable
-            • Max 500 channels for file
+            EXPORT LIMITS:
+            • Max 500 channels for file (configurable)
 
             STATUS: OPERATIONAL | EXPORT: Dual Mode
             """ % (PLUGIN_VERSION, self.cache.get_size())
@@ -310,9 +294,7 @@ class TVGardenMain(Screen):
             self.show_about_fallback()
 
     def exit(self):
-        """Exit plugin"""
-        self.cache.clear_all()
-        self.update_cache_status()
+        """Exit plugin (the cache is kept for the next session)"""
         self.close()
 
 

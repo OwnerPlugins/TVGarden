@@ -13,12 +13,41 @@ Based on TV Garden Project
 import time
 import hashlib
 import gzip
+import threading
 from os.path import join, exists, getmtime, getsize
-from os import listdir, remove, makedirs
+from os import listdir, remove, makedirs, rename
 from json import load, loads, dump, dumps
 from urllib.request import urlopen, Request
 
+from .. import USER_AGENT
 from .config import get_config
+
+
+# Serialises cache writes (the search screen loads data from a thread)
+_cache_lock = threading.Lock()
+
+
+def get_user_agent():
+    """User agent configured in settings"""
+    try:
+        return get_config().get("user_agent", USER_AGENT) or USER_AGENT
+    except Exception:
+        return USER_AGENT
+
+
+def open_url(url, timeout=None):
+    """Download raw bytes from url using the configured user agent"""
+    if timeout is None:
+        try:
+            timeout = get_config().get("connection_timeout", 30)
+        except Exception:
+            timeout = 30
+    req = Request(url, headers={'User-Agent': get_user_agent()})
+    response = urlopen(req, timeout=timeout)
+    try:
+        return response.read()
+    finally:
+        response.close()
 
 
 try:
@@ -68,10 +97,10 @@ class CacheManager:
                   (self.cache_dir, exists(self.cache_dir)), module="Cache")
 
         if not exists(self.cache_dir):
-            makedirs(self.cache_dir)
-
-        files = listdir(self.cache_dir)
-        log.debug("Files in cache: %s" % files, module="Cache")
+            try:
+                makedirs(self.cache_dir)
+            except Exception as e:
+                log.error("Cannot create cache dir: %s" % e, module="Cache")
 
         self.cache_data = {}
         self._load_cache()
@@ -96,17 +125,13 @@ class CacheManager:
         """Save memory cache to disk"""
         try:
             cache_file = join(self.cache_dir, "memory_cache.json")
-            f = None
-            try:
-                f = open(cache_file, 'w')
-                dump(self.cache_data, f)
-                log.debug(
-                    "Memory cache saved to %s" %
-                    cache_file, module="Cache")
-                return True
-            finally:
-                if f:
-                    f.close()
+            with _cache_lock:
+                with open(cache_file, 'w') as f:
+                    dump(self.cache_data, f)
+            log.debug(
+                "Memory cache saved to %s" %
+                cache_file, module="Cache")
+            return True
         except Exception as e:
             log.error("Error saving memory cache: %s" % e, module="Cache")
             return False
@@ -163,13 +188,48 @@ class CacheManager:
         """Get cache file path"""
         return join(self.cache_dir, "%s.json.gz" % key)
 
-    def _is_cache_valid(self, cache_path, ttl=3600):
+    def _get_ttl(self):
+        """Cache time-to-live from settings"""
+        try:
+            return int(get_config().get("cache_ttl", 3600))
+        except Exception:
+            return 3600
+
+    def _cache_enabled(self):
+        try:
+            return bool(get_config().get("cache_enabled", True))
+        except Exception:
+            return True
+
+    def _is_cache_valid(self, cache_path, ttl=None):
         """Check if cache is still valid"""
+        if ttl is None:
+            ttl = self._get_ttl()
         if not exists(cache_path):
             return False
 
         file_age = time.time() - getmtime(cache_path)
         return file_age < ttl
+
+    def _prune_cache(self):
+        """Keep at most 'cache_size' cache files (oldest removed first)"""
+        try:
+            max_files = int(get_config().get("cache_size", 500))
+        except Exception:
+            max_files = 500
+        try:
+            files = [join(self.cache_dir, f) for f in listdir(self.cache_dir)
+                     if f.endswith('.json.gz')]
+            if len(files) <= max_files:
+                return
+            files.sort(key=getmtime)
+            for path in files[:len(files) - max_files]:
+                try:
+                    remove(path)
+                except OSError:
+                    pass
+        except Exception as e:
+            log.debug("Cache prune failed: %s" % e, module="Cache")
 
     def _get_cached(self, cache_key):
         """Get data from cache"""
@@ -204,8 +264,13 @@ class CacheManager:
             if isinstance(json_str, text_type):
                 json_str = json_str.encode('utf-8')
 
-            with gzip.open(cache_path, 'wb') as f:
-                f.write(json_str)
+            with _cache_lock:
+                tmp_path = cache_path + ".tmp"
+                with gzip.open(tmp_path, 'wb') as f:
+                    f.write(json_str)
+                # Atomic replace: readers never see a half written file
+                rename(tmp_path, cache_path)
+                self._prune_cache()
 
             return True
 
@@ -216,10 +281,10 @@ class CacheManager:
     def _fetch_url(self, url):
         """Fetch URL"""
         try:
-            headers = {'User-Agent': 'TVGarden-Enigma2/1.0'}
+            headers = {'User-Agent': get_user_agent()}
             req = Request(url, headers=headers)
             config = get_config()
-            timeout = config.get("connection_timeout", 10)
+            timeout = config.get("connection_timeout", 30)
 
             log.debug(
                 "Fetching URL: %s (timeout: %ss)" %
@@ -300,9 +365,9 @@ class CacheManager:
                     # Try gzip decompression
                     try:
                         return loads(gzip.decompress(data).decode('utf-8'))
-                    except BaseException:
-                        # Fallback: return decoded text
-                        return data.decode('utf-8', errors='ignore')
+                    except Exception:
+                        # Never return (and cache) a non-JSON body
+                        raise ValueError("Response is not valid JSON")
 
             finally:
                 if response:
@@ -312,29 +377,29 @@ class CacheManager:
             log.error("Error fetching %s: %s" % (url, str(e)), module="Cache")
             raise
 
-    def fetch_url(self, url, force_refresh=False, ttl=3600):
+    def fetch_url(self, url, force_refresh=False, ttl=None):
         """Fetch URL with caching support"""
         cache_key = self._get_cache_key(url)
         cache_path = self._get_cache_path(cache_key)
+        use_cache = self._cache_enabled()
 
-        log.debug("Fetch URL: %s" % url, module="Cache")
-        log.debug("Cache key: %s" % cache_key, module="Cache")
-        log.debug("Force refresh: %s" % force_refresh, module="Cache")
+        log.debug("Fetch URL: %s (force_refresh=%s, cache=%s)" %
+                  (url, force_refresh, use_cache), module="Cache")
 
-        if not force_refresh and self._is_cache_valid(cache_path, ttl):
-            try:
+        if use_cache and not force_refresh and self._is_cache_valid(
+                cache_path, ttl):
+            cached = self._get_cached(cache_key)
+            if cached is not None:
                 log.debug("Using CACHED data for: %s" % url, module="Cache")
-                return self._get_cached(cache_key)
-            except BaseException:
-                log.debug("Cache read failed, fetching fresh", module="Cache")
-                pass
+                return cached
+            log.debug("Cache read failed, fetching fresh", module="Cache")
 
         try:
             log.debug("Fetching FRESH data for: %s" % url, module="Cache")
             result = self._fetch_url(url)
 
-            log.debug("Saving to cache: %s" % cache_key, module="Cache")
-            self._set_cached(cache_key, result)
+            if use_cache:
+                self._set_cached(cache_key, result)
 
             return result
         except Exception as e:
@@ -358,12 +423,15 @@ class CacheManager:
         cache_key = "available_categories_%s" % media_type
 
         # 1. Cache in-memory (se non forziamo refresh)
-        if not force_refresh and cache_key in self.cache_data:
+        entry = self.cache_data.get(cache_key)
+        if (not force_refresh and self._cache_enabled() and
+                isinstance(entry, dict) and
+                time.time() - entry.get('ts', 0) < self._get_ttl()):
+            items = entry.get('items', [])
             log.debug(
                 "Using MEMORY cached categories for %s (%d)" %
-                (media_type, len(self.cache_data[cache_key])),
-                module="Cache")
-            return self.cache_data[cache_key]
+                (media_type, len(items)), module="Cache")
+            return items
 
         # 2. Cache su disco (via fetch_url, che è md5-based)
         try:
@@ -372,11 +440,14 @@ class CacheManager:
                       (media_type, categories_url), module="Cache")
 
             data = self.fetch_url(categories_url, force_refresh=force_refresh)
+            if not isinstance(data, list):
+                raise ValueError("Unexpected GitHub API response")
 
             # Extract .json filenames
             categories = []
             for item in data:
-                if item.get('name', '').endswith('.json'):
+                if isinstance(item, dict) and item.get(
+                        'name', '').endswith('.json'):
                     category_id = item['name'].replace('.json', '')
                     name = category_id.replace(
                         '-',
@@ -392,7 +463,8 @@ class CacheManager:
                     c['name'].lower()))
 
             # Salva in memory
-            self.cache_data[cache_key] = categories
+            self.cache_data[cache_key] = {
+                'ts': time.time(), 'items': categories}
             self._save_cache()
 
             log.info(
@@ -406,6 +478,13 @@ class CacheManager:
 
             # Fallback: cache disco già presente? La usiamo.
             # (fetch_url la userebbe, ma se siamo qui è perché è fallito tutto)
+            # Stale in-memory copy is better than the minimal fallback
+            if isinstance(entry, dict) and entry.get('items'):
+                log.warning(
+                    "Using stale cached categories for %s" % media_type,
+                    module="Cache")
+                return entry['items']
+
             log.warning(
                 "Using minimal fallback for %s categories" % media_type,
                 module="Cache")
@@ -534,7 +613,8 @@ class CacheManager:
         """Get channels for a specific category"""
         cache_key = "cat_%s_%s" % (media_type, category_id)
 
-        if not force_refresh:
+        if (not force_refresh and self._cache_enabled() and
+                self._is_cache_valid(self._get_cache_path(cache_key))):
             cached_data = self._get_cached(cache_key)
             if cached_data is not None:
                 log.debug(
@@ -562,7 +642,7 @@ class CacheManager:
                 "Extracted %d channels for %s/%s" %
                 (len(channels), media_type, category_id), module="Cache")
 
-            if channels:
+            if channels and self._cache_enabled():
                 self._set_cached(cache_key, channels)
             return channels
 
@@ -585,9 +665,15 @@ class CacheManager:
     def clear_all(self):
         """Clear all cache"""
         # Clear disk cache
-        for file in listdir(self.cache_dir):
-            if file.endswith('.json.gz'):
-                remove(join(self.cache_dir, file))
+        try:
+            for file in listdir(self.cache_dir):
+                if file.endswith('.json.gz') or file.endswith('.json.gz.tmp'):
+                    try:
+                        remove(join(self.cache_dir, file))
+                    except OSError:
+                        pass
+        except OSError as e:
+            log.error("Cannot clear cache: %s" % e, module="Cache")
 
         # Clear memory cache
         self.cache_data = {}
