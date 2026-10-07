@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Version-2.7-blue.svg)](https://github.com/OwnerPlugins/TVGarden)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
-[![Python](https://img.shields.io/badge/Python-2.7%2B-blue.svg)](https://www.python.org)
+[![Python](https://img.shields.io/badge/Python-3%20only-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 [![Visitors](https://komarev.com/ghpvc/?username=OwnerPlugins&label=Repository%20Views&color=blueviolet)](https://github.com/OwnerPlugins)
@@ -106,13 +106,17 @@
 | **Memory Usage** | ~50MB |
 | **Load Time (cached)** | <5 seconds |
 | **Stream Compatibility** | ~70% success rate |
-| **Python Compatibility** | 2.7+ (Enigma2 optimized) |
+| **Python Compatibility** | Python 3 only (Python 2 images are not supported) |
 
 ---
 
 ## 📦 Requirements
 
-Before installing, make sure the following packages are present:
+> **Python 3 images only.** TV Garden does not run on Python 2 images
+> (and yt-dlp, needed for YouTube channels and webcams, requires Python 3.9+).
+
+The installer script installs the required packages automatically
+(ca-certificates, yt-dlp, ServiceApp and the players). To install them by hand:
 
 ```bash
 opkg update

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 TV Garden Plugin - Cache Module
@@ -254,15 +254,7 @@ class CacheManager:
         """Save data to cache"""
         cache_path = self._get_cache_path(cache_key)
         try:
-            try:
-                text_type = unicode  # Python 2
-            except NameError:
-                text_type = str      # Python 3
-
-            json_str = dumps(data, ensure_ascii=False)
-
-            if isinstance(json_str, text_type):
-                json_str = json_str.encode('utf-8')
+            json_str = dumps(data, ensure_ascii=False).encode('utf-8')
 
             with _cache_lock:
                 tmp_path = cache_path + ".tmp"
@@ -294,8 +286,7 @@ class CacheManager:
             try:
                 response = urlopen(req, timeout=timeout)
 
-                # === CRITICAL FIX FOR PYTHON 2 ===
-                # 1. First, check HTTP status code
+                # 1. Check HTTP status code
                 if hasattr(response, 'getcode'):
                     http_code = response.getcode()
                     log.debug(
@@ -323,18 +314,6 @@ class CacheManager:
                     module="Cache"
                 )
 
-                # 3. IF raw_data is int → THIS IS AN HTTP ERROR IN PYTHON 2
-                if isinstance(raw_data, int):
-                    http_code = raw_data
-                    log.error(
-                        "PYTHON 2 BUG: response.read() returned int %d for URL: %s" %
-                        (http_code, url), module="Cache")
-                    raise Exception("HTTP Error %d (Python 2 bug)" % http_code)
-
-                # 4. Convert to bytes if needed
-                if isinstance(raw_data, str):  # Python 2 string
-                    raw_data = raw_data.encode('utf-8')
-
                 if not isinstance(raw_data, bytes):
                     log.error(
                         "Invalid data type: %s for URL: %s"
@@ -342,7 +321,6 @@ class CacheManager:
                         module="Cache"
                     )
                     raise Exception("Invalid response type")
-                # === END FIX ===
 
                 # raw_data is now guaranteed to be bytes
                 data = raw_data

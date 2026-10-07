@@ -5,7 +5,7 @@ OE: 2.0
 License: GPLv3
 Priority: optional
 Architecture: all
-Depends: 
+Depends: python3-core
 Recommends: ca-certificates, python3-yt-dlp, enigma2-plugin-systemplugins-serviceapp
 Maintainer: Lululla
 Description: TV Garden Plugin

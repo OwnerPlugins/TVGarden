@@ -103,7 +103,7 @@ if ! command -v wget >/dev/null 2>&1; then
 fi
 
 if ! command -v python3 >/dev/null 2>&1; then
-    echo "ERROR: TVGarden requires a Python 3 image"
+    echo "ERROR: TVGarden requires a Python 3 image (Python 2 is not supported)"
     exit 1
 fi
 echo "Python: $(python3 --version 2>&1)"

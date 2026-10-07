@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 TV Garden Plugin - Updater Module
@@ -47,7 +47,7 @@ class PluginUpdater:
                 log.error("Cannot create backup dir: %s" % e, module="Updater")
 
     def get_latest_version(self):
-        """Get latest version from installer.sh - Python 2/3 compatible"""
+        """Get latest version from installer.sh"""
         try:
             installer_url = self.INSTALLER_URL
 
