@@ -28,6 +28,20 @@ if [ -d "$LOCALE_DIR" ] && command -v msgfmt >/dev/null 2>&1; then
     done
 fi
 
+# yt-dlp is needed for YouTube channels and webcams. It is a
+# "Recommends" of the package; if the feed does not have it, try pip
+# (opkg is locked while this script runs, so no opkg install here).
+if ! command -v yt-dlp >/dev/null 2>&1 && ! python3 -c "import yt_dlp" >/dev/null 2>&1; then
+    if command -v pip3 >/dev/null 2>&1; then
+        echo "Installing yt-dlp with pip..."
+        pip3 install -U yt-dlp >/dev/null 2>&1 || \
+            pip3 install -U --break-system-packages yt-dlp >/dev/null 2>&1 || \
+            echo "WARNING: yt-dlp not installed: YouTube streams will not play"
+    else
+        echo "WARNING: yt-dlp missing: run 'opkg install python3-yt-dlp' for YouTube streams"
+    fi
+fi
+
 echo "Creating cache directories..."
 mkdir -p "$CACHE_DIR"
 mkdir -p "/etc/enigma2/tvgarden/favorites"

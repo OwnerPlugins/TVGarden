@@ -21,10 +21,14 @@ echo "- Add youtube streaming on player"
 echo "- Fix Problematic Channels"
 echo ""
 
+# Branch to install (default: main). Example for testing:
+#   wget -qO- https://raw.githubusercontent.com/OwnerPlugins/TVGarden/develop/installer.sh | BRANCH=develop /bin/sh
+BRANCH="${BRANCH:-main}"
 TMPPATH=/tmp/TVGarden-install
-FILEPATH=/tmp/TVGarden-main.tar.gz
+FILEPATH=/tmp/TVGarden-$BRANCH.tar.gz
+SRCDIR="$TMPPATH/TVGarden-$BRANCH"
 
-echo "Starting TVGarden installation..."
+echo "Starting TVGarden installation (branch: $BRANCH)..."
 
 if [ ! -d /usr/lib64 ]; then
     PLUGINPATH=/usr/lib/enigma2/python/Plugins/Extensions/TVGarden
@@ -36,7 +40,6 @@ cleanup() {
     echo "Cleaning up temporary files..."
     [ -d "$TMPPATH" ] && rm -rf "$TMPPATH"
     [ -f "$FILEPATH" ] && rm -f "$FILEPATH"
-    [ -d "/tmp/TVGarden-main" ] && rm -rf "/tmp/TVGarden-main"
 }
 
 detect_os() {
@@ -58,71 +61,88 @@ detect_os
 cleanup
 mkdir -p "$TMPPATH"
 
-if ! command -v wget >/dev/null 2>&1; then
-    echo "Installing wget..."
+# Refresh the package lists once
+FEED_UPDATED=0
+update_feeds() {
+    [ "$FEED_UPDATED" = "1" ] && return
+    echo "Updating package lists..."
     case "$OSTYPE" in
-        "DreamOs")
-            apt-get update && apt-get install -y wget || { echo "Failed to install wget"; exit 1; }
-            ;;
-        "OE")
-            opkg update && opkg install wget || { echo "Failed to install wget"; exit 1; }
-            ;;
-        *)
-            echo "Unsupported OS type. Cannot install wget."
-            exit 1
-            ;;
+        "DreamOs") apt-get update >/dev/null 2>&1 ;;
+        "OE") opkg update >/dev/null 2>&1 ;;
     esac
-fi
-
-if python --version 2>&1 | grep -q '^Python 3\.'; then
-    echo "Python3 image detected"
-    PYTHON="PY3"
-    Packagesix="python3-six"
-    # Packagerequests="python3-requests"
-else
-    echo "Python2 image detected"
-    PYTHON="PY2"
-    # Packagerequests="python-requests"
-    Packagesix="python-six"
-fi
-
-install_pkg() {
-    local pkg=$1
-    if [ -z "$STATUS" ] || ! grep -qs "Package: $pkg" "$STATUS" 2>/dev/null; then
-        echo "Installing $pkg..."
-        case "$OSTYPE" in
-            "DreamOs")
-                apt-get update && apt-get install -y "$pkg" || { echo "Could not install $pkg, continuing anyway..."; }
-                ;;
-            "OE")
-                opkg update && opkg install "$pkg" || { echo "Could not install $pkg, continuing anyway..."; }
-                ;;
-            *)
-                echo "Cannot install $pkg on unknown OS type, continuing..."
-                ;;
-        esac
-    else
-        echo "$pkg already installed"
-    fi
+    FEED_UPDATED=1
 }
 
-if [ "$PYTHON" = "PY3" ]; then
-    install_pkg "$Packagesix"
+is_installed() {
+    [ -n "$STATUS" ] && grep -qx "Package: $1" "$STATUS" 2>/dev/null
+}
+
+install_pkg() {
+    pkg=$1
+    if is_installed "$pkg"; then
+        echo "$pkg already installed"
+        return 0
+    fi
+    update_feeds
+    echo "Installing $pkg..."
+    case "$OSTYPE" in
+        "DreamOs")
+            apt-get install -y "$pkg" >/dev/null 2>&1 && return 0 ;;
+        "OE")
+            opkg install "$pkg" >/dev/null 2>&1 && return 0 ;;
+        *)
+            echo "Cannot install $pkg on unknown OS type"
+            return 1 ;;
+    esac
+    echo "Could not install $pkg, continuing anyway..."
+    return 1
+}
+
+if ! command -v wget >/dev/null 2>&1; then
+    install_pkg wget || { echo "wget is required"; exit 1; }
 fi
-# install_pkg "$Packagerequests"
+
+if ! command -v python3 >/dev/null 2>&1; then
+    echo "ERROR: TVGarden requires a Python 3 image"
+    exit 1
+fi
+echo "Python: $(python3 --version 2>&1)"
 
 # Needed to download over verified HTTPS
-install_pkg "ca-certificates"
+install_pkg ca-certificates
 
+# Players: ServiceApp provides gstplayer (5001) and exteplayer3 (5002)
 if [ "$OSTYPE" = "OE" ]; then
-    echo "Installing additional multimedia packages..."
+    echo "Installing multimedia packages..."
     for pkg in ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp; do
         install_pkg "$pkg"
     done
 fi
 
+# yt-dlp: needed for YouTube channels and webcams
+ytdlp_ok() {
+    command -v yt-dlp >/dev/null 2>&1 || python3 -c "import yt_dlp" >/dev/null 2>&1
+}
+
+if ! ytdlp_ok; then
+    install_pkg python3-yt-dlp
+fi
+if ! ytdlp_ok; then
+    echo "yt-dlp not in the feed, installing it with pip..."
+    command -v pip3 >/dev/null 2>&1 || install_pkg python3-pip
+    if command -v pip3 >/dev/null 2>&1; then
+        pip3 install -U yt-dlp >/dev/null 2>&1 || \
+            pip3 install -U --break-system-packages yt-dlp >/dev/null 2>&1
+    fi
+fi
+if ytdlp_ok; then
+    echo "yt-dlp OK: $(yt-dlp --version 2>/dev/null || python3 -m yt_dlp --version 2>/dev/null)"
+else
+    echo "WARNING: yt-dlp could not be installed: YouTube streams will not play"
+fi
+
 echo "Downloading TVGarden..."
-wget 'https://github.com/OwnerPlugins/TVGarden/archive/refs/heads/main.tar.gz' -O "$FILEPATH"
+wget -q "https://github.com/OwnerPlugins/TVGarden/archive/refs/heads/$BRANCH.tar.gz" -O "$FILEPATH"
 if [ $? -ne 0 ]; then
     echo "Failed to download TVGarden package!"
     echo "If this is a certificate error, install the 'ca-certificates' package."
@@ -146,10 +166,10 @@ SOURCE_DIR=""
 
 # Cerca il contenuto del plugin in vari percorsi possibili
 for search_path in \
-    "$TMPPATH/TVGarden-main/TVGarden" \
-    "$TMPPATH/TVGarden-main" \
-    "$TMPPATH/TVGarden-main/usr/lib/enigma2/python/Plugins/Extensions/TVGarden" \
-    "$TMPPATH/TVGarden-main/usr/lib64/enigma2/python/Plugins/Extensions/TVGarden"
+    "$SRCDIR/usr/lib/enigma2/python/Plugins/Extensions/TVGarden" \
+    "$SRCDIR/usr/lib64/enigma2/python/Plugins/Extensions/TVGarden" \
+    "$SRCDIR/TVGarden" \
+    "$SRCDIR"
 do
     if [ -d "$search_path" ] && [ -f "$search_path/plugin.py" ]; then
         SOURCE_DIR="$search_path"
@@ -207,7 +227,6 @@ fi
 cleanup
 sync
 
-FILE="/etc/image-version"
 box_type=$(sed -n '1p' /etc/hostname 2>/dev/null || echo "Unknown")
 # distro_value=$(grep '^distro=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
 # distro_version=$(grep '^version=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
@@ -228,7 +247,7 @@ fi
 
 [ -z "$distro_value" ] && distro_value="Unknown"
 [ -z "$distro_version" ] && distro_version="Unknown"
-python_vers=$(python --version 2>&1)
+python_vers=$(python3 --version 2>&1)
 
 cat <<EOF
 
@@ -237,9 +256,9 @@ cat <<EOF
 #                developed by LULULLA                   #
 #               https://corvoboys.org                   #
 #########################################################
-#           your Device will RESTART Now                #
+#       restart Enigma2 to use the new version          #
 #########################################################
-^^^^^^^^^^Debug information:
+Debug information:
 BOX MODEL: $box_type
 OS SYSTEM: $OSTYPE
 PYTHON: $python_vers
@@ -247,5 +266,6 @@ IMAGE NAME: ${distro_value:-Unknown}
 IMAGE VERSION: ${distro_version:-Unknown}
 PLUGIN PATH: $PLUGINPATH
 PLUGIN VERSION: $version
+YT-DLP: $(yt-dlp --version 2>/dev/null || python3 -m yt_dlp --version 2>/dev/null || echo missing)
 EOF
 exit 0
