@@ -53,10 +53,10 @@ class FavoritesBrowser(BaseBrowser):
             <widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
 
             <!-- Title -->
-            <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
+            <widget source="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
 
             <!-- Status -->
-            <widget name="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
+            <widget source="status" render="Label" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
 
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
@@ -90,7 +90,7 @@ class FavoritesBrowser(BaseBrowser):
         self["key_green"] = StaticText(_("Play"))
         self["key_yellow"] = StaticText(_("Options"))
         self["key_blue"] = StaticText(_("Export"))
-        self["actions"] = ActionMap(["TVGardenActions", "OkCancelActions", "ColorActions", "DirectionActions"], {
+        self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions"], {
             "cancel": self.exit,
             "ok": self.play_channel,
             "red": self.exit,
@@ -146,7 +146,7 @@ class FavoritesBrowser(BaseBrowser):
                         'group': channel.get('group', ''),
                         'language': channel.get('language', ''),
                         'country': channel.get('country', ''),
-                        'is_youtube': False
+                        'is_youtube': channel.get('is_youtube', False)
                     }
 
                     menu_items.append((display_name, idx))
@@ -219,7 +219,7 @@ class FavoritesBrowser(BaseBrowser):
             self.session.openWithCallback(
                 lambda r: self._remove_bouquet_confirmation(r),
                 MessageBox,
-                _("Remove TV Garden bouquet from Enigma2?"),
+                _("Remove ALL TV Garden bouquets from Enigma2?"),
                 MessageBox.TYPE_YESNO
             )
 
@@ -305,26 +305,49 @@ class FavoritesBrowser(BaseBrowser):
             timeout=3
         )
 
+    def _run_export_in_thread(self, export_function, timeout):
+        """
+        Run a long database export in a worker thread so the GUI does not
+        freeze; bouquets are reloaded on the GUI thread afterwards.
+        """
+        if getattr(self, '_export_running', False):
+            self["status"].setText(_("Export already in progress..."))
+            return
+        self._export_running = True
+
+        def done(result):
+            self._export_running = False
+            success, message = result
+            if success:
+                self.fav_manager._reload_bouquets()
+                self["status"].setText(_("Database exported successfully"))
+            else:
+                self["status"].setText(_("Export failed"))
+            self.session.open(
+                MessageBox,
+                message,
+                MessageBox.TYPE_INFO if success else MessageBox.TYPE_ERROR,
+                timeout=timeout)
+
+        def failed(failure):
+            done((False, _("Error: %s") % failure.getErrorMessage()))
+
+        try:
+            from twisted.internet import threads
+            d = threads.deferToThread(export_function, reload_bouquets=False)
+            d.addCallback(done)
+            d.addErrback(failed)
+        except Exception as e:
+            log.error("Cannot start export thread: %s" % e, module="Favorites")
+            done(export_function(reload_bouquets=False))
+
     def _execute_export_all_database(self, result):
         """Execute export of all database channels (single file)"""
         if not result:
             return
 
         self["status"].setText(_("Loading all channels..."))
-
-        success, message = self.fav_manager.export_all_channels()
-
-        self.session.open(
-            MessageBox,
-            message,
-            MessageBox.TYPE_INFO if success else MessageBox.TYPE_ERROR,
-            timeout=5
-        )
-
-        if success:
-            self["status"].setText(_("Database exported successfully"))
-        else:
-            self["status"].setText(_("Export failed"))
+        self._run_export_in_thread(self.fav_manager.export_all_channels, 5)
 
     def _execute_export_all_hierarchical(self, result):
         """Execute export of all database channels with hierarchical structure"""
@@ -332,20 +355,8 @@ class FavoritesBrowser(BaseBrowser):
             return
 
         self["status"].setText(_("Creating hierarchical structure..."))
-
-        success, message = self.fav_manager.export_all_channels_hierarchical()
-
-        self.session.open(
-            MessageBox,
-            message,
-            MessageBox.TYPE_INFO if success else MessageBox.TYPE_ERROR,
-            timeout=8
-        )
-
-        if success:
-            self["status"].setText(_("Hierarchical export completed"))
-        else:
-            self["status"].setText(_("Export failed"))
+        self._run_export_in_thread(
+            self.fav_manager.export_all_channels_hierarchical, 8)
 
     def get_current_channel(self):
         """Get currently selected channel"""
@@ -408,48 +419,6 @@ class FavoritesBrowser(BaseBrowser):
             _("Export ALL %d favorites to Enigma2 bouquet?") % len(
                 self.menu_channels),
             MessageBox.TYPE_YESNO)
-
-    def export_to_bouquet(self, channels, bouquet_name=None):
-        if not channels:
-            return False, _("No channels to export")
-
-        if bouquet_name is None:
-            bouquet_name = "tvgarden_favorites"
-
-        userbouquet_file = "/etc/enigma2/userbouquet.%s.tv" % bouquet_name
-        try:
-            with open(userbouquet_file, "w") as f:
-                f.write("#NAME %s\n" % bouquet_name.upper())
-                for ch in channels:
-                    name = ch.get('name', '')
-                    stream_url = ch.get('stream_url') or ch.get('url')
-                    if not stream_url:
-                        continue
-                    url_encoded = stream_url.replace(":", "%3a")
-                    name_encoded = name.replace(":", "%3a")
-                    f.write(
-                        "#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" %
-                        (url_encoded, name_encoded))
-                    f.write("#DESCRIPTION %s\n" % name)
-
-            bouquets_file = "/etc/enigma2/bouquets.tv"
-            entry = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.%s.tv" ORDER BY bouquet\n' % bouquet_name
-            try:
-                with open(bouquets_file, "r") as bf:
-                    lines = bf.readlines()
-            except BaseException:
-                lines = []
-            if entry not in lines:
-                with open(bouquets_file, "a") as bf:
-                    bf.write(entry)
-
-            from enigma import eDVBDB
-            eDVBDB.getInstance().reloadBouquets()
-
-            return True, _("Exported %d channels to %s") % (
-                len(channels), bouquet_name)
-        except Exception as e:
-            return False, _("Export failed: %s") % str(e)
 
     def _export_all_confirmation(self, result):
         """Handle export confirmation"""

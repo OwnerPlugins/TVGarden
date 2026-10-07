@@ -142,11 +142,11 @@ def get_config_path():
 
 # Determine skin path based on resolution
 RESOLUTION_TYPE = get_resolution_type()
-SKIN_PATH = join(PLUGIN_PATH, "skin", RESOLUTION_TYPE)
+SKIN_PATH = join(PLUGIN_PATH, "skins", RESOLUTION_TYPE)
 IMAGES_PATH = join(PLUGIN_PATH, "images", RESOLUTION_TYPE)
 
 # Fallback paths
-DEFAULT_SKIN_PATH = join(PLUGIN_PATH, "skin", "hd")
+DEFAULT_SKIN_PATH = join(PLUGIN_PATH, "skins", "hd")
 DEFAULT_IMAGES_PATH = join(PLUGIN_PATH, "images", "hd")
 
 REPO_BASE = "https://raw.githubusercontent.com/OwnerPlugins/famelack-data/main"
@@ -195,9 +195,17 @@ def get_all_channels_url(media_type="tv"):
         REPO_BASE, _media_path(media_type))
 
 
+# Data codes that differ from the ISO 3166 codes used by flagcdn.com
+FLAG_CODE_ALIASES = {
+    'uk': 'gb',
+}
+
+
 def get_flag_url(country_code, size=80):
     """Get URL for country flag"""
-    return "https://flagcdn.com/w%d/%s.png" % (size, country_code.lower())
+    code = country_code.lower()
+    code = FLAG_CODE_ALIASES.get(code, code)
+    return "https://flagcdn.com/w%d/%s.png" % (size, code)
 
 
 # ============ CATEGORY FALLBACK ============
@@ -252,14 +260,137 @@ def is_valid_stream_url(url):
     url = url.strip()
 
     valid_prefixes = ('http://', 'https://', 'rtmp://', 'rtsp://')
+    return url.startswith(valid_prefixes)
 
-    if not any(url.startswith(prefix) for prefix in valid_prefixes):
+
+def is_youtube_url(url):
+    """Check if URL points to YouTube"""
+    if not url or not isinstance(url, str):
         return False
+    url = url.lower()
+    return ("youtube.com" in url or "youtu.be" in url or
+            "youtube-nocookie.com" in url)
 
-    if url.startswith(('http://', 'https://')):
+
+def _first_url(values):
+    """Return first non-empty string from a list"""
+    if isinstance(values, list):
+        for url in values:
+            if isinstance(url, str) and url.strip():
+                return url.strip()
+    return None
+
+
+def extract_stream_url(channel):
+    """
+    Extract the playable URL from a channel entry.
+
+    Supports the current data format with nested "sources"
+    ({"sources": {"streams": [...], "youtube": [...]}}) and the
+    old flat keys (iptv_urls, youtube_urls, stream_urls, url).
+
+    Returns a tuple (stream_url, found_in, is_youtube);
+    stream_url is None when nothing usable is found.
+    """
+    if not isinstance(channel, dict):
+        return None, None, False
+
+    sources = channel.get("sources")
+    if isinstance(sources, dict):
+        for key in ("streams", "iptv", "youtube", "iframe"):
+            url = _first_url(sources.get(key))
+            if not url:
+                continue
+            # Generic iframe pages cannot be played, only YouTube embeds
+            if key == "iframe" and not is_youtube_url(url):
+                continue
+            return url, "sources.%s" % key, is_youtube_url(url)
+
+    for key in ("iptv_urls", "youtube_urls", "stream_urls"):
+        url = _first_url(channel.get(key))
+        if url:
+            return url, key, is_youtube_url(url)
+
+    url = channel.get("url") or channel.get("stream_url")
+    if isinstance(url, str) and url.strip():
+        url = url.strip()
+        return url, "url", is_youtube_url(url)
+
+    return None, None, False
+
+
+def timer_connect(timer, callback):
+    """
+    Connect an eTimer callback on both DreamOS and OE images.
+    The returned connection object (DreamOS) MUST be kept alive by the
+    caller, otherwise the callback is disconnected immediately.
+    """
+    try:
+        return timer.timeout.connect(callback)
+    except AttributeError:
+        timer.callback.append(callback)
+        return None
+
+
+def get_channel_language(channel):
+    """Return language string (supports 'language' and 'languages')"""
+    language = channel.get("language")
+    if language:
+        return str(language)
+    languages = channel.get("languages")
+    if isinstance(languages, list):
+        return ", ".join(str(lang) for lang in languages if lang)
+    return ""
+
+
+def encode_bouquet_text(text):
+    """Make text safe for a single bouquet line"""
+    if not text:
+        return ""
+    return str(text).replace("\r", " ").replace("\n", " ").strip()
+
+
+def bouquet_service_lines(stream_url, name):
+    """Return the #SERVICE / #DESCRIPTION lines for a stream"""
+    url = encode_bouquet_text(stream_url).replace(":", "%3a")
+    name = encode_bouquet_text(name)
+    return "#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n#DESCRIPTION %s\n" % (
+        url, name.replace(":", "%3a"), name)
+
+
+def add_bouquet_to_index(bouquet_file, position="bottom", bouquets_index="/etc/enigma2/bouquets.tv"):
+    """
+    Add a userbouquet reference to bouquets.tv (once), honouring the
+    'top'/'bottom' list position. Returns True on success.
+    """
+    entry = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet' % bouquet_file
+    try:
+        lines = []
+        if exists(bouquets_index):
+            with open(bouquets_index, "r") as f:
+                lines = f.read().splitlines()
+
+        if entry in [line.strip() for line in lines]:
+            return True
+
+        if not lines:
+            lines = ["#NAME Bouquets (TV)"]
+
+        if position == "top":
+            # Insert right after the #NAME header (if present)
+            insert_at = 1 if lines and lines[0].startswith("#NAME") else 0
+            lines.insert(insert_at, entry)
+        else:
+            while lines and not lines[-1].strip():
+                lines.pop()
+            lines.append(entry)
+
+        with open(bouquets_index, "w") as f:
+            f.write("\n".join(lines) + "\n")
         return True
-
-    return False
+    except Exception as e:
+        log.error("Error updating %s: %s" % (bouquets_index, e), module="Bouquet")
+        return False
 
 
 # ============ LOGGING ============
@@ -308,8 +439,10 @@ class TVGardenLog:
     def setup(cls, config=None):
         """Setup logging from config"""
         if config:
-            log_level = config.get("log_level", "INFO").upper()
-            cls._min_level = log_level
+            log_level = str(config.get("log_level", "INFO")).upper()
+            if log_level in (cls.DEBUG, cls.INFO, cls.WARNING,
+                             cls.ERROR, cls.CRITICAL):
+                cls._min_level = log_level
             cls._log_to_file = config.get("log_to_file", True)
 
         # Create initial log entry
@@ -324,8 +457,12 @@ class TVGardenLog:
             cls.WARNING,
             cls.ERROR,
             cls.CRITICAL]
-        return level_priority.index(
-            level) >= level_priority.index(cls._min_level)
+        try:
+            return level_priority.index(
+                level) >= level_priority.index(cls._min_level)
+        except ValueError:
+            # Unknown level names are always logged
+            return True
 
     @classmethod
     def log(cls, message, level=INFO, module=""):
