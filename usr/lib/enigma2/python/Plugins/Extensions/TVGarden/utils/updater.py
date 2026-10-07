@@ -69,8 +69,10 @@ class PluginUpdater:
             patterns = [
                 # version='1.1' / version="1.1.2" (2 or 3 parts)
                 r"version\s*=\s*['\"](\d+\.\d+(?:\.\d+)?)['\"]",
-                r"version\s*:\s*['\"](\d+\.\d+(?:\.\d+)?)['\"]",  # version: '1.1'
-                r"Version\s*=\s*['\"](\d+\.\d+(?:\.\d+)?)['\"]",  # Version='1.1'
+                # version: '1.1'
+                r"version\s*:\s*['\"](\d+\.\d+(?:\.\d+)?)['\"]",
+                # Version='1.1'
+                r"Version\s*=\s*['\"](\d+\.\d+(?:\.\d+)?)['\"]",
             ]
 
             for pattern in patterns:

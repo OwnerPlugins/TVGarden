@@ -608,7 +608,8 @@ class ChannelsBrowser(BaseBrowser):
 
             from enigma import eDVBDB
             eDVBDB.getInstance().reloadBouquets()
-            message = _("Exported %d channels to '%s'") % (exported, display_name)
+            message = _("Exported %d channels to '%s'") % (
+                exported, display_name)
             if youtube_count:
                 message += "\n\n%s" % _(YOUTUBE_BOUQUET_NOTE)
             self.session.open(
