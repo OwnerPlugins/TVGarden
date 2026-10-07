@@ -29,17 +29,17 @@ msgstr "%d αγαπημένα"
 msgid "(%d YouTube)"
 msgstr "(παραλείφθηκαν %d YouTube)"
 
+msgid "(%d without stream)"
+msgstr "(%d χωρίς ροή)"
+
 msgid "(filtered %d problematic)"
 msgstr "(φιλτράρισμα %d προβληματικών)"
 
 msgid "(limited to first %d)"
 msgstr "(περιορισμός στα πρώτα %d)"
 
-msgid "(skipped %d YouTube)"
-msgstr "(παραλείφθηκαν %d YouTube)"
-
-msgid "1 MB"
-msgstr "1 MB"
+msgid "1 hour"
+msgstr "1 ώρα"
 
 msgid "10 results"
 msgstr "10 αποτελέσματα"
@@ -58,11 +58,14 @@ msgstr "1000 κανάλια"
 msgid "1000 results"
 msgstr "1000 κανάλια"
 
-msgid "2 MB"
-msgstr "2 MB"
+msgid "15 minutes"
+msgstr "15 λεπτά"
 
 msgid "2000 channels"
 msgstr "2000 κανάλια"
+
+msgid "24 hours"
+msgstr "24 ώρες"
 
 msgid "250 channels"
 msgstr "250 κανάλια"
@@ -73,9 +76,6 @@ msgstr "250 κανάλια"
 
 msgid "2500 results"
 msgstr "2500 αποτελέσματα"
-
-msgid "4 MB"
-msgstr "4 MB"
 
 msgid "4000 results"
 msgstr "4000 αποτελέσματα"
@@ -100,11 +100,11 @@ msgstr "5000 κανάλια"
 msgid "5000 results"
 msgstr "5000 κανάλια"
 
-msgid "512 KB"
-msgstr "512 KB"
+msgid "6 hours"
+msgstr "6 ώρες"
 
-msgid "8 MB"
-msgstr "8 MB"
+msgid "7 days"
+msgstr "7 μέρες"
 
 msgid "=== Browser Settings ==="
 msgstr "=== Ρυθμίσεις προγράμματος περιήγησης ==="
@@ -123,9 +123,6 @@ msgstr "=== Ρυθμίσεις καταγραφής ==="
 
 msgid "=== Network Settings ==="
 msgstr "=== Ρυθμίσεις δικτύου ==="
-
-msgid "=== Performance Settings ==="
-msgstr "=== Ρυθμίσεις απόδοσης ==="
 
 msgid "=== Player Settings ==="
 msgstr "=== Ρυθμίσεις προγράμματος αναπαραγωγής ==="
@@ -202,17 +199,18 @@ msgstr "Περιήγηση καναλιών ανά κατηγορία"
 msgid "Browse webcams by country"
 msgstr "Περιήγηση καναλιών ανά χώρα"
 
-msgid "Buffer Size"
-msgstr "Μέγεθος προσωρινής αποθήκευσης"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Αλλαγή | OK = Εναλλαγή | STOP = Έξοδος | από τον Lululla"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "Πληροφορίες καναλιού"
 
 msgid "Cache Size"
 msgstr "Μέγεθος προσωρινής μνήμης"
 
-msgid "Cache cleared"
-msgstr "Η προσωρινή μνήμη εκκαθαρίστηκε"
+msgid "Cannot play: %s"
+msgstr "Δεν είναι δυνατή η αναπαραγωγή: %s"
 
 msgid "Categories"
 msgstr "Κατηγορίες"
@@ -224,6 +222,10 @@ msgid "Channel Menu"
 msgstr "Μενού καναλιών"
 
 msgid "Channel added to bouquet"
+msgstr "Το κανάλι προστέθηκε στο μπουκέτο"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "Το κανάλι προστέθηκε στο μπουκέτο"
 
 msgid "Channel not found in favorites"
@@ -370,14 +372,15 @@ msgid "Export Current View"
 msgstr "Εξαγωγή τρέχουσας προβολής"
 
 #, fuzzy
+msgid "Export already in progress..."
+msgstr "Φόρτωση κατηγοριών..."
+
+#, fuzzy
 msgid "Export error: %s"
 msgstr "Σφάλμα ενημέρωσης: %s"
 
 msgid "Export failed"
 msgstr "Η εξαγωγή απέτυχε"
-
-msgid "Export failed: %s"
-msgstr "Η εξαγωγή απέτυχε: %s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "Εξαγωγή σε μπουκέτο Enigma2"
@@ -387,10 +390,6 @@ msgstr "Να γίνει εξαγωγή {count} καναλιών στο μπου�
 
 msgid "Exported"
 msgstr "Εξήχθησαν"
-
-#, fuzzy
-msgid "Exported %d channels to %s"
-msgstr "Έγινε εξαγωγή %d καναλιών σε μπουκέτο"
 
 #, fuzzy
 msgid "Exported %d channels to '%s'"
@@ -435,14 +434,14 @@ msgstr "Βρέθηκαν %d κανάλια με δυνατότητα αναπα�
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "Hierarchical export completed"
-msgstr "Η ιεραρχική εξαγωγή ολοκληρώθηκε"
-
 msgid "Hierarchical export completed!"
 msgstr "Η ιεραρχική εξαγωγή ολοκληρώθηκε!"
 
 msgid "Info"
 msgstr "Πληροφορίες"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "Εγκαταστήστε το με: opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "Στοιχείο {} από {}"
@@ -452,6 +451,10 @@ msgstr "Πληκτρολόγιο"
 
 msgid "List Position"
 msgstr "Θέση λίστας"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "Φόρτωση καναλιών..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -479,10 +482,6 @@ msgstr "Φόρτωση χωρών..."
 
 msgid "Loading favorites..."
 msgstr "Φόρτωση αγαπημένων..."
-
-#, fuzzy
-msgid "Loading... %d channels so far"
-msgstr "Φόρτωση καναλιών..."
 
 msgid "Log Level"
 msgstr "Επίπεδο καταγραφής"
@@ -513,12 +512,6 @@ msgstr "Μέγιστος αριθμός αποτελεσμάτων αναζήτ�
 
 msgid "Max channels for country"
 msgstr "Μέγιστος αριθμός καναλιών για χώρα"
-
-msgid "Memory Optimization"
-msgstr "Βελτιστοποίηση μνήμης"
-
-msgid "Next load will use fresh data"
-msgstr "Η επόμενη φόρτωση θα χρησιμοποιήσει φρέσκα δεδομένα"
 
 msgid "No channel selected"
 msgstr "Δεν επιλέχθηκε κανάλι"
@@ -555,6 +548,10 @@ msgstr "Δεν υπάρχει URL ροής"
 
 msgid "No stream URL available"
 msgstr "Δεν υπάρχει διαθέσιμο URL ροής"
+
+#, fuzzy
+msgid "No stream URL for: %s"
+msgstr "Δεν υπάρχει URL ροής"
 
 msgid "No valid channels found in database"
 msgstr "Δεν βρέθηκαν έγκυρα κανάλια στη βάση δεδομένων"
@@ -627,11 +624,12 @@ msgstr "Ανανέωση..."
 msgid "Remove '%s' from favorites?"
 msgstr "Να γίνει αφαίρεση του '%s' από τα αγαπημένα;"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "Να γίνει αφαίρεση του μπουκέτου TV Garden από το Enigma2;"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "Αφαίρεση μπουκέτου από το Enigma2"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Να γίνει αφαίρεση του μπουκέτου TV Garden από το Enigma2;"
 
 msgid "Remove from Favorites"
 msgstr "Αφαίρεση από τα αγαπημένα"
@@ -644,6 +642,9 @@ msgstr "Αφαιρέθηκε από τα αγαπημένα"
 
 msgid "Removed from favorites: %s"
 msgstr "Αφαιρέθηκε από τα αγαπημένα: %s"
+
+msgid "Resolving YouTube stream..."
+msgstr "Επίλυση ροής YouTube..."
 
 msgid "Save"
 msgstr "Αποθήκευση"
@@ -757,9 +758,6 @@ msgstr "Επιτυχής ενημέρωση!"
 msgid "Updating plugin... Please wait"
 msgstr "Ενημέρωση του πρόσθετου... Παρακαλώ περιμένετε"
 
-msgid "Use Hardware Acceleration"
-msgstr "Χρήση επιτάχυνσης υλικού"
-
 msgid "User Agent"
 msgstr "Παράγοντας χρήστη"
 
@@ -780,12 +778,17 @@ msgstr "Περιήγηση ανά κατηγορία"
 msgid "Webcams by Country"
 msgstr "Περιήγηση ανά χώρα"
 
-msgid "Will load fresh data next time"
-msgstr "Την επόμενη φορά θα φορτωθούν φρέσκα δεδομένα"
-
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "Έχετε την τελευταία έκδοση του TV Garden."
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "Δεν υπάρχουν κανάλια για εξαγωγή"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "Δεν υπάρχει διαθέσιμο URL ροής"
 
 msgid "Your favorite channels"
 msgstr "Τα αγαπημένα σας κανάλια"
@@ -809,6 +812,59 @@ msgstr "χώρες"
 
 msgid "files and"
 msgstr "αρχεία και"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(παραλείφθηκαν %d YouTube)"
+
+#~ msgid "1 MB"
+#~ msgstr "1 MB"
+
+#~ msgid "2 MB"
+#~ msgstr "2 MB"
+
+#~ msgid "4 MB"
+#~ msgstr "4 MB"
+
+#~ msgid "512 KB"
+#~ msgstr "512 KB"
+
+#~ msgid "8 MB"
+#~ msgstr "8 MB"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Ρυθμίσεις απόδοσης ==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "Μέγεθος προσωρινής αποθήκευσης"
+
+#~ msgid "Cache cleared"
+#~ msgstr "Η προσωρινή μνήμη εκκαθαρίστηκε"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "Η εξαγωγή απέτυχε: %s"
+
+#, fuzzy
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "Έγινε εξαγωγή %d καναλιών σε μπουκέτο"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "Η ιεραρχική εξαγωγή ολοκληρώθηκε"
+
+#, fuzzy
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "Φόρτωση καναλιών..."
+
+#~ msgid "Memory Optimization"
+#~ msgstr "Βελτιστοποίηση μνήμης"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "Η επόμενη φόρτωση θα χρησιμοποιήσει φρέσκα δεδομένα"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Χρήση επιτάχυνσης υλικού"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "Την επόμενη φορά θα φορτωθούν φρέσκα δεδομένα"
 
 #~ msgid "Animation"
 #~ msgstr "Κινούμενα σχέδια"

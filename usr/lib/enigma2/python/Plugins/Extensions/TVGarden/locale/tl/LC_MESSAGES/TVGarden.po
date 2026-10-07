@@ -19,17 +19,17 @@ msgstr "%d paborito"
 msgid "(%d YouTube)"
 msgstr "(nilaktawan ang %d YouTube)"
 
+msgid "(%d without stream)"
+msgstr "(%d walang stream)"
+
 msgid "(filtered %d problematic)"
 msgstr "(na-filter %d may problema)"
 
 msgid "(limited to first %d)"
 msgstr "(limitado sa unang %d)"
 
-msgid "(skipped %d YouTube)"
-msgstr "(nilaktawan ang %d YouTube)"
-
-msgid "1 MB"
-msgstr ""
+msgid "1 hour"
+msgstr "1 oras"
 
 msgid "10 results"
 msgstr "10 resulta"
@@ -46,11 +46,14 @@ msgstr "1000 channel"
 msgid "1000 results"
 msgstr "1000 resulta"
 
-msgid "2 MB"
-msgstr ""
+msgid "15 minutes"
+msgstr "15 minuto"
 
 msgid "2000 channels"
 msgstr "2000 channel"
+
+msgid "24 hours"
+msgstr "24 na oras"
 
 msgid "250 channels"
 msgstr "250 na channel"
@@ -60,9 +63,6 @@ msgstr "250 resulta"
 
 msgid "2500 results"
 msgstr "2500 resulta"
-
-msgid "4 MB"
-msgstr ""
 
 msgid "4000 results"
 msgstr "4000 resulta"
@@ -85,11 +85,11 @@ msgstr "5000 channel"
 msgid "5000 results"
 msgstr "5000 resulta"
 
-msgid "512 KB"
-msgstr ""
+msgid "6 hours"
+msgstr "6 na oras"
 
-msgid "8 MB"
-msgstr ""
+msgid "7 days"
+msgstr "7 araw"
 
 msgid "=== Browser Settings ==="
 msgstr "=== Mga Setting ng Browser ==="
@@ -108,9 +108,6 @@ msgstr "=== Mga Setting ng Pag-log ==="
 
 msgid "=== Network Settings ==="
 msgstr "=== Mga Setting ng Network ==="
-
-msgid "=== Performance Settings ==="
-msgstr "=== Mga Setting ng Pagganap ==="
 
 msgid "=== Player Settings ==="
 msgstr "=== Mga Setting ng Player ==="
@@ -186,17 +183,18 @@ msgstr "Mag-browse ng mga channel ayon sa kategorya"
 msgid "Browse webcams by country"
 msgstr "Mag-browse ng mga channel ayon sa bansa"
 
-msgid "Buffer Size"
-msgstr "Laki ng Buffer"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Baguhin | OK = I-toggle | STOP = Lumabas | ni Lululla"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "Impormasyon ng Channel"
 
 msgid "Cache Size"
 msgstr "Laki ng Cache"
 
-msgid "Cache cleared"
-msgstr "Na-clear ang cache"
+msgid "Cannot play: %s"
+msgstr "Hindi maglaro: %s"
 
 msgid "Categories"
 msgstr "Mga kategorya"
@@ -208,6 +206,10 @@ msgid "Channel Menu"
 msgstr "Menu ng Channel"
 
 msgid "Channel added to bouquet"
+msgstr "Idinagdag ang channel sa bouquet"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "Idinagdag ang channel sa bouquet"
 
 msgid "Channel not found in favorites"
@@ -352,14 +354,15 @@ msgstr "I-export ang LAHAT ng Database (Single File)"
 msgid "Export Current View"
 msgstr "I-export ang Kasalukuyang View"
 
+#, fuzzy
+msgid "Export already in progress..."
+msgstr "Kasalukuyang naglo-load..."
+
 msgid "Export error: %s"
 msgstr "Error sa pag-export: %s"
 
 msgid "Export failed"
 msgstr "Nabigo ang pag-export"
-
-msgid "Export failed: %s"
-msgstr "Nabigo ang pag-export: %s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "I-export sa Enigma2 Bouquet"
@@ -369,9 +372,6 @@ msgstr "I-export ang {count} na mga channel sa bouquet '{name}'?"
 
 msgid "Exported"
 msgstr "Na-export"
-
-msgid "Exported %d channels to %s"
-msgstr "Na-export ang %d channel sa %s"
 
 msgid "Exported %d channels to '%s'"
 msgstr "Nag-export ng %d channel sa '%s'"
@@ -415,14 +415,14 @@ msgstr "Nakahanap ng %d na puwedeng laruin na channel"
 msgid "GStreamer"
 msgstr ""
 
-msgid "Hierarchical export completed"
-msgstr "Nakumpleto ang hierarchical export"
-
 msgid "Hierarchical export completed!"
 msgstr "Nakumpleto ang hierarchical export!"
 
 msgid "Info"
 msgstr "Impormasyon"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "I-install ito gamit ang: opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "Item {} ng {}"
@@ -432,6 +432,10 @@ msgstr ""
 
 msgid "List Position"
 msgstr "Posisyon ng Listahan"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "Naglo-load ng mga channel..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -457,9 +461,6 @@ msgstr "Naglo-load ng mga bansa..."
 
 msgid "Loading favorites..."
 msgstr "Nilo-load ang mga paborito..."
-
-msgid "Loading... %d channels so far"
-msgstr "Naglo-load... %d channel sa ngayon"
 
 msgid "Log Level"
 msgstr "Antas ng Log"
@@ -490,12 +491,6 @@ msgstr "Max Resulta ng Paghahanap"
 
 msgid "Max channels for country"
 msgstr "Max na channel para sa bansa"
-
-msgid "Memory Optimization"
-msgstr "Pag-optimize ng Memory"
-
-msgid "Next load will use fresh data"
-msgstr "Ang susunod na pag-load ay gagamit ng bagong data"
 
 msgid "No channel selected"
 msgstr "Walang napiling channel"
@@ -532,6 +527,10 @@ msgstr "Walang URL ng stream"
 
 msgid "No stream URL available"
 msgstr "Walang available na URL ng stream"
+
+#, fuzzy
+msgid "No stream URL for: %s"
+msgstr "Walang URL ng stream"
 
 msgid "No valid channels found in database"
 msgstr "Walang nakitang mga wastong channel sa database"
@@ -602,11 +601,12 @@ msgstr "Nire-refresh..."
 msgid "Remove '%s' from favorites?"
 msgstr "Alisin ang '%s' sa mga paborito?"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "Alisin ang TV Garden bouquet mula sa Enigma2?"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "Alisin ang Bouquet mula sa Enigma2"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Alisin ang TV Garden bouquet mula sa Enigma2?"
 
 msgid "Remove from Favorites"
 msgstr "Alisin sa Mga Paborito"
@@ -619,6 +619,9 @@ msgstr "Inalis sa mga paborito"
 
 msgid "Removed from favorites: %s"
 msgstr "Inalis sa mga paborito: %s"
+
+msgid "Resolving YouTube stream..."
+msgstr "Niresolba ang stream sa YouTube..."
 
 msgid "Save"
 msgstr "I-save"
@@ -731,9 +734,6 @@ msgstr "Matagumpay ang pag-update!"
 msgid "Updating plugin... Please wait"
 msgstr "Ina-update ang plugin... Mangyaring maghintay"
 
-msgid "Use Hardware Acceleration"
-msgstr "Gumamit ng Hardware Acceleration"
-
 msgid "User Agent"
 msgstr "Ahente ng Gumagamit"
 
@@ -754,11 +754,16 @@ msgstr "Mag-browse ayon sa Kategorya"
 msgid "Webcams by Country"
 msgstr "Mag-browse ayon sa Bansa"
 
-msgid "Will load fresh data next time"
-msgstr "Maglo-load ng bagong data sa susunod"
-
 msgid "You have the latest version of TVGarden."
 msgstr "Mayroon kang pinakabagong bersyon ng TVGarden."
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "Walang mga channel na ie-export"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "Walang available na URL ng stream"
 
 msgid "Your favorite channels"
 msgstr "Ang iyong mga paboritong channel"
@@ -780,6 +785,42 @@ msgstr "mga bansa"
 
 msgid "files and"
 msgstr "mga file at"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(nilaktawan ang %d YouTube)"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Mga Setting ng Pagganap ==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "Laki ng Buffer"
+
+#~ msgid "Cache cleared"
+#~ msgstr "Na-clear ang cache"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "Nabigo ang pag-export: %s"
+
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "Na-export ang %d channel sa %s"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "Nakumpleto ang hierarchical export"
+
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "Naglo-load... %d channel sa ngayon"
+
+#~ msgid "Memory Optimization"
+#~ msgstr "Pag-optimize ng Memory"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "Ang susunod na pag-load ay gagamit ng bagong data"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Gumamit ng Hardware Acceleration"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "Maglo-load ng bagong data sa susunod"
 
 #~ msgid "Animation"
 #~ msgstr "Animasyon"

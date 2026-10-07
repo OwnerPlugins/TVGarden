@@ -29,17 +29,17 @@ msgstr "%d 个收藏夹"
 msgid "(%d YouTube)"
 msgstr "（跳过 %d 个 YouTube）"
 
+msgid "(%d without stream)"
+msgstr "（%d 无流）"
+
 msgid "(filtered %d problematic)"
 msgstr "（过滤了 %d 个有问题的）"
 
 msgid "(limited to first %d)"
 msgstr "（仅限前 %d）"
 
-msgid "(skipped %d YouTube)"
-msgstr "（跳过 %d 个 YouTube）"
-
-msgid "1 MB"
-msgstr "1MB"
+msgid "1 hour"
+msgstr "1小时"
 
 msgid "10 results"
 msgstr "10 个结果"
@@ -56,11 +56,14 @@ msgstr "1000个频道"
 msgid "1000 results"
 msgstr "1000 个结果"
 
-msgid "2 MB"
-msgstr "2MB"
+msgid "15 minutes"
+msgstr "15分钟"
 
 msgid "2000 channels"
 msgstr "2000个频道"
+
+msgid "24 hours"
+msgstr "24小时"
 
 msgid "250 channels"
 msgstr "250个频道"
@@ -70,9 +73,6 @@ msgstr "250 个结果"
 
 msgid "2500 results"
 msgstr "2500 个结果"
-
-msgid "4 MB"
-msgstr "4MB"
 
 msgid "4000 results"
 msgstr "4000 个结果"
@@ -95,11 +95,11 @@ msgstr "5000个频道"
 msgid "5000 results"
 msgstr "5000 个结果"
 
-msgid "512 KB"
-msgstr ""
+msgid "6 hours"
+msgstr "6小时"
 
-msgid "8 MB"
-msgstr "8MB"
+msgid "7 days"
+msgstr "7天"
 
 msgid "=== Browser Settings ==="
 msgstr "===浏览器设置==="
@@ -118,9 +118,6 @@ msgstr "=== 日志设置 ==="
 
 msgid "=== Network Settings ==="
 msgstr "===网络设置==="
-
-msgid "=== Performance Settings ==="
-msgstr "===性能设置==="
 
 msgid "=== Player Settings ==="
 msgstr "===播放器设置==="
@@ -196,17 +193,18 @@ msgstr "按类别浏览频道"
 msgid "Browse webcams by country"
 msgstr "按国家/地区浏览频道"
 
-msgid "Buffer Size"
-msgstr "缓冲区大小"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = 更改 |确定=切换|停止=退出|通过卢卢拉"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "渠道信息"
 
 msgid "Cache Size"
 msgstr "缓存大小"
 
-msgid "Cache cleared"
-msgstr "缓存已清除"
+msgid "Cannot play: %s"
+msgstr "无法播放：%s"
 
 msgid "Categories"
 msgstr "类别"
@@ -218,6 +216,10 @@ msgid "Channel Menu"
 msgstr "频道菜单"
 
 msgid "Channel added to bouquet"
+msgstr "频道已添加到花束中"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "频道已添加到花束中"
 
 msgid "Channel not found in favorites"
@@ -362,14 +364,15 @@ msgstr "导出所有数据库（单个文件）"
 msgid "Export Current View"
 msgstr "导出当前视图"
 
+#, fuzzy
+msgid "Export already in progress..."
+msgstr "正在加载中..."
+
 msgid "Export error: %s"
 msgstr "导出错误：%s"
 
 msgid "Export failed"
 msgstr "导出失败"
-
-msgid "Export failed: %s"
-msgstr "导出失败：%s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "导出到 Enigma2 花束"
@@ -379,9 +382,6 @@ msgstr "将 {count} 个频道导出到花束“{name}”？"
 
 msgid "Exported"
 msgstr "出口"
-
-msgid "Exported %d channels to %s"
-msgstr "已将 %d 个频道导出到 %s"
 
 msgid "Exported %d channels to '%s'"
 msgstr "已将 %d 个频道导出到“%s”"
@@ -425,14 +425,14 @@ msgstr "找到 %d 个可播放频道"
 msgid "GStreamer"
 msgstr ""
 
-msgid "Hierarchical export completed"
-msgstr "分层导出完成"
-
 msgid "Hierarchical export completed!"
 msgstr "分层导出完成！"
 
 msgid "Info"
 msgstr "信息"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "安装它：opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "第 {} 项（共 {} 项）"
@@ -442,6 +442,10 @@ msgstr "键盘"
 
 msgid "List Position"
 msgstr "列表位置"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "正在加载频道..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -467,9 +471,6 @@ msgstr "正在加载国家/地区..."
 
 msgid "Loading favorites..."
 msgstr "正在加载收藏夹..."
-
-msgid "Loading... %d channels so far"
-msgstr "正在加载...到目前为止 %d 个频道"
 
 msgid "Log Level"
 msgstr "日志级别"
@@ -500,12 +501,6 @@ msgstr "最大搜索结果"
 
 msgid "Max channels for country"
 msgstr "国家/地区最大频道数"
-
-msgid "Memory Optimization"
-msgstr "内存优化"
-
-msgid "Next load will use fresh data"
-msgstr "下次加载将使用新数据"
 
 msgid "No channel selected"
 msgstr "未选择频道"
@@ -542,6 +537,10 @@ msgstr "无直播地址"
 
 msgid "No stream URL available"
 msgstr "没有可用的流 URL"
+
+#, fuzzy
+msgid "No stream URL for: %s"
+msgstr "无直播地址"
 
 msgid "No valid channels found in database"
 msgstr "数据库中找不到有效频道"
@@ -612,11 +611,12 @@ msgstr "清爽..."
 msgid "Remove '%s' from favorites?"
 msgstr "从收藏夹中删除“%s”？"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "从 Enigma2 中删除 TV Garden 花束？"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "从 Enigma2 中删除花束"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "从 Enigma2 中删除 TV Garden 花束？"
 
 msgid "Remove from Favorites"
 msgstr "从收藏夹中删除"
@@ -629,6 +629,9 @@ msgstr "已从收藏夹中删除"
 
 msgid "Removed from favorites: %s"
 msgstr "已从收藏夹中删除：%s"
+
+msgid "Resolving YouTube stream..."
+msgstr "解决 YouTube 流..."
 
 msgid "Save"
 msgstr "节省"
@@ -741,9 +744,6 @@ msgstr "更新成功！"
 msgid "Updating plugin... Please wait"
 msgstr "正在更新插件...请稍候"
 
-msgid "Use Hardware Acceleration"
-msgstr "使用硬件加速"
-
 msgid "User Agent"
 msgstr "用户代理"
 
@@ -764,11 +764,16 @@ msgstr "按类别浏览"
 msgid "Webcams by Country"
 msgstr "按国家浏览"
 
-msgid "Will load fresh data next time"
-msgstr "下次将加载新数据"
-
 msgid "You have the latest version of TVGarden."
 msgstr "您拥有最新版本的 TVGarden。"
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "没有导出渠道"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "没有可用的流 URL"
 
 msgid "Your favorite channels"
 msgstr "您最喜欢的频道"
@@ -790,6 +795,54 @@ msgstr "国家"
 
 msgid "files and"
 msgstr "文件和"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "（跳过 %d 个 YouTube）"
+
+#~ msgid "1 MB"
+#~ msgstr "1MB"
+
+#~ msgid "2 MB"
+#~ msgstr "2MB"
+
+#~ msgid "4 MB"
+#~ msgstr "4MB"
+
+#~ msgid "8 MB"
+#~ msgstr "8MB"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "===性能设置==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "缓冲区大小"
+
+#~ msgid "Cache cleared"
+#~ msgstr "缓存已清除"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "导出失败：%s"
+
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "已将 %d 个频道导出到 %s"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "分层导出完成"
+
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "正在加载...到目前为止 %d 个频道"
+
+#~ msgid "Memory Optimization"
+#~ msgstr "内存优化"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "下次加载将使用新数据"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "使用硬件加速"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "下次将加载新数据"
 
 #~ msgid "Animation"
 #~ msgstr "动画片"

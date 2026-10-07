@@ -25,17 +25,17 @@ msgstr "%d kedvenc"
 msgid "(%d YouTube)"
 msgstr "(kihagyva %d YouTube)"
 
+msgid "(%d without stream)"
+msgstr "(%d adatfolyam nélkül)"
+
 msgid "(filtered %d problematic)"
 msgstr "(szűrt %d problémás)"
 
 msgid "(limited to first %d)"
 msgstr "(az első %d-ra korlátozva)"
 
-msgid "(skipped %d YouTube)"
-msgstr "(kihagyva %d YouTube)"
-
-msgid "1 MB"
-msgstr "1 MB"
+msgid "1 hour"
+msgstr "1 óra"
 
 msgid "10 results"
 msgstr "10 találat"
@@ -54,12 +54,15 @@ msgstr "1000 csatorna"
 msgid "1000 results"
 msgstr "1000 csatorna"
 
-msgid "2 MB"
-msgstr "2 MB"
+msgid "15 minutes"
+msgstr "15 perc"
 
 #, fuzzy
 msgid "2000 channels"
 msgstr "1000 csatorna"
+
+msgid "24 hours"
+msgstr "24 óra"
 
 msgid "250 channels"
 msgstr "250 csatorna"
@@ -70,9 +73,6 @@ msgstr "250 csatorna"
 
 msgid "2500 results"
 msgstr "2500 találat"
-
-msgid "4 MB"
-msgstr "4 MB"
 
 msgid "4000 results"
 msgstr "4000 találat"
@@ -98,11 +98,11 @@ msgstr "500 csatorna"
 msgid "5000 results"
 msgstr "500 csatorna"
 
-msgid "512 KB"
-msgstr "512 KB"
+msgid "6 hours"
+msgstr "6 óra"
 
-msgid "8 MB"
-msgstr "8 MB"
+msgid "7 days"
+msgstr "7 nap"
 
 msgid "=== Browser Settings ==="
 msgstr "=== Böngészőbeállítások ==="
@@ -121,9 +121,6 @@ msgstr "=== Naplózási beállítások ==="
 
 msgid "=== Network Settings ==="
 msgstr "=== Hálózati beállítások ==="
-
-msgid "=== Performance Settings ==="
-msgstr "=== Teljesítménybeállítások ==="
 
 msgid "=== Player Settings ==="
 msgstr "=== Lejátszóbeállítások ==="
@@ -200,17 +197,18 @@ msgstr "Csatornák böngészése kategória szerint"
 msgid "Browse webcams by country"
 msgstr "Csatornák országok szerint"
 
-msgid "Buffer Size"
-msgstr "Pufferméret"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Változás | OK = Váltás | STOP = Kilépés | írta Lululla"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "Csatorna információk"
 
 msgid "Cache Size"
 msgstr "Cache méret"
 
-msgid "Cache cleared"
-msgstr "Gyorsítótár üres"
+msgid "Cannot play: %s"
+msgstr "Nem játszható: %s"
 
 msgid "Categories"
 msgstr "Kategóriák"
@@ -222,6 +220,10 @@ msgid "Channel Menu"
 msgstr "Csatorna menü"
 
 msgid "Channel added to bouquet"
+msgstr "Csatorna hozzáadva a csomaghoz"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "Csatorna hozzáadva a csomaghoz"
 
 msgid "Channel not found in favorites"
@@ -368,14 +370,15 @@ msgid "Export Current View"
 msgstr "Aktuális nézet exportálása"
 
 #, fuzzy
+msgid "Export already in progress..."
+msgstr "A kategóriák betöltése..."
+
+#, fuzzy
 msgid "Export error: %s"
 msgstr "Exportálás: %s"
 
 msgid "Export failed"
 msgstr "Exportálás sikertelen"
-
-msgid "Export failed: %s"
-msgstr "Exportálás sikertelen: %s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "Exportálás Enigma2 Bouquet-ba"
@@ -385,10 +388,6 @@ msgstr "{count} csatorna exportálása a(z) „{name}” csokorba?"
 
 msgid "Exported"
 msgstr "Exportált"
-
-#, fuzzy
-msgid "Exported %d channels to %s"
-msgstr "%d csatorna exportálása csokorba"
 
 #, fuzzy
 msgid "Exported %d channels to '%s'"
@@ -433,14 +432,14 @@ msgstr "%d lejátszható csatorna található"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "Hierarchical export completed"
-msgstr "A hierarchikus exportálás befejeződött"
-
 msgid "Hierarchical export completed!"
 msgstr "A hierarchikus exportálás befejeződött!"
 
 msgid "Info"
 msgstr "Információ"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "Telepítse a következővel: opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "{}/{} elem"
@@ -450,6 +449,10 @@ msgstr "Billentyűzet"
 
 msgid "List Position"
 msgstr "Lista pozíció"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "Csatornák betöltése..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -477,10 +480,6 @@ msgstr "Országok betöltése..."
 
 msgid "Loading favorites..."
 msgstr "Kedvencek betöltése..."
-
-#, fuzzy
-msgid "Loading... %d channels so far"
-msgstr "Csatornák betöltése..."
 
 msgid "Log Level"
 msgstr "Naplózás szintje"
@@ -514,12 +513,6 @@ msgstr "Maximális keresési eredmények"
 #, fuzzy
 msgid "Max channels for country"
 msgstr "Maximális csatornák száma országonként"
-
-msgid "Memory Optimization"
-msgstr "Memória optimalizálás"
-
-msgid "Next load will use fresh data"
-msgstr "A következő betöltés friss adatokat használ"
 
 msgid "No channel selected"
 msgstr "Nincs csatorna kiválasztva"
@@ -556,6 +549,10 @@ msgstr "Nincs stream URL"
 
 msgid "No stream URL available"
 msgstr "Nincs elérhető stream URL"
+
+#, fuzzy
+msgid "No stream URL for: %s"
+msgstr "Nincs stream URL"
 
 msgid "No valid channels found in database"
 msgstr "Nem található érvényes csatorna az adatbázisban"
@@ -628,11 +625,12 @@ msgstr "Üdítő..."
 msgid "Remove '%s' from favorites?"
 msgstr "Eltávolítja a(z) „%s” elemet a kedvencek közül?"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "Távolítsa el a TV Garden csokrot az Enigma2-ből?"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "Bouquet eltávolítása az Enigma2-ből"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Távolítsa el a TV Garden csokrot az Enigma2-ből?"
 
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a kedvencek közül"
@@ -645,6 +643,9 @@ msgstr "Eltávolítva a kedvencek közül"
 
 msgid "Removed from favorites: %s"
 msgstr "Eltávolítva a kedvencek közül: %s"
+
+msgid "Resolving YouTube stream..."
+msgstr "YouTube-adatfolyam megoldása..."
 
 msgid "Save"
 msgstr "Mentés"
@@ -727,7 +728,7 @@ msgstr "Ismeretlen"
 
 msgid "Update available!"
 msgstr "Frissítés elérhető!"
-"Frissítés elérhető!Frissítés elérhető!{server_version} {version_server}\n"
+"Frissítés elérhető!Frissítés elérhető!Frissítés elérhető!{server_version} {version_server}\n"
 "{installed_version} {version}\n"
 "\n"
 "{update_available}"
@@ -762,9 +763,6 @@ msgstr "Sikeres frissítés!"
 msgid "Updating plugin... Please wait"
 msgstr "Bővítmény frissítése... Kérjük, várjon"
 
-msgid "Use Hardware Acceleration"
-msgstr "Hardveres gyorsítás használata"
-
 msgid "User Agent"
 msgstr "Böngésző"
 
@@ -785,12 +783,17 @@ msgstr "Kategória szerint böngészés"
 msgid "Webcams by Country"
 msgstr "Országok szerint böngészés"
 
-msgid "Will load fresh data next time"
-msgstr "Legközelebb friss adatokat tölt be"
-
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "A TV Garden legújabb verziójával rendelkezel."
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "Nincs exportálható csatorna"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "Nincs elérhető stream URL"
 
 msgid "Your favorite channels"
 msgstr "Kedvenc csatornáid"
@@ -814,6 +817,59 @@ msgstr "országokban"
 
 msgid "files and"
 msgstr "fájlok és"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(kihagyva %d YouTube)"
+
+#~ msgid "1 MB"
+#~ msgstr "1 MB"
+
+#~ msgid "2 MB"
+#~ msgstr "2 MB"
+
+#~ msgid "4 MB"
+#~ msgstr "4 MB"
+
+#~ msgid "512 KB"
+#~ msgstr "512 KB"
+
+#~ msgid "8 MB"
+#~ msgstr "8 MB"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Teljesítménybeállítások ==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "Pufferméret"
+
+#~ msgid "Cache cleared"
+#~ msgstr "Gyorsítótár üres"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "Exportálás sikertelen: %s"
+
+#, fuzzy
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "%d csatorna exportálása csokorba"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "A hierarchikus exportálás befejeződött"
+
+#, fuzzy
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "Csatornák betöltése..."
+
+#~ msgid "Memory Optimization"
+#~ msgstr "Memória optimalizálás"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "A következő betöltés friss adatokat használ"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Hardveres gyorsítás használata"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "Legközelebb friss adatokat tölt be"
 
 #~ msgid "Animation"
 #~ msgstr "Animáció"

@@ -19,17 +19,17 @@ msgstr "%d kegemaran"
 msgid "(%d YouTube)"
 msgstr "(dilangkau %d YouTube)"
 
+msgid "(%d without stream)"
+msgstr "(%d tanpa strim)"
+
 msgid "(filtered %d problematic)"
 msgstr "(ditapis %d bermasalah)"
 
 msgid "(limited to first %d)"
 msgstr "(terhad kepada %d pertama)"
 
-msgid "(skipped %d YouTube)"
-msgstr "(dilangkau %d YouTube)"
-
-msgid "1 MB"
-msgstr ""
+msgid "1 hour"
+msgstr "1 jam"
 
 msgid "10 results"
 msgstr "10 keputusan"
@@ -46,11 +46,14 @@ msgstr "1000 saluran"
 msgid "1000 results"
 msgstr "1000 keputusan"
 
-msgid "2 MB"
-msgstr ""
+msgid "15 minutes"
+msgstr "15 minit"
 
 msgid "2000 channels"
 msgstr "2000 saluran"
+
+msgid "24 hours"
+msgstr "24 jam"
 
 msgid "250 channels"
 msgstr "250 saluran"
@@ -60,9 +63,6 @@ msgstr "250 keputusan"
 
 msgid "2500 results"
 msgstr "2500 keputusan"
-
-msgid "4 MB"
-msgstr ""
 
 msgid "4000 results"
 msgstr "4000 keputusan"
@@ -85,11 +85,11 @@ msgstr "5000 saluran"
 msgid "5000 results"
 msgstr "5000 keputusan"
 
-msgid "512 KB"
-msgstr ""
+msgid "6 hours"
+msgstr "6 jam"
 
-msgid "8 MB"
-msgstr ""
+msgid "7 days"
+msgstr "7 hari"
 
 msgid "=== Browser Settings ==="
 msgstr "=== Tetapan Pelayar ==="
@@ -108,9 +108,6 @@ msgstr "=== Tetapan Log ==="
 
 msgid "=== Network Settings ==="
 msgstr "=== Tetapan Rangkaian ==="
-
-msgid "=== Performance Settings ==="
-msgstr "=== Tetapan Prestasi ==="
 
 msgid "=== Player Settings ==="
 msgstr "=== Tetapan Pemain ==="
@@ -186,17 +183,18 @@ msgstr "Semak imbas saluran mengikut kategori"
 msgid "Browse webcams by country"
 msgstr "Semak imbas saluran mengikut negara"
 
-msgid "Buffer Size"
-msgstr "Saiz Penampan"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Tukar | OK = Togol | BERHENTI = Keluar | oleh Lululla"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "Maklumat Saluran"
 
 msgid "Cache Size"
 msgstr "Saiz Cache"
 
-msgid "Cache cleared"
-msgstr "Cache dikosongkan"
+msgid "Cannot play: %s"
+msgstr "Tidak boleh bermain: %s"
 
 msgid "Categories"
 msgstr "Kategori"
@@ -208,6 +206,10 @@ msgid "Channel Menu"
 msgstr "Menu Saluran"
 
 msgid "Channel added to bouquet"
+msgstr "Saluran ditambahkan pada sejambak"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "Saluran ditambahkan pada sejambak"
 
 msgid "Channel not found in favorites"
@@ -352,14 +354,15 @@ msgstr "Eksport SEMUA Pangkalan Data (Fail Tunggal)"
 msgid "Export Current View"
 msgstr "Eksport Pandangan Semasa"
 
+#, fuzzy
+msgid "Export already in progress..."
+msgstr "Memuatkan sedang berjalan..."
+
 msgid "Export error: %s"
 msgstr "Ralat eksport: %s"
 
 msgid "Export failed"
 msgstr "Eksport gagal"
-
-msgid "Export failed: %s"
-msgstr "Eksport gagal: %s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "Eksport ke Enigma2 Bouquet"
@@ -369,9 +372,6 @@ msgstr "Eksport {count} saluran ke jambangan '{name}'?"
 
 msgid "Exported"
 msgstr "Dieksport"
-
-msgid "Exported %d channels to %s"
-msgstr "Mengeksport %d saluran ke %s"
 
 msgid "Exported %d channels to '%s'"
 msgstr "Mengeksport %d saluran ke '%s'"
@@ -415,14 +415,14 @@ msgstr "Menjumpai %d saluran yang boleh dimainkan"
 msgid "GStreamer"
 msgstr ""
 
-msgid "Hierarchical export completed"
-msgstr "Eksport hierarki selesai"
-
 msgid "Hierarchical export completed!"
 msgstr "Eksport hierarki selesai!"
 
 msgid "Info"
 msgstr "info"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "Pasang dengan: opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "Item {} daripada {}"
@@ -432,6 +432,10 @@ msgstr "papan kekunci"
 
 msgid "List Position"
 msgstr "Kedudukan Senarai"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "Memuatkan saluran..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -457,9 +461,6 @@ msgstr "Memuatkan negara..."
 
 msgid "Loading favorites..."
 msgstr "Memuatkan kegemaran..."
-
-msgid "Loading... %d channels so far"
-msgstr "Memuatkan... %d saluran setakat ini"
 
 msgid "Log Level"
 msgstr "Tahap Log"
@@ -490,12 +491,6 @@ msgstr "Hasil Carian Maks"
 
 msgid "Max channels for country"
 msgstr "Saluran maksimum untuk negara"
-
-msgid "Memory Optimization"
-msgstr "Pengoptimuman Memori"
-
-msgid "Next load will use fresh data"
-msgstr "Muatan seterusnya akan menggunakan data baharu"
 
 msgid "No channel selected"
 msgstr "Tiada saluran dipilih"
@@ -532,6 +527,10 @@ msgstr "Tiada URL strim"
 
 msgid "No stream URL available"
 msgstr "Tiada URL strim tersedia"
+
+#, fuzzy
+msgid "No stream URL for: %s"
+msgstr "Tiada URL strim"
 
 msgid "No valid channels found in database"
 msgstr "Tiada saluran yang sah ditemui dalam pangkalan data"
@@ -602,11 +601,12 @@ msgstr "Menyegarkan..."
 msgid "Remove '%s' from favorites?"
 msgstr "Alih keluar '%s' daripada kegemaran?"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "Alih keluar jambangan TV Garden daripada Enigma2?"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "Keluarkan Bouquet dari Enigma2"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Alih keluar jambangan TV Garden daripada Enigma2?"
 
 msgid "Remove from Favorites"
 msgstr "Alih keluar daripada Kegemaran"
@@ -619,6 +619,9 @@ msgstr "Dialih keluar daripada kegemaran"
 
 msgid "Removed from favorites: %s"
 msgstr "Dialih keluar daripada kegemaran: %s"
+
+msgid "Resolving YouTube stream..."
+msgstr "Menyelesaikan strim YouTube..."
 
 msgid "Save"
 msgstr "Jimat"
@@ -731,9 +734,6 @@ msgstr "Kemas kini berjaya!"
 msgid "Updating plugin... Please wait"
 msgstr "Mengemas kini pemalam... Sila tunggu"
 
-msgid "Use Hardware Acceleration"
-msgstr "Gunakan Pecutan Perkakasan"
-
 msgid "User Agent"
 msgstr "Ejen Pengguna"
 
@@ -754,11 +754,16 @@ msgstr "Semak imbas mengikut Kategori"
 msgid "Webcams by Country"
 msgstr "Semak imbas mengikut Negara"
 
-msgid "Will load fresh data next time"
-msgstr "Akan memuatkan data baharu lain kali"
-
 msgid "You have the latest version of TVGarden."
 msgstr "Anda mempunyai versi terkini TVGarden."
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "Tiada saluran untuk dieksport"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "Tiada URL strim tersedia"
 
 msgid "Your favorite channels"
 msgstr "Saluran kegemaran anda"
@@ -780,6 +785,42 @@ msgstr "negara"
 
 msgid "files and"
 msgstr "fail dan"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(dilangkau %d YouTube)"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Tetapan Prestasi ==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "Saiz Penampan"
+
+#~ msgid "Cache cleared"
+#~ msgstr "Cache dikosongkan"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "Eksport gagal: %s"
+
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "Mengeksport %d saluran ke %s"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "Eksport hierarki selesai"
+
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "Memuatkan... %d saluran setakat ini"
+
+#~ msgid "Memory Optimization"
+#~ msgstr "Pengoptimuman Memori"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "Muatan seterusnya akan menggunakan data baharu"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Gunakan Pecutan Perkakasan"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "Akan memuatkan data baharu lain kali"
 
 #~ msgid "Animation"
 #~ msgstr "Animasi"

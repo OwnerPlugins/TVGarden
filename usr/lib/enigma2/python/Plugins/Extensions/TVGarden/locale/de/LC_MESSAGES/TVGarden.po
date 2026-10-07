@@ -29,17 +29,17 @@ msgstr "%d Favoriten"
 msgid "(%d YouTube)"
 msgstr "(%d YouTube übersprungen)"
 
+msgid "(%d without stream)"
+msgstr "(%d ohne Stream)"
+
 msgid "(filtered %d problematic)"
 msgstr "(gefiltert %d problematisch)"
 
 msgid "(limited to first %d)"
 msgstr "(begrenzt auf das erste %d)"
 
-msgid "(skipped %d YouTube)"
-msgstr "(%d YouTube übersprungen)"
-
-msgid "1 MB"
-msgstr ""
+msgid "1 hour"
+msgstr "1 Stunde"
 
 msgid "10 results"
 msgstr "10 Ergebnisse"
@@ -58,11 +58,14 @@ msgstr "1000 Kanäle"
 msgid "1000 results"
 msgstr "1000 Kanäle"
 
-msgid "2 MB"
-msgstr ""
+msgid "15 minutes"
+msgstr "15 Minuten"
 
 msgid "2000 channels"
 msgstr "2000 Kanäle"
+
+msgid "24 hours"
+msgstr "24 Stunden"
 
 msgid "250 channels"
 msgstr "250 Kanäle"
@@ -73,9 +76,6 @@ msgstr "250 Kanäle"
 
 msgid "2500 results"
 msgstr "2500 Ergebnisse"
-
-msgid "4 MB"
-msgstr ""
 
 msgid "4000 results"
 msgstr "4000 Ergebnisse"
@@ -99,11 +99,11 @@ msgstr "5000 Kanäle"
 msgid "5000 results"
 msgstr "5000 Ergebnisse"
 
-msgid "512 KB"
-msgstr ""
+msgid "6 hours"
+msgstr "6 Stunden"
 
-msgid "8 MB"
-msgstr ""
+msgid "7 days"
+msgstr "7 Tage"
 
 msgid "=== Browser Settings ==="
 msgstr "=== Browsereinstellungen ==="
@@ -122,9 +122,6 @@ msgstr "=== Protokollierungseinstellungen ==="
 
 msgid "=== Network Settings ==="
 msgstr "=== Netzwerkeinstellungen ==="
-
-msgid "=== Performance Settings ==="
-msgstr "=== Leistungseinstellungen ==="
 
 msgid "=== Player Settings ==="
 msgstr "=== Player-Einstellungen ==="
@@ -201,17 +198,18 @@ msgstr "Kanäle nach Kategorie durchsuchen"
 msgid "Browse webcams by country"
 msgstr "Kanäle nach Land durchsuchen"
 
-msgid "Buffer Size"
-msgstr "Puffergröße"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Veränderung | OK = Umschalten | STOP = Beenden | von Lululla"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "Kanalinformationen"
 
 msgid "Cache Size"
 msgstr "Cache Größe"
 
-msgid "Cache cleared"
-msgstr "Cache geleert"
+msgid "Cannot play: %s"
+msgstr "Kann nicht abgespielt werden: %s"
 
 msgid "Categories"
 msgstr "Kategorien"
@@ -223,6 +221,10 @@ msgid "Channel Menu"
 msgstr "Kanalmenü"
 
 msgid "Channel added to bouquet"
+msgstr "Kanal zum Blumenstrauß hinzugefügt"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "Kanal zum Blumenstrauß hinzugefügt"
 
 msgid "Channel not found in favorites"
@@ -368,14 +370,15 @@ msgstr "ALLE Datenbank exportieren (einzelne Datei)"
 msgid "Export Current View"
 msgstr "Aktuelle Ansicht exportieren"
 
+#, fuzzy
+msgid "Export already in progress..."
+msgstr "Lade Kategorien..."
+
 msgid "Export error: %s"
 msgstr "Exportfehler: %s"
 
 msgid "Export failed"
 msgstr "Der Export ist fehlgeschlagen"
-
-msgid "Export failed: %s"
-msgstr "Export fehlgeschlagen: %s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "Export nach Enigma2 Bouquet"
@@ -385,9 +388,6 @@ msgstr "{count} Kanäle in Bouquet „{name}“ exportieren?"
 
 msgid "Exported"
 msgstr "Exportiert"
-
-msgid "Exported %d channels to %s"
-msgstr "%d Kanäle nach %s exportiert"
 
 msgid "Exported %d channels to '%s'"
 msgstr "%d Kanäle nach „%s“ exportiert"
@@ -431,14 +431,14 @@ msgstr "%d abspielbare Kanäle gefunden"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "Hierarchical export completed"
-msgstr "Hierarchischer Export abgeschlossen"
-
 msgid "Hierarchical export completed!"
 msgstr "Hierarchischer Export abgeschlossen!"
 
 msgid "Info"
 msgstr "Info"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "Installieren Sie es mit: opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "Artikel {} von {}"
@@ -448,6 +448,10 @@ msgstr "Tastatur"
 
 msgid "List Position"
 msgstr "Listenposition"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "Lade Kanäle..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -475,10 +479,6 @@ msgstr "Länder werden geladen..."
 
 msgid "Loading favorites..."
 msgstr "Favoriten werden geladen..."
-
-#, fuzzy
-msgid "Loading... %d channels so far"
-msgstr "Lade Kanäle..."
 
 msgid "Log Level"
 msgstr "Protokollierungsstufe"
@@ -509,12 +509,6 @@ msgstr "Maximale Suchergebnisse"
 
 msgid "Max channels for country"
 msgstr "Maximale Anzahl an Kanälen für das Land"
-
-msgid "Memory Optimization"
-msgstr "Speicheroptimierung"
-
-msgid "Next load will use fresh data"
-msgstr "Beim nächsten Ladevorgang werden neue Daten verwendet"
 
 msgid "No channel selected"
 msgstr "Kein Kanal ausgewählt"
@@ -551,6 +545,10 @@ msgstr "Keine Stream-URL"
 
 msgid "No stream URL available"
 msgstr "Keine Stream-URL verfügbar"
+
+#, fuzzy
+msgid "No stream URL for: %s"
+msgstr "Keine Stream-URL"
 
 msgid "No valid channels found in database"
 msgstr "In der Datenbank wurden keine gültigen Kanäle gefunden"
@@ -622,11 +620,12 @@ msgstr "Aktualisierung…"
 msgid "Remove '%s' from favorites?"
 msgstr "„%s“ aus den Favoriten entfernen?"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "TV Garden Bouquet aus Enigma2 entfernen?"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "Entfernen Sie Bouquet aus Enigma2"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "TV Garden Bouquet aus Enigma2 entfernen?"
 
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
@@ -639,6 +638,9 @@ msgstr "Aus Favoriten entfernt"
 
 msgid "Removed from favorites: %s"
 msgstr "Aus den Favoriten entfernt: %s"
+
+msgid "Resolving YouTube stream..."
+msgstr "YouTube-Stream wird aufgelöst..."
 
 msgid "Save"
 msgstr "Speichern"
@@ -752,9 +754,6 @@ msgstr "Update erfolgreich!"
 msgid "Updating plugin... Please wait"
 msgstr "Plugin wird aktualisiert... Bitte warten"
 
-msgid "Use Hardware Acceleration"
-msgstr "Verwenden Sie Hardwarebeschleunigung"
-
 msgid "User Agent"
 msgstr "User Agent"
 
@@ -775,11 +774,16 @@ msgstr "Nach Kategorie suchen"
 msgid "Webcams by Country"
 msgstr "Nach Land suchen"
 
-msgid "Will load fresh data next time"
-msgstr "Werde beim nächsten Mal neue Daten laden"
-
 msgid "You have the latest version of TVGarden."
 msgstr "Sie haben die neueste Version von TVGarden."
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "Keine Kanäle zum Exportieren"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "Keine Stream-URL verfügbar"
 
 msgid "Your favorite channels"
 msgstr "Deine Favoriten Kanäle"
@@ -803,6 +807,43 @@ msgstr "Länder"
 
 msgid "files and"
 msgstr "Dateien und"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(%d YouTube übersprungen)"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Leistungseinstellungen ==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "Puffergröße"
+
+#~ msgid "Cache cleared"
+#~ msgstr "Cache geleert"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "Export fehlgeschlagen: %s"
+
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "%d Kanäle nach %s exportiert"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "Hierarchischer Export abgeschlossen"
+
+#, fuzzy
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "Lade Kanäle..."
+
+#~ msgid "Memory Optimization"
+#~ msgstr "Speicheroptimierung"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "Beim nächsten Ladevorgang werden neue Daten verwendet"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Verwenden Sie Hardwarebeschleunigung"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "Werde beim nächsten Mal neue Daten laden"
 
 #~ msgid "Animation"
 #~ msgstr "Animation"

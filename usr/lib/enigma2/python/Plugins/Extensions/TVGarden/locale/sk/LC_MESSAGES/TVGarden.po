@@ -25,17 +25,17 @@ msgstr "%d obľúbených"
 msgid "(%d YouTube)"
 msgstr "(preskočené %d YouTube)"
 
+msgid "(%d without stream)"
+msgstr "(%d bez streamu)"
+
 msgid "(filtered %d problematic)"
 msgstr "(filtrované %d problematické)"
 
 msgid "(limited to first %d)"
 msgstr "(obmedzené na prvých %d)"
 
-msgid "(skipped %d YouTube)"
-msgstr "(preskočené %d YouTube)"
-
-msgid "1 MB"
-msgstr "1 MB"
+msgid "1 hour"
+msgstr "1 hodina"
 
 msgid "10 results"
 msgstr "10 výsledkov"
@@ -54,12 +54,15 @@ msgstr "1000 kanálov"
 msgid "1000 results"
 msgstr "1000 kanálov"
 
-msgid "2 MB"
-msgstr "2 MB"
+msgid "15 minutes"
+msgstr "15 minút"
 
 #, fuzzy
 msgid "2000 channels"
 msgstr "1000 kanálov"
+
+msgid "24 hours"
+msgstr "24 hodín"
 
 msgid "250 channels"
 msgstr "250 kanálov"
@@ -70,9 +73,6 @@ msgstr "250 kanálov"
 
 msgid "2500 results"
 msgstr "2500 výsledkov"
-
-msgid "4 MB"
-msgstr "4 MB"
 
 msgid "4000 results"
 msgstr "4000 výsledkov"
@@ -98,11 +98,11 @@ msgstr "500 kanálov"
 msgid "5000 results"
 msgstr "500 kanálov"
 
-msgid "512 KB"
-msgstr "512 kB"
+msgid "6 hours"
+msgstr "6 hodín"
 
-msgid "8 MB"
-msgstr "8 MB"
+msgid "7 days"
+msgstr "7 dní"
 
 msgid "=== Browser Settings ==="
 msgstr "=== Nastavenia prehliadača ==="
@@ -121,9 +121,6 @@ msgstr "=== Nastavenia protokolovania ==="
 
 msgid "=== Network Settings ==="
 msgstr "=== Nastavenia siete ==="
-
-msgid "=== Performance Settings ==="
-msgstr "=== Nastavenia výkonu ==="
 
 msgid "=== Player Settings ==="
 msgstr "=== Nastavenia prehrávača ==="
@@ -200,17 +197,18 @@ msgstr "Prehliadanie kanálov podľa kategórie"
 msgid "Browse webcams by country"
 msgstr "Prehliadať kanály podľa krajiny"
 
-msgid "Buffer Size"
-msgstr "Veľkosť zásobníka"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = zmena | OK = Prepnúť | STOP = výstup | od Lulully"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "Informácie o kanáli"
 
 msgid "Cache Size"
 msgstr "Veľkosť vyrovnávacej pamäte"
 
-msgid "Cache cleared"
-msgstr "Vyrovnávacia pamäť bola vymazaná"
+msgid "Cannot play: %s"
+msgstr "Nedá sa prehrať: %s"
 
 msgid "Categories"
 msgstr "Kategórie"
@@ -222,6 +220,10 @@ msgid "Channel Menu"
 msgstr "Ponuka kanálov"
 
 msgid "Channel added to bouquet"
+msgstr "Kanál pridaný do kytice"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "Kanál pridaný do kytice"
 
 msgid "Channel not found in favorites"
@@ -368,14 +370,15 @@ msgid "Export Current View"
 msgstr "Exportovať aktuálne zobrazenie"
 
 #, fuzzy
+msgid "Export already in progress..."
+msgstr "Načítavajú sa kategórie..."
+
+#, fuzzy
 msgid "Export error: %s"
 msgstr "Exportovať: %s"
 
 msgid "Export failed"
 msgstr "Export zlyhal"
-
-msgid "Export failed: %s"
-msgstr "Export zlyhal: %s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "Exportovať do Enigma2 Bouquet"
@@ -385,10 +388,6 @@ msgstr "Exportovať {count} kanálov do skupiny '{name}'?"
 
 msgid "Exported"
 msgstr "Exportované"
-
-#, fuzzy
-msgid "Exported %d channels to %s"
-msgstr "Exportovaných %d kanálov do bouquetu"
 
 #, fuzzy
 msgid "Exported %d channels to '%s'"
@@ -433,14 +432,14 @@ msgstr "Nájdených %d prehrávateľných kanálov"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "Hierarchical export completed"
-msgstr "Hierarchický export dokončený"
-
 msgid "Hierarchical export completed!"
 msgstr "Hierarchický export dokončený!"
 
 msgid "Info"
 msgstr "Informácie"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "Nainštalujte ho pomocou: opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "Položka {} z {}"
@@ -450,6 +449,10 @@ msgstr "Klávesnica"
 
 msgid "List Position"
 msgstr "Pozícia zoznamu"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "Načítavajú sa kanály..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -477,10 +480,6 @@ msgstr "Načítavajú sa krajiny..."
 
 msgid "Loading favorites..."
 msgstr "Načítavajú sa obľúbené položky..."
-
-#, fuzzy
-msgid "Loading... %d channels so far"
-msgstr "Načítavajú sa kanály..."
 
 msgid "Log Level"
 msgstr "Úroveň záznamu"
@@ -514,12 +513,6 @@ msgstr "Maximálny počet výsledkov vyhľadávania"
 #, fuzzy
 msgid "Max channels for country"
 msgstr "Maximálny počet kanálov na krajinu"
-
-msgid "Memory Optimization"
-msgstr "Optimalizácia pamäte"
-
-msgid "Next load will use fresh data"
-msgstr "Ďalšie načítanie použije čerstvé údaje"
 
 msgid "No channel selected"
 msgstr "Nie je vybraný žiadny kanál"
@@ -556,6 +549,10 @@ msgstr "Žiadna URL adresa streamu"
 
 msgid "No stream URL available"
 msgstr "Nie je k dispozícii žiadna URL adresa streamu"
+
+#, fuzzy
+msgid "No stream URL for: %s"
+msgstr "Žiadna URL adresa streamu"
 
 msgid "No valid channels found in database"
 msgstr "V databáze sa nenašli žiadne platné kanály"
@@ -628,11 +625,12 @@ msgstr "Osviežujúce..."
 msgid "Remove '%s' from favorites?"
 msgstr "Odstrániť „%s“ z obľúbených?"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "Odstrániť kyticu TV Garden z Enigmy2?"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "Odstrániť Kyticu z Enigmy2"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Odstrániť kyticu TV Garden z Enigmy2?"
 
 msgid "Remove from Favorites"
 msgstr "Odstránenie z obľúbených"
@@ -645,6 +643,9 @@ msgstr "Odstránené z obľúbených"
 
 msgid "Removed from favorites: %s"
 msgstr "Odstránené z obľúbených: %s"
+
+msgid "Resolving YouTube stream..."
+msgstr "Rieši sa stream YouTube..."
 
 msgid "Save"
 msgstr "Uložiť"
@@ -758,9 +759,6 @@ msgstr "Aktualizácia úspešná!"
 msgid "Updating plugin... Please wait"
 msgstr "Aktualizácia pluginu... Čakajte prosím"
 
-msgid "Use Hardware Acceleration"
-msgstr "Používajte hardvérovú akceleráciu"
-
 msgid "User Agent"
 msgstr "Agent používateľa"
 
@@ -781,12 +779,17 @@ msgstr "Prehľadávať podľa kategórie"
 msgid "Webcams by Country"
 msgstr "Prehľadávať podľa krajiny"
 
-msgid "Will load fresh data next time"
-msgstr "Nabudúce sa načítajú čerstvé údaje"
-
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "Máte najnovšiu verziu TV Garden."
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "Žiadne kanály na export"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "Nie je k dispozícii žiadna URL adresa streamu"
 
 msgid "Your favorite channels"
 msgstr "Vaše obľúbené kanály"
@@ -810,6 +813,59 @@ msgstr "krajín"
 
 msgid "files and"
 msgstr "súbory a"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(preskočené %d YouTube)"
+
+#~ msgid "1 MB"
+#~ msgstr "1 MB"
+
+#~ msgid "2 MB"
+#~ msgstr "2 MB"
+
+#~ msgid "4 MB"
+#~ msgstr "4 MB"
+
+#~ msgid "512 KB"
+#~ msgstr "512 kB"
+
+#~ msgid "8 MB"
+#~ msgstr "8 MB"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Nastavenia výkonu ==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "Veľkosť zásobníka"
+
+#~ msgid "Cache cleared"
+#~ msgstr "Vyrovnávacia pamäť bola vymazaná"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "Export zlyhal: %s"
+
+#, fuzzy
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "Exportovaných %d kanálov do bouquetu"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "Hierarchický export dokončený"
+
+#, fuzzy
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "Načítavajú sa kanály..."
+
+#~ msgid "Memory Optimization"
+#~ msgstr "Optimalizácia pamäte"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "Ďalšie načítanie použije čerstvé údaje"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Používajte hardvérovú akceleráciu"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "Nabudúce sa načítajú čerstvé údaje"
 
 #~ msgid "Animation"
 #~ msgstr "Animácia"

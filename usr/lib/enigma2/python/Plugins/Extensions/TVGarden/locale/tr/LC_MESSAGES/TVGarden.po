@@ -29,17 +29,17 @@ msgstr "%d favori"
 msgid "(%d YouTube)"
 msgstr "(%d YouTube atlandı)"
 
+msgid "(%d without stream)"
+msgstr "(%d akış olmadan)"
+
 msgid "(filtered %d problematic)"
 msgstr "(filtrelenen %d sorunlu)"
 
 msgid "(limited to first %d)"
 msgstr "(ilk %d ile sınırlıdır)"
 
-msgid "(skipped %d YouTube)"
-msgstr "(%d YouTube atlandı)"
-
-msgid "1 MB"
-msgstr ""
+msgid "1 hour"
+msgstr "1 saat"
 
 msgid "10 results"
 msgstr "10 sonuç"
@@ -56,11 +56,14 @@ msgstr "1000 kanal"
 msgid "1000 results"
 msgstr "1000 sonuç"
 
-msgid "2 MB"
-msgstr ""
+msgid "15 minutes"
+msgstr "15 dakika"
 
 msgid "2000 channels"
 msgstr "2000 kanal"
+
+msgid "24 hours"
+msgstr "24 saat"
 
 msgid "250 channels"
 msgstr "250 kanal"
@@ -70,9 +73,6 @@ msgstr "250 sonuç"
 
 msgid "2500 results"
 msgstr "2500 sonuç"
-
-msgid "4 MB"
-msgstr "4MB"
 
 msgid "4000 results"
 msgstr "4000 sonuç"
@@ -95,11 +95,11 @@ msgstr "5000 kanal"
 msgid "5000 results"
 msgstr "5000 sonuç"
 
-msgid "512 KB"
-msgstr ""
+msgid "6 hours"
+msgstr "6 saat"
 
-msgid "8 MB"
-msgstr "8MB"
+msgid "7 days"
+msgstr "7 gün"
 
 msgid "=== Browser Settings ==="
 msgstr "=== Tarayıcı Ayarları ==="
@@ -118,9 +118,6 @@ msgstr "=== Günlük Ayarları ==="
 
 msgid "=== Network Settings ==="
 msgstr "=== Ağ Ayarları ==="
-
-msgid "=== Performance Settings ==="
-msgstr "=== Performans Ayarları ==="
 
 msgid "=== Player Settings ==="
 msgstr "=== Oyuncu Ayarları ==="
@@ -196,17 +193,18 @@ msgstr "Kanallara kategoriye göre göz atın"
 msgid "Browse webcams by country"
 msgstr "Kanallara ülkeye göre göz atın"
 
-msgid "Buffer Size"
-msgstr "Arabellek Boyutu"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Değiştir | Tamam = Değiştir | DUR = Çıkış | tarafından Lululla"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "Kanal Bilgileri"
 
 msgid "Cache Size"
 msgstr "Önbellek Boyutu"
 
-msgid "Cache cleared"
-msgstr "Önbellek temizlendi"
+msgid "Cannot play: %s"
+msgstr "Oynatılamıyor: %s"
 
 msgid "Categories"
 msgstr "Kategoriler"
@@ -218,6 +216,10 @@ msgid "Channel Menu"
 msgstr "Kanal Menüsü"
 
 msgid "Channel added to bouquet"
+msgstr "Kanal bukete eklendi"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "Kanal bukete eklendi"
 
 msgid "Channel not found in favorites"
@@ -362,14 +364,15 @@ msgstr "TÜM Veritabanını Dışa Aktar (Tek Dosya)"
 msgid "Export Current View"
 msgstr "Geçerli Görünümü Dışa Aktar"
 
+#, fuzzy
+msgid "Export already in progress..."
+msgstr "Yükleme işlemi zaten devam ediyor..."
+
 msgid "Export error: %s"
 msgstr "Dışa aktarma hatası: %s"
 
 msgid "Export failed"
 msgstr "Dışa aktarma başarısız oldu"
-
-msgid "Export failed: %s"
-msgstr "Dışa aktarma başarısız oldu: %s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "Enigma2 Buketine Aktar"
@@ -379,9 +382,6 @@ msgstr "{count} kanal '{name}' buketine aktarılsın mı?"
 
 msgid "Exported"
 msgstr "Dışa aktarıldı"
-
-msgid "Exported %d channels to %s"
-msgstr "%d kanal %s'e aktarıldı"
 
 msgid "Exported %d channels to '%s'"
 msgstr "%d kanal '%s' dizinine aktarıldı"
@@ -425,14 +425,14 @@ msgstr "%d oynanabilir kanal bulundu"
 msgid "GStreamer"
 msgstr "Gstreamer"
 
-msgid "Hierarchical export completed"
-msgstr "Hiyerarşik dışa aktarma tamamlandı"
-
 msgid "Hierarchical export completed!"
 msgstr "Hiyerarşik dışa aktarma tamamlandı!"
 
 msgid "Info"
 msgstr "Bilgi"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "Şununla yükleyin: opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "Öğe {} / {}"
@@ -442,6 +442,10 @@ msgstr "Klavye"
 
 msgid "List Position"
 msgstr "Liste Konumu"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "Kanallar yükleniyor..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -467,9 +471,6 @@ msgstr "Ülkeler yükleniyor..."
 
 msgid "Loading favorites..."
 msgstr "Favoriler yükleniyor..."
-
-msgid "Loading... %d channels so far"
-msgstr "Yükleniyor... Şu ana kadar %d kanal"
 
 msgid "Log Level"
 msgstr "Günlük Düzeyi"
@@ -500,12 +501,6 @@ msgstr "Maksimum Arama Sonuçları"
 
 msgid "Max channels for country"
 msgstr "Ülke için maksimum kanallar"
-
-msgid "Memory Optimization"
-msgstr "Bellek Optimizasyonu"
-
-msgid "Next load will use fresh data"
-msgstr "Sonraki yüklemede yeni veriler kullanılacak"
 
 msgid "No channel selected"
 msgstr "Hiçbir kanal seçilmedi"
@@ -541,6 +536,10 @@ msgid "No stream URL"
 msgstr "Akış URL'si yok"
 
 msgid "No stream URL available"
+msgstr "Akış URL'si yok"
+
+#, fuzzy
+msgid "No stream URL for: %s"
 msgstr "Akış URL'si yok"
 
 msgid "No valid channels found in database"
@@ -612,11 +611,12 @@ msgstr "Yenileniyor..."
 msgid "Remove '%s' from favorites?"
 msgstr "'%s' favorilerden kaldırılsın mı?"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "TV Bahçesi buketi Enigma2'den kaldırılsın mı?"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "Buketi Enigma2'den Kaldır"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "TV Bahçesi buketi Enigma2'den kaldırılsın mı?"
 
 msgid "Remove from Favorites"
 msgstr "Favorilerden Kaldır"
@@ -629,6 +629,9 @@ msgstr "Favorilerden kaldırıldı"
 
 msgid "Removed from favorites: %s"
 msgstr "Favorilerden kaldırıldı: %s"
+
+msgid "Resolving YouTube stream..."
+msgstr "YouTube akışı çözümleniyor..."
 
 msgid "Save"
 msgstr "Kaydetmek"
@@ -741,9 +744,6 @@ msgstr "Güncelleme başarılı!"
 msgid "Updating plugin... Please wait"
 msgstr "Eklenti güncelleniyor... Lütfen bekleyin"
 
-msgid "Use Hardware Acceleration"
-msgstr "Donanım Hızlandırmasını Kullan"
-
 msgid "User Agent"
 msgstr "Kullanıcı Aracısı"
 
@@ -764,11 +764,16 @@ msgstr "Kategoriye Göre Gözat"
 msgid "Webcams by Country"
 msgstr "Ülkeye Göre Gözat"
 
-msgid "Will load fresh data next time"
-msgstr "Bir dahaki sefere yeni veriler yüklenecek"
-
 msgid "You have the latest version of TVGarden."
 msgstr "TVGarden'ın en son sürümüne sahipsiniz."
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "Dışa aktarılacak kanal yok"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "Akış URL'si yok"
 
 msgid "Your favorite channels"
 msgstr "Favori kanallarınız"
@@ -790,6 +795,48 @@ msgstr "ülkeler"
 
 msgid "files and"
 msgstr "dosyalar ve"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(%d YouTube atlandı)"
+
+#~ msgid "4 MB"
+#~ msgstr "4MB"
+
+#~ msgid "8 MB"
+#~ msgstr "8MB"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Performans Ayarları ==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "Arabellek Boyutu"
+
+#~ msgid "Cache cleared"
+#~ msgstr "Önbellek temizlendi"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "Dışa aktarma başarısız oldu: %s"
+
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "%d kanal %s'e aktarıldı"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "Hiyerarşik dışa aktarma tamamlandı"
+
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "Yükleniyor... Şu ana kadar %d kanal"
+
+#~ msgid "Memory Optimization"
+#~ msgstr "Bellek Optimizasyonu"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "Sonraki yüklemede yeni veriler kullanılacak"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Donanım Hızlandırmasını Kullan"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "Bir dahaki sefere yeni veriler yüklenecek"
 
 #~ msgid "Animation"
 #~ msgstr "Animasyon"

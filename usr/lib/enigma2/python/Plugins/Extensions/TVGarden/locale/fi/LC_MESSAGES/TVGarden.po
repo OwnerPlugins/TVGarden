@@ -25,17 +25,17 @@ msgstr "%d suosikkia"
 msgid "(%d YouTube)"
 msgstr "(YouTube: ohitettu %d)"
 
+msgid "(%d without stream)"
+msgstr "(%d ilman streamia)"
+
 msgid "(filtered %d problematic)"
 msgstr "(suodatettu %d ongelmallista)"
 
 msgid "(limited to first %d)"
 msgstr "(rajoitettu ensimmäiseen %d)"
 
-msgid "(skipped %d YouTube)"
-msgstr "(YouTube: ohitettu %d)"
-
-msgid "1 MB"
-msgstr "1 MB"
+msgid "1 hour"
+msgstr "1 tunti"
 
 msgid "10 results"
 msgstr "10 tulosta"
@@ -54,11 +54,14 @@ msgstr "1000 kanavaa"
 msgid "1000 results"
 msgstr "1000 kanavaa"
 
-msgid "2 MB"
-msgstr "2 MB"
+msgid "15 minutes"
+msgstr "15 minuuttia"
 
 msgid "2000 channels"
 msgstr "2000 kanavaa"
+
+msgid "24 hours"
+msgstr "24 tuntia"
 
 msgid "250 channels"
 msgstr "250 kanavaa"
@@ -69,9 +72,6 @@ msgstr "250 kanavaa"
 
 msgid "2500 results"
 msgstr "2500 tulosta"
-
-msgid "4 MB"
-msgstr "4 MB"
 
 msgid "4000 results"
 msgstr "4000 tulosta"
@@ -96,11 +96,11 @@ msgstr "5000 kanavaa"
 msgid "5000 results"
 msgstr "5000 kanavaa"
 
-msgid "512 KB"
-msgstr "512 KB"
+msgid "6 hours"
+msgstr "6 tuntia"
 
-msgid "8 MB"
-msgstr "8 MB"
+msgid "7 days"
+msgstr "7 päivää"
 
 msgid "=== Browser Settings ==="
 msgstr "=== Selaimen asetukset ==="
@@ -119,9 +119,6 @@ msgstr "=== Lokin asetukset ==="
 
 msgid "=== Network Settings ==="
 msgstr "=== Verkon asetukset ==="
-
-msgid "=== Performance Settings ==="
-msgstr "=== Suorituskykyasetukset ==="
 
 msgid "=== Player Settings ==="
 msgstr "=== Soittimen asetukset ==="
@@ -198,17 +195,18 @@ msgstr "Selaa kanavia kategorioittain"
 msgid "Browse webcams by country"
 msgstr "Selaa kanavia maittain"
 
-msgid "Buffer Size"
-msgstr "Puskurin koko"
-
 msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr "CH+/CH- = Muutos | OK = Vaihda | STOP = Poistu | kirjoittanut Lululla"
+
+#, fuzzy
+msgid "Cache Duration"
+msgstr "Kanavan tiedot"
 
 msgid "Cache Size"
 msgstr "Välimuistin koko"
 
-msgid "Cache cleared"
-msgstr "Välimuisti tyhjennetty"
+msgid "Cannot play: %s"
+msgstr "Ei voi pelata: %s"
 
 msgid "Categories"
 msgstr "Kategoriat"
@@ -220,6 +218,10 @@ msgid "Channel Menu"
 msgstr "Kanavan valikko"
 
 msgid "Channel added to bouquet"
+msgstr "Kanava lisätty suosikkilistaan"
+
+#, fuzzy
+msgid "Channel already in bouquet"
 msgstr "Kanava lisätty suosikkilistaan"
 
 msgid "Channel not found in favorites"
@@ -366,14 +368,15 @@ msgid "Export Current View"
 msgstr "Vie nykyinen näkymä"
 
 #, fuzzy
+msgid "Export already in progress..."
+msgstr "Ladataan kategorioita..."
+
+#, fuzzy
 msgid "Export error: %s"
 msgstr "Vie: %s"
 
 msgid "Export failed"
 msgstr "Vienti epäonnistui"
-
-msgid "Export failed: %s"
-msgstr "Vienti epäonnistui: %s"
 
 msgid "Export to Enigma2 Bouquet"
 msgstr "Vie Enigma2 suosikkilistaan"
@@ -383,10 +386,6 @@ msgstr "Vie {count} kanavaa suosikkilistaan '{name}'?"
 
 msgid "Exported"
 msgstr "Viety"
-
-#, fuzzy
-msgid "Exported %d channels to %s"
-msgstr "Vietiin %d kanavaa suosikkilistaan"
 
 #, fuzzy
 msgid "Exported %d channels to '%s'"
@@ -431,14 +430,14 @@ msgstr "Löytyi %d toistettavaa kanavaa"
 msgid "GStreamer"
 msgstr "GStreamer"
 
-msgid "Hierarchical export completed"
-msgstr "Hierarkkinen vienti valmis"
-
 msgid "Hierarchical export completed!"
 msgstr "Hierarkkinen vienti valmis!"
 
 msgid "Info"
 msgstr "Info"
+
+msgid "Install it with: opkg install python3-yt-dlp"
+msgstr "Asenna se komennolla: opkg install python3-yt-dlp"
 
 msgid "Item {} of {}"
 msgstr "Kohde {} / {}"
@@ -448,6 +447,10 @@ msgstr "Näppäimistö"
 
 msgid "List Position"
 msgstr "Suosikkilistan paikka"
+
+#, fuzzy
+msgid "Loading %s channels..."
+msgstr "Ladataan kanavia..."
 
 #, fuzzy
 msgid "Loading %s: %s (%d/%d)"
@@ -475,10 +478,6 @@ msgstr "Ladataan maita..."
 
 msgid "Loading favorites..."
 msgstr "Ladataan suosikkeja..."
-
-#, fuzzy
-msgid "Loading... %d channels so far"
-msgstr "Ladataan kanavia..."
 
 msgid "Log Level"
 msgstr "Lokitaso"
@@ -509,12 +508,6 @@ msgstr "Max hakutulokset"
 
 msgid "Max channels for country"
 msgstr "Max kanavat maalle"
-
-msgid "Memory Optimization"
-msgstr "Muistin optimointi"
-
-msgid "Next load will use fresh data"
-msgstr "Seuraava lataus käyttää uutta dataa"
 
 msgid "No channel selected"
 msgstr "Kanavaa ei valittu"
@@ -551,6 +544,10 @@ msgstr "Ei striimin URL-osoitetta"
 
 msgid "No stream URL available"
 msgstr "Striimin URL-osoitetta ei ole saatavilla"
+
+#, fuzzy
+msgid "No stream URL for: %s"
+msgstr "Ei striimin URL-osoitetta"
 
 msgid "No valid channels found in database"
 msgstr "Tietokannasta ei löytynyt kelvollisia kanavia"
@@ -623,11 +620,12 @@ msgstr "Virkistetään..."
 msgid "Remove '%s' from favorites?"
 msgstr "Poista '%s' suosikeista?"
 
+#, fuzzy
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
+msgstr "Poista TV Garden -suosikkilista Enigma2:sta?"
+
 msgid "Remove Bouquet from Enigma2"
 msgstr "Poista suosikkilista Enigma2:sta"
-
-msgid "Remove TV Garden bouquet from Enigma2?"
-msgstr "Poista TV Garden -suosikkilista Enigma2:sta?"
 
 msgid "Remove from Favorites"
 msgstr "Poista suosikeista"
@@ -640,6 +638,9 @@ msgstr "Poistettu suosikeista"
 
 msgid "Removed from favorites: %s"
 msgstr "Poistettiin suosikeista: %s"
+
+msgid "Resolving YouTube stream..."
+msgstr "Ratkaistaan ​​YouTube-streamia..."
 
 msgid "Save"
 msgstr "Tallenna"
@@ -753,9 +754,6 @@ msgstr "Päivitys onnistui!"
 msgid "Updating plugin... Please wait"
 msgstr "Lisäosaa päivitetään... Odota"
 
-msgid "Use Hardware Acceleration"
-msgstr "Käytä laitteistokiihdytystä"
-
 msgid "User Agent"
 msgstr "Käyttäjäagentti"
 
@@ -776,12 +774,17 @@ msgstr "Selaa kategorioittain"
 msgid "Webcams by Country"
 msgstr "Selaa maittain"
 
-msgid "Will load fresh data next time"
-msgstr "Ladataan tuoreet tiedot seuraavalla kerralla"
-
 #, fuzzy
 msgid "You have the latest version of TVGarden."
 msgstr "Sinulla on viimeisin versio TV Garden:sta."
+
+#, fuzzy
+msgid "YouTube channels cannot be exported"
+msgstr "Ei vietäviä kanavia"
+
+#, fuzzy
+msgid "YouTube stream not available"
+msgstr "Striimin URL-osoitetta ei ole saatavilla"
 
 msgid "Your favorite channels"
 msgstr "Suosikkikanavasi"
@@ -805,6 +808,59 @@ msgstr "maat"
 
 msgid "files and"
 msgstr "tiedostot ja"
+
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(YouTube: ohitettu %d)"
+
+#~ msgid "1 MB"
+#~ msgstr "1 MB"
+
+#~ msgid "2 MB"
+#~ msgstr "2 MB"
+
+#~ msgid "4 MB"
+#~ msgstr "4 MB"
+
+#~ msgid "512 KB"
+#~ msgstr "512 KB"
+
+#~ msgid "8 MB"
+#~ msgstr "8 MB"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Suorituskykyasetukset ==="
+
+#~ msgid "Buffer Size"
+#~ msgstr "Puskurin koko"
+
+#~ msgid "Cache cleared"
+#~ msgstr "Välimuisti tyhjennetty"
+
+#~ msgid "Export failed: %s"
+#~ msgstr "Vienti epäonnistui: %s"
+
+#, fuzzy
+#~ msgid "Exported %d channels to %s"
+#~ msgstr "Vietiin %d kanavaa suosikkilistaan"
+
+#~ msgid "Hierarchical export completed"
+#~ msgstr "Hierarkkinen vienti valmis"
+
+#, fuzzy
+#~ msgid "Loading... %d channels so far"
+#~ msgstr "Ladataan kanavia..."
+
+#~ msgid "Memory Optimization"
+#~ msgstr "Muistin optimointi"
+
+#~ msgid "Next load will use fresh data"
+#~ msgstr "Seuraava lataus käyttää uutta dataa"
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Käytä laitteistokiihdytystä"
+
+#~ msgid "Will load fresh data next time"
+#~ msgstr "Ladataan tuoreet tiedot seuraavalla kerralla"
 
 #~ msgid "Animation"
 #~ msgstr "Animaatio"

@@ -28,16 +28,16 @@ msgstr ""
 msgid "(%d YouTube)"
 msgstr ""
 
+msgid "(%d without stream)"
+msgstr ""
+
 msgid "(filtered %d problematic)"
 msgstr ""
 
 msgid "(limited to first %d)"
 msgstr ""
 
-msgid "(skipped %d YouTube)"
-msgstr ""
-
-msgid "1 MB"
+msgid "1 hour"
 msgstr ""
 
 msgid "10 results"
@@ -55,10 +55,13 @@ msgstr ""
 msgid "1000 results"
 msgstr ""
 
-msgid "2 MB"
+msgid "15 minutes"
 msgstr ""
 
 msgid "2000 channels"
+msgstr ""
+
+msgid "24 hours"
 msgstr ""
 
 msgid "250 channels"
@@ -68,9 +71,6 @@ msgid "250 results"
 msgstr ""
 
 msgid "2500 results"
-msgstr ""
-
-msgid "4 MB"
 msgstr ""
 
 msgid "4000 results"
@@ -94,10 +94,10 @@ msgstr ""
 msgid "5000 results"
 msgstr ""
 
-msgid "512 KB"
+msgid "6 hours"
 msgstr ""
 
-msgid "8 MB"
+msgid "7 days"
 msgstr ""
 
 msgid "=== Browser Settings ==="
@@ -116,9 +116,6 @@ msgid "=== Logging Settings ==="
 msgstr ""
 
 msgid "=== Network Settings ==="
-msgstr ""
-
-msgid "=== Performance Settings ==="
 msgstr ""
 
 msgid "=== Player Settings ==="
@@ -193,16 +190,16 @@ msgstr ""
 msgid "Browse webcams by country"
 msgstr ""
 
-msgid "Buffer Size"
+msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
 msgstr ""
 
-msgid "CH+/CH- = Change | OK = Toggle | STOP = Exit | by Lululla"
+msgid "Cache Duration"
 msgstr ""
 
 msgid "Cache Size"
 msgstr ""
 
-msgid "Cache cleared"
+msgid "Cannot play: %s"
 msgstr ""
 
 msgid "Categories"
@@ -215,6 +212,9 @@ msgid "Channel Menu"
 msgstr ""
 
 msgid "Channel added to bouquet"
+msgstr ""
+
+msgid "Channel already in bouquet"
 msgstr ""
 
 msgid "Channel not found in favorites"
@@ -358,13 +358,13 @@ msgstr ""
 msgid "Export Current View"
 msgstr ""
 
+msgid "Export already in progress..."
+msgstr ""
+
 msgid "Export error: %s"
 msgstr ""
 
 msgid "Export failed"
-msgstr ""
-
-msgid "Export failed: %s"
 msgstr ""
 
 msgid "Export to Enigma2 Bouquet"
@@ -374,9 +374,6 @@ msgid "Export {count} channels to bouquet '{name}'?"
 msgstr ""
 
 msgid "Exported"
-msgstr ""
-
-msgid "Exported %d channels to %s"
 msgstr ""
 
 msgid "Exported %d channels to '%s'"
@@ -421,13 +418,13 @@ msgstr ""
 msgid "GStreamer"
 msgstr ""
 
-msgid "Hierarchical export completed"
-msgstr ""
-
 msgid "Hierarchical export completed!"
 msgstr ""
 
 msgid "Info"
+msgstr ""
+
+msgid "Install it with: opkg install python3-yt-dlp"
 msgstr ""
 
 msgid "Item {} of {}"
@@ -437,6 +434,9 @@ msgid "Keyboard"
 msgstr ""
 
 msgid "List Position"
+msgstr ""
+
+msgid "Loading %s channels..."
 msgstr ""
 
 msgid "Loading %s: %s (%d/%d)"
@@ -461,9 +461,6 @@ msgid "Loading countries..."
 msgstr ""
 
 msgid "Loading favorites..."
-msgstr ""
-
-msgid "Loading... %d channels so far"
 msgstr ""
 
 msgid "Log Level"
@@ -494,12 +491,6 @@ msgid "Max Search Results"
 msgstr ""
 
 msgid "Max channels for country"
-msgstr ""
-
-msgid "Memory Optimization"
-msgstr ""
-
-msgid "Next load will use fresh data"
 msgstr ""
 
 msgid "No channel selected"
@@ -536,6 +527,9 @@ msgid "No stream URL"
 msgstr ""
 
 msgid "No stream URL available"
+msgstr ""
+
+msgid "No stream URL for: %s"
 msgstr ""
 
 msgid "No valid channels found in database"
@@ -607,10 +601,10 @@ msgstr ""
 msgid "Remove '%s' from favorites?"
 msgstr ""
 
-msgid "Remove Bouquet from Enigma2"
+msgid "Remove ALL TV Garden bouquets from Enigma2?"
 msgstr ""
 
-msgid "Remove TV Garden bouquet from Enigma2?"
+msgid "Remove Bouquet from Enigma2"
 msgstr ""
 
 msgid "Remove from Favorites"
@@ -623,6 +617,9 @@ msgid "Removed from favorites"
 msgstr ""
 
 msgid "Removed from favorites: %s"
+msgstr ""
+
+msgid "Resolving YouTube stream..."
 msgstr ""
 
 msgid "Save"
@@ -736,9 +733,6 @@ msgstr ""
 msgid "Updating plugin... Please wait"
 msgstr ""
 
-msgid "Use Hardware Acceleration"
-msgstr ""
-
 msgid "User Agent"
 msgstr ""
 
@@ -757,10 +751,13 @@ msgstr ""
 msgid "Webcams by Country"
 msgstr ""
 
-msgid "Will load fresh data next time"
+msgid "You have the latest version of TVGarden."
 msgstr ""
 
-msgid "You have the latest version of TVGarden."
+msgid "YouTube channels cannot be exported"
+msgstr ""
+
+msgid "YouTube stream not available"
 msgstr ""
 
 msgid "Your favorite channels"
