@@ -6,7 +6,8 @@ LICENSE = "proprietary"
 
 require conf/license/license-gplv2.inc
 
-RDEPENDS:${PN} = "ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp"
+RDEPENDS:${PN} = "python3-core ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp"
+RRECOMMENDS:${PN} = "ca-certificates python3-yt-dlp"
 
 inherit allarch gitpkgv
 
@@ -16,7 +17,7 @@ PKGV = "1.0+git${GITPKGV}"
 VER ="1.0"
 PR = "r0"
 
-SRC_URI = "git://github.com/Belfagor2005/TVGarden.git;protocol=https;branch=main"
+SRC_URI = "git://github.com/OwnerPlugins/TVGarden.git;protocol=https;branch=main"
 
 S = "${WORKDIR}/git"
 

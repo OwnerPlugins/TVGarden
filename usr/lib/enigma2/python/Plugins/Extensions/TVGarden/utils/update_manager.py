@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 TV Garden Plugin - Update Manager
@@ -17,17 +17,17 @@ class UpdateManager:
     @staticmethod
     def check_for_updates(session, status_label=None):
         """Check for updates - unified function for both plugin and settings"""
-        print("UpdateManager.check_for_updates called")
+        log.debug("UpdateManager.check_for_updates called", module="UpdateManager")
 
         if status_label:
             status_label.setText(_("Checking for updates..."))
 
         try:
             updater = PluginUpdater()
-            print("PluginUpdater created successfully")
+            log.debug("PluginUpdater created successfully", module="UpdateManager")
 
             def update_callback(result):
-                print("update_callback received result: %s" % result)
+                log.debug("update_callback received result: %s" % result, module="UpdateManager")
 
                 if result is None:
                     if status_label:
@@ -49,11 +49,11 @@ class UpdateManager:
                                  _("You have the latest version of TVGarden."),
                                  MessageBox.TYPE_INFO)
 
-            print("Calling updater.check_update()")
+            log.debug("Calling updater.check_update()", module="UpdateManager")
             updater.check_update(update_callback)
 
         except Exception as e:
-            print("Error in check_for_updates: %s" % str(e))
+            log.debug("Error in check_for_updates: %s" % str(e), module="UpdateManager")
             if status_label:
                 status_label.setText(_("Update check error"))
             session.open(MessageBox,

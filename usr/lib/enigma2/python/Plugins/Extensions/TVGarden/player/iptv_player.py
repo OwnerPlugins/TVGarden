@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 TV Garden Plugin - IPTV Player
@@ -24,10 +24,40 @@ from Screens.InfoBarGenerics import (
     InfoBarNotifications,
 )
 import time
-from ..helpers import log
+from os.path import isdir
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from ..helpers import log, timer_connect, is_youtube_url
 from ..utils.config import get_config
-from ..utils.youtube_helper import get_youtube_stream
+from ..utils.youtube_helper import resolve_youtube
 from .. import _
+
+
+# Service types: 4097 = servicemp3 (always available),
+# 5001 = gstplayer and 5002 = exteplayer3 (provided by ServiceApp)
+SERVICE_MP3 = 4097
+SERVICE_GSTPLAYER = 5001
+SERVICE_EXTEPLAYER3 = 5002
+
+
+def has_serviceapp():
+    """Check if the ServiceApp system plugin is installed"""
+    try:
+        return isdir(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/ServiceApp"))
+    except Exception:
+        return False
+
+
+def get_service_type(player):
+    """Map the 'player' setting to an Enigma2 service type"""
+    if player in ("exteplayer3", "gstplayer"):
+        if has_serviceapp():
+            if player == "exteplayer3":
+                return SERVICE_EXTEPLAYER3
+            return SERVICE_GSTPLAYER
+        log.warning(
+            "Player '%s' requires ServiceApp, falling back to 4097" %
+            player, module="Player")
+    return SERVICE_MP3
 
 
 # ============ DETECT SCREEN RESOLUTION ============
@@ -173,10 +203,7 @@ class TvInfoBarShowHide():
 
         # Timer to hide the overlay after a while
         self.hideTimer = eTimer()
-        try:
-            self.hideTimer.timeout.connect(self.doTimerHide)
-        except BaseException:
-            self.hideTimer.callback.append(self.doTimerHide)
+        self.hideTimer_conn = timer_connect(self.hideTimer, self.doTimerHide)
 
         self.onShow.append(self.__onShow)
         self.onHide.append(self.__onHide)
@@ -241,11 +268,8 @@ class TvInfoBarShowHide():
 
         if not hasattr(self, 'help_timer'):
             self.help_timer = eTimer()
-            try:
-                self.help_timer_conn = self.help_timer.timeout.connect(
-                    self.hide_help_overlay)
-            except BaseException:
-                self.help_timer.callback.append(self.hide_help_overlay)
+            self.help_timer_conn = timer_connect(
+                self.help_timer, self.hide_help_overlay)
 
         self.help_timer.start(5000, True)
 
@@ -304,7 +328,8 @@ class TvInfoBarShowHide():
             else:
                 self.doHide()
                 if self["helpOverlay"].visible:
-                    self.help_timer.stop()
+                    if hasattr(self, 'help_timer'):
+                        self.help_timer.stop()
                     self.hide_help_overlay()
         else:
             self.skipToggleShow = False
@@ -350,12 +375,17 @@ class TVGardenPlayer(
 
         self.config = get_config()
         self.channel_list = channel_list if channel_list else []
-        self.current_index = current_index
         self.itemscount = len(self.channel_list)
+        if not (0 <= current_index < self.itemscount):
+            current_index = 0
+        self.current_index = current_index
         self.stream_running = False
         self.eof_count = 0
         self.last_eof_time = 0
         self.current_service = None
+        self.play_request = 0
+        self.closing = False
+        self._cleaned_up = False
 
         InfoBarBase.__init__(self)
         InfoBarSeek.__init__(self)
@@ -411,22 +441,16 @@ class TVGardenPlayer(
         )
         self.srefInit = self.session.nav.getCurrentlyPlayingServiceReference()
         self.eof_recovery_timer = eTimer()
-        try:
-            self.eof_recovery_timer.timeout.connect(self.restartAfterEOF)
-        except BaseException:
-            self.eof_recovery_timer.callback.append(self.restartAfterEOF)
+        self.eof_recovery_timer_conn = timer_connect(
+            self.eof_recovery_timer, self.restartAfterEOF)
 
         self.stream_check_timer = eTimer()
-        try:
-            self.stream_check_timer.timeout.connect(self.check_stream_status)
-        except BaseException:
-            self.stream_check_timer.callback.append(self.check_stream_status)
+        self.stream_check_timer_conn = timer_connect(
+            self.stream_check_timer, self.check_stream_status)
 
         self.audio_reset_timer = eTimer()
-        try:
-            self.audio_reset_timer.timeout.connect(self.reset_audio_tracks)
-        except BaseException:
-            self.audio_reset_timer.callback.append(self.reset_audio_tracks)
+        self.audio_reset_timer_conn = timer_connect(
+            self.audio_reset_timer, self.reset_audio_tracks)
         self.onFirstExecBegin.append(self.start_stream)
         self.onClose.append(self.cleanup)
 
@@ -447,119 +471,17 @@ class TVGardenPlayer(
                 extra.append(channel.get('language'))
 
             extra_str = " [{}]".format(', '.join(extra)) if extra else ""
-
-            # Add performance info
-            use_hw_accel = self.config.get("use_hardware_acceleration", True)
-            hw_accel = "HW" if use_hw_accel else "SW"
-            buffer_size = self.config.get("buffer_size", 2048)
             player_type = self.config.get("player", "auto")
 
-            return "{} [{}/{}]{} | {} | {}KB | {}".format(
-                name, index, total, extra_str, hw_accel, buffer_size, player_type)
+            return "{} [{}/{}]{} | {}".format(
+                name, index, total, extra_str, player_type)
         return "TV Garden Player"
-
-    def should_use_hardware_acceleration(self, stream_url):
-        """Decide whether to use hardware acceleration for this stream"""
-        if not self.config.get("use_hardware_acceleration", True):
-            return False
-
-        # Check stream type
-        url_lower = stream_url.lower()
-
-        # Formats that usually support hardware acceleration
-        hw_accel_formats = [
-            '.mp4', '.m4v', '.mov',        # MP4 container
-            '.ts', '.m2ts', '.mts',        # MPEG-TS
-            '.mkv',                        # Matroska
-            '.avi',                        # AVI
-            '.flv',                        # Flash Video
-        ]
-
-        # Codecs that support hardware acceleration
-        hw_accel_codecs = [
-            'h264', 'h.264', 'avc',        # H.264
-            'h265', 'h.265', 'hevc',       # H.265/HEVC
-            'mpeg2', 'mpeg-2',             # MPEG-2
-            'mpeg4', 'mpeg-4',             # MPEG-4
-        ]
-
-        # Check file format
-        for fmt in hw_accel_formats:
-            if fmt in url_lower:
-                return True
-
-        # Check codec in URL (if specified)
-        for codec in hw_accel_codecs:
-            if codec in url_lower:
-                return True
-
-        # For HTTP streams, try hardware acceleration
-        if url_lower.startswith(('http://', 'https://')):
-            return True
-
-        return False
-
-    def build_standard_service_ref(self, url_encoded, name_encoded):
-        """Build standard service reference"""
-        return "4097:0:1:0:0:0:0:0:0:0:%s:%s" % (url_encoded, name_encoded)
-
-    def build_service_ref_with_hw_accel(self, url_encoded, name_encoded):
-        """Build service reference with hardware acceleration support"""
-        # Format for hardware acceleration (depends on player)
-        player = self.config.get("player", "auto")
-
-        if player == "exteplayer3":
-            # exteplayer3 with hardware acceleration
-            return "4097:0:1:0:0:0:0:0:0:0:%s:%s" % (url_encoded, name_encoded)
-        elif player == "gstplayer":
-            # gstreamer with hardware acceleration
-            return "4097:0:1:0:0:0:0:0:0:0:%s:%s" % (url_encoded, name_encoded)
-        else:
-            # Standard format
-            return "4097:0:1:0:0:0:0:0:0:0:%s:%s" % (url_encoded, name_encoded)
-
-    def add_buffer_size_param(self, ref_str, buffer_size_kb):
-        """Add buffer size parameter if supported"""
-        player = self.config.get("player", "auto")
-        if player == "exteplayer3" and buffer_size_kb > 0:
-            buffer_size_bytes = buffer_size_kb * 1024
-            ref_str += "?buffersize=%d" % buffer_size_bytes
-            log.debug("Added buffer size: %sKB (%s bytes)" %
-                      (buffer_size_kb, buffer_size_bytes), module="Player")
-        return ref_str
-
-    def is_problematic_stream(self, url):
-        """Check whether a stream URL may cause playback issues."""
-        url_lower = url.lower()
-
-        # Warning signs that usually indicate problematic streams
-        warning_signs = [
-            "moveonjoy.com",   # Site known to cause crashes
-            "akamaihd.net",    # Often uses DRM
-            "drm",
-            "widevine",
-            "playready",
-            ".mpd",
-            "/dash/",
-            "encryption",
-            "key",
-            "license"
-        ]
-
-        return any(sign in url_lower for sign in warning_signs)
-
-    def show_stream_warning(self, channel_name):
-        """Show warning about potentially problematic stream"""
-        message = (
-            "Warning: %s\n\n"
-            "This stream might use encryption or DRM that is not supported by your receiver.\n\n"
-            "Try another channel.") % channel_name
-        self.session.open(MessageBox, message, MessageBox.TYPE_WARNING)
 
     def start_stream(self):
         """Start playing the current channel with error handling"""
-        if not self.channel_list:
-            log.error("No channel list!", module="Player")
+        if not self.channel_list or self.closing:
+            if not self.channel_list:
+                log.error("No channel list!", module="Player")
             return
 
         current_channel = self.channel_list[self.current_index]
@@ -571,125 +493,97 @@ class TVGardenPlayer(
             log.error(
                 "No stream URL for channel %d" %
                 self.current_index, module="Player")
+            self.show_error_message(_("No stream URL for: %s") % channel_name)
             return
 
         log.info(
             "Playing channel %d: %s" %
-            (self.current_index,
-             channel_name),
-            module="Player")
+            (self.current_index, channel_name), module="Player")
         log.debug("URL: %s..." % stream_url[:80], module="Player")
 
-        use_hw_accel = self.config.get("use_hardware_acceleration", True)
-        buffer_size = self.config.get("buffer_size", 2048)
-        player_type = self.config.get("player", "auto")
+        self.play_request += 1
+        request_id = self.play_request
 
-        log.info("=== PERFORMANCE SETTINGS ===", module="Player")
-        log.info("Player: %s" % player_type, module="Player")
-        log.info(
-            "Hardware Acceleration: %s" %
-            ("ENABLED" if use_hw_accel else "DISABLED"),
-            module="Player")
-        log.info("Buffer Size: %s KB" % buffer_size, module="Player")
-
-        # [TVGarden patch] YouTube: risolvi con yt-dlp interno (metodo WorldCam)
-        if "youtube.com" in stream_url or "youtu.be" in stream_url or "youtube-nocookie.com" in stream_url:
+        if is_youtube_url(stream_url):
+            # yt-dlp can take a long time: resolve it off the GUI thread
             log.info(
                 "YouTube channel detected: %s" %
                 channel_name, module="Player")
-            resolved = get_youtube_stream(stream_url)
-            if resolved:
-                stream_url = resolved
-                log.info("YouTube resolved: %s..." %
-                         stream_url[:80], module="Player")
-            else:
-                log.error("Failed to resolve YouTube stream", module="Player")
-                self.show_error_message("YouTube stream not available")
-                return
+            self.show_overlays_text(_("Resolving YouTube stream..."))
+            try:
+                from twisted.internet import threads
+                d = threads.deferToThread(resolve_youtube, stream_url)
+                d.addCallback(self._youtube_resolved, request_id, channel_name)
+                d.addErrback(self._youtube_failed, request_id)
+            except Exception as e:
+                log.error("Cannot start YouTube resolver: %s" %
+                          e, module="Player")
+                self._youtube_resolved(
+                    resolve_youtube(stream_url), request_id, channel_name)
+            return
 
-        # HW acceleration
-        if self.should_use_hardware_acceleration(stream_url):
-            log.info(
-                "HW Acceleration decision: WILL USE for this stream",
-                module="Player")
+        self._play_url(stream_url, channel_name)
+
+    def _youtube_resolved(self, result, request_id, channel_name):
+        """Called on the GUI thread when yt-dlp has finished"""
+        if self.closing or request_id != self.play_request:
+            return
+        resolved, error = result
+        if resolved:
+            log.info("YouTube resolved: %s..." %
+                     resolved[:80], module="Player")
+            self._play_url(resolved, channel_name)
         else:
-            log.info(
-                "HW Acceleration decision: WILL NOT USE for this stream",
-                module="Player")
+            log.error("Failed to resolve YouTube stream: %s" %
+                      error, module="Player")
+            message = _("YouTube stream not available")
+            if error:
+                message += "\n\n%s" % error
+            if error == "yt-dlp is not installed":
+                message += "\n" + _("Install it with: opkg install python3-yt-dlp")
+            self.show_error_message(message)
 
-        # Buffer size application
-        if player_type == "exteplayer3" and buffer_size > 0:
-            log.info(
-                "Buffer size will be applied: %s bytes" %
-                (buffer_size * 1024), module="Player")
-        else:
-            log.info(
-                "Buffer size setting may not apply to player: %s" %
-                player_type, module="Player")
+    def _youtube_failed(self, failure, request_id):
+        log.error("YouTube resolver error: %s" % failure, module="Player")
+        self._youtube_resolved(
+            (None, failure.getErrorMessage()), request_id, "")
 
-        # Check if the URL may be problematic
-        # Check whether a stream URL may cause playback issues.
-        """
-        def is_problematic_stream(url):
-
-            url_lower = url.lower()
-
-            # Warning signs that usually indicate problematic streams
-            warning_signs = [
-                "moveonjoy.com",   # Site known to cause crashes
-                "akamaihd.net",    # Often uses DRM
-                "drm",
-                "widevine",
-                "playready",
-                ".mpd",
-                "/dash/",
-                "encryption",
-                "key",
-                "license"
-            ]
-
-        if is_problematic_stream(stream_url):
-            log.warning("Stream might be problematic", module="Player")
-            self.show_stream_warning(channel_name)
-        """
-        self.stream_running = True
-        self.eof_count = 0
-
+    def show_overlays_text(self, text):
         try:
-            # [TVGarden patch] Metodo WorldCam: service_type 5001 per HLS/http
+            self["infoOverlay"].setText(text)
+            self["infoOverlay"].show()
+        except Exception:
+            pass
+
+    def _play_url(self, stream_url, channel_name):
+        """Play a resolved URL"""
+        self.eof_count = 0
+        try:
             if isinstance(stream_url, (tuple, list)):
                 stream_url = str(stream_url[0])
             else:
                 stream_url = str(stream_url)
 
-            log.info("Final stream URL: " +
-                     stream_url[:200] +
-                     "...", module="Player")
-
-            if '.m3u8' in stream_url.lower() or stream_url.lower().startswith('http'):
-                service_type = 5001  # HLS
-                log.info("Using service_type=5001 (HLS)", module="Player")
-            else:
-                service_type = 4097  # HTTP
-                log.info("Using service_type=4097 (HTTP)", module="Player")
+            player_type = self.config.get("player", "auto")
+            service_type = get_service_type(player_type)
+            log.info("Player: %s, service_type=%d" %
+                     (player_type, service_type), module="Player")
 
             sref = eServiceReference(service_type, 0, stream_url)
             sref.setName(channel_name)
 
-            # Avvia la riproduzione
             self.session.nav.playService(sref)
             self.current_service = sref
-            log.info("Playback started successfully", module="Player")
+            self.stream_running = True
+            log.info("Playback started", module="Player")
 
-            # Show overlays briefly
             self.show_overlays()
-            # Start a timer to check whether the stream plays correctly
             self.start_stream_check_timer()
 
         except Exception as error:
             log.error("ERROR starting stream: " + str(error), module="Player")
             self.stream_running = False
-            self.show_error_message("Cannot play: " + channel_name)
+            self.show_error_message(_("Cannot play: %s") % channel_name)
 
     def start_stream_check_timer(self):
         """Start timer to check if stream is actually playing"""
@@ -726,7 +620,6 @@ class TVGardenPlayer(
         try:
             log.info("Restarting stream after EOF", module="Player")
             self.stop_stream()
-            time.sleep(0.5)
             self.start_stream()
         except Exception as e:
             log.error("Error restarting after EOF: %s" % e, module="Player")
@@ -782,13 +675,7 @@ class TVGardenPlayer(
             info = "Channel: %s\n" % channel.get('name', 'N/A')
             info += "Index: %d/%d\n" % (self.current_index +
                                         1, self.itemscount)
-            # Add performance settings info
-            use_hw_accel = self.config.get("use_hardware_acceleration", True)
-            buffer_size = self.config.get("buffer_size", 2048)
-            player_type = self.config.get("player", "auto")
-            info += "Player: %s\n" % player_type
-            info += "HW Accel: %s\n" % ("On" if use_hw_accel else "Off")
-            info += "Buffer: %sKB\n" % buffer_size
+            info += "Player: %s\n" % self.config.get("player", "auto")
 
             if channel.get('country'):
                 info += "Country: %s\n" % channel.get('country')
@@ -834,13 +721,16 @@ class TVGardenPlayer(
             self.leave_player()
 
     def __evStopped(self):
-        """Service stopped"""
+        """Service stopped (also fired while zapping, so do not close)"""
         log.info("Playback stopped", module="Player")
         self.stream_running = False
-        self.close()
 
     def cleanup(self):
-        """Clean up resources"""
+        """Clean up resources (runs once, from onClose)"""
+        if self._cleaned_up:
+            return
+        self._cleaned_up = True
+        self.closing = True
         # Stop all timers
         self.eof_recovery_timer.stop()
         self.stream_check_timer.stop()
@@ -856,5 +746,7 @@ class TVGardenPlayer(
 
     def leave_player(self):
         """Exit the player"""
-        self.cleanup()
+        if self.closing:
+            return
+        self.closing = True
         self.close()

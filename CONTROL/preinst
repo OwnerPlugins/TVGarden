@@ -10,7 +10,7 @@ if [ ! -f /usr/bin/enigma2 ]; then
 fi
 
 if ! command -v python3 >/dev/null 2>&1; then
-    echo "ERROR: Python3 is required but not found!"
+    echo "ERROR: TV Garden requires a Python 3 image (Python 2 is not supported)"
     exit 1
 fi
 

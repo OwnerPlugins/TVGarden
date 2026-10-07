@@ -9,20 +9,37 @@ LOCALE_DIR="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/locale"
 ICONS_DIR="/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/icons"
 CACHE_DIR="/tmp/tvgarden_cache"
 
-# 1. Imposta permessi corretti
+# 1. Imposta permessi corretti (dirs 755, files 644)
 echo "Setting correct permissions..."
-chmod -R 755 "$TVGARDEN_DIR"
+find "$TVGARDEN_DIR" -type d -exec chmod 755 {} \;
+find "$TVGARDEN_DIR" -type f -exec chmod 644 {} \;
 chown -R root:root "$TVGARDEN_DIR"
 
-if [ -d "$LOCALE_DIR" ]; then
+# Developer tools are not needed on the receiver
+rm -f "$TVGARDEN_DIR/update_translations.py" "$TVGARDEN_DIR/translate_utils.py"
+
+# Compile missing translations (gettext domain is "TVGarden")
+if [ -d "$LOCALE_DIR" ] && command -v msgfmt >/dev/null 2>&1; then
     echo "Compiling language files..."
-    for lang_dir in "$LOCALE_DIR"/*/; do
-        if [ -d "$lang_dir" ]; then
-            lang=$(basename "$lang_dir")
-            msgfmt -o "/usr/lib/enigma2/python/Plugins/Extensions/TVGarden/locale/$lang/LC_MESSAGES/tvgarden.mo" \
-                   "$LOCALE_DIR/$lang/LC_MESSAGES/tvgarden.po" 2>/dev/null || true
-        fi
+    for po in "$LOCALE_DIR"/*/LC_MESSAGES/TVGarden.po; do
+        [ -f "$po" ] || continue
+        mo="${po%.po}.mo"
+        [ -f "$mo" ] || msgfmt -o "$mo" "$po" 2>/dev/null || true
     done
+fi
+
+# yt-dlp is needed for YouTube channels and webcams. It is a
+# "Recommends" of the package; if the feed does not have it, try pip
+# (opkg is locked while this script runs, so no opkg install here).
+if ! command -v yt-dlp >/dev/null 2>&1 && ! python3 -c "import yt_dlp" >/dev/null 2>&1; then
+    if command -v pip3 >/dev/null 2>&1; then
+        echo "Installing yt-dlp with pip..."
+        pip3 install -U yt-dlp >/dev/null 2>&1 || \
+            pip3 install -U --break-system-packages yt-dlp >/dev/null 2>&1 || \
+            echo "WARNING: yt-dlp not installed: YouTube streams will not play"
+    else
+        echo "WARNING: yt-dlp missing: run 'opkg install python3-yt-dlp' for YouTube streams"
+    fi
 fi
 
 echo "Creating cache directories..."
@@ -30,27 +47,11 @@ mkdir -p "$CACHE_DIR"
 mkdir -p "/etc/enigma2/tvgarden/favorites"
 chmod 777 "$CACHE_DIR"
 
-echo "Setting up skins..."
-SKINS_DIR="/usr/share/enigma2"
-if [ -d "$TVGARDEN_DIR/skins" ]; then
-    for skin in "$TVGARDEN_DIR/skins"/*/; do
-        skin_name=$(basename "$skin")
-        ln -sf "$skin" "$SKINS_DIR/TVGarden_$skin_name" 2>/dev/null || true
-    done
-fi
-
-echo "Updating plugin registry..."
-if [ -f /usr/lib/enigma2/python/Plugins/Extensions/TVGarden/plugin.py ]; then
-    python3 -c "
-import sys
-sys.path.insert(0, '/usr/lib/enigma2/python/Plugins')
-from Plugins.Plugin import PluginDescriptor
-import os
-plugin_path = '/usr/lib/enigma2/python/Plugins/Extensions/TVGarden'
-if os.path.exists(plugin_path):
-    print('Plugin registered successfully')
-" 2>/dev/null || true
-fi
+# Skins are loaded directly from the plugin folder: no symlinks needed.
+# Remove links created by older versions.
+for skin_link in /usr/share/enigma2/TVGarden_*; do
+    [ -L "$skin_link" ] && rm -f "$skin_link"
+done
 
 BACKUP_PATTERN="/tmp/tvgarden_backup_*"
 LATEST_BACKUP=$(ls -td $BACKUP_PATTERN 2>/dev/null | head -1)
@@ -63,9 +64,9 @@ fi
 find "/tmp" -name "tvgarden_*" -type f -mtime +7 -delete 2>/dev/null || true
 
 echo ""
-echo "✅ TV Garden Plugin installed successfully!"
-echo "📺 Access it from: Main Menu → Plugins → TV Garden"
-echo "⚙�?  Configuration: /etc/enigma2/tvgarden/config.json"
+echo "TV Garden Plugin installed successfully!"
+echo "Access it from: Main Menu -> Plugins -> TV Garden"
+echo "Configuration: /etc/enigma2/tvgarden/config.json"
 echo ""
 echo "To complete installation, restart Enigma2 GUI:"
 echo "  - reboot your receiver"

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 TV Garden Plugin - About Screen
@@ -41,10 +41,10 @@ class TVGardenAbout(Screen):
             <widget name="scrolltext" position="48,160" size="1020,711" font="Regular;28" halign="left" valign="top" foregroundColor="#e0e0e0" transparent="1" zPosition="2" />
 
             <!-- Title -->
-            <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
+            <widget source="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
 
             <!-- Version -->
-            <widget name="version" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" render="Label" />
+            <widget source="version" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" render="Label" />
 
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
@@ -68,18 +68,16 @@ class TVGardenAbout(Screen):
         self["scrolltext"] = ScrollLabel()
         self["version"] = StaticText("")
         self["key_red"] = StaticText(_("Close"))
-        self["actions"] = ActionMap(["TVGardenActions", "DirectionActions", "ColorActions", "OkCancelActions"], {
+        self["actions"] = ActionMap(["DirectionActions", "ColorActions", "OkCancelActions", "ChannelSelectBaseActions"], {
             "cancel": self.close,
-            "exit": self.close,
-            "back": self.close,
             "red": self.close,
             "ok": self.close,
             "up": self.pageUp,
             "down": self.pageDown,
             "left": self.pageUp,
             "right": self.pageDown,
-            "channelUp": self.pageUp,
-            "channelDown": self.pageDown,
+            "nextBouquet": self.pageUp,
+            "prevBouquet": self.pageDown,
         }, -2)
 
         self.setTitle(_("About TV Garden"))
@@ -184,8 +182,6 @@ class TVGardenAbout(Screen):
             • Favorites Management with Bouquet Export
             • DRM/Problematic Stream Filtering
             • Configurable Channel Limits
-            • Hardware Acceleration Support
-            • Configurable Buffer Size (512KB - 8MB)
 
             ━━━━━━━━━━━ NEW: HIERARCHICAL BOUQUET EXPORT ━━━━━━━━━━━
             • SINGLE-FILE EXPORT: All channels in one bouquet (traditional)
@@ -203,12 +199,9 @@ class TVGardenAbout(Screen):
             • MEMORY + DISK CACHE: Dual-layer for performance
             • CACHE SIZE: Configurable limit (10-5000 items)
 
-            ━━━━━━━━━━━━━━━━━ PERFORMANCE SETTINGS ━━━━━━━━━━━━━━━━━━
-            • Hardware Acceleration Toggle (On/Off)
-            • Buffer Size Control: 512KB, 1MB, 2MB, 4MB, 8MB
-            • Smart HW Accel Detection (H.264, H.265)
-            • Player Selection: Auto, ExtePlayer3, GStreamer
-            • Memory Optimization Option
+            ━━━━━━━━━━━━━━━━━ PLAYER SETTINGS ━━━━━━━━━━━━━━━━━━
+            • Player Selection: Auto (4097), ExtePlayer3 / GStreamer (ServiceApp)
+            • YouTube streams resolved with yt-dlp
 
             ━━━━━━━━━━━━━━━━━ KEY CONTROLS ━━━━━━━━━━━━━━━━━━
             [ BROWSER ]
@@ -225,7 +218,7 @@ class TVGardenAbout(Screen):
 
             [ PLAYER ]
               CHANNEL +/-   ^/v Zap Between Channels
-              OK            [i] Show Channel Info + Performance Stats
+              INFO          [i] Show Channel Info
               EXIT          [X] Close Player
 
             ━━━━━━━━━━━━━━━ CONFIGURATION SYSTEM ━━━━━━━━━━━━━━━━
@@ -235,14 +228,13 @@ class TVGardenAbout(Screen):
             • Browser Settings: Max channels, Default view, Sort by
             • Cache Settings: Enable, Size, Force Refresh options
             • Export Settings: Enable, Max channels, Name prefix, List position
-            • Network Settings: User agent, Connection & Download timeout
+            • Network Settings: User agent, Connection timeout
             • Logging Settings: Level, File logging
-            • Performance Settings: HW acceleration, Buffer size, Memory opt.
             • Search Settings: Max results
             • Bouquet Management: Auto-reload after export
 
             ━━━━━━━━━━━━━━━ TECHNICAL SPECS ━━━━━━━━━━━━━━━━
-            • Python 2.7+ Compatible (Enigma2 Optimized)
+            • Python 3 (Enigma2 Optimized)
             • Memory Efficient (~50MB RAM)
             • Player Engines: GStreamer / ExtePlayer3 / Auto
             • Smart Cache Management with configurable refresh
@@ -269,10 +261,8 @@ class TVGardenAbout(Screen):
 
             ━━━━━━━━━━━━━━━━━ TIPS ━━━━━━━━━━━━━━━━━━━━
             RECOMMENDED SETTINGS:
-            1. Buffer Size: 2MB-4MB for stable connections
-            2. HW Acceleration: ON for H.264/H.265 streams
-            3. Max Channels per Country: 250-500 for faster loading
-            4. Cache: ON for normal use, OFF for testing
+            1. Max Channels per Country: 250-500 for faster loading
+            2. Cache: ON for normal use, OFF for testing
 
             BOUQUET EXPORT:
             • Single-File: Best for <1000 channels

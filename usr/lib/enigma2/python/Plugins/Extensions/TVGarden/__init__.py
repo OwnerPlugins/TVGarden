@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -10,7 +10,7 @@ from Components.Language import language
 import gettext
 
 PLUGIN_NAME = "TVGarden"
-__version__ = "2.7"
+__version__ = "2.8"
 PLUGIN_VERSION = __version__
 PLUGIN_PATH = resolveFilename(
     SCOPE_PLUGINS,

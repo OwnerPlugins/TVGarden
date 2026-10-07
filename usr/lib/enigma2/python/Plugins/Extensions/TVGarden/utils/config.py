@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 TV Garden Plugin - Config Module
 Settings and configuration management
 Based on TV Garden Project
 """
-from os.path import join, exists
-from os import makedirs, chmod
+from os.path import join, exists, dirname, abspath
+from os import makedirs, chmod, rename
 from json import load, dump
 from Tools.Directories import fileExists
 from shutil import copy2
@@ -172,12 +172,12 @@ class PluginConfig:
             # Validate before saving
             self.config = self.validate_config(self.config)
 
-            # Save config
-            with open(self.config_file, 'w') as f:
+            # Save config atomically (no truncated file on power loss)
+            tmp_file = self.config_file + ".tmp"
+            with open(tmp_file, 'w') as f:
                 dump(self.config, f, indent=4, sort_keys=True)
-
-            # Set proper permissions
-            chmod(self.config_file, 0o644)
+            chmod(tmp_file, 0o644)
+            rename(tmp_file, self.config_file)
 
             log.info(
                 "Configuration saved to %s" %
@@ -241,6 +241,18 @@ class PluginConfig:
                 validated_config['connection_timeout'] = timeout
             except (ValueError, TypeError):
                 validated_config['connection_timeout'] = 30
+
+        # Ensure cache_ttl is reasonable (seconds)
+        if 'cache_ttl' in validated_config:
+            try:
+                val = int(validated_config['cache_ttl'])
+                if val < 60:
+                    val = 60
+                elif val > 604800:
+                    val = 604800
+                validated_config['cache_ttl'] = val
+            except (ValueError, TypeError):
+                validated_config['cache_ttl'] = 3600
 
         # Ensure cache_size is reasonable
         if 'cache_size' in validated_config:
@@ -324,53 +336,6 @@ class PluginConfig:
 
         return validated_config
 
-    def _migrate_config_v2(self, config):
-        """Migrate from config version 1 to 2 - SEMPLIFICATA"""
-        log.info("Migrating config from version 1 to 2", module="Config")
-
-        old_keys_to_remove = [
-            'timeout', 'download_timeout', 'bouquet_auto_reload',
-            'search_case_sensitive', 'skin', 'auto_update', 'update_channel',
-            'update_check_interval', 'notify_on_update', 'auto_add_favorite',
-            'show_info', 'sort_by', 'cache_ttl', 'auto_refresh',
-            'use_proxy', 'proxy_url', 'favorites_autosave', 'max_favorites',
-            'test_mode', 'developer_mode', 'last_export_type',
-            'favorites_added', 'cache_hits', 'cache_misses', 'stats_enabled',
-            'first_run', 'accepted_eula', 'telemetry'
-        ]
-
-        for key in old_keys_to_remove:
-            if key in config:
-                del config[key]
-
-        new_keys_v2 = {
-            'refresh_method': 'clear_cache',
-            'list_position': 'bottom',
-            'memory_optimization': True,
-            'search_max_results': 200,
-            'last_search': '',
-            'exports_count': 0,
-            'config_version': 2,
-            'max_channels_for_sub_bouquet': 500
-        }
-
-        for key, default in new_keys_v2.items():
-            if key not in config:
-                config[key] = default
-
-        if 'cache_size' in config and config['cache_size'] < 500:
-            config['cache_size'] = 500
-
-        if 'max_channels_for_bouquet' in config and config['max_channels_for_bouquet'] < 500:
-            config['max_channels_for_bouquet'] = 500
-
-        if 'force_refresh' in config:
-            config['force_refresh_export'] = config['force_refresh']
-            config['force_refresh_browsing'] = config['force_refresh']
-            del config['force_refresh']
-
-        return config
-
     def restore_backup(self):
         """Restore configuration from backup"""
         if fileExists(self.backup_file):
@@ -424,7 +389,7 @@ class PluginConfig:
         """Export config to file"""
         try:
             # Ensure directory exists
-            export_dir = join(filepath, '..')
+            export_dir = dirname(abspath(filepath))
             if not exists(export_dir):
                 makedirs(export_dir)
 
@@ -532,12 +497,6 @@ class PluginConfig:
         """
         Load skin from file or use default from class
         """
-        if exists('/var/lib/dpkg/status'):
-            log.info(
-                "Python2 image detected, using class skin for %s" %
-                screen_name, module="Config")
-            return default_skin
-
         resolution = self.get_skin_resolution()
         skin_file = join(
             PLUGIN_PATH,
@@ -545,6 +504,10 @@ class PluginConfig:
             resolution,
             "%s.xml" %
             screen_name)
+
+        # No SD skins are shipped: use the HD ones
+        if not fileExists(skin_file):
+            skin_file = join(PLUGIN_PATH, "skins", "hd", "%s.xml" % screen_name)
 
         if fileExists(skin_file):
             try:

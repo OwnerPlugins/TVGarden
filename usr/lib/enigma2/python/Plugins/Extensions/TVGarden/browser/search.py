@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 TV Garden Plugin - SearchBrowser
@@ -21,7 +21,14 @@ import threading
 
 from .base import BaseBrowser
 from ..utils.cache import CacheManager
-from ..helpers import log
+from ..helpers import (
+    log,
+    timer_connect,
+    extract_stream_url,
+    is_valid_stream_url,
+    get_channel_language,
+    get_all_channels_url
+)
 from ..utils.favorites import FavoritesManager
 from ..player.iptv_player import TVGardenPlayer
 from ..utils.config import PluginConfig, get_config
@@ -68,14 +75,14 @@ class SearchBrowser(BaseBrowser):
             <widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
 
             <!-- Title -->
-            <widget name="title" position="49,-8" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
+            <widget source="title" position="49,-8" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
 
             <!-- Search label and text -->
-            <widget name="search_label" position="48,55" size="610,90" zPosition="10" font="Regular;34" halign="right" valign="center" foregroundColor="#ffffff" render="Label" />
-            <widget name="search_text" position="671,55" size="1220,90" zPosition="10" font="Regular;34" halign="left" valign="center" backgroundColor="#2d3047" foregroundColor="#ffffff" render="Label" />
+            <widget source="search_label" position="48,55" size="610,90" zPosition="10" font="Regular;34" halign="right" valign="center" foregroundColor="#ffffff" render="Label" />
+            <widget source="search_text" position="671,55" size="1220,90" zPosition="10" font="Regular;34" halign="left" valign="center" backgroundColor="#2d3047" foregroundColor="#ffffff" render="Label" />
 
             <!-- Status -->
-            <widget name="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
+            <widget source="status" render="Label" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
 
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
@@ -107,10 +114,9 @@ class SearchBrowser(BaseBrowser):
         self.last_key = None
         self.last_key_time = 0
         self.key_timer = eTimer()
-        try:
-            self.key_timer.timeout.connect(self.finishKeyInput)
-        except BaseException:
-            self.key_timer.callback.append(self.finishKeyInput)
+        self.key_timer_conn = timer_connect(self.key_timer, self.finishKeyInput)
+        self.load_check_timer = None
+        self._cancel_loading = False
         self['title'] = StaticText(
             "TV Garden %s | by Lululla" % PLUGIN_VERSION)
         self["search_label"] = StaticText(_("Search:"))
@@ -122,8 +128,7 @@ class SearchBrowser(BaseBrowser):
         self["key_yellow"] = StaticText(_("Favorite"))
         self["key_blue"] = StaticText(_("Clear"))
 
-        self["actions"] = ActionMap(["TVGardenActions",
-                                     "OkCancelActions",
+        self["actions"] = ActionMap(["OkCancelActions",
                                      "ColorActions",
                                      "DirectionActions",
                                      "NumberActions"],
@@ -151,33 +156,23 @@ class SearchBrowser(BaseBrowser):
                                     -2)
 
         self.search_timer = eTimer()
-        try:
-            self.search_timer.timeout.connect(self.perform_search)
-        except AttributeError:
-            self.search_timer.callback.append(self.perform_search)
+        self.search_timer_conn = timer_connect(
+            self.search_timer, self.perform_search)
 
         self.numerical_input = NumericalTextInput(self.search_with_string)
         self.onFirstExecBegin.append(self.load_all_channels)
 
     def _update_status(self, text):
-        """Thread-safe status update"""
+        """Thread-safe status update (called from the loader thread)"""
         try:
             from twisted.internet import reactor
             reactor.callFromThread(self._set_status_text, text)
-        except ImportError:
-            self._pending_status = text
-            if not hasattr(self, '_status_timer'):
-                self._status_timer = eTimer()
-                self._status_timer.timeout.connect(self._apply_pending_status)
-                self._status_timer.start(100)
+        except Exception:
+            pass
 
     def _set_status_text(self, text):
-        self["status"].setText(text)
-
-    def _apply_pending_status(self):
-        if hasattr(self, '_pending_status'):
-            self["status"].setText(self._pending_status)
-            self._pending_status = None
+        if not self._cancel_loading:
+            self["status"].setText(text)
 
     def _check_loading_complete(self):
         if hasattr(self, '_loading_complete') and self._loading_complete:
@@ -191,14 +186,15 @@ class SearchBrowser(BaseBrowser):
                 self.all_channels = []
             elif hasattr(self, '_loaded_channels'):
                 self.all_channels = self._loaded_channels
-                log.info("Total channels loaded: %d" % len(self.all_channels))
+                log.info("Total channels loaded: %d" %
+                     len(self.all_channels), module="Search")
                 self["status"].setText(
                     _("Ready - %d channels") % len(self.all_channels))
                 self.search_results = self.all_channels[:]
                 self.display_search_results()
             else:
                 self["status"].setText(_("No channels loaded"))
-                log.error("No _loaded_channels found")
+                log.error("No _loaded_channels found", module="Search")
 
             for attr in [
                 '_loading_complete',
@@ -207,80 +203,84 @@ class SearchBrowser(BaseBrowser):
                 if hasattr(self, attr):
                     delattr(self, attr)
 
+    def _load_media_channels(self, media_type, force_refresh):
+        """Load every channel of one media type"""
+        try:
+            countries = self.cache.get_countries_metadata(
+                media_type=media_type, force_refresh=force_refresh) or {}
+        except Exception as e:
+            log.warning("No metadata for %s: %s" %
+                        (media_type, e), module="Search")
+            countries = {}
+
+        # Country code -> display name
+        names = {}
+        for code, info in countries.items():
+            if isinstance(info, dict):
+                names[code.lower()] = info.get('country', code)
+
+        # 1. One single download: <media>/raw/categories/all.json
+        try:
+            self._update_status(_("Loading %s channels...") % media_type)
+            channels = self.cache.fetch_url(
+                get_all_channels_url(media_type), force_refresh=force_refresh)
+            if isinstance(channels, list) and channels:
+                for ch in channels:
+                    code = str(ch.get('country', '')).lower()
+                    ch['country'] = names.get(code, code.upper())
+                    ch['media_type'] = media_type
+                return channels
+        except Exception as e:
+            log.warning("all.json not available for %s: %s" %
+                        (media_type, e), module="Search")
+
+        # 2. Fallback: country by country
+        result = []
+        total_countries = len(countries)
+        for processed, (code, info) in enumerate(countries.items(), 1):
+            if self._cancel_loading:
+                break
+            if isinstance(info, dict) and not info.get('hasChannels', True):
+                continue
+            self._update_status(
+                _("Loading %s: %s (%d/%d)") %
+                (media_type, code.upper(), processed, total_countries))
+            try:
+                channels = self.cache.get_country_channels(
+                    code, media_type=media_type, force_refresh=force_refresh)
+                for ch in channels or []:
+                    ch['country'] = names.get(code.lower(), code)
+                    ch['media_type'] = media_type
+                result.extend(channels or [])
+            except Exception as e:
+                log.debug("Skipped %s/%s: %s" %
+                          (media_type, code, str(e)[:50]), module="Search")
+        return result
+
     def _load_all_channels_thread(self):
         """
         [TVGarden patch] Carica canali da TV + Webcams in un unico thread.
         Ogni channel viene taggato con `media_type` per distinguerlo.
         """
-        config = get_config()
-        force_refresh = config.get("force_refresh_browsing", False)
-        timeout = config.get("connection_timeout", 10)
-
-        import socket
-        original_timeout = socket.getdefaulttimeout()
-        socket.setdefaulttimeout(timeout)
-
+        force_refresh = get_config().get("force_refresh_browsing", False)
         temp_channels = []
-
         try:
-            # [TVGarden patch] Itera su tutte le sorgenti definite in SEARCH_MEDIA_TYPES
             for media_type in SEARCH_MEDIA_TYPES:
-                try:
-                    countries = self.cache.get_countries_metadata(
-                        media_type=media_type,
-                        force_refresh=force_refresh)
-                except TypeError:
-                    # Retrocompatibilità
-                    countries = self.cache.get_countries_metadata(
-                        force_refresh=force_refresh)
-
-                total_countries = len(countries)
-                processed = 0
-
-                for code, info in countries.items():
-                    processed += 1
-                    self._update_status(
-                        _("Loading %s: %s (%d/%d)") %
-                        (media_type, code.upper(), processed, total_countries))
-                    try:
-                        try:
-                            channels = self.cache.get_country_channels(
-                                code,
-                                media_type=media_type,
-                                force_refresh=force_refresh)
-                        except TypeError:
-                            channels = self.cache.get_country_channels(
-                                code, force_refresh=force_refresh)
-
-                        if channels:
-                            for ch in channels:
-                                ch['country'] = info.get('name', code)
-                                # [TVGarden patch]
-                                ch['media_type'] = media_type
-                            temp_channels.extend(channels)
-                            log.debug(
-                                "Added %d from %s/%s" %
-                                (len(channels), media_type, code),
-                                module="Search")
-                    except Exception as e:
-                        log.debug("Skipped %s/%s: %s" %
-                                  (media_type, code, str(e)[:50]),
-                                  module="Search")
-                        continue
+                if self._cancel_loading:
+                    break
+                temp_channels.extend(
+                    self._load_media_channels(media_type, force_refresh))
 
             self._loaded_channels = temp_channels
-            self._loading_complete = True
-
         except Exception as e:
             log.error("Background loading error: %s" % e, module="Search")
             self._loading_error = str(e)
-            self._loading_complete = True
         finally:
-            socket.setdefaulttimeout(original_timeout)
+            self._loading_complete = True
 
     def load_all_channels(self):
         """Load all channels in background thread to avoid GUI freeze"""
-        if hasattr(self, '_loading_in_progress') and self._loading_in_progress:
+        if getattr(self, '_loading_in_progress', False):
             self["status"].setText(_("Loading already in progress..."))
             return
 
@@ -294,26 +294,9 @@ class SearchBrowser(BaseBrowser):
         self.load_thread.start()
 
         self.load_check_timer = eTimer()
-        self.load_check_timer.callback.append(self._check_loading_complete)
+        self.load_check_timer_conn = timer_connect(
+            self.load_check_timer, self._check_loading_complete)
         self.load_check_timer.start(500)
-
-    def _add_channels_incrementally(self, new_channels, country_name):
-        """Thread-safe: posta l'aggiornamento della GUI nel main thread"""
-        from twisted.internet import reactor
-        reactor.callFromThread(
-            self._do_add_channels,
-            new_channels,
-            country_name)
-
-    def _do_add_channels(self, new_channels, country_name):
-        if not new_channels:
-            return
-        self.all_channels.extend(new_channels)
-        log.debug("Added %d from %s, total: %d" %
-                  (len(new_channels), country_name, len(self.all_channels)))
-        self["status"].setText(
-            _("Loading... %d channels so far") % len(
-                self.all_channels))
 
     def open_keyboard(self):
         """Open virtual keyboard"""
@@ -462,51 +445,18 @@ class SearchBrowser(BaseBrowser):
                     break
 
             name = channel.get('name', 'Result %d' % (idx + 1))
-            stream_url = None
-            found_in = None
-            is_youtube = False
+            stream_url, found_in, is_youtube = extract_stream_url(channel)
 
-            # 1. iptv_urls
-            if 'iptv_urls' in channel and isinstance(
-                    channel['iptv_urls'], list):
-                for url in channel['iptv_urls']:
-                    if isinstance(url, str) and url.strip():
-                        stream_url = url.strip()
-                        found_in = "iptv_urls"
-                        break
-
-            # 2. stream_urls
-            if not stream_url and 'stream_urls' in channel and isinstance(
-                    channel['stream_urls'], list):
-                for url in channel['stream_urls']:
-                    if isinstance(url, str) and url.strip():
-                        stream_url = url.strip()
-                        found_in = "stream_urls"
-                        break
-
-            # 3. youtube_urls (skip)
-            if not stream_url and 'youtube_urls' in channel and isinstance(
-                    channel['youtube_urls'], list):
-                for url in channel['youtube_urls']:
-                    if isinstance(url, str) and url.strip():
-                        stream_url = url.strip()
-                        found_in = "youtube_urls"
-                        is_youtube = True
-                        break
-
-            # 4. Fallback a 'url'
-            if not stream_url and 'url' in channel and isinstance(
-                    channel['url'], str) and channel['url'].strip():
-                stream_url = channel['url'].strip()
-                found_in = "url"
+            if not stream_url or not is_valid_stream_url(stream_url):
+                problematic_count += 1
+                continue
 
             if is_youtube:
                 youtube_count += 1
-                continue
 
             log.debug(
                 "Channel: %s, URL: %s, is_youtube: %s" %
-                (name, stream_url, is_youtube))
+                (name, stream_url, is_youtube), module="Search")
 
             # [TVGarden patch] Conta per media_type e crea prefisso
             media_type = channel.get('media_type', 'tv')
@@ -525,6 +475,8 @@ class SearchBrowser(BaseBrowser):
                 extra_info.append(channel['country'])
 
             display_name = "[%s] %s" % (media_label, name)
+            if is_youtube:
+                display_name = "[%s][YT] %s" % (media_label, name)
             if extra_info:
                 display_name += " [%s]" % ', '.join(extra_info)
 
@@ -536,18 +488,19 @@ class SearchBrowser(BaseBrowser):
                 'id': channel.get('nanoid', 'srch_%d' % idx),
                 'description': channel.get('description', ''),
                 'group': channel.get('group', ''),
-                'language': channel.get('language', ''),
+                'language': get_channel_language(channel),
                 'country': channel.get('country', ''),
-                'is_youtube': False,
+                'is_youtube': is_youtube,
                 'found_in': found_in,
                 'media_type': media_type,  # [TVGarden patch]
             }
 
-            menu_items.append((display_name, idx))
+            menu_items.append((display_name, len(self.menu_channels)))
             self.menu_channels.append(channel_data)
             valid_count += 1
 
-        log.info("Valid channels found: %d" % len(menu_items))
+        log.info("Valid channels found: %d" %
+                 len(menu_items), module="Search")
         self["menu"].setList(menu_items)
 
         if max_channels > 0 and len(self.search_results) > max_channels:
@@ -564,11 +517,11 @@ class SearchBrowser(BaseBrowser):
             status_text += " [TV: %d / WEB: %d]" % (tv_count, web_count)
 
         if youtube_count > 0:
-            status_text += " " + _("(skipped %d YouTube)") % youtube_count
+            status_text += " " + _("(%d YouTube)") % youtube_count
 
         if problematic_count > 0:
             status_text += " " + \
-                _("(filtered %d problematic)") % problematic_count
+                _("(%d without stream)") % problematic_count
 
         if skipped_by_limit > 0:
             status_text += " " + _("(limited to first %d)") % max_channels
@@ -584,7 +537,7 @@ class SearchBrowser(BaseBrowser):
                 self.search_query)
 
         log.info(
-            "Final: %d playable (TV:%d WEB:%d), %d YouTube skipped, %d problematic filtered, %d limited by config" %
+            "Final: %d playable (TV:%d WEB:%d), %d YouTube, %d without stream, %d limited by config" %
             (valid_count,
              tv_count,
              web_count,
@@ -592,41 +545,6 @@ class SearchBrowser(BaseBrowser):
              problematic_count,
              skipped_by_limit),
             module="Search")
-
-    def extract_stream_url(self, channel):
-        """Extract stream URL from channel"""
-        if 'iptv_urls' in channel and isinstance(channel['iptv_urls'], list):
-            for url in channel['iptv_urls']:
-                if isinstance(url, str) and url.strip():
-                    return url.strip()
-        if 'stream_urls' in channel and isinstance(
-                channel['stream_urls'], list):
-            for url in channel['stream_urls']:
-                if isinstance(url, str) and url.strip():
-                    return url.strip()
-        if 'youtube_urls' in channel and isinstance(
-                channel['youtube_urls'], list):
-            for url in channel['youtube_urls']:
-                if isinstance(url, str) and url.strip():
-                    return None
-        return channel.get('url', '')
-
-    def create_channel_data(self, channel, stream_url):
-        """Create channel data for player"""
-        return {
-            'name': channel.get('name', ''),
-            'url': stream_url,
-            'stream_url': stream_url,
-            'logo': channel.get('logo') or channel.get('icon'),
-            'id': channel.get('nanoid', ''),
-            'description': channel.get('description', ''),
-            'group': channel.get('group', '') or channel.get('category', ''),
-            'language': channel.get('language', ''),
-            'country': channel.get('country', ''),
-            'category': channel.get('category', ''),
-            'is_youtube': False,
-            'media_type': channel.get('media_type', 'tv'),
-        }
 
     def get_current_channel(self):
         menu_idx = self["menu"].getSelectedIndex()
@@ -678,22 +596,6 @@ class SearchBrowser(BaseBrowser):
                 self.fav_manager.add(channel)
                 self["status"].setText(_("Added to favorites"))
 
-    def moveUp(self):
-        self["menu"].up()
-        self.update_selected_index()
-
-    def moveDown(self):
-        self["menu"].down()
-        self.update_selected_index()
-
-    def moveLeft(self):
-        self["menu"].pageUp()
-        self.update_selected_index()
-
-    def moveRight(self):
-        self["menu"].pageDown()
-        self.update_selected_index()
-
     def update_selected_index(self):
         """Update selected index from menu"""
         self.selectedIndex = self["menu"].getSelectedIndex()
@@ -715,8 +617,10 @@ class SearchBrowser(BaseBrowser):
         self.update_selected_index()
 
     def exit(self):
-        if hasattr(self, 'load_thread') and self.load_thread.is_alive():
-            self.load_thread = None
-        if self.search_timer.isActive():
-            self.search_timer.stop()
+        # Tell the loader thread to stop and stop polling it
+        self._cancel_loading = True
+        if self.load_check_timer:
+            self.load_check_timer.stop()
+        self.search_timer.stop()
+        self.key_timer.stop()
         self.close()
