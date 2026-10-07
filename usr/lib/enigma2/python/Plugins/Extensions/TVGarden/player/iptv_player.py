@@ -28,7 +28,7 @@ from os.path import isdir
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from ..helpers import log, timer_connect, is_youtube_url
 from ..utils.config import get_config
-from ..utils.youtube_helper import get_youtube_stream
+from ..utils.youtube_helper import resolve_youtube
 from .. import _
 
 
@@ -512,33 +512,41 @@ class TVGardenPlayer(
             self.show_overlays_text(_("Resolving YouTube stream..."))
             try:
                 from twisted.internet import threads
-                d = threads.deferToThread(get_youtube_stream, stream_url)
+                d = threads.deferToThread(resolve_youtube, stream_url)
                 d.addCallback(self._youtube_resolved, request_id, channel_name)
                 d.addErrback(self._youtube_failed, request_id)
             except Exception as e:
                 log.error("Cannot start YouTube resolver: %s" %
                           e, module="Player")
                 self._youtube_resolved(
-                    get_youtube_stream(stream_url), request_id, channel_name)
+                    resolve_youtube(stream_url), request_id, channel_name)
             return
 
         self._play_url(stream_url, channel_name)
 
-    def _youtube_resolved(self, resolved, request_id, channel_name):
+    def _youtube_resolved(self, result, request_id, channel_name):
         """Called on the GUI thread when yt-dlp has finished"""
         if self.closing or request_id != self.play_request:
             return
+        resolved, error = result
         if resolved:
             log.info("YouTube resolved: %s..." %
                      resolved[:80], module="Player")
             self._play_url(resolved, channel_name)
         else:
-            log.error("Failed to resolve YouTube stream", module="Player")
-            self.show_error_message(_("YouTube stream not available"))
+            log.error("Failed to resolve YouTube stream: %s" %
+                      error, module="Player")
+            message = _("YouTube stream not available")
+            if error:
+                message += "\n\n%s" % error
+            if error == "yt-dlp is not installed":
+                message += "\n" + _("Install it with: opkg install python3-yt-dlp")
+            self.show_error_message(message)
 
     def _youtube_failed(self, failure, request_id):
         log.error("YouTube resolver error: %s" % failure, module="Player")
-        self._youtube_resolved(None, request_id, "")
+        self._youtube_resolved(
+            (None, failure.getErrorMessage()), request_id, "")
 
     def show_overlays_text(self, text):
         try:
