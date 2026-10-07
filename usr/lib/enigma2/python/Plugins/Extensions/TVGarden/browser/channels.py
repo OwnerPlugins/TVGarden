@@ -10,10 +10,10 @@ Il browser accetta `media_type` e lo propaga a:
 - cache.get_country_channels()
 - cache.get_category_channels()
 """
+import os
 import tempfile
 from os import unlink
 from os.path import exists
-from sys import stderr
 from enigma import ePicLoad, eServiceReference
 from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
@@ -21,29 +21,19 @@ from Components.MenuList import MenuList
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Components.ActionMap import ActionMap
-from urllib.request import urlopen
 
-
-try:
-    from ..helpers import is_valid_stream_url, log
-except ImportError as e:
-    print("[CHANNELS IMPORT ERROR] %s" % e, file=stderr)
-
-    def log(msg, level="INFO"):
-        print("[%s] TVGarden: %s" % (level, msg))
-
-    def is_valid_stream_url(url):
-        if not url or not isinstance(url, str):
-            return False
-        url = url.strip()
-        valid_prefixes = ('http://', 'https://', 'rtmp://', 'rtsp://')
-        return any(url.startswith(prefix)
-                   for prefix in valid_prefixes) or '.m3u8' in url.lower()
-
-
+from ..helpers import (
+    is_valid_stream_url,
+    extract_stream_url,
+    get_channel_language,
+    bouquet_service_lines,
+    add_bouquet_to_index,
+    encode_bouquet_text,
+    log
+)
 from .base import BaseBrowser
 from ..utils.config import PluginConfig, get_config
-from ..utils.cache import CacheManager
+from ..utils.cache import CacheManager, open_url
 from ..utils.favorites import FavoritesManager
 from ..player.iptv_player import TVGardenPlayer
 from .. import _, PLUGIN_VERSION
@@ -74,10 +64,10 @@ class ChannelsBrowser(BaseBrowser):
             <widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
 
             <!-- Title -->
-            <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
+            <widget source="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
 
             <!-- Status -->
-            <widget name="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
+            <widget source="status" render="Label" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
 
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
@@ -139,7 +129,7 @@ class ChannelsBrowser(BaseBrowser):
         self["key_yellow"] = StaticText(_("Favorite"))
         self["key_blue"] = StaticText("")
 
-        self["actions"] = ActionMap(["TVGardenActions", "OkCancelActions", "ColorActions", "DirectionActions"], {
+        self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "MenuActions"], {
             "cancel": self.exit,
             "ok": self.play_channel,
             "red": self.exit,
@@ -153,16 +143,33 @@ class ChannelsBrowser(BaseBrowser):
             "menu": self.channel_menu,
         }, -2)
 
-        self.picload = ePicLoad()
+        self.show_logos = self.config.get("show_logos", True)
+        self.logo_request = 0
+        self.logo_temp_path = None
 
-        if exists('/var/lib/dpkg/info'):
-            # DreamOS
+        self.picload = ePicLoad()
+        try:
+            # DreamOS: keep the connection object alive
             self.picload_conn = self.picload.PictureData.connect(
                 self.update_logo)
-        else:
-            self.picload_conn = self.picload.PictureData.get().append(self.update_logo)
+        except AttributeError:
+            self.picload_conn = None
+            self.picload.PictureData.get().append(self.update_logo)
 
+        self["menu"].onSelectionChanged.append(self.onSelectionChanged)
         self.onFirstExecBegin.append(self.load_channels)
+        self.onClose.append(self.cleanup)
+
+    def cleanup(self):
+        """Release picload and temp files"""
+        self.logo_request += 1
+        self._remove_logo_temp()
+        try:
+            if self.picload_conn is None:
+                self.picload.PictureData.get().remove(self.update_logo)
+        except Exception:
+            pass
+        self.picload_conn = None
 
     def onSelectionChanged(self):
         """Called when menu selection changes"""
@@ -178,7 +185,7 @@ class ChannelsBrowser(BaseBrowser):
             (_("Channel Information"), "info"),
         ]
 
-        if self.menu_channels:
+        if self.menu_channels and get_config().get("export_enabled", True):
             menu.append((_("Export Current View"), "export_current"))
 
         self.session.openWithCallback(self.menu_callback, ChoiceBox,
@@ -292,107 +299,10 @@ class ChannelsBrowser(BaseBrowser):
 
                 name = channel.get("name", "Channel %d" % (idx + 1))
 
-                stream_url = None
-                found_in = None
-                is_youtube = False
-
-                # ============================================================
-                # [TVGarden patch] Supporto formato NUOVO con "sources" annidato
-                # Esempio webcams: {"sources": {"youtube": ["..."]}}
-                # Esempio TV nuovo: {"sources": {"streams": ["..."]}}
-                # ============================================================
-                sources = channel.get("sources")
-                if isinstance(sources, dict):
-                    # 1a. sources.streams (nuovo formato TV)
-                    if not stream_url and isinstance(
-                            sources.get("streams"), list):
-                        for url in sources["streams"]:
-                            if isinstance(url, str) and url.strip():
-                                stream_url = url.strip()
-                                found_in = "sources.streams"
-                                break
-
-                    # 1b. sources.iptv (alternativo)
-                    if not stream_url and isinstance(
-                            sources.get("iptv"), list):
-                        for url in sources["iptv"]:
-                            if isinstance(url, str) and url.strip():
-                                stream_url = url.strip()
-                                found_in = "sources.iptv"
-                                break
-
-                    # 1c. sources.youtube (webcams + TV youtube)
-                    if not stream_url and isinstance(
-                            sources.get("youtube"), list):
-                        for url in sources["youtube"]:
-                            if isinstance(url, str) and url.strip():
-                                stream_url = url.strip()
-                                found_in = "sources.youtube"
-                                is_youtube = True
-                                break
-
-                    # 1d. sources.iframe (alternativo)
-                    if not stream_url and isinstance(
-                            sources.get("iframe"), list):
-                        for url in sources["iframe"]:
-                            if isinstance(url, str) and url.strip():
-                                stream_url = url.strip()
-                                found_in = "sources.iframe"
-                                is_youtube = True
-                                break
-
-                # ============================================================
-                # Formato VECCHIO (chiavi piatte) - mantenuto per retrocompatibilità
-                # ============================================================
-
-                # 2. iptv_urls
-                if (
-                    not stream_url
-                    and "iptv_urls" in channel
-                    and isinstance(channel["iptv_urls"], list)
-                    and channel["iptv_urls"]
-                ):
-                    for url in channel["iptv_urls"]:
-                        if isinstance(url, str) and url.strip():
-                            stream_url = url.strip()
-                            found_in = "iptv_urls"
-                            break
-
-                # 3. youtube_urls
-                if (
-                    not stream_url
-                    and "youtube_urls" in channel
-                    and isinstance(channel["youtube_urls"], list)
-                    and channel["youtube_urls"]
-                ):
-                    for url in channel["youtube_urls"]:
-                        if isinstance(url, str) and url.strip():
-                            stream_url = url.strip()
-                            found_in = "youtube_urls"
-                            is_youtube = True
-                            break
-
-                # 4. stream_urls
-                if not stream_url and "stream_urls" in channel and isinstance(
-                        channel["stream_urls"], list) and channel["stream_urls"]:
-                    for url in channel["stream_urls"]:
-                        if isinstance(url, str) and url.strip():
-                            stream_url = url.strip()
-                            found_in = "stream_urls"
-                            break
-
-                # 5. single url field
-                if not stream_url and "url" in channel and isinstance(
-                        channel["url"], str) and channel["url"].strip():
-                    stream_url = channel["url"].strip()
-                    found_in = "url"
+                stream_url, found_in, is_youtube = extract_stream_url(channel)
 
                 if is_youtube:
                     youtube_count += 1
-                    print(
-                        "[CHANNELS DEBUG] ⏭️ Skipping YouTube: %s" % name,
-                        file=stderr
-                    )
 
                 if not stream_url:
                     log.warning(
@@ -408,17 +318,6 @@ class ChannelsBrowser(BaseBrowser):
 
                 stream_url_to_use = stream_url
 
-                if stream_url.startswith("http://"):
-                    log.debug("   HTTP URL (good)", module="Channels")
-                elif stream_url.startswith("https://"):
-                    log.debug(
-                        "   HTTPS URL (may have issues)",
-                        module="Channels")
-                elif stream_url.startswith("rtmp://") or stream_url.startswith("rtsp://"):
-                    log.debug(
-                        "   RTMP/RTSP URL (needs gstreamer)",
-                        module="Channels")
-
                 channel_data = {
                     "name": str(name or ""),
                     "url": stream_url_to_use,
@@ -427,7 +326,7 @@ class ChannelsBrowser(BaseBrowser):
                     "id": str(channel.get("nanoid", "ch_%d" % idx)),
                     "description": str(channel.get("description", "")),
                     "group": str(channel.get("group", "")),
-                    "language": str(channel.get("language", "")),
+                    "language": get_channel_language(channel),
                     "country": str(channel.get("country", "")),
                     "found_in": str(found_in),
                     "original_index": idx,
@@ -450,12 +349,11 @@ class ChannelsBrowser(BaseBrowser):
 
             self["menu"].setList(menu_items)
 
-            if menu_items:
+            if menu_items and config.get("export_enabled", True):
                 self["key_blue"].setText(_("Export"))
             else:
                 self["key_blue"].setText("")
 
-            self["menu"].onSelectionChanged.append(self.onSelectionChanged)
             if menu_items:
                 selected_idx = menu_items[0][1]
                 if 0 <= selected_idx < len(self.menu_channels):
@@ -475,8 +373,8 @@ class ChannelsBrowser(BaseBrowser):
             if max_channels > 0 and len(channels) > max_channels:
                 msg = _("Showing {shown} of {total} channels")
                 status_text = msg.format(
-                    shown=min(max_channels, valid_count),
-                    total=valid_count + youtube_count + problematic_count
+                    shown=valid_count,
+                    total=len(channels)
                 )
             else:
                 status_text = _("Found %d playable channels") % valid_count
@@ -496,7 +394,7 @@ class ChannelsBrowser(BaseBrowser):
             self["status"].setText(status_text)
 
             log.info(
-                "Playable: %d, Skipped YouTube: %d, Filtered problematic: %d, Config limit: %d, Skipped by limit: %d" %
+                "Playable: %d, YouTube: %d, Filtered problematic: %d, Config limit: %d, Skipped by limit: %d" %
                 (valid_count, youtube_count, problematic_count, max_channels, skipped_count), module="Channels")
 
             log.info("Cache status: enabled=%s, force_refresh=%s" %
@@ -527,165 +425,73 @@ class ChannelsBrowser(BaseBrowser):
                 module="Channels")
 
             logo_url = self.current_channel.get('logo')
-            if logo_url:
-                log.debug("Loading logo: %s..." %
-                          logo_url[:50], module="Channels")
+            if logo_url and self.show_logos:
                 self.download_logo(logo_url)
             else:
-                log.debug("No logo available", module="Channels")
+                self.logo_request += 1
                 self["logo"].hide()
         else:
             log.error("ERROR: Index %d out of range (0-%d)" %
                       (index, len(self.menu_channels) - 1), module="Channels")
 
+    def _remove_logo_temp(self):
+        if self.logo_temp_path:
+            try:
+                unlink(self.logo_temp_path)
+            except OSError:
+                pass
+            self.logo_temp_path = None
+
     def update_logo(self, picInfo=None):
-        """Update logo pixmap"""
+        """ePicLoad finished decoding: show the logo, drop the temp file"""
         ptr = self.picload.getData()
-        if ptr:
-            self["logo"].instance.setScale(1)
+        if ptr and self["logo"].instance:
             self["logo"].instance.setPixmap(ptr)
             self["logo"].show()
-            log.debug("logo displayed", module="Channels")
         else:
             self["logo"].hide()
-            log.debug("No logo data, hiding", module="Channels")
+        self._remove_logo_temp()
 
     def download_logo(self, url):
-        """Download and display channel logo"""
+        """Download the logo in a worker thread, then decode it"""
+        self.logo_request += 1
+        request_id = self.logo_request
+        self["logo"].hide()
         try:
-            try:
-                response = urlopen(url, timeout=5)
-                try:
-                    logo_data = response.read()
-                finally:
-                    response.close()
-            except Exception as e:
-                log.error("Error downloading logo: %s" % e, module="Channels")
-                self["logo"].hide()
-                return
+            from twisted.internet import threads
+            d = threads.deferToThread(open_url, url, 5)
+            d.addCallback(self._logo_downloaded, request_id)
+            d.addErrback(self._logo_failed)
+        except Exception as e:
+            log.error("Error downloading logo: %s" % e, module="Channels")
 
-            try:
-                from os import close
-                temp_fd, temp_path = tempfile.mkstemp(suffix='.png')
-                close(temp_fd)
-                f = None
-                try:
-                    f = open(temp_path, 'wb')
-                    f.write(logo_data)
-                finally:
-                    if f:
-                        f.close()
-            except Exception as e:
-                log.error(
-                    "Error creating temp file: %s" %
-                    e, module="Channels")
-                self["logo"].hide()
-                return
+    def _logo_failed(self, failure):
+        log.debug("Logo not available: %s" %
+                  failure.getErrorMessage(), module="Channels")
 
-            self.picload.setPara((80, 50, 1, 1, False, 1, "#00000000"))
+    def _logo_downloaded(self, logo_data, request_id):
+        # Ignore stale answers (selection changed or screen closed)
+        if request_id != self.logo_request or not logo_data:
+            return
+        try:
+            self._remove_logo_temp()
+            temp_fd, temp_path = tempfile.mkstemp(suffix='.png')
+            with os.fdopen(temp_fd, 'wb') as f:
+                f.write(logo_data)
+            # The file is removed in update_logo, once decoding is done
+            self.logo_temp_path = temp_path
 
+            size = self["logo"].instance.size()
+            self.picload.setPara(
+                (size.width(), size.height(), 1, 1, False, 1, "#00000000"))
             if exists('/var/lib/dpkg/info'):
                 self.picload.startDecode(temp_path, 0, 0, False)
             else:
                 self.picload.startDecode(temp_path)
-
-            try:
-                unlink(temp_path)
-            except BaseException:
-                pass
         except Exception as e:
-            log.error("Error downloading logo: %s" % e, module="Channels")
+            log.error("Error decoding logo: %s" % e, module="Channels")
+            self._remove_logo_temp()
             self["logo"].hide()
-
-    def generate_country_bouquet(self, country_code, channels):
-        """Generate bouquet for a specific country"""
-        try:
-            if not channels:
-                return False, "No channels for country: %s" % country_code
-
-            tag = "tvgarden"
-
-            config = get_config()
-            prefix = config.get("bouquet_name_prefix", "TVGarden")
-
-            bouquet_name = "%s_%s" % (prefix.lower(), country_code.lower())
-            userbouquet_file = "/etc/enigma2/userbouquet.%s_%s.tv" % (
-                tag, bouquet_name)
-
-            valid_count = 0
-            with open(userbouquet_file, "w") as f:
-                f.write("#NAME %s - %s\n" % (prefix, country_code.upper()))
-                f.write(
-                    "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | %s %s | ---\n" %
-                    (prefix, country_code.upper()))
-                f.write(
-                    "#DESCRIPTION --- | %s %s | ---\n" %
-                    (prefix, country_code.upper()))
-
-                for channel in channels:
-                    name = channel.get('name', '')
-                    stream_url = channel.get(
-                        'stream_url') or channel.get('url', '')
-
-                    if not stream_url:
-                        continue
-
-                    url_encoded = stream_url.replace(":", "%3a")
-                    name_encoded = name.replace(":", "%3a")
-
-                    f.write(
-                        "#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" %
-                        (url_encoded, name_encoded))
-                    f.write("#DESCRIPTION %s\n" % name)
-
-                    valid_count += 1
-
-            if valid_count == 0:
-                return False, "No valid streams for country: %s" % country_code
-
-            self._add_to_bouquets_tv(tag, bouquet_name)
-            self._reload_bouquets()
-
-            return True, "Exported %d channels for %s" % (
-                valid_count, country_code.upper())
-
-        except Exception as e:
-            return False, "Error: %s" % str(e)
-
-    def generate_all_countries_bouquet(self):
-        """Generate separate bouquets for each country"""
-        try:
-            cache = CacheManager()
-
-            countries_meta = cache.get_countries_metadata(
-                media_type=self.media_type)
-
-            results = []
-            for country_code in countries_meta.keys():
-                channels = cache.get_country_channels(
-                    country_code, media_type=self.media_type)
-
-                if channels:
-                    success, message = self.generate_country_bouquet(
-                        country_code, channels)
-                    results.append((country_code, success, message))
-
-            if results:
-                all_channels = []
-                for country_code, success, msg in results:
-                    if success:
-                        channels = cache.get_country_channels(
-                            country_code, media_type=self.media_type)
-                        if channels:
-                            all_channels.extend(channels[:10])
-
-                if all_channels:
-                    self.export_to_bouquet(all_channels, "all_countries")
-
-            return True, "Generated bouquets for %d countries" % len(results)
-
-        except Exception as e:
-            return False, "Error generating country bouquets: %s" % str(e)
 
     def _load_export_settings(self):
         """Load ONLY the export settings actually used in channels browser"""
@@ -703,49 +509,9 @@ class ChannelsBrowser(BaseBrowser):
                 "Error loading export settings: %s" %
                 e, module="Channels")
 
-    def export_to_bouquet(self, channels, bouquet_name=None):
-        if not channels:
-            return False, _("No channels to export")
-
-        if bouquet_name is None:
-            bouquet_name = "tvgarden_favorites"
-
-        userbouquet_file = "/etc/enigma2/userbouquet.%s.tv" % bouquet_name
-        try:
-            with open(userbouquet_file, "w") as f:
-                f.write("#NAME %s\n" % bouquet_name.upper())
-                for ch in channels:
-                    name = ch.get('name', '')
-                    stream_url = ch.get('stream_url') or ch.get('url')
-                    if not stream_url:
-                        continue
-                    url_encoded = stream_url.replace(":", "%3a")
-                    name_encoded = name.replace(":", "%3a")
-                    f.write(
-                        "#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" %
-                        (url_encoded, name_encoded))
-                    f.write("#DESCRIPTION %s\n" % name)
-
-            bouquets_file = "/etc/enigma2/bouquets.tv"
-            entry = '#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.%s.tv" ORDER BY bouquet\n' % bouquet_name
-            try:
-                with open(bouquets_file, "r") as bf:
-                    lines = bf.readlines()
-            except BaseException:
-                lines = []
-            if entry not in lines:
-                with open(bouquets_file, "a") as bf:
-                    bf.write(entry)
-
-            from enigma import eDVBDB
-            eDVBDB.getInstance().reloadBouquets()
-
-            return True, _("Exported %d channels to %s") % (
-                len(channels), bouquet_name)
-        except Exception as e:
-            return False, _("Export failed: %s") % str(e)
-
     def export_current_view(self):
+        if not get_config().get("export_enabled", True):
+            return
         if not self.menu_channels:
             self.session.open(
                 MessageBox,
@@ -783,32 +549,33 @@ class ChannelsBrowser(BaseBrowser):
 
     def _do_export(self, userbouquet_file, display_name, bouquet_name):
         try:
+            channels = self.menu_channels
+            if self.max_channels_for_bouquet > 0:
+                channels = channels[:self.max_channels_for_bouquet]
+
+            prefix = encode_bouquet_text(self.bouquet_name_prefix)
+            title = encode_bouquet_text(display_name)
+            exported = 0
             with open(userbouquet_file, "w") as f:
-                f.write(
-                    "#NAME %s - %s\n" %
-                    (self.bouquet_name_prefix, display_name))
+                f.write("#NAME %s - %s\n" % (prefix, title))
                 f.write(
                     "#SERVICE 1:64:0:0:0:0:0:0:0:0::--- | %s %s | ---\n" %
-                    (self.bouquet_name_prefix, display_name))
-                f.write(
-                    "#DESCRIPTION --- | %s %s | ---\n" %
-                    (self.bouquet_name_prefix, display_name))
+                    (prefix, title))
+                f.write("#DESCRIPTION --- | %s %s | ---\n" % (prefix, title))
 
-                exported = 0
-                for ch in self.menu_channels:
-                    name = ch.get('name', '')
+                for ch in channels:
                     stream_url = ch.get('stream_url') or ch.get('url')
-                    if not stream_url:
+                    # YouTube pages cannot be played from a bouquet
+                    if not stream_url or ch.get('is_youtube'):
                         continue
-                    url_encoded = stream_url.replace(":", "%3a")
-                    name_encoded = name.replace(":", "%3a")
-                    f.write(
-                        "#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s:%s\n" %
-                        (url_encoded, name_encoded))
-                    f.write("#DESCRIPTION %s\n" % name)
+                    f.write(bouquet_service_lines(stream_url, ch.get('name', '')))
                     exported += 1
 
             if exported == 0:
+                try:
+                    unlink(userbouquet_file)
+                except OSError:
+                    pass
                 self.session.open(
                     MessageBox,
                     _("No valid streams found"),
@@ -816,16 +583,9 @@ class ChannelsBrowser(BaseBrowser):
                     timeout=3)
                 return
 
-            bouquets_file = "/etc/enigma2/bouquets.tv"
-            entry = "#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.%s.tv\" ORDER BY bouquet\n" % bouquet_name
-            try:
-                with open(bouquets_file, "r") as bf:
-                    lines = bf.readlines()
-            except BaseException:
-                lines = []
-            if entry not in lines:
-                with open(bouquets_file, "a") as bf:
-                    bf.write(entry)
+            add_bouquet_to_index(
+                "userbouquet.%s.tv" % bouquet_name,
+                get_config().get("list_position", "bottom"))
 
             from enigma import eDVBDB
             eDVBDB.getInstance().reloadBouquets()
@@ -834,44 +594,18 @@ class ChannelsBrowser(BaseBrowser):
                 (exported, display_name), MessageBox.TYPE_INFO, timeout=4)
 
         except Exception as e:
+            log.error("Export error: %s" % e, module="Channels")
             self.session.open(
                 MessageBox, _("Export error: %s") %
                 str(e), MessageBox.TYPE_ERROR, timeout=4)
-            import traceback
-            traceback.print_exc()
-
-    def execute_export(self, bouquet_name, display_name):
-        """Perform actual export"""
-        try:
-            success, msg = self.fav_manager.export_bouquet(
-                self.menu_channels,
-                bouquet_name
-            )
-
-            self.session.open(
-                MessageBox,
-                msg,
-                MessageBox.TYPE_INFO if success else MessageBox.TYPE_ERROR,
-                timeout=4
-            )
-
-        except Exception as e:
-            log.error("Export error: %s" % e, module="Channels")
-            self.session.open(
-                MessageBox,
-                _("Export failed: %s") % str(e),
-                MessageBox.TYPE_ERROR,
-                timeout=4
-            )
 
     def play_channel(self):
         """Play the selected channel."""
         menu_idx = self["menu"].getSelectedIndex()
-        log.debug("Menu index: %d" % menu_idx, module="Channels")
 
         if menu_idx is None or menu_idx < 0 or menu_idx >= len(
                 self.menu_channels):
-            log.error("ERROR: Invalid index %d" % menu_idx, module="Channels")
+            log.error("ERROR: Invalid index %s" % menu_idx, module="Channels")
             return
 
         selected_channel = self.menu_channels[menu_idx]
@@ -953,32 +687,20 @@ class ChannelsBrowser(BaseBrowser):
             self.session.open(MessageBox, info, MessageBox.TYPE_INFO)
 
     def up(self):
-        """Handle up key"""
+        """Handle up key (logo update comes from onSelectionChanged)"""
         self["menu"].up()
-        current_index = self["menu"].getSelectedIndex()
-        log.debug("Up -> index: %d" % current_index, module="Channels")
-        self.update_channel_selection(current_index)
 
     def down(self):
         """Handle down key"""
         self["menu"].down()
-        current_index = self["menu"].getSelectedIndex()
-        log.debug("Down -> index: %d" % current_index, module="Channels")
-        self.update_channel_selection(current_index)
 
     def left(self):
         """Handle left key"""
         self["menu"].pageUp()
-        current_index = self["menu"].getSelectedIndex()
-        log.debug("Left -> index: %d" % current_index, module="Channels")
-        self.update_channel_selection(current_index)
 
     def right(self):
         """Handle right key"""
         self["menu"].pageDown()
-        current_index = self["menu"].getSelectedIndex()
-        log.debug("Right -> index: %d" % current_index, module="Channels")
-        self.update_channel_selection(current_index)
 
     def exit(self):
         """Exit browser"""

@@ -50,10 +50,10 @@ class CategoriesBrowser(BaseBrowser):
             <widget name="menu" position="48,160" size="1020,750" font="Regular;32" itemHeight="50" scrollbarMode="showOnDemand" backgroundColor="#16213e" />
 
             <!-- Title -->
-            <widget name="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
+            <widget source="title" position="44,57" size="1770,60" font="Regular;48" foregroundColor="#ffff00" zPosition="5" render="Label" backgroundColor="#ff000000" />
 
             <!-- Status -->
-            <widget name="status" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
+            <widget source="status" render="Label" position="921,976" size="976,61" font="Regular;32" halign="center" foregroundColor="#3333ff" transparent="1" alphatest="blend" />
 
             <!-- Bottom bar -->
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="8,959" size="1905,90" zPosition="-80" />
@@ -90,24 +90,28 @@ class CategoriesBrowser(BaseBrowser):
         self["status"] = StaticText(_("Loading categories..."))
         self["key_red"] = StaticText(_("Back"))
         self["key_green"] = StaticText(_("Select"))
-        self["actions"] = ActionMap(["TVGardenActions", "OkCancelActions", "ColorActions"], {
+        self["key_yellow"] = StaticText(_("Refresh"))
+        self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions"], {
             "cancel": self.exit,
             "ok": self.select_category,
             "red": self.exit,
             "green": self.select_category,
+            "yellow": self.refresh,
             "up": self.up,
             "down": self.down,
+            "left": self.left,
+            "right": self.right,
         }, -2)
         self.onFirstExecBegin.append(self.load_categories)
 
-    def load_categories(self):
+    def load_categories(self, force_refresh=False):
         """
         [TVGarden patch] Load categories dynamically from GitHub API.
         Non usa più la lista hardcoded CATEGORIES di helpers.py.
         """
         try:
             config = get_config()
-            force_refresh_browsing = config.get(
+            force_refresh_browsing = force_refresh or config.get(
                 "force_refresh_browsing", False)
 
             # Legge le categorie dal cache (che le scarica dalla GitHub API)
@@ -263,13 +267,12 @@ class CategoriesBrowser(BaseBrowser):
 
             if refresh_method == "clear_cache":
                 self.cache.clear_all()
-                self["status"].setText(_("Cache cleared"))
                 log.info("Cache cleared manually", module="Categories")
+                self.load_categories()
             else:
-                self["status"].setText(_("Next load will use fresh data"))
-                log.info(
-                    "Force refresh enabled for next load",
-                    module="Categories")
+                log.info("Reloading categories from network",
+                         module="Categories")
+                self.load_categories(force_refresh=True)
 
         except Exception as e:
             self["status"].setText(_("Refresh failed"))
@@ -286,3 +289,11 @@ class CategoriesBrowser(BaseBrowser):
     def down(self):
         """Handle down key"""
         self["menu"].down()
+
+    def left(self):
+        """Handle left key"""
+        self["menu"].pageUp()
+
+    def right(self):
+        """Handle right key"""
+        self["menu"].pageDown()

@@ -12,6 +12,7 @@ from Components.MenuList import MenuList
 from Components.ActionMap import ActionMap
 
 from .. import _
+from ..helpers import timer_connect
 
 
 class BaseBrowser(Screen):
@@ -22,17 +23,19 @@ class BaseBrowser(Screen):
         self.session = session
 
         self.timer = eTimer()
-        try:
-            self.timer_conn = self.timer.timeout.connect(self.on_timer)
-        except AttributeError:
-            self.timer.callback.append(self.on_timer)
+        self.timer_conn = timer_connect(self.timer, self.on_timer)
         self.current_page = 0
         self.items_per_page = 10
 
         self["menu"] = MenuList([])
         self["status"] = StaticText("")
+        # Every skin draws the four colour labels: always provide them
+        self["key_red"] = StaticText("")
+        self["key_green"] = StaticText("")
+        self["key_yellow"] = StaticText("")
+        self["key_blue"] = StaticText("")
 
-        self["actions"] = ActionMap(["TVGardenActions", "DirectionActions", "OkCancelActions"], {
+        self["actions"] = ActionMap(["DirectionActions", "OkCancelActions"], {
             "cancel": self.exit,
             "ok": self.select_item,
             "up": self.up,
