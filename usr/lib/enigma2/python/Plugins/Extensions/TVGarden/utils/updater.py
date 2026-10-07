@@ -7,9 +7,10 @@ Based on TV Garden Project
 import time
 import shutil
 import subprocess
+import tempfile
 from re import sub, search
-from os import makedirs
-from os.path import join, exists
+from os import makedirs, listdir, chmod, unlink
+from os.path import join, exists, getmtime
 from urllib.request import urlopen, Request
 
 from ..helpers import log
@@ -24,12 +25,14 @@ class PluginUpdater:
     REPO_NAME = "TVGarden"
     REPO_BRANCH = "main"
 
-    # GitHub URLs
+    # GitHub URLs (version check and installer MUST use the same repo)
     RAW_CONTENT = "https://raw.githubusercontent.com"
-    INSTALLER_URL = "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh"
+    INSTALLER_URL = "%s/%s/%s/%s/installer.sh" % (
+        RAW_CONTENT, REPO_OWNER, REPO_NAME, REPO_BRANCH)
 
-    # Backup directory
+    # Backup directory (in RAM: keep only the most recent backups)
     BACKUP_DIR = "/tmp/tvgarden_backup"
+    MAX_BACKUPS = 1
 
     def __init__(self):
         self.current_version = PLUGIN_VERSION
@@ -38,12 +41,15 @@ class PluginUpdater:
 
         # Create backup directory
         if not exists(self.BACKUP_DIR):
-            makedirs(self.BACKUP_DIR, mode=0o755)
+            try:
+                makedirs(self.BACKUP_DIR, mode=0o755)
+            except Exception as e:
+                log.error("Cannot create backup dir: %s" % e, module="Updater")
 
     def get_latest_version(self):
         """Get latest version from installer.sh - Python 2/3 compatible"""
         try:
-            installer_url = "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh"
+            installer_url = self.INSTALLER_URL
 
             log.debug(
                 "Checking version from: %s" %
@@ -76,17 +82,10 @@ class PluginUpdater:
                         (version, pattern), module="Updater")
                     return version
 
+            # No guessing from random numbers in the script
             log.warning(
                 "No version pattern found in installer.sh",
                 module="Updater")
-            fallback = search(r'(\d+\.\d+)', content)
-            if fallback:
-                version = fallback.group(1)
-                log.info(
-                    "Fallback found version: %s" %
-                    version, module="Updater")
-                return version
-
             return None
 
         except Exception as e:
@@ -118,45 +117,59 @@ class PluginUpdater:
             log.error("Version compare error: %s" % e, module="Updater")
             return 0
 
+    def _check_update_sync(self):
+        """Return True (newer), False (up to date) or None (error)"""
+        latest = self.get_latest_version()
+        log.debug("Latest: %s, current: %s" %
+                  (latest, self.current_version), module="Updater")
+        if latest is None:
+            return None
+        return self.compare_versions(latest, self.current_version) > 0
+
     def check_update(self, callback=None):
-        """Check if update is available - VERSIONE SINCROZINATA"""
+        """
+        Check if an update is available. The network request runs in a
+        worker thread; callback(True/False/None) runs on the GUI thread.
+        """
         log.debug("PluginUpdater.check_update called", module="Updater")
 
-        try:
-            latest = self.get_latest_version()
-            log.debug(
-                "get_latest_version returned: %s" %
-                latest, module="Updater")
-            log.debug(
-                "Current version: %s" %
-                self.current_version,
-                module="Updater")
-
-            if latest is None:
-                log.warning("Could not get latest version", module="Updater")
-                if callback:
-                    callback(None)
-                return
-
-            # Compare versions
-            is_newer = self.compare_versions(latest, self.current_version) > 0
-            log.debug(
-                "Version comparison: is_newer = %s" %
-                is_newer, module="Updater")
-
+        def safe_callback(result):
             if callback:
-                log.debug(
-                    "Calling callback with: %s" %
-                    is_newer, module="Updater")
-                callback(is_newer)
+                callback(result)
 
+        try:
+            from twisted.internet import threads
+            d = threads.deferToThread(self._check_update_sync)
+            d.addCallback(safe_callback)
+            d.addErrback(lambda failure: safe_callback(None))
         except Exception as e:
             log.error("Error in check_update: %s" % e, module="Updater")
-            if callback:
-                callback(None)
+            try:
+                safe_callback(self._check_update_sync())
+            except Exception:
+                safe_callback(None)
 
     def download_update(self, callback=None):
-        """Download and install update - VERSIONE SINCROZINATA"""
+        """
+        Download and install the update in a worker thread;
+        callback(success, message) runs on the GUI thread.
+        """
+        def safe_callback(result):
+            if callback:
+                callback(*result)
+
+        try:
+            from twisted.internet import threads
+            d = threads.deferToThread(self._download_update_sync)
+            d.addCallback(safe_callback)
+            d.addErrback(lambda failure: safe_callback(
+                (False, _("Update error: %s") % failure.getErrorMessage())))
+        except Exception as e:
+            log.error("Cannot start update thread: %s" % e, module="Updater")
+            safe_callback(self._download_update_sync())
+
+    def _download_update_sync(self):
+        """Create backup, run installer, restore on failure"""
         log.info("Starting update process...", module="Updater")
         success = False
         message = ""
@@ -164,10 +177,7 @@ class PluginUpdater:
         try:
             # Step 1: Create backup
             if not self.create_backup():
-                message = _("Failed to create backup. Update cancelled.")
-                if callback:
-                    callback(False, message)
-                return
+                return False, _("Failed to create backup. Update cancelled.")
 
             # Step 2: Download and run installer
             if self.download_and_run_installer():
@@ -190,29 +200,63 @@ class PluginUpdater:
                 pass
             message = _("Update error: %s") % str(e)
 
-        if callback:
-            callback(success, message)
+        return success, message
 
     def download_and_run_installer(self):
-        """Download and run installer script - USANDO WGET COME NELL'INSTALLER"""
+        """Download installer.sh over verified HTTPS, then run it"""
+        script_path = None
         try:
+            log.info("Downloading installer: %s" %
+                     self.INSTALLER_URL, module="Updater")
+            req = Request(self.INSTALLER_URL,
+                          headers={'User-Agent': self.user_agent})
+            response = urlopen(req, timeout=30)
+            try:
+                script = response.read()
+            finally:
+                response.close()
+
+            if not script.startswith(b"#!"):
+                log.error("Downloaded installer is not a shell script",
+                          module="Updater")
+                return False
+
+            fd, script_path = tempfile.mkstemp(suffix=".sh")
+            with open(fd, 'wb') as f:
+                f.write(script)
+            chmod(script_path, 0o700)
+
             log.info("Running TVGarden installer...", module="Updater")
-            cmd = 'wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh'
-            log.debug("Executing: %s" % cmd, module="Updater")
-            result = subprocess.call(cmd, shell=True)
+            result = subprocess.call(["/bin/sh", script_path])
 
             if result == 0:
                 log.info("Installer completed successfully", module="Updater")
                 return True
-            else:
-                log.error(
-                    "Installer failed with exit code: %d" %
-                    result, module="Updater")
-                return False
+            log.error(
+                "Installer failed with exit code: %d" %
+                result, module="Updater")
+            return False
 
         except Exception as e:
             log.error("Installer execution error: %s" % e, module="Updater")
             return False
+        finally:
+            if script_path:
+                try:
+                    unlink(script_path)
+                except OSError:
+                    pass
+
+    def _cleanup_old_backups(self):
+        """Keep only the newest MAX_BACKUPS backups (they live in RAM)"""
+        try:
+            backups = [join(self.BACKUP_DIR, d) for d in listdir(self.BACKUP_DIR)
+                       if d.startswith("backup_v")]
+            backups.sort(key=getmtime)
+            for path in backups[:max(0, len(backups) - self.MAX_BACKUPS)]:
+                shutil.rmtree(path, ignore_errors=True)
+        except Exception as e:
+            log.debug("Backup cleanup failed: %s" % e, module="Updater")
 
     def create_backup(self):
         """Create backup of current plugin"""
@@ -227,6 +271,7 @@ class PluginUpdater:
                     self.backup_path, module="Updater")
                 shutil.copytree(PLUGIN_PATH, self.backup_path)
                 log.info("Backup created successfully", module="Updater")
+                self._cleanup_old_backups()
                 return True
             else:
                 log.error(
