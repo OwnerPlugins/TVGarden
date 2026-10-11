@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v3.0 (changes since v2.9)
 
 ### Fixed
 - **Update freezes the receiver** (reported on DM900 UHD, OpenATV 8.0.2): *Check for Updates* ran the full installer under the running GUI, installing players and Enigma2 plugins. The updater now passes `UPDATE_ONLY=1` (plugin files only, no package manager), with no input and a 10-minute limit.

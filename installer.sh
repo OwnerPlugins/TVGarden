@@ -3,15 +3,15 @@
 # TV Garden Installer for Enigma2
 # wget -q "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 
-version='2.9'
+version='3.0'
 echo "TVGarden Version: $version"
 echo "Changelog:"
-echo "- Fix webcam export to bouquets (No valid streams found)"
-echo "- YouTube entries exported as youtube.com/watch links (play with ytdlpwrapper)"
-echo "- Webcam bouquets no longer overwrite the TV bouquet of the same country"
-echo "- Safe install: optional players/plugins only with EXTRAS=1"
-echo "- Updater also reads three-part versions (e.g. 2.9.1)"
-echo "- CHANGELOG added"
+echo "- Fix receiver freeze during Check for Updates (updates plugin files only)"
+echo "- Safe install: only ca-certificates and yt-dlp are installed automatically"
+echo "- Optional players/plugins (ServiceApp, exteplayer3, gstplayer, ffmpeg, ytdlpwrapper): EXTRAS=1"
+echo "- No package manager calls inside the ipk install scripts"
+echo "- Fix install path on images with /usr/lib64"
+echo "- Bouquet reload no longer reloads the service list (lamedb)"
 echo ""
 
 # Branch to install (default: main). Example for testing:
