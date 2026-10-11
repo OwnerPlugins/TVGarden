@@ -285,7 +285,7 @@ on a receiver this can take 10-60 seconds.
 
 ```bash
 # Install (or update) with the installer script - recommended
-wget -qO- "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" | /bin/sh
+wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 
 # Restart the Enigma2 GUI
 killall -9 enigma2
@@ -298,7 +298,7 @@ optional packages that are missing.
 To also install the optional players and plugins (run it from telnet/SSH):
 
 ```bash
-wget -qO- "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" | EXTRAS=1 /bin/sh
+wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | EXTRAS=1 /bin/sh
 ```
 
 **Check for Updates** inside the plugin only replaces the plugin files; it never
@@ -307,10 +307,16 @@ installs or upgrades other packages.
 To test another branch (for example `develop`):
 
 ```bash
-wget -qO- "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/develop/installer.sh" | BRANCH=develop /bin/sh
+wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/develop/installer.sh" -O - | BRANCH=develop /bin/sh
 ```
 
-If the download fails with a certificate error, install `ca-certificates` first.
+`--no-check-certificate` is needed because the `wget` of many images cannot verify
+HTTPS certificates. The installer then downloads the plugin with certificate
+verification whenever the box supports it (wget, curl or Python), and only falls
+back to an unverified download, with a warning, when none of them can.
+
+If nothing happens at all, check that the receiver can reach GitHub
+(`ping raw.githubusercontent.com`).
 
 ---
 

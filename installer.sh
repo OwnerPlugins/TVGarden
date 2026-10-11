@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TV Garden Installer for Enigma2
-# wget -q "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
+# wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 
 version='3.0'
 echo "TVGarden Version: $version"
@@ -11,6 +11,7 @@ echo "- Safe install: only ca-certificates and yt-dlp are installed automaticall
 echo "- Optional players/plugins (ServiceApp, exteplayer3, gstplayer, ffmpeg, ytdlpwrapper): EXTRAS=1"
 echo "- No package manager calls inside the ipk install scripts"
 echo "- Fix install path on images with /usr/lib64"
+echo "- Fix download failing on images whose wget cannot verify HTTPS"
 echo "- Bouquet reload no longer reloads the service list (lamedb)"
 echo ""
 
@@ -70,6 +71,33 @@ detect_os
 cleanup
 mkdir -p "$TMPPATH"
 
+# Download $1 to $2. Many receivers cannot verify HTTPS with wget (BusyBox
+# wget, or GNU wget without a CA path) even with ca-certificates installed,
+# so try every verified method first and only then fall back to wget
+# without certificate check.
+fetch() {
+    url=$1
+    out=$2
+    rm -f "$out"
+    if command -v wget >/dev/null 2>&1 && wget -q -O "$out" "$url" 2>/dev/null && [ -s "$out" ]; then
+        return 0
+    fi
+    if command -v curl >/dev/null 2>&1 && curl -fsSL -o "$out" "$url" 2>/dev/null && [ -s "$out" ]; then
+        return 0
+    fi
+    if python3 -c "import sys, urllib.request; urllib.request.urlretrieve(sys.argv[1], sys.argv[2])" "$url" "$out" 2>/dev/null && [ -s "$out" ]; then
+        return 0
+    fi
+    if command -v wget >/dev/null 2>&1; then
+        echo "WARNING: HTTPS certificate could not be verified on this box, downloading without verification"
+        if wget -q --no-check-certificate -O "$out" "$url" && [ -s "$out" ]; then
+            return 0
+        fi
+    fi
+    rm -f "$out"
+    return 1
+}
+
 # Refresh the package lists once
 FEED_UPDATED=0
 update_feeds() {
@@ -123,7 +151,7 @@ if [ "$UPDATE_ONLY" = "1" ]; then
     echo "Update mode: plugin files only, no packages are installed"
 else
     if ! command -v wget >/dev/null 2>&1; then
-        install_pkg wget || { echo "wget is required"; exit 1; }
+        install_pkg wget || echo "wget not available, using curl/python3 for downloads"
     fi
 
     # Needed to download over verified HTTPS
@@ -167,10 +195,9 @@ else
 fi
 
 echo "Downloading TVGarden..."
-wget -q "https://github.com/OwnerPlugins/TVGarden/archive/refs/heads/$BRANCH.tar.gz" -O "$FILEPATH"
-if [ $? -ne 0 ]; then
+if ! fetch "https://github.com/OwnerPlugins/TVGarden/archive/refs/heads/$BRANCH.tar.gz" "$FILEPATH"; then
     echo "Failed to download TVGarden package!"
-    echo "If this is a certificate error, install the 'ca-certificates' package."
+    echo "Check the internet connection and DNS of the receiver (github.com must be reachable)."
     cleanup
     exit 1
 fi
