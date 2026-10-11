@@ -461,9 +461,9 @@ class FavoritesManager:
         """Reload bouquets in Enigma2 (GUI thread only)"""
         try:
             from enigma import eDVBDB
-            db = eDVBDB.getInstance()
-            db.reloadServicelist()
-            db.reloadBouquets()
+            # Only bouquet files change: never reload lamedb (that would
+            # drop services not yet saved to disk)
+            eDVBDB.getInstance().reloadBouquets()
             log.info("Bouquets reloaded via eDVBDB", module="Favorites")
             return True
 

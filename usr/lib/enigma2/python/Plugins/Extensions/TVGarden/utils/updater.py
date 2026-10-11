@@ -4,6 +4,7 @@
 TV Garden Plugin - Updater Module
 Based on TV Garden Project
 """
+import os
 import time
 import shutil
 import subprocess
@@ -228,8 +229,19 @@ class PluginUpdater:
                 f.write(script)
             chmod(script_path, 0o700)
 
-            log.info("Running TVGarden installer...", module="Updater")
-            result = subprocess.call(["/bin/sh", script_path])
+            # UPDATE_ONLY=1: replace the plugin files only. Installing
+            # packages under the running GUI can freeze the receiver.
+            env = dict(os.environ)
+            env["UPDATE_ONLY"] = "1"
+            log.info("Running TVGarden installer (update only)...",
+                     module="Updater")
+            try:
+                result = subprocess.call(
+                    ["/bin/sh", script_path], env=env,
+                    stdin=subprocess.DEVNULL, timeout=600)
+            except subprocess.TimeoutExpired:
+                log.error("Installer timed out", module="Updater")
+                return False
 
             if result == 0:
                 log.info("Installer completed successfully", module="Updater")

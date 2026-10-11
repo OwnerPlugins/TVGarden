@@ -1,6 +1,6 @@
 <h1 align="center">📺 TV Garden Plugin for Enigma2</h1>
 
-[![Version](https://img.shields.io/badge/Version-2.9-blue.svg)](https://github.com/OwnerPlugins/TVGarden)
+[![Version](https://img.shields.io/badge/Version-3.0-blue.svg)](https://github.com/OwnerPlugins/TVGarden)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-3%20only-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -101,11 +101,15 @@
 > **Python 3 images only.** TV Garden does not run on Python 2 images
 > (and yt-dlp, needed for YouTube channels and webcams, requires Python 3.9+).
 
-The installer script installs the required packages automatically. To install them by hand:
+The installer installs only what the plugin needs: `ca-certificates` and `python3-yt-dlp`.
+The optional players and plugins are **not** installed automatically: installing them while
+Enigma2 is running can upgrade libraries or image packages under the running GUI.
+The installer lists the missing ones; install them from telnet/SSH and then restart:
 
 ```bash
 opkg update
 opkg install ca-certificates python3-yt-dlp
+# optional
 opkg install enigma2-plugin-systemplugins-serviceapp exteplayer3 gstplayer ffmpeg
 opkg install enigma2-plugin-extensions-ytdlpwrapper
 ```
@@ -116,13 +120,13 @@ If your feed has no `python3-yt-dlp` package:
 opkg install python3-pip && pip3 install -U yt-dlp
 ```
 
-| Package | Needed for |
-|---------|-----------|
-| `ca-certificates` | Secure (HTTPS) downloads of data and updates |
-| `python3-yt-dlp` | YouTube channels and all webcams |
-| `serviceapp`, `exteplayer3`, `gstplayer` | The ExtePlayer3 / GStreamer player options |
-| `ffmpeg` | Some stream formats |
-| `ytdlpwrapper` | Playing YouTube entries (webcams) from exported bouquets |
+| Package | Needed for | Installed by the installer |
+|---------|-----------|---------------------------|
+| `ca-certificates` | Secure (HTTPS) downloads of data and updates | yes |
+| `python3-yt-dlp` | YouTube channels and all webcams | yes (pip fallback) |
+| `serviceapp`, `exteplayer3`, `gstplayer` | The ExtePlayer3 / GStreamer player options | only with `EXTRAS=1` |
+| `ffmpeg` | Some stream formats | only with `EXTRAS=1` |
+| `ytdlpwrapper` | Playing YouTube entries (webcams) from exported bouquets | only with `EXTRAS=1` |
 
 ### ⚙️ Player and ServiceApp
 
@@ -272,7 +276,7 @@ on a receiver this can take 10-60 seconds.
    - countries larger than *Max Channels for Sub-Bouquet* are split (`_part1`, `_part2`, ...)
 5. YouTube entries (all webcams) are exported as `youtube.com/watch` links; they play
    from the bouquet only with **ytdlpwrapper** (`enigma2-plugin-extensions-ytdlpwrapper`,
-   installed by the installer when your feed has it). The whole-database export skips them
+   optional, see Requirements). The whole-database export skips them
 6. Bouquets are reloaded automatically; all files are in `/etc/enigma2/`
 
 ---
@@ -281,22 +285,38 @@ on a receiver this can take 10-60 seconds.
 
 ```bash
 # Install (or update) with the installer script - recommended
-wget -qO- "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" | /bin/sh
+wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 
 # Restart the Enigma2 GUI
 killall -9 enigma2
 ```
 
-The installer installs the requirements (see above), downloads the plugin
-over verified HTTPS and prints a summary, including the yt-dlp version.
+The installer installs `ca-certificates` and yt-dlp, downloads the plugin over
+verified HTTPS and prints a summary, including the yt-dlp version and the
+optional packages that are missing.
+
+To also install the optional players and plugins (run it from telnet/SSH):
+
+```bash
+wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | EXTRAS=1 /bin/sh
+```
+
+**Check for Updates** inside the plugin only replaces the plugin files; it never
+installs or upgrades other packages.
 
 To test another branch (for example `develop`):
 
 ```bash
-wget -qO- "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/develop/installer.sh" | BRANCH=develop /bin/sh
+wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/develop/installer.sh" -O - | BRANCH=develop /bin/sh
 ```
 
-If the download fails with a certificate error, install `ca-certificates` first.
+`--no-check-certificate` is needed because the `wget` of many images cannot verify
+HTTPS certificates. The installer then downloads the plugin with certificate
+verification whenever the box supports it (wget, curl or Python), and only falls
+back to an unverified download, with a warning, when none of them can.
+
+If nothing happens at all, check that the receiver can reach GitHub
+(`ping raw.githubusercontent.com`).
 
 ---
 
@@ -456,5 +476,5 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 **Enjoy streaming with TV Garden!** 📺
 
-*Last Updated: 2026* | *Version: 2.9*
+*Last Updated: 2026* | *Version: 3.0*
 
