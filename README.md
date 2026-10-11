@@ -101,11 +101,15 @@
 > **Python 3 images only.** TV Garden does not run on Python 2 images
 > (and yt-dlp, needed for YouTube channels and webcams, requires Python 3.9+).
 
-The installer script installs the required packages automatically. To install them by hand:
+The installer installs only what the plugin needs: `ca-certificates` and `python3-yt-dlp`.
+The optional players and plugins are **not** installed automatically: installing them while
+Enigma2 is running can upgrade libraries or image packages under the running GUI.
+The installer lists the missing ones; install them from telnet/SSH and then restart:
 
 ```bash
 opkg update
 opkg install ca-certificates python3-yt-dlp
+# optional
 opkg install enigma2-plugin-systemplugins-serviceapp exteplayer3 gstplayer ffmpeg
 opkg install enigma2-plugin-extensions-ytdlpwrapper
 ```
@@ -116,13 +120,13 @@ If your feed has no `python3-yt-dlp` package:
 opkg install python3-pip && pip3 install -U yt-dlp
 ```
 
-| Package | Needed for |
-|---------|-----------|
-| `ca-certificates` | Secure (HTTPS) downloads of data and updates |
-| `python3-yt-dlp` | YouTube channels and all webcams |
-| `serviceapp`, `exteplayer3`, `gstplayer` | The ExtePlayer3 / GStreamer player options |
-| `ffmpeg` | Some stream formats |
-| `ytdlpwrapper` | Playing YouTube entries (webcams) from exported bouquets |
+| Package | Needed for | Installed by the installer |
+|---------|-----------|---------------------------|
+| `ca-certificates` | Secure (HTTPS) downloads of data and updates | yes |
+| `python3-yt-dlp` | YouTube channels and all webcams | yes (pip fallback) |
+| `serviceapp`, `exteplayer3`, `gstplayer` | The ExtePlayer3 / GStreamer player options | only with `EXTRAS=1` |
+| `ffmpeg` | Some stream formats | only with `EXTRAS=1` |
+| `ytdlpwrapper` | Playing YouTube entries (webcams) from exported bouquets | only with `EXTRAS=1` |
 
 ### ⚙️ Player and ServiceApp
 
@@ -272,7 +276,7 @@ on a receiver this can take 10-60 seconds.
    - countries larger than *Max Channels for Sub-Bouquet* are split (`_part1`, `_part2`, ...)
 5. YouTube entries (all webcams) are exported as `youtube.com/watch` links; they play
    from the bouquet only with **ytdlpwrapper** (`enigma2-plugin-extensions-ytdlpwrapper`,
-   installed by the installer when your feed has it). The whole-database export skips them
+   optional, see Requirements). The whole-database export skips them
 6. Bouquets are reloaded automatically; all files are in `/etc/enigma2/`
 
 ---
@@ -287,8 +291,18 @@ wget -qO- "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installe
 killall -9 enigma2
 ```
 
-The installer installs the requirements (see above), downloads the plugin
-over verified HTTPS and prints a summary, including the yt-dlp version.
+The installer installs `ca-certificates` and yt-dlp, downloads the plugin over
+verified HTTPS and prints a summary, including the yt-dlp version and the
+optional packages that are missing.
+
+To also install the optional players and plugins (run it from telnet/SSH):
+
+```bash
+wget -qO- "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" | EXTRAS=1 /bin/sh
+```
+
+**Check for Updates** inside the plugin only replaces the plugin files; it never
+installs or upgrades other packages.
 
 To test another branch (for example `develop`):
 

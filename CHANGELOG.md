@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- **Update freezes the receiver** (reported on DM900 UHD, OpenATV 8.0.2): *Check for Updates* ran the full installer under the running GUI, installing players and Enigma2 plugins. The updater now passes `UPDATE_ONLY=1` (plugin files only, no package manager), with no input and a 10-minute limit.
+- **Installation could break the image** (bouquets lost reported on Ustym 4K Pro, Egami 23): the installer and the ipk pulled in ServiceApp, players, ffmpeg and ytdlpwrapper automatically, which can upgrade libraries or image packages. They are now optional: the installer only installs `ca-certificates` and `python3-yt-dlp` and lists the missing optional packages (`EXTRAS=1` installs them); the ipk only recommends `python3-yt-dlp`.
+- No package manager calls inside the ipk scripts (`preinst` called `opkg` during the install, `postinst` ran `pip`).
+- Packages are installed with `--no-install-recommends` and no input.
+- Plugin installed in `/usr/lib64` on images that keep Enigma2 in `/usr/lib`.
+- Bouquet reload after an export no longer reloads the service list (`lamedb`), which could drop services not yet saved to disk.
+
 ## v2.9 (changes since v2.8)
 
 ### Fixed

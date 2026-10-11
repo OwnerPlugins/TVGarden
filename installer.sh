@@ -9,24 +9,40 @@ echo "Changelog:"
 echo "- Fix webcam export to bouquets (No valid streams found)"
 echo "- YouTube entries exported as youtube.com/watch links (play with ytdlpwrapper)"
 echo "- Webcam bouquets no longer overwrite the TV bouquet of the same country"
-echo "- Installer installs ytdlpwrapper"
+echo "- Safe install: optional players/plugins only with EXTRAS=1"
 echo "- Updater also reads three-part versions (e.g. 2.9.1)"
 echo "- CHANGELOG added"
 echo ""
 
 # Branch to install (default: main). Example for testing:
 #   wget -qO- https://raw.githubusercontent.com/OwnerPlugins/TVGarden/develop/installer.sh | BRANCH=develop /bin/sh
+#
+# By default only the plugin files and yt-dlp are installed. Players and
+# Enigma2 plugins (ServiceApp, exteplayer3, gstplayer, ffmpeg, ytdlpwrapper)
+# are NOT installed automatically: installing them while Enigma2 is running
+# can upgrade libraries / image packages under the running GUI. To install
+# them too, run with EXTRAS=1 (best from telnet/SSH, then restart):
+#   wget -qO- .../installer.sh | EXTRAS=1 /bin/sh
+#
+# UPDATE_ONLY=1 (used by the plugin's own updater): plugin files only,
+# no package manager at all.
 BRANCH="${BRANCH:-main}"
+EXTRAS="${EXTRAS:-0}"
+UPDATE_ONLY="${UPDATE_ONLY:-0}"
 TMPPATH=/tmp/TVGarden-install
 FILEPATH=/tmp/TVGarden-$BRANCH.tar.gz
 SRCDIR="$TMPPATH/TVGarden-$BRANCH"
 
 echo "Starting TVGarden installation (branch: $BRANCH)..."
 
-if [ ! -d /usr/lib64 ]; then
+# Install where Enigma2 really loads plugins from (some aarch64 images
+# have /usr/lib64 but keep Enigma2 in /usr/lib)
+if [ -d /usr/lib/enigma2/python/Plugins ]; then
     PLUGINPATH=/usr/lib/enigma2/python/Plugins/Extensions/TVGarden
-else
+elif [ -d /usr/lib64/enigma2/python/Plugins ]; then
     PLUGINPATH=/usr/lib64/enigma2/python/Plugins/Extensions/TVGarden
+else
+    PLUGINPATH=/usr/lib/enigma2/python/Plugins/Extensions/TVGarden
 fi
 
 cleanup() {
@@ -60,8 +76,8 @@ update_feeds() {
     [ "$FEED_UPDATED" = "1" ] && return
     echo "Updating package lists..."
     case "$OSTYPE" in
-        "DreamOs") apt-get update >/dev/null 2>&1 ;;
-        "OE") opkg update >/dev/null 2>&1 ;;
+        "DreamOs") apt-get update </dev/null >/dev/null 2>&1 ;;
+        "OE") opkg update </dev/null >/dev/null 2>&1 ;;
     esac
     FEED_UPDATED=1
 }
@@ -80,9 +96,9 @@ install_pkg() {
     echo "Installing $pkg..."
     case "$OSTYPE" in
         "DreamOs")
-            apt-get install -y "$pkg" >/dev/null 2>&1 && return 0 ;;
+            apt-get install -y --no-install-recommends "$pkg" </dev/null >/dev/null 2>&1 && return 0 ;;
         "OE")
-            opkg install "$pkg" >/dev/null 2>&1 && return 0 ;;
+            opkg install --no-install-recommends "$pkg" </dev/null >/dev/null 2>&1 && return 0 ;;
         *)
             echo "Cannot install $pkg on unknown OS type"
             return 1 ;;
@@ -91,48 +107,63 @@ install_pkg() {
     return 1
 }
 
-if ! command -v wget >/dev/null 2>&1; then
-    install_pkg wget || { echo "wget is required"; exit 1; }
-fi
-
 if ! command -v python3 >/dev/null 2>&1; then
     echo "ERROR: TVGarden requires a Python 3 image (Python 2 is not supported)"
     exit 1
 fi
 echo "Python: $(python3 --version 2>&1)"
 
-# Needed to download over verified HTTPS
-install_pkg ca-certificates
-
-# Players: ServiceApp provides gstplayer (5001) and exteplayer3 (5002)
-if [ "$OSTYPE" = "OE" ]; then
-    echo "Installing multimedia packages..."
-    # ytdlpwrapper: plays YouTube entries exported to bouquets
-    for pkg in ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp enigma2-plugin-extensions-ytdlpwrapper; do
-        install_pkg "$pkg"
-    done
-fi
-
-# yt-dlp: needed for YouTube channels and webcams
 ytdlp_ok() {
     command -v yt-dlp >/dev/null 2>&1 || python3 -c "import yt_dlp" >/dev/null 2>&1
 }
 
-if ! ytdlp_ok; then
-    install_pkg python3-yt-dlp
-fi
-if ! ytdlp_ok; then
-    echo "yt-dlp not in the feed, installing it with pip..."
-    command -v pip3 >/dev/null 2>&1 || install_pkg python3-pip
-    if command -v pip3 >/dev/null 2>&1; then
-        pip3 install -U yt-dlp >/dev/null 2>&1 || \
-            pip3 install -U --break-system-packages yt-dlp >/dev/null 2>&1
-    fi
-fi
-if ytdlp_ok; then
-    echo "yt-dlp OK: $(yt-dlp --version 2>/dev/null || python3 -m yt_dlp --version 2>/dev/null)"
+OPTIONAL_PKGS="enigma2-plugin-systemplugins-serviceapp exteplayer3 gstplayer ffmpeg enigma2-plugin-extensions-ytdlpwrapper"
+
+if [ "$UPDATE_ONLY" = "1" ]; then
+    echo "Update mode: plugin files only, no packages are installed"
 else
-    echo "WARNING: yt-dlp could not be installed: YouTube streams will not play"
+    if ! command -v wget >/dev/null 2>&1; then
+        install_pkg wget || { echo "wget is required"; exit 1; }
+    fi
+
+    # Needed to download over verified HTTPS
+    install_pkg ca-certificates
+
+    # yt-dlp: needed for YouTube channels and webcams (pure Python package)
+    if ! ytdlp_ok; then
+        install_pkg python3-yt-dlp
+    fi
+    if ! ytdlp_ok && command -v pip3 >/dev/null 2>&1; then
+        echo "yt-dlp not in the feed, installing it with pip..."
+        pip3 install -U yt-dlp </dev/null >/dev/null 2>&1 || \
+            pip3 install -U --break-system-packages yt-dlp </dev/null >/dev/null 2>&1
+    fi
+    if ytdlp_ok; then
+        echo "yt-dlp OK: $(yt-dlp --version 2>/dev/null || python3 -m yt_dlp --version 2>/dev/null)"
+    else
+        echo "WARNING: yt-dlp is missing: YouTube channels and webcams will not play"
+        echo "         Install it with: opkg install python3-yt-dlp  (or: pip3 install yt-dlp)"
+    fi
+
+    # Optional players / plugins: only on request (EXTRAS=1)
+    if [ "$OSTYPE" = "OE" ]; then
+        MISSING=""
+        for pkg in $OPTIONAL_PKGS; do
+            is_installed "$pkg" || MISSING="$MISSING $pkg"
+        done
+        if [ -n "$MISSING" ]; then
+            if [ "$EXTRAS" = "1" ]; then
+                echo "Installing optional packages:$MISSING"
+                for pkg in $MISSING; do
+                    install_pkg "$pkg"
+                done
+            else
+                echo "Optional packages not installed:$MISSING"
+                echo "  (ExtePlayer3/GStreamer player options and playing webcams from bouquets)"
+                echo "  To install them: opkg install$MISSING"
+            fi
+        fi
+    fi
 fi
 
 echo "Downloading TVGarden..."
