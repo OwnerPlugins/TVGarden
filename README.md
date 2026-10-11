@@ -5,7 +5,7 @@
 [![Python](https://img.shields.io/badge/Python-3%20only-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[![Visitors](https://komarev.com/ghpvc/?username=OwnerPlugins&label=Repository%20Views&color=blueviolet)](https://github.com/belfagor2005)
+[![Visitors](https://komarev.com/ghpvc/?username=belfagor2005&label=Repository%20Views&color=blueviolet)](https://github.com/belfagor2005)
 [![Donate](https://img.shields.io/badge/_-Donate-red.svg?logo=githubsponsors&labelColor=555555&style=for-the-badge)](https://ko-fi.com/lululla)
 [![Donate](https://img.shields.io/badge/_-Donate-green.svg?logo=githubsponsors&labelColor=555555&style=for-the-badge)](https://paypal.me/belfagor2005)
 
