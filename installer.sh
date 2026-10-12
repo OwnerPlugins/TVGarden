@@ -3,7 +3,8 @@
 version='3.0'
 echo "TVGarden Version: $version"
 echo "Streaming installer (no /tmp, no HDD, no external devices)"
-
+# command telnet =
+# wget -q --no-check-certificate "https://raw.githubusercontent.com/OwnerPlugins/TVGarden/main/installer.sh" -O - | /bin/sh
 BRANCH="${BRANCH:-main}"
 
 # Determina il percorso corretto dei plugin
