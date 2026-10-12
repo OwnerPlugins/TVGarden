@@ -12,6 +12,7 @@ echo "- Optional players/plugins (ServiceApp, exteplayer3, gstplayer, ffmpeg, yt
 echo "- No package manager calls inside the ipk install scripts"
 echo "- Fix install path on images with /usr/lib64"
 echo "- Fix download failing on images whose wget cannot verify HTTPS"
+echo "- Fallback download from raw.githubusercontent.com when github.com is unreachable"
 echo "- Bouquet reload no longer reloads the service list (lamedb)"
 echo ""
 
@@ -89,7 +90,7 @@ fetch() {
         return 0
     fi
     if command -v wget >/dev/null 2>&1; then
-        echo "WARNING: HTTPS certificate could not be verified on this box, downloading without verification"
+        echo "Verified download failed, retrying without certificate check..."
         if wget -q --no-check-certificate -O "$out" "$url" && [ -s "$out" ]; then
             return 0
         fi
@@ -194,18 +195,61 @@ else
     fi
 fi
 
-echo "Downloading TVGarden..."
-if ! fetch "https://github.com/OwnerPlugins/TVGarden/archive/refs/heads/$BRANCH.tar.gz" "$FILEPATH"; then
-    echo "Failed to download TVGarden package!"
-    echo "Check the internet connection and DNS of the receiver (github.com must be reachable)."
-    cleanup
-    exit 1
-fi
+# Unpack the plugin files of an ipk (ar archive -> data.tar.gz) into $2
+extract_ipk() {
+    python3 - "$1" "$2" <<'PYEOF'
+import io, sys, tarfile
+data = open(sys.argv[1], "rb").read()
+if not data.startswith(b"!<arch>\n"):
+    sys.exit("not an ipk")
+pos = 8
+while pos + 60 <= len(data):
+    header = data[pos:pos + 60]
+    name = header[:16].decode().strip().rstrip("/")
+    size = int(header[48:58].decode().strip())
+    body = data[pos + 60:pos + 60 + size]
+    if name.startswith("data.tar"):
+        with tarfile.open(fileobj=io.BytesIO(body)) as tar:
+            if hasattr(tarfile, "data_filter"):
+                tar.extractall(sys.argv[2], filter="data")
+            else:
+                tar.extractall(sys.argv[2])
+        sys.exit(0)
+    pos += 60 + size + (size % 2)
+sys.exit("data.tar not found in ipk")
+PYEOF
+}
 
-echo "Extracting package..."
-tar -xzf "$FILEPATH" -C "$TMPPATH"
-if [ $? -ne 0 ]; then
-    echo "Failed to extract TVGarden package!"
+TARBALL_URL="https://github.com/OwnerPlugins/TVGarden/archive/refs/heads/$BRANCH.tar.gz"
+# Same release as an ipk, served by raw.githubusercontent.com: some
+# networks/DNS cannot reach github.com / codeload.github.com
+IPK_URL="https://raw.githubusercontent.com/OwnerPlugins/upload/main/oe2.0/lululla/enigma2-plugin-extensions-tvgarden_${version}_all.ipk"
+IPKPATH=/tmp/TVGarden-$version.ipk
+
+echo "Downloading TVGarden..."
+if fetch "$TARBALL_URL" "$FILEPATH"; then
+    echo "Extracting package..."
+    if ! tar -xzf "$FILEPATH" -C "$TMPPATH"; then
+        echo "Failed to extract TVGarden package!"
+        cleanup
+        exit 1
+    fi
+elif [ "$BRANCH" = "main" ] && fetch "$IPK_URL" "$IPKPATH"; then
+    echo "github.com not reachable, using the published package from raw.githubusercontent.com"
+    echo "Extracting package..."
+    if ! extract_ipk "$IPKPATH" "$SRCDIR"; then
+        echo "Failed to extract TVGarden package!"
+        rm -f "$IPKPATH"
+        cleanup
+        exit 1
+    fi
+    rm -f "$IPKPATH"
+else
+    echo "Failed to download TVGarden package!"
+    echo "Download error:"
+    wget --no-check-certificate -O /dev/null "$TARBALL_URL" 2>&1 | tail -3
+    echo "Check the internet connection and DNS of the receiver:"
+    echo "  ping -c 2 github.com ; ping -c 2 codeload.github.com ; date"
     cleanup
     exit 1
 fi
