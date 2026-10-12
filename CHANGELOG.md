@@ -9,6 +9,7 @@
 - Packages are installed with `--no-install-recommends` and no input.
 - Plugin installed in `/usr/lib64` on images that keep Enigma2 in `/usr/lib`.
 - **Plugin could not be downloaded/installed** on images whose `wget` cannot verify HTTPS (even with `ca-certificates`): the installer now tries wget, curl and Python with certificate verification and only then falls back to an unverified download with a warning; the documented install command uses `--no-check-certificate` again.
+- **Download fallback**: when github.com / codeload.github.com cannot be reached, the installer downloads the published ipk from raw.githubusercontent.com instead; when everything fails it shows the real download error.
 - Bouquet reload after an export no longer reloads the service list (`lamedb`), which could drop services not yet saved to disk.
 
 ## v2.9 (changes since v2.8)
