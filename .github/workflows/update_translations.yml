@@ -1,56 +1,79 @@
-name: Update Translations
+name: Update translations
 
 on:
+  workflow_dispatch:        # avvio manuale dalla UI di GitHub
+  schedule:
+    - cron: '0 3 * * 0'     # ogni domenica alle 03:00 UTC (opzionale)
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [main]
+    paths:
+      - 'usr/lib/enigma2/python/Plugins/Extensions/TVGarden/locale/**'
+      - 'usr/lib/enigma2/python/Plugins/Extensions/TVGarden/update_translations.py'
+      - '.github/workflows/update_translations.yml'
+
+permissions:
+  contents: write
 
 jobs:
   update-translations:
     runs-on: ubuntu-latest
+
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 👇 Modifica qui le lingue che vuoi generare (whitelist)
+      KEEP_LANGS: "en,it,fr,de,es,pt,ru,zh,ja,ar,hi,bn,id,tr,ko,vi,pl,uk,fa,th"
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        # with:
-          # persist-credentials: false
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
-      - name: Install gettext (msgmerge, msgfmt)
+      - name: Install gettext tools
         run: |
           sudo apt-get update
           sudo apt-get install -y gettext
 
-      - name: Run translation updaters
+      - name: Generate translations (solo lingue in whitelist)
+        env:
+          KEEP_LANGS: ${{ env.KEEP_LANGS }}
         run: |
-          for pyfile in $(find . -type f -name "update_translations.py"); do
-            plugin_dir=$(dirname "$pyfile")
-            echo "Running translation updater in $plugin_dir"
-            cd "$plugin_dir"
-            python3 update_translations.py
-            # Forza l'aggiunta dei file locale generati (ignora .gitignore)
-            if [ -d locale ]; then
-              git add -f locale/
-            fi
-            cd - > /dev/null
-          done
+          python3 usr/lib/enigma2/python/Plugins/Extensions/TVGarden/update_translations.py
 
-      - name: Commit and push changes
+      - name: Configure git
         run: |
           git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.email "github-actions@users.noreply.github.com"
+
+      - name: Ignore big files & unstage them
+        run: |
+          # 1) Assicura che i file enormi siano ignorati (senza cancellarli dal disco)
+          grep -qxF '*.po' .gitignore 2>/dev/null || echo '*.po' >> .gitignore
+          grep -qxF '*.mo' .gitignore 2>/dev/null || echo '*.mo' >> .gitignore
+
+          # 2) De-traccia i .po/.mo già presenti in Git (restano sul disco!)
+          git rm --cached -r --ignore-unmatch \
+            'usr/lib/enigma2/python/Plugins/Extensions/TVGarden/locale/**/*.po' || true
+          git rm --cached -r --ignore-unmatch \
+            'usr/lib/enigma2/python/Plugins/Extensions/TVGarden/locale/**/*.mo' || true
+
+      - name: Commit and push
+        run: |
           git add .
-          if ! git diff --cached --quiet; then
-            git commit -m "Update translations via workflow"
-                                                                                                                  
-            git pull --rebase origin main
-            git push origin main
-          else
-            echo "No changes to commit"
+          git add .gitignore
+
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da committare"
+            exit 0
           fi
+
+          git commit -m "Update translations via workflow (no big files)"
+
+          # Riallinea con eventuali modifiche remote prima del push
+          git pull --rebase --autostash origin main || true
+          git push origin main
