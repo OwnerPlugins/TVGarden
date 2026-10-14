@@ -57,6 +57,7 @@ fi
 
 if [ $STREAM_OK -ne 0 ] || [ ! -f "$PLUGINPATH/plugin.py" ]; then
     echo "Tarball streaming failed, trying IPK fallback..."
+    rm -rf "$PLUGINPATH"
     IPKPATH="$PLUGINBASE/TVGarden-$version.ipk"
     TMPEXTRACT="$PLUGINBASE/.tvgarden_extract"
     rm -rf "$TMPEXTRACT"
@@ -95,8 +96,10 @@ sys.exit("data.tar not found in ipk")
 PYEOF
         # Sposta il plugin estratto nella posizione finale
         if [ -d "$TMPEXTRACT/usr/lib/enigma2/python/Plugins/Extensions/TVGarden" ]; then
+            rm -rf "$PLUGINPATH"
             mv "$TMPEXTRACT/usr/lib/enigma2/python/Plugins/Extensions/TVGarden" "$PLUGINPATH"
         elif [ -d "$TMPEXTRACT/usr/lib64/enigma2/python/Plugins/Extensions/TVGarden" ]; then
+            rm -rf "$PLUGINPATH"
             mv "$TMPEXTRACT/usr/lib64/enigma2/python/Plugins/Extensions/TVGarden" "$PLUGINPATH"
         else
             echo "ERROR: Could not find TVGarden in extracted IPK."
