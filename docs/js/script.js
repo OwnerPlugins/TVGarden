@@ -299,13 +299,13 @@ class OwnersPluginsTV {
         }
 
         const list = parseFamelackPayload(items);
-        const channels = list.map((item, i) => this.toBuddyChannel(item, i, 'tv')).filter(Boolean);
+        const channels = list.map((item, i) => this.toOwnersChannel(item, i, 'tv')).filter(Boolean);
         return this.removeDuplicates(channels.sort((a, b) =>
             a.group === b.group ? a.title.localeCompare(b.title) : a.group.localeCompare(b.group)
         ));
     }
 
-    toBuddyChannel(item, index = 0, mediaType = 'tv') {
+    toOwnersChannel(item, index = 0, mediaType = 'tv') {
         const { url, foundIn, isYouTube } = extractStreamUrl(item);
         if (!url || !/^(https?|rtmp|rtsp):\/\//i.test(url)) return null;
         const country = String(item.country || '').toUpperCase();
@@ -959,7 +959,7 @@ class OwnersPluginsTV {
 
             const list = parseFamelackPayload(data, listType === 'countries' ? id : null);
             const channels = list
-                .map((item, i) => this.toBuddyChannel(item, i, mediaType))
+                .map((item, i) => this.toOwnersChannel(item, i, mediaType))
                 .filter(Boolean);
 
             if (channels.length === 0) {
