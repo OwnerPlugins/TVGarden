@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUDDY TV - Streaming Your Favorites channels</title>
+    <base href="./">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e90ff">
+    <link rel="icon" type="image/png" href="./img/logo.png" />
+    <link rel="shortcut icon" href="./img/favicon.ico" />
+    <link rel="apple-touch-icon" href="./img/logo.png">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar hidden">
+            <div class="sidebar-header">
+                <img src="./img/logo.png" alt="BUDDY TV Logo" class="sidebar-logo">
+                <div class="sidebar-controls">
+                    <button class="sidebar-button" id="themeToggle">🌙</button>
+                    <button class="sidebar-button" id="toggleSidebar">✕</button>
+                </div>
+            </div>
+            <div class="stats-container" id="playlistStats"></div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search channels...">
+            </div>
+            <div class="channel-list" id="channelList"></div>
+        </div>
+        <div class="main-content">
+            <div class="epg-guide" id="epgGuide">
+                <div id="epgCurrent" class="epg-current">No current program</div>
+                <div id="epgNext" class="epg-next">No next program</div>
+                <div id="epgTime" class="epg-time"></div>
+                <div class="epg-timeline">
+                    <div id="epgProgress" class="epg-progress"></div>
+                </div>
+            </div>
+            <div class="video-container">
+                <video
+                    id="videoPlayer"
+                    controls
+                    autoplay
+                    preload="auto"
+                    playsinline
+                ></video>
+                <div class="control-panel">
+                    <button id="refreshButton" class="control-button" title="Refresh">⟳</button>
+                    <button id="toggleSidebarButton" class="control-button" title="Menu">☰</button>
+                    <button id="fullscreenButton" class="control-button" title="Fullscreen">⛶</button>
+                </div>
+                <div id="loadingIndicator" class="loading-indicator"></div>
+                <div id="notification" class="notification"></div>
+            </div>
+        </div>
+        <div class="upload-modal show" id="uploadModal">
+            <div class="upload-modal-content">
+                <div class="upload-header">
+                    <h3>Upload Playlist</h3>
+                    <button class="upload-close" id="uploadClose">✕</button>
+                </div>
+                <div class="upload-section">
+                    <label for="fileUpload">Upload M3U/JSON/TXT File</label>
+                    <input type="file" id="fileUpload" accept=".m3u,.json,.txt">
+                    <div class="upload-buttons">
+                        <button id="uploadFileButton">Upload File</button>
+                    </div>
+                </div>
+                <div class="upload-section">
+                    <label for="urlUpload">Enter M3U/JSON/TXT URL</label>
+                    <input type="text" id="urlUpload" placeholder="https://example.com/playlist.m3u">
+                    <div class="upload-buttons">
+                        <button id="uploadUrlButton">Load URL</button>
+                        <button id="clearHistoryButton">Clear History</button>
+                    </div>
+                </div>
+
+                <!-- ===================== REPO BROWSER ===================== -->
+                <div class="upload-section repo-section">
+                    <label class="repo-label">
+                        Repo: OwnerPlugins/famelack-data
+                    </label>
+                    <div class="repo-controls">
+                        <select id="repoMediaType" class="repo-select">
+                            <option value="tv">TV</option>
+                            <option value="webcams">Webcams</option>
+                        </select>
+                        <select id="repoListType" class="repo-select">
+                            <option value="categories">Categories</option>
+                            <option value="countries">Countries</option>
+                            <option value="all">All Channels</option>
+                        </select>
+                        <button id="repoLoadList" class="repo-btn">Load List</button>
+                    </div>
+                    <div id="repoListContainer" class="repo-list-container">
+                        <p class="repo-hint">Choose Media + List, then press "Load List".</p>
+                    </div>
+                </div>
+                <!-- ======================================================== -->
+
+                <div class="upload-history" id="uploadHistory"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>
