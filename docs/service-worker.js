@@ -1,4 +1,5 @@
-const CACHE_NAME = 'owners-plugins-cache-v1';
+// Cambia 'v1' in 'v2' (o 'v3', 'v4', ecc.)
+const CACHE_NAME = 'owners-plugins-cache-v2';
 const urlsToCache = [
     './',
     './index.html',
