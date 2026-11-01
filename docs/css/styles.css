@@ -850,3 +850,10 @@ body.dark .repo-hint {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
+#youtubeIframe {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    z-index: 5;
+}

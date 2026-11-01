@@ -17,6 +17,12 @@ function isYouTubeUrl(url) {
     return u.includes('youtube.com') || u.includes('youtu.be') || u.includes('youtube-nocookie.com');
 }
 
+function extractYouTubeId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+}
+
 // Porting esatto di extract_stream_url del plugin Python
 function extractStreamUrl(channel) {
     if (!channel || typeof channel !== 'object') {
@@ -542,11 +548,16 @@ class OwnersPluginsTV {
         this.showNotification(`Now Playing: ${this.currentChannel.title}`);
 
         const normalizedUrl = this.normalizeUrl(url);
-        if (Hls.isSupported() && normalizedUrl.includes('.m3u8')) {
+        
+        // --- INIZIO MODIFICA PER YOUTUBE ---
+        if (isYouTubeUrl(normalizedUrl)) {
+            this.setupYouTube(normalizedUrl);
+        } else if (Hls.isSupported() && normalizedUrl.includes('.m3u8')) {
             this.setupHLS(normalizedUrl);
         } else {
             this.setupNative(normalizedUrl);
         }
+        // --- FINE MODIFICA ---
     }
 
     setupHLS(url) {
@@ -582,6 +593,39 @@ class OwnersPluginsTV {
         this.hls.attachMedia(this.videoPlayer);
     }
 
+    setupYouTube(url) {
+        const videoId = extractYouTubeId(url);
+        if (!videoId) {
+            this.handleError(null, 'Invalid YouTube URL');
+            return;
+        }
+
+        // Nascondi il player standard
+        this.videoPlayer.style.display = 'none';
+
+        // Crea o riusa l'iframe
+        let iframe = document.getElementById('youtubeIframe');
+        if (!iframe) {
+            iframe = document.createElement('iframe');
+            iframe.id = 'youtubeIframe';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            iframe.style.position = 'absolute';
+            iframe.style.top = '0';
+            iframe.style.left = '0';
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            iframe.allowFullscreen = true;
+            this.videoContainer.appendChild(iframe);
+        }
+
+        // Carica il video con autoplay
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        
+        // Nascondi il caricamento
+        this.loadingIndicator.classList.remove('show');
+    }
+
     setupNative(url) {
         this.videoPlayer.src = url;
         this.videoPlayer.play().catch(e => this.handleError(e, 'Native playback failed'));
@@ -592,6 +636,15 @@ class OwnersPluginsTV {
             this.hls.destroy();
             this.hls = null;
         }
+        
+        // Rimuovi l'iframe di YouTube se esiste
+        const iframe = document.getElementById('youtubeIframe');
+        if (iframe) {
+            iframe.remove();
+        }
+        
+        // Ripristina il player standard
+        this.videoPlayer.style.display = 'block';
         this.videoPlayer.pause();
         this.videoPlayer.removeAttribute('src');
         this.videoPlayer.load();
